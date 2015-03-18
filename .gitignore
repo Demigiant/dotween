@@ -1,0 +1,16 @@
+_DOTween.Assembly/_ReSharper*
+_DOTween.Assembly/bin_pro
+_DOTween.Assembly/DOTweenPro*
+_DOTween.Assembly/DOTween*/obj
+_DOTween.Assembly/*.suo
+_DOTween.Assembly/*.user
+*.Unity*/_ReSharper*
+*.Unity*/Library
+*.Unity*/obj
+*.Unity*/Temp
+*.Unity*/*.csproj
+*.Unity*/*.sln
+*.Unity*/*.user
+*.Unity*/*.suo
+*.Unity*/*.userprefs
+*.Unity*/Assets/Demigiant/DOTweenPro*

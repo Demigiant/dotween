@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{421ACC19-8922-4E98-8921-B52240CE172A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DG.DOTweenEditor</RootNamespace>
+    <AssemblyName>DOTweenEditor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Editor\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Editor\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="UnityEditor">
+      <HintPath>C:\Program Files\_Design\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>C:\Program Files\_Design\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\DelayedCall.cs" />
+    <Compile Include="Core\EditorGUIUtils.cs" />
+    <Compile Include="Core\EditorUtils.cs" />
+    <Compile Include="DOTweenInspector.cs" />
+    <Compile Include="DOTweenSettingsInspector.cs" />
+    <Compile Include="DOTweenSetupMenuItem.cs" />
+    <Compile Include="DOTweenUtilityWindow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DOTween\DOTween.csproj">
+      <Project>{DE17C145-3E8D-45D6-BBB6-D06BD7D80A55}</Project>
+      <Name>DOTween</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set BinDir=bin.Global\DOTween\Editor
+set DestinationDir=$(SolutionDir)..\..\%25BinDir%25
+set BinDirNoMeta=bin.Global_no_meta\DOTween\Editor
+set DestinationDirNoMeta=$(SolutionDir)..\..\%25BinDirNoMeta%25
+set BinDirUnityTests=UnityTests.Unity4\Assets\Demigiant\DOTween\Editor
+set DestinationDirUnityTests=$(SolutionDir)..\%25BinDirUnityTests%25
+set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween\Editor
+set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
+set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween\Editor
+set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
+
+echo %25DestinationDir%25
+
+echo Deleting TMPs...
+DEL $(TargetDir)\*.tmp
+
+CD $(TargetDir)
+echo Converting PDB to MDB and deleting PDB...
+"c:\Program Files\_Design\Unity 4.6\Editor\Data\MonoBleedingEdge\lib\mono\4.0\pdb2mdb.exe" $(TargetFileName)
+DEL $(TargetName).pdb
+
+echo Exporting Assembly to %25DestinationDir%25
+echo Copying files to Destination...
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDir%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirNoMeta%25
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirNoMeta%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirUnityTests%25
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirUnityTests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirUnity5Tests%25
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirUnity5Tests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirCompatibilityTests%25 /Y /I /E</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
