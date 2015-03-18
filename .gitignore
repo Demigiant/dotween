@@ -4,6 +4,8 @@ _DOTween.Assembly/DOTweenPro*
 _DOTween.Assembly/DOTween*/obj
 _DOTween.Assembly/*.suo
 _DOTween.Assembly/*.user
+_DOTween.Assembly/.gitignore
+_DOTween.Assembly/.git
 *.Unity*/_ReSharper*
 *.Unity*/Library
 *.Unity*/obj
