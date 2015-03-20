@@ -16,3 +16,4 @@ _DOTween.Assembly/.git
 *.Unity*/*.suo
 *.Unity*/*.userprefs
 *.Unity*/Assets/Demigiant/DOTweenPro*
+*.Unity*/Assets/TK2D*
