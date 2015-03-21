@@ -67,6 +67,7 @@ namespace DG.DOTweenEditor
                 // 5.x
                 totImported += ImportAddons("43", addonsDir);
                 totImported += ImportAddons("46", addonsDir);
+                totImported += ImportAddons("50", addonsDir);
             }
             // Additional plugin files
             // Pro plugins
