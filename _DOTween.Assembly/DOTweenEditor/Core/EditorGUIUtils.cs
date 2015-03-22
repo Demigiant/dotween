@@ -76,6 +76,22 @@ namespace DG.DOTweenEditor.Core
             return stringEaseId == FilteredEaseTypes.Length - 1 ? Ease.INTERNAL_Custom : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
         }
 
+        // A button which works as a toggle
+        public static bool ToggleButton(bool toggled, GUIContent content, GUIStyle guiStyle = null, params GUILayoutOption[] options)
+        {
+            Color orColor = GUI.backgroundColor;
+            GUI.backgroundColor = toggled ? Color.green : Color.white;
+            bool clicked = guiStyle == null
+                ? GUILayout.Button(content, options)
+                : GUILayout.Button(content, guiStyle, options);
+            if (clicked) {
+                toggled = !toggled;
+                GUI.changed = true;
+            }
+            GUI.backgroundColor = orColor;
+            return toggled;
+        }
+
         public static void SetGUIStyles(Vector2? footerSize = null)
         {
             if (!_additionalStylesSet && footerSize != null) {

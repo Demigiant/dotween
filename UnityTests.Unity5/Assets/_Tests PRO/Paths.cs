@@ -19,83 +19,81 @@ public class Paths : BrainBase
 
 	void Start()
 	{
-		return;
+		// Vector3[] path = new[] {
+		// 	new Vector3(0,1,0),
+		// 	new Vector3(1,2,0),
+		// 	new Vector3(2,1,0),
+		// 	new Vector3(2,0,0)
+		// };
 
-		Vector3[] path = new[] {
-			new Vector3(0,1,0),
-			new Vector3(1,2,0),
-			new Vector3(2,1,0),
-			new Vector3(2,0,0)
-		};
+		// TweenParams tp = new TweenParams()
+		// 	.SetEase(ease)
+		// 	.SetLoops(-1, loopType);
 
-		TweenParams tp = new TweenParams()
-			.SetEase(ease)
-			.SetLoops(-1, loopType);
+		// AxisConstraint lockRotation = lockRotation0 | lockRotation1;
 
-		AxisConstraint lockRotation = lockRotation0 | lockRotation1;
+		// // Relative VS non relative
+		// controller = targets[0].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(0.1f, forward)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
+		// targets[1].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[1])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(targets[2], forward)
+		// 	.SetAs(tp)
+		// 	.Pause();
 
-		// Relative VS non relative
-		controller = targets[0].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(0.1f, forward)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
-		targets[1].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[1])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(targets[2], forward)
-			.SetAs(tp)
-			.Pause();
+		// // Linear VS curved
+		// targets[2].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(new Vector3(3, 0, 0), forward)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
+		// targets[3].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(0.1f, forward)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
 
-		// Linear VS curved
-		targets[2].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(new Vector3(3, 0, 0), forward)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
-		targets[3].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(0.1f, forward)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
+		// // Linear VS curved no lookAt
+		// targets[4].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
+		// targets[5].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
 
-		// Linear VS curved no lookAt
-		targets[4].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
-		targets[5].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
+		// // Linear VS curved top-down
+		// path = new[] {
+		// 	new Vector3(0,0,1),
+		// 	new Vector3(1,0,2),
+		// 	new Vector3(2,0,1),
+		// 	new Vector3(2,0,0)
+		// };
+		// targets[6].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(0.1f, forward)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
+		// targets[7].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
+		// 	.SetOptions(closePaths, lockPosition, lockRotation)
+		// 	.SetLookAt(0.1f, forward)
+		// 	.SetAs(tp)
+		// 	.SetRelative()
+		// 	.Pause();
 
-		// Linear VS curved top-down
-		path = new[] {
-			new Vector3(0,0,1),
-			new Vector3(1,0,2),
-			new Vector3(2,0,1),
-			new Vector3(2,0,0)
-		};
-		targets[6].DOPath(path, 3, PathType.CatmullRom, pathMode, pathResolution, pathsColors[0])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(0.1f, forward)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
-		targets[7].DOPath(path, 3, PathType.Linear, pathMode, pathResolution, pathsColors[1])
-			.SetOptions(closePaths, lockPosition, lockRotation)
-			.SetLookAt(0.1f, forward)
-			.SetAs(tp)
-			.SetRelative()
-			.Pause();
-
-		// Log lengths
-		controller.ForceInit();
-		Debug.Log("Controller path length: " + controller.PathLength());
+		// // Log lengths
+		// controller.ForceInit();
+		// Debug.Log("Controller path length: " + controller.PathLength());
 	}
 
 	void OnGUI()
