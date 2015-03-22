@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HODebugFramework</name>
+    </assembly>
+    <members>
+        <member name="T:Holoville.DebugFramework.Components.HOFpsGadget">
+            <summary>
+            Shows framerate and eventual memory info during runtime.
+            Can also force a specific framerate.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.Components.HOFpsGadget.showMemory">
+            <summary>
+            If TRUE also shows memory info.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.Components.HOFpsGadget.updateDelay">
+            <summary>
+            Delay between each update of the fps calculation.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.Components.HOFpsGadget.alignment">
+            <summary>
+            Alignment of the info gadget.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.Components.HOFpsGadget.limitFrameRate">
+            <summary>
+            If different than 0 forces the given framerate.
+            Set it to 0 if you don't want HOFpsGadget to do anything with Application.targetFrameRate.
+            </summary>
+        </member>
+        <member name="T:Holoville.DebugFramework.HORuntimeGizmos">
+            <summary>
+            Static methods to draw gizmos automatically every frame.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.HORuntimeGizmos.defPointRadius">
+            <summary>
+            if <see cref="F:Holoville.DebugFramework.HORuntimeGizmos.randomPointRadius"/> is set to TRUE,
+            this is just a reference size used to create points of random sizes
+            (useful to avoid overlapping points being hidden).
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.HORuntimeGizmos.randomPointRadius">
+            <summary>
+            If TRUE, points will have a random radius.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.HORuntimeGizmos.randomDefColor">
+            <summary>
+            If TRUE and no color is passed to methods, uses a random color.
+            </summary>
+        </member>
+        <member name="F:Holoville.DebugFramework.HORuntimeGizmos.defColor">
+            <summary>
+            Default color.
+            </summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddPoint(UnityEngine.Vector3,System.Boolean)">
+            <summary>Adds a point to be constantly shown as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddPoint(UnityEngine.Vector3,UnityEngine.Color,System.Boolean)">
+            <summary>Adds a point to be constantly shown as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddPoint(UnityEngine.Vector3,System.Single,System.Boolean)">
+            <summary>Adds a point to be constantly shown as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddPoint(UnityEngine.Vector3,UnityEngine.Color,System.Single,System.Boolean)">
+            <summary>Adds a point to be constantly shown as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddTarget(UnityEngine.Object,System.Boolean)">
+            <summary>Adds a target to be constantly evidenced.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddTarget(UnityEngine.Object,UnityEngine.Color,System.Boolean)">
+            <summary>Adds a target to be constantly evidenced.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddLine(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Boolean)">
+            <summary>Adds a line to be constantly drawn as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddLine(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEngine.Color,System.Boolean)">
+            <summary>Adds a line to be constantly drawn as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddLine(UnityEngine.Vector3,UnityEngine.Vector3,System.Boolean)">
+            <summary>Adds a line to be constantly drawn as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.AddLine(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Boolean)">
+            <summary>Adds a line to be constantly drawn as a gizmo.</summary>
+        </member>
+        <member name="M:Holoville.DebugFramework.HORuntimeGizmos.Clear">
+            <summary>
+            Clears all gizmos managed by <see cref="T:Holoville.DebugFramework.HORuntimeGizmos"/>.
+            </summary>
+        </member>
+    </members>
+</doc>
