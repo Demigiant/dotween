@@ -10,7 +10,7 @@ public class CombineTweens : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.6f);
 
-	    target.DOMixedMoveBy(new Vector3(3, 3, 0), 3);
-        target.DOMixedMoveBy(new Vector3(-3, 0, 0), 1.5f).SetLoops(2, LoopType.Yoyo);
+	    target.DOBlendableMoveBy(new Vector3(3, 3, 0), 3);
+        target.DOBlendableMoveBy(new Vector3(-3, 0, 0), 1.5f).SetLoops(2, LoopType.Yoyo);
 	}
 }
