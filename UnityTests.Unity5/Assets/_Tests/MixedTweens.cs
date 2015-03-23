@@ -11,7 +11,7 @@ public class MixedTweens : BrainBase
 		yield return new WaitForSeconds(0.6f);
 
 	    target.DOBlendableMoveBy(new Vector3(3, 3, 0), 3).SetAutoKill(false);
-        target.DOBlendableMoveBy(new Vector3(-3, 0, 0), 1.5f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
+        target.DOBlendableMoveBy(new Vector3(-3, 0, 0), 1f).SetLoops(3, LoopType.Yoyo).SetAutoKill(false);
 	}
 
 	void OnGUI()
