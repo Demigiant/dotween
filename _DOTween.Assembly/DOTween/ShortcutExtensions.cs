@@ -379,6 +379,40 @@ namespace DG.Tweening
                 .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
         }
 
+        /// <summary>Tweens a Transform's position BY the given value (as if it was set to relative),
+        /// in a way that allows other DOMixedMoveBy tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOMixedMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.position += diff;
+            }, byValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Transform's localPosition BY the given value (as if it was set to relative),
+        /// in a way that allows other DOMixedMoveBy tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOLocalMixedMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localPosition += diff;
+            }, byValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+
         /// <summary>Tweens a Transform's rotation to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
