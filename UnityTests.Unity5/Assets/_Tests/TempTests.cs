@@ -12,8 +12,14 @@ public class TempTests : BrainBase
 {
 	public Transform target;
 
-	void Start()
+	IEnumerator Start()
 	{
-		DOTween.To(()=>new Vector3(0,2,0), x=>target.position = x, new Vector3(2,4,2), 2);
+		yield return new WaitForSeconds(0.6f);
+
+		Tweener t = target.DOLocalMove(new Vector3(4, 4, 0), 3);
+
+		yield return new WaitForSeconds(0.1f);
+
+		t.ChangeEndValue(new Vector3(0, 8, 0));
 	}
 }

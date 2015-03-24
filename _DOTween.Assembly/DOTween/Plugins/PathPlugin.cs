@@ -141,8 +141,13 @@ namespace DG.Tweening.Plugins
                     lookAtP = tPos + path.wps[path.linearWPIndex] - path.wps[path.linearWPIndex - 1];
                 } else {
                     float lookAheadPerc = pathPerc + options.lookAhead;
-                    if (lookAheadPerc > 1) lookAheadPerc = (options.isClosedPath ? lookAheadPerc - 1 : 1.00001f);
+                    if (lookAheadPerc > 1) lookAheadPerc = (options.isClosedPath ? lookAheadPerc - 1 : path.type == PathType.Linear ? 1 : 1.00001f);
                     lookAtP = path.GetPoint(lookAheadPerc);
+                }
+                if (path.type == PathType.Linear) {
+                    // Check if it's the last waypoint, and keep correct direction
+                    Vector3 lastWp = path.wps[path.wps.Length - 1];
+                    if (lookAtP == lastWp) lookAtP = tPos == lastWp ? lastWp + (lastWp - path.wps[path.wps.Length - 2]) : lastWp;
                 }
                 Vector3 transUp = trans.up;
                 // Apply basic modification for local position movement
