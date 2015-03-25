@@ -675,7 +675,7 @@
             <summary>Send a path tween to the given waypoint.
             Has no effect if this is not a path tween.
             <para>BEWARE, this is a special utility method:
-            the lookAt direction might be wrong after calling this and might need to be set manually
+            it works only with Linear eases. Also, the lookAt direction might be wrong after calling this and might need to be set manually
             (because it relies on a smooth path movement and doesn't work well with jumps that encompass dramatic direction changes)</para></summary>
             <param name="waypointIndex">Waypoint index to reach
             (if higher than the max waypoint index the tween will simply go to the last one)</param>
