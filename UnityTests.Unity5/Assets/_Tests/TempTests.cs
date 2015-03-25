@@ -11,15 +11,16 @@ using System;
 public class TempTests : BrainBase
 {
 	public Transform target;
+	public Vector3[] waypoints;
 
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(0.6f);
 
-		Tweener t = target.DOLocalMove(new Vector3(4, 4, 0), 3);
+		Tween t = target.DOPath(waypoints, 5);
+		yield return null;
+		yield return null;
 
-		yield return new WaitForSeconds(0.1f);
-
-		t.ChangeEndValue(new Vector3(0, 8, 0));
+		t.GotoWaypoint(2);
 	}
 }
