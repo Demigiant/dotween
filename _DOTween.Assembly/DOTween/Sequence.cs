@@ -205,6 +205,8 @@ namespace DG.Tweening
                         cyclesDone++;
                         if (s.loopType == LoopType.Yoyo) prevPosIsInverse = !prevPosIsInverse;
                     }
+                    // If completedLoops or position were changed by some callback, exit here
+                    if (expectedCompletedLoops != s.completedLoops || Math.Abs(expectedPosition - s.position) > Single.Epsilon) return !s.active;
                 } else {
                     // Simply determine correct prevPosition after steps
                     if (s.loopType == LoopType.Yoyo && newCompletedSteps % 2 != 0) {
@@ -213,8 +215,6 @@ namespace DG.Tweening
                     }
                     newCompletedSteps = 0;
                 }
-                // If completedLoops or position were changed by some callback, exit here
-                if (expectedCompletedLoops != s.completedLoops || Math.Abs(expectedPosition - s.position) > Single.Epsilon) return !s.active;
             }
             // Run current cycle
             if (newCompletedSteps == 1 && s.isComplete) return false; // Skip update if complete because multicycle took care of it
