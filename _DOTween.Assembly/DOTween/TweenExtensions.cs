@@ -97,7 +97,7 @@ namespace DG.Tweening
 
             if (complete) {
                 TweenManager.Complete(t);
-                if (t.autoKill) return; // Already killed by Complete, so no need to go on
+                if (t.autoKill && t.loops >= 0) return; // Already killed by Complete, so no need to go on
             }
 
             if (TweenManager.isUpdateLoop) {

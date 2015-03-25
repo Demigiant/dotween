@@ -5,20 +5,18 @@ using System.Collections;
 
 public class Temp : BrainBase
 {
-	[SerializeField]
-    private Vector3 pos;
-    [SerializeField]
-    private float duration;
-    [SerializeField]
-    private GameObject goToMove;
+	public Transform target;
 
-    private Tweener moveTween;
+    IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.6f);
 
-    // Update is called once per frame
-    void Update() {
-        if(moveTween == null) {
-            moveTween = goToMove.transform.DOLocalMove(pos, duration).SetAutoKill(false);
-        }
-        moveTween.ChangeEndValue(pos, duration, true);
+        Sequence s0 = DOTween.Sequence().Append(target.DOMoveX(3, 2)).OnComplete(()=> Debug.Log("s0 complete"));
+        Sequence s1 = DOTween.Sequence().Append(target.DOMoveY(3, 2)).OnComplete(()=> Debug.Log("s1 complete"));
+        Sequence s = DOTween.Sequence().Append(s0).Append(s1).OnComplete(()=> Debug.Log("MAIN COMPLETE"));
+
+        yield return new WaitForSeconds(0.2f);
+
+        s.Complete();
     }
 }
