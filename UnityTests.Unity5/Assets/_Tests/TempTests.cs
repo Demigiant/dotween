@@ -15,18 +15,14 @@ public class TempTests : BrainBase
 	public float gotoTime;
 	public Vector3[] waypoints;
 
+	int count;
+
 	Tween t;
 
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(0.6f);
 
-		t = target.DOPath(waypoints, 5, PathType.CatmullRom).SetEase(easeType);
-		t.GotoWaypoint(2);
-	}
-
-	void OnGUI()
-	{
-		if (GUILayout.Button("Goto")) t.Goto(gotoTime);
+		t = target.DOPath(waypoints, 5, PathType.CatmullRom).SetEase(easeType).SetLoops(-1);
 	}
 }
