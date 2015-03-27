@@ -828,7 +828,7 @@ namespace DG.Tweening.Core
                 Array.Resize(ref _pooledTweeners, maxTweeners);
                 break;
             }
-            maxActive = maxTweeners;
+            maxActive = Mathf.Max(maxTweeners, maxSequences);
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;
         }
