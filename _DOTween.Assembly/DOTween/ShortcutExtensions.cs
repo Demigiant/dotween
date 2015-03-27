@@ -692,11 +692,11 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-            Quaternion to = target.rotation;
+            Quaternion to = target.localRotation;
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
                 Quaternion diff = x * Quaternion.Inverse(to);
                 to = x;
-                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+                target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;
             }, byValue, duration)
                 .Blendable().SetTarget(target);
             t.plugOptions.rotateMode = mode;
