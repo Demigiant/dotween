@@ -17,12 +17,10 @@ public class TempTests : BrainBase
 
 	int count;
 
-	Tween t;
-
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(0.6f);
 
-		t = target.DOPath(waypoints, 5, PathType.CatmullRom).SetEase(easeType).SetLoops(-1);
+		target.DOPath(waypoints, 5, PathType.CatmullRom).SetEase(easeType).SetLoops(-1);
 	}
 }

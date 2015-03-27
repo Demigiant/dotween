@@ -27,5 +27,13 @@ namespace DG.Tweening.Core
             t.isFromAllowed = false;
             return t;
         }
+
+        // Sets the tween as blendable
+        internal static TweenerCore<T1, T2, TPlugOptions> Blendable<T1, T2, TPlugOptions>(this TweenerCore<T1, T2, TPlugOptions> t)
+            where TPlugOptions : struct
+        {
+            t.isBlendable = true;
+            return t;
+        }
     }
 }

@@ -54,6 +54,7 @@ namespace DG.Tweening
         
         // Fixed after creation
         internal bool isFrom; // Used to prevent settings like isRelative from being applied on From tweens
+        internal bool isBlendable; // Set by blendable tweens, prevents isRelative to be applied
         internal bool isRecyclable;
         internal bool isSpeedBased;
         internal bool autoKill;
@@ -114,6 +115,7 @@ namespace DG.Tweening
 
             target = null;
             isFrom = false;
+            isBlendable = false;
             isSpeedBased = false;
             duration = 0;
             loops = 1;

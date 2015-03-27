@@ -507,7 +507,8 @@ namespace DG.Tweening
             if (!t.active || t.creationLocked || !t.isFromAllowed) return t;
 
             t.isFrom = true;
-            t.SetFrom(isRelative);
+            if (!isRelative) t.SetFrom(false);
+            else t.SetFrom(!t.isBlendable);
             return t;
         }
 
@@ -527,7 +528,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
         public static T SetRelative<T>(this T t) where T : Tween
         {
-            if (!t.active || t.creationLocked || t.isFrom) return t;
+            if (!t.active || t.creationLocked || t.isFrom || t.isBlendable) return t;
 
             t.isRelative = true;
             return t;
@@ -537,7 +538,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
         public static T SetRelative<T>(this T t, bool isRelative) where T : Tween
         {
-            if (!t.active || t.creationLocked || t.isFrom) return t;
+            if (!t.active || t.creationLocked || t.isFrom || t.isBlendable) return t;
 
             t.isRelative = isRelative;
             return t;

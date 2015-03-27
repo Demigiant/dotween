@@ -379,40 +379,6 @@ namespace DG.Tweening
                 .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
         }
 
-        /// <summary>EXPERIMENTAL BETA: Tweens a Transform's position BY the given value (as if it was set to relative),
-        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
-        /// instead than fight each other as multiple DOMove would do.
-        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="byValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOBlendableMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
-        {
-            Vector3 to = Vector3.zero;
-            return DOTween.To(() => to, x => {
-                Vector3 diff = x - to;
-                to = x;
-                target.position += diff;
-            }, byValue, duration)
-                .SetOptions(snapping).SetTarget(target);
-        }
-
-        /// <summary>EXPERIMENTAL BETA: Tweens a Transform's localPosition BY the given value (as if it was set to relative),
-        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
-        /// instead than fight each other as multiple DOMove would do.
-        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="byValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOBlendableLocalMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
-        {
-            Vector3 to = Vector3.zero;
-            return DOTween.To(() => to, x => {
-                Vector3 diff = x - to;
-                to = x;
-                target.localPosition += diff;
-            }, byValue, duration)
-                .SetOptions(snapping).SetTarget(target);
-        }
-
         /// <summary>Tweens a Transform's rotation to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
@@ -662,6 +628,98 @@ namespace DG.Tweening
             t.plugOptions.mode = pathMode;
             return t;
         }
+
+        #region Blendables
+
+        /// <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOBlendableMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.position += diff;
+            }, byValue, duration)
+                .Blendable().SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Transform's localPosition BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOBlendableLocalMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localPosition += diff;
+            }, byValue, duration)
+                .Blendable().SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>EXPERIMENTAL METHOD - Tweens a Transform's rotation BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableRotate tweens to work together on the same target,
+        /// instead than fight each other as multiple DORotate would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="mode">Rotation mode</param>
+        public static Tweener DOBlendableRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
+        {
+            Quaternion to = target.rotation;
+            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
+                to = x;
+                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+            t.plugOptions.rotateMode = mode;
+            return t;
+        }
+
+        /// <summary>EXPERIMENTAL METHOD - Tweens a Transform's lcoalRotation BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableRotate tweens to work together on the same target,
+        /// instead than fight each other as multiple DORotate would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="mode">Rotation mode</param>
+        public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
+        {
+            Quaternion to = target.rotation;
+            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
+                to = x;
+                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+            t.plugOptions.rotateMode = mode;
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's localScale BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableScale tweens to work together on the same target,
+        /// instead than fight each other as multiple DOScale would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableScaleBy(this Transform target, Vector3 byValue, float duration)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localScale += diff;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+        }
+
+        #endregion
 
         #endregion
 
