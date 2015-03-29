@@ -674,15 +674,18 @@ namespace DG.Tweening
         }
 
         /// <summary>Options for Vector4 tweens</summary>
-        /// <param name="scramble">If TRUE the string will appear from a random animation of characters</param>
+        /// <param name="richTextEnabled">If TRUE, rich text will be interpreted correctly while animated,
+        /// otherwise all tags will be considered as normal text</param>
+        /// <param name="scrambleMode">The type of scramble to use, if any</param>
         /// <param name="scrambleChars">A string containing the characters to use for scrambling.
         /// Use as many characters as possible (minimum 10) because DOTween uses a fast scramble mode which gives better results with more characters.
         /// Leave it to NULL to use default ones</param>
-        public static Tweener SetOptions(this TweenerCore<string, string, StringOptions> t, bool scramble, string scrambleChars = null)
+        public static Tweener SetOptions(this TweenerCore<string, string, StringOptions> t, bool richTextEnabled, ScrambleMode scrambleMode = ScrambleMode.None, string scrambleChars = null)
         {
             if (!t.active) return t;
 
-            t.plugOptions.scramble = scramble;
+            t.plugOptions.richTextEnabled = richTextEnabled;
+            t.plugOptions.scrambleMode = scrambleMode;
             if (!string.IsNullOrEmpty(scrambleChars)) {
                 if (scrambleChars.Length <= 1) scrambleChars += scrambleChars;
                 t.plugOptions.scrambledChars = scrambleChars.ToCharArray();

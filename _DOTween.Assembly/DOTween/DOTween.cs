@@ -21,7 +21,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.405";
+        public static readonly string Version = "1.0.410";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -129,34 +129,31 @@ namespace DG.Tweening
             if (initialized) return instance;
             if (!Application.isPlaying || isQuitting) return null;
 
-            bool doRecycleAllByDefault = recycleAllByDefault == null ? false : (bool)recycleAllByDefault;
-            bool doUseSafeMode = useSafeMode == null ? true : (bool)useSafeMode;
-            LogBehaviour doLogBehaviour = logBehaviour == null ? LogBehaviour.ErrorsOnly : (LogBehaviour)logBehaviour;
             DOTweenSettings settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
-            return Init(settings, doRecycleAllByDefault, doUseSafeMode, doLogBehaviour);
+            return Init(settings, recycleAllByDefault, useSafeMode, logBehaviour);
         }
         // Auto-init
         static void AutoInit()
         {
             DOTweenSettings settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
-            if (settings == null) Init(null, defaultRecyclable, useSafeMode, logBehaviour);
-            else Init(settings, settings.defaultRecyclable, settings.useSafeMode, settings.logBehaviour);
+            Init(settings, null, null, null);
         }
         // Full init
-        static IDOTweenInit Init(DOTweenSettings settings, bool recycleAllByDefault, bool useSafeMode, LogBehaviour logBehaviour)
+        static IDOTweenInit Init(DOTweenSettings settings, bool? recycleAllByDefault, bool? useSafeMode, LogBehaviour? logBehaviour)
         {
             initialized = true;
             // Options
-            DOTween.defaultRecyclable = recycleAllByDefault;
-            DOTween.useSafeMode = useSafeMode;
-            DOTween.logBehaviour = logBehaviour;
+            if (recycleAllByDefault != null) DOTween.defaultRecyclable = (bool)recycleAllByDefault;
+            if (useSafeMode != null) DOTween.useSafeMode = (bool)useSafeMode;
+            if (logBehaviour != null) DOTween.logBehaviour = (LogBehaviour)logBehaviour;
             // Gameobject - also assign instance
             DOTweenComponent.Create();
             // Assign settings
             if (settings != null) {
-//                DOTween.useSafeMode = settings.useSafeMode;
-//                DOTween.logBehaviour = settings.logBehaviour;
-//                DOTween.defaultRecyclable = settings.defaultRecyclable;
+                if (useSafeMode == null) DOTween.useSafeMode = settings.useSafeMode;
+                if (logBehaviour == null) DOTween.logBehaviour = settings.logBehaviour;
+                if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
+                DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
                 DOTween.defaultAutoPlay = settings.defaultAutoPlay;
                 DOTween.defaultUpdateType = settings.defaultUpdateType;
@@ -168,7 +165,7 @@ namespace DG.Tweening
                 DOTween.defaultLoopType = settings.defaultLoopType;
             }
             // Log
-            if (Debugger.logPriority >= 2) Debugger.Log("DOTween initialization (useSafeMode: " + useSafeMode + ", logBehaviour: " + logBehaviour + ")");
+            if (Debugger.logPriority >= 2) Debugger.Log("DOTween initialization (useSafeMode: " + DOTween.useSafeMode + ", recycling: " + (DOTween.defaultRecyclable ? "ON" : "OFF") + ", logBehaviour: " + DOTween.logBehaviour + ")");
 
             return instance;
         }
@@ -827,9 +824,7 @@ namespace DG.Tweening
         {
             if (initialized || !Application.isPlaying || isQuitting) return;
 
-//            Init(defaultRecyclable, useSafeMode, logBehaviour);
             AutoInit();
-//            Debugger.LogWarning("DOTween auto-initialized with default settings (recycleAllByDefault: " + defaultRecyclable + ", useSafeMode: " + useSafeMode + ", logBehaviour: " + logBehaviour + "). Call DOTween.Init before creating your first tween in order to choose the settings yourself");
         }
 
         static TweenerCore<T1, T2, TPlugOptions> ApplyTo<T1, T2, TPlugOptions>(

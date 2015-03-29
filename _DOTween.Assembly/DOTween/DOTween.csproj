@@ -81,6 +81,7 @@
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
     <Compile Include="RotateMode.cs" />
+    <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />
     <Compile Include="LoopType.cs" />
     <Compile Include="Plugins\ColorPlugin.cs" />

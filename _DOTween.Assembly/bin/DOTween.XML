@@ -567,9 +567,11 @@
             <summary>Options for Vector4 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{System.String,System.String,DG.Tweening.Plugins.Options.StringOptions},System.Boolean,System.String)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{System.String,System.String,DG.Tweening.Plugins.Options.StringOptions},System.Boolean,DG.Tweening.ScrambleMode,System.String)">
             <summary>Options for Vector4 tweens</summary>
-            <param name="scramble">If TRUE the string will appear from a random animation of characters</param>
+            <param name="richTextEnabled">If TRUE, rich text will be interpreted correctly while animated,
+            otherwise all tags will be considered as normal text</param>
+            <param name="scrambleMode">The type of scramble to use, if any</param>
             <param name="scrambleChars">A string containing the characters to use for scrambling.
             Use as many characters as possible (minimum 10) because DOTween uses a fast scramble mode which gives better results with more characters.
             Leave it to NULL to use default ones</param>
@@ -1939,6 +1941,41 @@
         <member name="T:DG.Tweening.Core.Extensions">
             <summary>
             Public only so custom shortcuts can access some of these methods
+            </summary>
+        </member>
+        <member name="T:DG.Tweening.ScrambleMode">
+            <summary>
+            Type of scramble to apply to string tweens
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.None">
+            <summary>
+            No scrambling of characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.All">
+            <summary>
+            A-Z + a-z + 0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Uppercase">
+            <summary>
+            A-Z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Lowercase">
+            <summary>
+            a-z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Numerals">
+            <summary>
+            0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Custom">
+            <summary>
+            Custom characters
             </summary>
         </member>
     </members>

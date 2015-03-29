@@ -9,7 +9,11 @@ namespace DG.Tweening.Plugins.Options
 {
     public struct StringOptions
     {
-        public bool scramble;
+        public bool richTextEnabled;
+        public ScrambleMode scrambleMode;
         public char[] scrambledChars; // If empty uses default scramble characters
+
+        // Stored by StringPlugin
+        internal int startValueStrippedLength, changeValueStrippedLength; // No-tag lengths of start and change value
     }
 }
