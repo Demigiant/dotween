@@ -5,12 +5,14 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 #pragma warning disable 1591
@@ -20,6 +22,7 @@ namespace DG.Tweening.Plugins
     public class StringPlugin : ABSTweenPlugin<string, string, StringOptions>
     {
         static readonly StringBuilder _Buffer = new StringBuilder();
+        static readonly List<Char> _OpenedTags = new List<char>(); // Opened tags that need to be closed at the end, stored by first character required in closing tag
 
         public override void SetFrom(TweenerCore<string, string, StringOptions> t, bool isRelative)
         {
@@ -118,6 +121,7 @@ namespace DG.Tweening.Plugins
                 return _Buffer;
             }
 
+            _OpenedTags.Clear();
             const string tagMatch = @"<.*?(>)";
             const string closeTagMatch = @"(</).*?>";
             bool hasOpenTag = false;
@@ -127,7 +131,10 @@ namespace DG.Tweening.Plugins
                 Char c = value[i];
                 if (c == '<') {
                     bool hadOpenTag = hasOpenTag;
-                    hasOpenTag = !(i < fullLen - 1 && value[i + 1] == '/');
+                    char nextChar = value[i + 1];
+                    hasOpenTag = !(i < fullLen - 1 && nextChar == '/');
+                    if (hasOpenTag) _OpenedTags .Add(nextChar == '#' ? 'c' : nextChar);
+                    else _OpenedTags.RemoveAt(_OpenedTags.Count - 1);
                     string s = value.Substring(i);
                     Match m = Regex.Match(s, tagMatch);
                     if (m.Success) {
@@ -156,10 +163,20 @@ namespace DG.Tweening.Plugins
                 } else if (i >= startIndex) _Buffer.Append(c);
             }
             if (hasOpenTag && i < fullLen - 1) {
-                // Last open tag was not closed: find next close tag and apply it
-                string next = value.Substring(i);
-                Match m = Regex.Match(next, closeTagMatch);
-                if (m.Success) _Buffer.Append(m.Value);
+                string next;
+                while (_OpenedTags.Count > 0 && i < fullLen - 1) {
+                    // Last open tag was not closed: find next close tag and apply it
+                    next = value.Substring(i);
+                    Match m = Regex.Match(next, closeTagMatch);
+                    if (m.Success) {
+                        // Append only if it's the correct closing tag
+                        if (m.Value[2] == _OpenedTags[_OpenedTags.Count - 1]) {
+                            _Buffer.Append(m.Value);
+                            _OpenedTags.RemoveAt(_OpenedTags.Count - 1);
+                        }
+                        i += m.Value.Length;
+                    } else break;
+                }
             }
             return _Buffer;
         }
