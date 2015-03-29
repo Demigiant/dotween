@@ -11,7 +11,6 @@ using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 #pragma warning disable 1591
@@ -95,7 +94,6 @@ namespace DG.Tweening.Plugins
             }
 
             if (options.scrambleMode != ScrambleMode.None) {
-//                setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
                 setter(Append(changeValue, 0, len, options.richTextEnabled).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
                 return;
             }
@@ -134,10 +132,14 @@ namespace DG.Tweening.Plugins
                     Match m = Regex.Match(s, tagMatch);
                     if (m.Success) {
                         if (!hasOpenTag && !hadOpenTag) {
-                            // We have a closing tag without an opening tag, try to find opening tag an apply it
+                            // We have a closing tag without an opening tag, try to find previous correct opening tag an apply it
+                            char closingTagFirstChar = value[i + 1];
+                            char[] openingTagLookouts;
+                            if (closingTagFirstChar == 'c') openingTagLookouts = new[] { '#', 'c' };
+                            else openingTagLookouts = new[] { closingTagFirstChar };
                             int t = i - 1;
                             while (t > -1) {
-                                if (value[t] == '<' && value[t + 1] != '/') {
+                                if (value[t] == '<' && value[t + 1] != '/' && Array.IndexOf(openingTagLookouts, value[t + 2]) != -1) {
                                     _Buffer.Insert(0, value.Substring(t, value.IndexOf('>', t) + 1 - t));
                                     break;
                                 }
@@ -177,56 +179,6 @@ namespace DG.Tweening.Plugins
                 return StringPluginExtensions.ScrambledCharsAll;
             }
         }
-
-
-//        public override void EvaluateAndApply(StringOptions options, Tween t, bool isRelative, DOGetter<string> getter, DOSetter<string> setter, float elapsed, string startValue, string changeValue, float duration, bool usingInversePosition)
-//        {
-//            _Buffer.Remove(0, _Buffer.Length);
-//
-//            // Incremental works only with relative tweens (otherwise the tween makes no sense)
-//            // Sequence with Incremental loops have no effect here (why should they?)
-//            if (isRelative && t.loopType == LoopType.Incremental) {
-//                int iterations = t.isComplete ? t.completedLoops - 1 : t.completedLoops;
-//                if (iterations > 0) {
-//                    _Buffer.Append(startValue);
-//                    for (int i = 0; i < iterations; ++i) _Buffer.Append(changeValue);
-//                    startValue = _Buffer.ToString();
-//                    _Buffer.Remove(0, _Buffer.Length);
-//                }
-//            }
-//
-//            int startValueLen = startValue.Length;
-//            int changeValueLen = changeValue.Length;
-//            int len = (int)Math.Round(changeValueLen * EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod));
-//            if (len > changeValueLen) len = changeValueLen;
-//            else if (len < 0) len = 0;
-//
-//            if (isRelative) {
-//                _Buffer.Append(startValue);
-//                if (options.scramble) {
-//                    setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, options.scrambledChars ?? StringPluginExtensions.ScrambledChars).ToString());
-//                    return;
-//                }
-//                setter(_Buffer.Append(changeValue, 0, len).ToString());
-//                return;
-//            }
-//
-//            if (options.scramble) {
-//                setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, options.scrambledChars ?? StringPluginExtensions.ScrambledChars).ToString());
-//                return;
-//            }
-//
-//            int diff = startValueLen - changeValueLen;
-//            int startValueMaxLen = startValueLen;
-//            if (diff > 0) {
-//                // String to be replaced is longer than endValue: remove parts of it while tweening
-//                float perc = (float)len / changeValueLen;
-//                startValueMaxLen -= (int)(startValueMaxLen * perc);
-//            } else startValueMaxLen -= len;
-//            _Buffer.Append(changeValue, 0, len);
-//            if (len < changeValueLen && len < startValueLen) _Buffer.Append(startValue, len, startValueMaxLen);
-//            setter(_Buffer.ToString());
-//        }
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
