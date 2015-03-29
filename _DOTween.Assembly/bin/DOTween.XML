@@ -1906,6 +1906,41 @@
             What axis to constrain in case of Vector tweens
             </summary>
         </member>
+        <member name="T:DG.Tweening.ScrambleMode">
+            <summary>
+            Type of scramble to apply to string tweens
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.None">
+            <summary>
+            No scrambling of characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.All">
+            <summary>
+            A-Z + a-z + 0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Uppercase">
+            <summary>
+            A-Z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Lowercase">
+            <summary>
+            a-z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Numerals">
+            <summary>
+            0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Custom">
+            <summary>
+            Custom characters
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Plugins.Core.PathCore.ControlPoint">
             <summary>
             Path control point
@@ -1941,41 +1976,6 @@
         <member name="T:DG.Tweening.Core.Extensions">
             <summary>
             Public only so custom shortcuts can access some of these methods
-            </summary>
-        </member>
-        <member name="T:DG.Tweening.ScrambleMode">
-            <summary>
-            Type of scramble to apply to string tweens
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.None">
-            <summary>
-            No scrambling of characters
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.All">
-            <summary>
-            A-Z + a-z + 0-9 characters
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.Uppercase">
-            <summary>
-            A-Z characters
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.Lowercase">
-            <summary>
-            a-z characters
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.Numerals">
-            <summary>
-            0-9 characters
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.ScrambleMode.Custom">
-            <summary>
-            Custom characters
             </summary>
         </member>
     </members>

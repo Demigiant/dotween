@@ -87,15 +87,16 @@ namespace DG.Tweening.Plugins
             if (isRelative) {
                 _Buffer.Append(startValue);
                 if (options.scrambleMode != ScrambleMode.None) {
-                    setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
+                    setter(Append(changeValue, 0, len, options.richTextEnabled).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
                     return;
                 }
-                setter(_Buffer.Append(changeValue, 0, len).ToString());
+                setter(Append(changeValue, 0, len, options.richTextEnabled).ToString());
                 return;
             }
 
             if (options.scrambleMode != ScrambleMode.None) {
-                setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
+//                setter(_Buffer.Append(changeValue, 0, len).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
+                setter(Append(changeValue, 0, len, options.richTextEnabled).AppendScrambledChars(changeValueLen - len, ScrambledCharsToUse(options)).ToString());
                 return;
             }
 
@@ -112,11 +113,11 @@ namespace DG.Tweening.Plugins
         }
 
         // Manages eventual rich text, if enabled, readding tags to the given string and closing them when necessary
-        void Append(string value, int startIndex, int length, bool richTextEnabled)
+        StringBuilder Append(string value, int startIndex, int length, bool richTextEnabled)
         {
             if (!richTextEnabled) {
                 _Buffer.Append(value, startIndex, length);
-                return;
+                return _Buffer;
             }
 
             const string tagMatch = @"<.*?(>)";
@@ -158,6 +159,7 @@ namespace DG.Tweening.Plugins
                 Match m = Regex.Match(next, closeTagMatch);
                 if (m.Success) _Buffer.Append(m.Value);
             }
+            return _Buffer;
         }
 
         char[] ScrambledCharsToUse(StringOptions options)
