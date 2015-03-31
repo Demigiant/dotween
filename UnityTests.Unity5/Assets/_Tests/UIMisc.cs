@@ -34,7 +34,7 @@ public class UIMisc : BrainBase
 			.SetLoops(-1, LoopType.Yoyo);
 		DOTween.Sequence()
 			.AppendInterval(0.5f)
-			.Append(textScramble.DOText("", 2, true).From().SetEase(Ease.Linear))
+			.Append(textScramble.DOText("", 2, true, ScrambleMode.Lowercase).From().SetEase(Ease.Linear))
 			.AppendInterval(0.5f)
 			.SetLoops(-1, LoopType.Yoyo);
 	}

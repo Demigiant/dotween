@@ -17,7 +17,7 @@ public class Basics : BrainBase
 	public GameObject specularSphere;
 	public Transform targetToDoLookAt, targetToDoLookFrom;
 	public GUITexture guiTexAlpha, guiTexColor;
-	public GUIText txtInfo, txtFloat, txtInt, txtUint, txtVector2, txtVector4, txtRect, txtRectOffset, txtString0, txtString1, txtString2;
+	public GUIText txtInfo, txtFloat, txtInt, txtUint, txtLong, txtUlong, txtVector2, txtVector4, txtRect, txtRectOffset, txtString0, txtString1, txtString2;
 	public GameObject txtBackwards;
 
 	int intId = 4;
@@ -27,6 +27,8 @@ public class Basics : BrainBase
 	int intToTween;
 	uint uintToTween;
 	float floatToTween;
+	long longToTween;
+	ulong ulongToTween;
 	Vector2 vector2toTween;
 	Vector4 vector4toTween;
 	Rect rectToTween;
@@ -99,6 +101,10 @@ public class Basics : BrainBase
 		DOTween.To(()=> intToTween, x=> intToTween = x, 100, 1.5f).SetAs(tp).Pause();
 		// Uint
 		DOTween.To(()=> uintToTween, x=> uintToTween = x, 50, 1.5f).SetAs(tp).Pause();
+		// Long
+		DOTween.To(()=> longToTween, x=> longToTween = x, 9223372036854775807L, 1.5f).SetAs(tp).Pause();
+		// Ulong
+		DOTween.To(()=> ulongToTween, x=> ulongToTween = x, 18446744073709551615UL, 1.5f).SetAs(tp).Pause();
 		// Vector2
 		DOTween.To(()=> vector2toTween, x=> vector2toTween = x, new Vector2(50,100), 1.5f).SetAs(tp).Pause();
 		// Vector4
@@ -138,6 +144,8 @@ public class Basics : BrainBase
 		txtFloat.text = "float: " + floatToTween;
 		txtInt.text = "int: " + intToTween;
 		txtUint.text = "uint: " + uintToTween;
+		txtLong.text = "long: " + longToTween.ToString("n");
+		txtUlong.text = "ulong: " + ulongToTween.ToString("n");
 		txtVector2.text = "Vector2: " + vector2toTween;
 		txtVector4.text = "Vector4: " + vector4toTween;
 		txtRect.text = "Rect: " + rectToTween;

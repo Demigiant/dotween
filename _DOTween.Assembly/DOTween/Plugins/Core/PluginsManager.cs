@@ -17,6 +17,8 @@ namespace DG.Tweening.Plugins.Core
         static ITweenPlugin _floatPlugin;
         static ITweenPlugin _intPlugin;
         static ITweenPlugin _uintPlugin;
+        static ITweenPlugin _longPlugin;
+        static ITweenPlugin _ulongPlugin;
         static ITweenPlugin _vector2Plugin;
         static ITweenPlugin _vector3Plugin;
         static ITweenPlugin _vector4Plugin;
@@ -85,6 +87,12 @@ namespace DG.Tweening.Plugins.Core
             } else if (t1 == typeof(Color2)) {
                 if (_color2Plugin == null) _color2Plugin = new Color2Plugin();
                 plugin = _color2Plugin;
+            } else if (t1 == typeof(long)) {
+                if (_longPlugin == null) _longPlugin = new LongPlugin();
+                plugin = _longPlugin;
+            } else if (t1 == typeof(ulong)) {
+                if (_ulongPlugin == null) _ulongPlugin = new UlongPlugin();
+                plugin = _ulongPlugin;
             }
 
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
@@ -114,6 +122,8 @@ namespace DG.Tweening.Plugins.Core
             _floatPlugin = null;
             _intPlugin = null;
             _uintPlugin = null;
+            _longPlugin = null;
+            _ulongPlugin = null;
             _vector2Plugin = null;
             _vector3Plugin = null;
             _vector4Plugin = null;

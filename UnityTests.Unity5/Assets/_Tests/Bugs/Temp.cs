@@ -7,19 +7,10 @@ public class Temp : BrainBase
 {
 	public Transform target;
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForSeconds(0.6f);
-
-        while (true) {
-            if (Time.frameCount % 10 == 0) {
-                // Spawn empty sequences
-                for (int i = 0; i < 200; ++i) {
-                    Sequence s = DOTween.Sequence();
-                }
-                yield return null;
-            }
-            yield return null;
-        }
+        target.DOMoveX(2,1)
+            .OnUpdate(()=> Debug.Log(DOTween.IsTweening(target)))
+            .OnComplete(()=> Debug.Log(DOTween.IsTweening(target)));
     }
 }

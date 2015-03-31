@@ -69,9 +69,11 @@
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
+    <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
+    <Compile Include="Plugins\UlongPlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
     <Compile Include="Plugins\Core\ITPlugin.cs" />
     <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
