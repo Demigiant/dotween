@@ -162,7 +162,7 @@ namespace DG.Tweening.Plugins
                     }
                 } else if (i >= startIndex) _Buffer.Append(c);
             }
-            if (hasOpenTag && i < fullLen - 1) {
+            if (_OpenedTags.Count > 0 && i < fullLen - 1) {
                 string next;
                 while (_OpenedTags.Count > 0 && i < fullLen - 1) {
                     // Last open tag was not closed: find next close tag and apply it
