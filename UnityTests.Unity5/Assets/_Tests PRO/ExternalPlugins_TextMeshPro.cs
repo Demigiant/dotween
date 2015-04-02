@@ -41,15 +41,11 @@ public class ExternalPlugins_TextMeshPro : BrainBase
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("Glow Color To Green")) foreach (TextMeshPro t in texts) t.DOGlowColor(Color.green, 1).SetEase(Ease.Linear);
 		if (GUILayout.Button("Glow Color To Red")) foreach (TextMeshPro t in texts) t.DOGlowColor(Color.red, 1).SetEase(Ease.Linear);
-		if (GUILayout.Button("Glow Fade Out")) foreach (TextMeshPro t in texts) t.DOGlowFade(0, 1).SetEase(Ease.Linear);
-		if (GUILayout.Button("Glow Fade In")) foreach (TextMeshPro t in texts) t.DOGlowFade(1, 1).SetEase(Ease.Linear);
 		GUILayout.EndHorizontal();
 
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("Outline Color To Green")) foreach (TextMeshPro t in texts) t.DOOutlineColor(Color.green, 1).SetEase(Ease.Linear);
 		if (GUILayout.Button("Outline Color To Red")) foreach (TextMeshPro t in texts) t.DOOutlineColor(Color.red, 1).SetEase(Ease.Linear);
-		if (GUILayout.Button("Outline Fade Out")) foreach (TextMeshPro t in texts) t.DOOutlineFade(0, 1).SetEase(Ease.Linear);
-		if (GUILayout.Button("Outline Fade In")) foreach (TextMeshPro t in texts) t.DOOutlineFade(1, 1).SetEase(Ease.Linear);
 		GUILayout.EndHorizontal();
 
 		GUILayout.BeginHorizontal();

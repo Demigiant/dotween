@@ -1,60 +1,257 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Text.RegularExpressions;
 using System.Collections;
+using DG.Tweening;
+using DG.Tweening.Plugins;
+using DG.Tweening.Plugins.Core;
+using DG.Tweening.Plugins.Options;
 
 public class TestScene : MonoBehaviour
 {
 	public Text logText;
+	public Transform target;
 
 	string log;
-	string logPrefix = "➨ Test ";
+	string logPrefix = "\n➨ ";
+	string successStr = "<color=#00FF00>SUCCESS</color>";
+	string failStr = "<color=#FF0000>SUCCESS</color>";
 
-	void Start()
+	SampleFloatClass sampleFloatClass;
+	SampleVector3Class sampleV3Class;
+	ISampleClass isampleClass;
+	Vector3Plugin dotweenV3Class;
+	ITweenPlugin idotweenClass;
+	string testId;
+
+	IEnumerator Start()
 	{
-		SampleFloatClass sampleFloatClass;
-		ISampleClass isampleClass;
-		string testId;
+		FloatTest();
+		log += "\n";
+		Vector3Test();
+		log += "\n";
+		DOTweenVector3Test();
 
-		// Test A
-		testId = "A";
-		try {
-			sampleFloatClass = new SampleFloatClass();
-			log += string.Format("{0}{1} " + ((sampleFloatClass as AbstractSampleClass<float>) == null ? "failed" : "success"), logPrefix, testId);
-		} catch (Exception e) {
-			log += string.Format("<color=#ff0000>{0}{1} error > " + e.Message + "</color>", logPrefix, testId);
-		}
-
-		// Test A2
-		testId = "A2";
-		try {
-			isampleClass = new SampleFloatClass();
-			log += string.Format("\n{0}{1} " + ((isampleClass as AbstractSampleClass<float>) == null ? "failed" : "success"), logPrefix, testId);
-		} catch (Exception e) {
-			log += string.Format("\n<color=#ff0000>{0}{1} error > " + e.Message + "</color>", logPrefix, testId);
-		}
-
-		// Test B
-		testId = "B";
-		try {
-			sampleFloatClass = new SampleFloatClass();
-			log += string.Format("\n{0}{1} " + ((AbstractSampleClass<float>)sampleFloatClass == null ? "failed" : "success"), logPrefix, testId);
-		} catch (Exception e) {
-			log += string.Format("\n<color=#ff0000>{0}{1} error > " + e.Message + "</color>", logPrefix, testId);
-		}
-
-		// Test B2
-		testId = "B2";
-		try {
-			isampleClass = new SampleFloatClass();
-			log += string.Format("\n{0}{1} " + ((AbstractSampleClass<float>)isampleClass == null ? "failed" : "success"), logPrefix, testId);
-		} catch (Exception e) {
-			log += string.Format("\n<color=#ff0000>{0}{1} error > " + e.Message + "</color>", logPrefix, testId);
-		}
-
-
-		log += "\n\n<color=#00ff00>TEST ENDED</color>";
+		log += "\n\n<color=#00ff00>FIRST TEST ENDED</color>";
+		log += "\n\n<color=#00ff00>NOW WAITING 1 SECOND...</color>";
 		logText.text = log;
-		Debug.Log(log);
+		Debug.Log(StripTags(log));
+
+		yield return new WaitForSeconds(1);
+
+		log += "\n\n<color=#00ff00>SPAWNING A MOVE TWEEN IN THE NEXT FRAME...</color>";
+		logText.text = log;
+		Debug.Log("SPAWNING A MOVE TWEEN IN THE NEXT FRAME...");
+
+		yield return null;
+
+		target.DOMove(new Vector3(3, 0, 0), 2);
+	}
+
+	void DOTweenVector3Test()
+	{
+		testId = "DOVector3 Class AsCast:";
+		try {
+			dotweenV3Class = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Class AsCast (object):";
+		try {
+			dotweenV3Class = new Vector3Plugin();
+			log += string.Format("{0}{1} " + (((object)dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Class PrefCast:";
+		try {
+			dotweenV3Class = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)dotweenV3Class == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Class PrefCast (object):";
+		try {
+			dotweenV3Class = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)dotweenV3Class) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Interface AsCast:";
+		try {
+			idotweenClass = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Interface AsCast (object):";
+		try {
+			idotweenClass = new Vector3Plugin();
+			log += string.Format("{0}{1} " + (((object)idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Interface PrefCast:";
+		try {
+			idotweenClass = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)idotweenClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "DOVector3 Interface PrefCast (object):";
+		try {
+			idotweenClass = new Vector3Plugin();
+			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)idotweenClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+	}
+
+	void Vector3Test()
+	{
+		testId = "Vector3 Class AsCast:";
+		try {
+			sampleV3Class = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((sampleV3Class as AbstractSampleClass<Vector3>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Class AsCast (object):";
+		try {
+			sampleV3Class = new SampleVector3Class();
+			log += string.Format("{0}{1} " + (((object)sampleV3Class as AbstractSampleClass<Vector3>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Class PrefCast:";
+		try {
+			sampleV3Class = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<Vector3>)sampleV3Class == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Class PrefCast (object):";
+		try {
+			sampleV3Class = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<Vector3>)((object)sampleV3Class) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Interface AsCast:";
+		try {
+			isampleClass = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((isampleClass as AbstractSampleClass<Vector3>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Interface AsCast (object):";
+		try {
+			isampleClass = new SampleVector3Class();
+			log += string.Format("{0}{1} " + (((object)isampleClass as AbstractSampleClass<Vector3>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Interface PrefCast:";
+		try {
+			isampleClass = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<Vector3>)isampleClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Vector3 Interface PrefCast (object):";
+		try {
+			isampleClass = new SampleVector3Class();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<Vector3>)((object)isampleClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+	}
+
+	void FloatTest()
+	{
+		testId = "Float Class AsCast:";
+		try {
+			sampleFloatClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((sampleFloatClass as AbstractSampleClass<float>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Class AsCast (object):";
+		try {
+			sampleFloatClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + (((object)sampleFloatClass as AbstractSampleClass<float>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Class PrefCast:";
+		try {
+			sampleFloatClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<float>)sampleFloatClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Class PrefCast (object):";
+		try {
+			sampleFloatClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<float>)((object)sampleFloatClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Interface AsCast:";
+		try {
+			isampleClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((isampleClass as AbstractSampleClass<float>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Interface AsCast (object):";
+		try {
+			isampleClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + (((object)isampleClass as AbstractSampleClass<float>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Interface PrefCast:";
+		try {
+			isampleClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<float>)isampleClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+
+		testId = "Float Interface PrefCast (object):";
+		try {
+			isampleClass = new SampleFloatClass();
+			log += string.Format("{0}{1} " + ((AbstractSampleClass<float>)((object)isampleClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+		} catch (Exception e) {
+			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+		}
+	}
+
+	string StripTags(string s)
+	{
+		return Regex.Replace(s, @"<[^>]*>", "");
 	}
 }

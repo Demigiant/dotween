@@ -8,6 +8,8 @@ public class UIMisc : BrainBase
 	public CanvasGroup cGroup;
 	public Image[] imgs;
 	public Text text, textScramble;
+	public RectTransform circleOutT, circleInT;
+	public RectTransform moveT;
 
 	IEnumerator Start()
 	{
@@ -25,6 +27,13 @@ public class UIMisc : BrainBase
 		s.OnStepComplete(()=> {
 			foreach (Image img in imgs) img.fillClockwise = !img.fillClockwise;
 		});
+
+		// RectTransform
+		// Rotate
+		circleOutT.DORotate(new Vector3(0,0,360), 0.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
+		circleInT.DORotate(new Vector3(0,0,-360), 2f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
+		// Move
+		moveT.DOMoveX(50, 1, true).SetRelative().SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
 
 		// Text
 		DOTween.Sequence()

@@ -24,7 +24,8 @@ namespace DG.DOTweenEditor.Core
                                titleStyle,
                                logoIconStyle;
         public static GUIStyle sideBtStyle,
-                               sideLogoIconBoldLabelStyle;
+                               sideLogoIconBoldLabelStyle,
+                               wordWrapTextArea;
 
         // Filtered ease types to show desired eases in Inspector panels
         internal static readonly string[] FilteredEaseTypes = new[] {
@@ -159,6 +160,9 @@ namespace DG.DOTweenEditor.Core
                 sideLogoIconBoldLabelStyle = new GUIStyle(boldLabelStyle);
                 sideLogoIconBoldLabelStyle.alignment = TextAnchor.MiddleLeft;
                 sideLogoIconBoldLabelStyle.padding.top = 6;
+
+                wordWrapTextArea = new GUIStyle(GUI.skin.textArea);
+                wordWrapTextArea.wordWrap = true;
             }
         }
     }

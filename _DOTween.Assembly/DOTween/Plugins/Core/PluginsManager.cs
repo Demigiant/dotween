@@ -96,6 +96,40 @@ namespace DG.Tweening.Plugins.Core
             }
 
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+            // WP8.1 fix tries
+//            if (plugin != null) {
+//                ABSTweenPlugin<T1, T2, TPlugOptions> p;
+//                try {
+//                   p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+//                   Debug.Log("PLUGIN SUCCESS A");
+//                   return p;
+//                } catch {
+//                    Debug.Log("PLUGIN FAIL A");
+//                }
+//                try {
+//                    p = (object)plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+//                    Debug.Log("PLUGIN SUCCESS A2");
+//                    return p;
+//                } catch {
+//                    Debug.Log("PLUGIN FAIL A2");
+//                }
+//                try {
+//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
+//                    Debug.Log("PLUGIN SUCCESS B");
+//                    return p;
+//                } catch {
+//                    Debug.Log("PLUGIN FAIL B");
+//                }
+//                try {
+//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)(object)plugin;
+//                    Debug.Log("PLUGIN SUCCESS B2");
+//                    return p;
+//                } catch {
+//                    Debug.Log("PLUGIN FAIL B2");
+//                }
+//                return null;
+//            }
+            // WP8.1 fix tries END
 
             return null;
         }
