@@ -95,41 +95,50 @@ namespace DG.Tweening.Plugins.Core
                 plugin = _ulongPlugin;
             }
 
+#if !WP81
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+#else
             // WP8.1 fix tries
-//            if (plugin != null) {
-//                ABSTweenPlugin<T1, T2, TPlugOptions> p;
-//                try {
-//                   p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-//                   Debug.Log("PLUGIN SUCCESS A");
-//                   return p;
-//                } catch {
-//                    Debug.Log("PLUGIN FAIL A");
-//                }
-//                try {
-//                    p = (object)plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-//                    Debug.Log("PLUGIN SUCCESS A2");
-//                    return p;
-//                } catch {
-//                    Debug.Log("PLUGIN FAIL A2");
-//                }
-//                try {
-//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
-//                    Debug.Log("PLUGIN SUCCESS B");
-//                    return p;
-//                } catch {
-//                    Debug.Log("PLUGIN FAIL B");
-//                }
-//                try {
-//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)(object)plugin;
-//                    Debug.Log("PLUGIN SUCCESS B2");
-//                    return p;
-//                } catch {
-//                    Debug.Log("PLUGIN FAIL B2");
-//                }
-//                return null;
-//            }
+            if (plugin != null) {
+                Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
+                ABSTweenPlugin<T1, T2, TPlugOptions> p;
+                try {
+                    p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("PLUGIN SUCCESS A");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("PLUGIN FAIL A > " + e.Message);
+                }
+                try {
+                    p = (object)plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("PLUGIN SUCCESS A2");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("PLUGIN FAIL A2 > " + e.Message);
+                }
+                try {
+                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
+                    Debug.Log("PLUGIN SUCCESS B");
+                    return p;
+                } catch (Exception e) {
+                    Debug.Log("PLUGIN FAIL B > " + e.Message);
+                }
+                try {
+                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)(object)plugin;
+                    Debug.Log("PLUGIN SUCCESS B2");
+                    return p;
+                } catch (Exception e) {
+                    Debug.Log("PLUGIN FAIL B2 > " + e.Message);
+                }
+                return null;
+            }
+            Debug.Log("PLUGIN NOT FOUND");
             // WP8.1 fix tries END
+#endif
 
             return null;
         }

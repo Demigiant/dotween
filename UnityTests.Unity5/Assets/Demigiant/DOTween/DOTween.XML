@@ -201,6 +201,11 @@
             <param name="sequencesCapacity">Max Sequences capacity.
             Default: 50</param>
         </member>
+        <member name="T:DG.Tweening.Core.Debugger">
+            <summary>
+            Public so it can be used by lose scripts related to DOTween (like DOTweenAnimation)
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Sequence">
             <summary>
             Controls other tweens as a group
