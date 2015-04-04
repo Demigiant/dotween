@@ -76,6 +76,7 @@
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />
+    <Compile Include="EaseFactory.cs" />
     <Compile Include="IDOTweenInit.cs" />
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />

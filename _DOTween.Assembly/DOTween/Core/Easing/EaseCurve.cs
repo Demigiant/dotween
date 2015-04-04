@@ -10,8 +10,9 @@ namespace DG.Tweening.Core.Easing
 {
     /// <summary>
     /// Used to interpret AnimationCurves as eases.
+    /// Public so it can be used by external ease factories
     /// </summary>
-    internal class EaseCurve
+    public class EaseCurve
     {
         readonly AnimationCurve _animCurve;
 

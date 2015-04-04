@@ -5,7 +5,13 @@ using System.Collections;
 
 public class PoolingTweens : BrainBase
 {
-    public GameObject prefab;
+    public Transform container;
+    public bool spawnInContainer;
+
+    void Start()
+    {
+        container.DOMoveX(30, 40);
+    }
 
     void Update()
     {
@@ -16,20 +22,20 @@ public class PoolingTweens : BrainBase
             if (Input.GetKey(KeyCode.LeftShift)) {
                 // Spawn path
                 if (Input.GetKey(KeyCode.Space)) {
-                    Transform t = HOPoolManager.Spawn(TestPOP.DOPathCubeasChild, wPos);
-                    t.GetComponentInChildren<DOTweenPath>().DORestart(true);
+                    HOPoolManager.Spawn(TestPOP.DOPathCubeasChild, wPos, spawnInContainer ? container : null);
+                    // t.GetComponentInChildren<DOTweenPath>().DORestart(true);
                 } else {
-                    Transform t = HOPoolManager.Spawn(TestPOP.DOPathCube, wPos);
-                    t.GetComponent<DOTweenPath>().DORestart(true);
+                    HOPoolManager.Spawn(TestPOP.DOPathCube, wPos, spawnInContainer ? container : null);
+                    // t.GetComponent<DOTweenPath>().DORestart(true);
                 }
             } else {
                 // Spawn dice
                 if (Input.GetKey(KeyCode.Space)) {
-                    Transform t = HOPoolManager.Spawn(TestPOP.DOAnimationDiceasChild, wPos);
-                    t.GetComponentInChildren<DOTweenAnimation>().DORestart(true);
+                    HOPoolManager.Spawn(TestPOP.DOAnimationDiceasChild, wPos, spawnInContainer ? container : null);
+                    // t.GetComponentInChildren<DOTweenAnimation>().DORestart(true);
                 } else {
-                    Transform t = HOPoolManager.Spawn(TestPOP.DOAnimationDice, wPos);
-                    t.GetComponent<DOTweenAnimation>().DORestart(true);
+                    HOPoolManager.Spawn(TestPOP.DOAnimationDice, wPos, spawnInContainer ? container : null);
+                    // t.GetComponent<DOTweenAnimation>().DORestart(true);
                 }
             }
         }

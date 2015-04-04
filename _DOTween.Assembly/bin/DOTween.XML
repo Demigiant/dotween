@@ -1759,6 +1759,32 @@
             Path plugin works exclusively with Transforms
             </summary>
         </member>
+        <member name="T:DG.Tweening.EaseFactory">
+            <summary>
+            Allows to wrap ease method in special ways, adding extra features
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,System.Nullable{DG.Tweening.Ease})">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="ease">Ease type</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,UnityEngine.AnimationCurve)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="animCurve">AnimationCurve to use for the ease</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,DG.Tweening.EaseFunction)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="customEase">Custom ease function to use</param>
+        </member>
         <member name="T:DG.Tweening.LoopType">
             <summary>
             Types of loop
@@ -1862,6 +1888,7 @@
         <member name="T:DG.Tweening.Core.Easing.EaseCurve">
             <summary>
             Used to interpret AnimationCurves as eases.
+            Public so it can be used by external ease factories
             </summary>
         </member>
         <member name="T:DG.Tweening.Core.Easing.Bounce">
