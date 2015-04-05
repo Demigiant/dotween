@@ -403,7 +403,7 @@ namespace DG.Tweening.Core
             isUpdateLoop = false;
         }
 
-        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat)
+        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat, object optionalObj = null)
         {
             int totInvolved = 0;
             bool hasDespawned = false;
@@ -418,6 +418,9 @@ namespace DG.Tweening.Core
                     break;
                 case FilterType.TargetOrId:
                     isFilterCompliant = id.Equals(t.id) || id.Equals(t.target);
+                    break;
+                case FilterType.TargetAndId:
+                    isFilterCompliant = id.Equals(t.id) && optionalObj != null && optionalObj.Equals(t.target);
                     break;
                 }
                 if (isFilterCompliant) {

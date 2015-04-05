@@ -21,7 +21,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.432";
+        public static readonly string Version = "1.0.435";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -698,6 +698,13 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Play, FilterType.TargetOrId, targetOrId, false, 0);
         }
+        /// <summary>Plays all tweens with the given target and the given ID, and returns the number of actual tweens played
+        /// (meaning the tweens that were not already playing or complete)</summary>
+        public static int Play(object target, object id)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.Play, FilterType.TargetAndId, id, false, 0, target);
+        }
 
         /// <summary>Plays backwards all tweens and returns the number of actual tweens played
         /// (meaning tweens that were not already started, playing backwards or rewinded)</summary>
@@ -737,6 +744,13 @@ namespace DG.Tweening
         {
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetOrId, targetOrId, includeDelay, 0);
+        }
+        /// <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
+        /// (meaning the tweens that were not already playing or complete)</summary>
+        public static int Restart(object target, object id, bool includeDelay = true)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetAndId, id, includeDelay, 0, target);
         }
 
         /// <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded
