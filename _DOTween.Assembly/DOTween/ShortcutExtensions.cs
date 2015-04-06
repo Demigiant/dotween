@@ -820,9 +820,9 @@ namespace DG.Tweening
         /// (meaning tweens that were started from this target, or that had this target added as an Id)
         /// and returns the total number of tweens restarted.
         /// </summary>
-        public static int DORestart(this Component target)
+        public static int DORestart(this Component target, bool includeDelay = true)
         {
-            return DOTween.RestartAll(target);
+            return DOTween.Restart(target, includeDelay);
         }
 
         /// <summary>
@@ -830,9 +830,9 @@ namespace DG.Tweening
         /// (meaning tweens that were started from this target, or that had this target added as an Id)
         /// and returns the total number of tweens rewinded.
         /// </summary>
-        public static int DORewind(this Component target)
+        public static int DORewind(this Component target, bool includeDelay = true)
         {
-            return DOTween.RewindAll(target);
+            return DOTween.Rewind(target, includeDelay);
         }
 
         /// <summary>

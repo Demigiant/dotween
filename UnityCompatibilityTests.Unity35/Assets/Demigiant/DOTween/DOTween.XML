@@ -1270,14 +1270,14 @@
             and returns the total number of tweens played.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component,System.Boolean)">
             <summary>
             Restarts all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
             and returns the total number of tweens restarted.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component,System.Boolean)">
             <summary>
             Rewinds all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
