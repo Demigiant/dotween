@@ -35,7 +35,7 @@
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP81|AnyCPU'">
-    <OutputPath>bin\WP81\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE;WP81</DefineConstants>
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <Optimize>true</Optimize>
