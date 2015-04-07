@@ -51,6 +51,7 @@ public class ExternalPlugins_TextMeshPro : BrainBase
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("Font Resize Down")) foreach (TextMeshPro t in texts) t.DOFontSize(10, 1);
 		if (GUILayout.Button("Font Resize Up")) foreach (TextMeshPro t in texts) t.DOFontSize(32, 1);
+		if (GUILayout.Button("Scale to 1.5")) foreach (TextMeshPro t in texts) t.DOScale(1.5f, 1);
 		if (GUILayout.Button("Trim Max Visible Characters")) foreach (TextMeshPro t in texts) t.DOMaxVisibleCharacters(22, 1);
 		GUILayout.EndHorizontal();
 
