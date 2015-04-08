@@ -29,6 +29,19 @@ namespace DG.DOTweenEditor.Core
                                popupButton,
                                btIconStyle;
 
+        public static Texture2D logo
+        {
+            get
+            {
+                if (_logo == null) {
+                    _logo = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                    EditorUtils.SetEditorTexture(_logo, FilterMode.Bilinear, 128);
+                }
+                return _logo;
+            }
+        }
+        static Texture2D _logo;
+
         // Filtered ease types to show desired eases in Inspector panels
         internal static readonly string[] FilteredEaseTypes = new[] {
             "Linear",
@@ -77,6 +90,11 @@ namespace DG.DOTweenEditor.Core
             if (stringEaseId == -1) stringEaseId = 0;
             stringEaseId = EditorGUILayout.Popup("Ease", stringEaseId, FilteredEaseTypes);
             return stringEaseId == FilteredEaseTypes.Length - 1 ? Ease.INTERNAL_Custom : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
+        }
+
+        public static void InspectorLogo()
+        {
+            GUILayout.Box(logo, logoIconStyle);
         }
 
         // A button which works as a toggle

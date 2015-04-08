@@ -7,10 +7,15 @@ public class Temp : BrainBase
 {
 	public Transform target;
 
-    void Start()
+    public void TweenThis(int direction)
     {
-        target.DOMoveX(2,1)
-            .OnUpdate(()=> Debug.Log(DOTween.IsTweening(target)))
-            .OnComplete(()=> Debug.Log(DOTween.IsTweening(target)));
+    	Debug.Log("HERE");
+    	if (DOTween.IsTweening("infoTabSwipeAnim")) {
+    		Debug.Log("IsTweening");
+    		// DOTween.Rewind("infoTabSwipeAnim", false);                    
+    		DOTween.Kill("infoTabSwipeAnim", true);
+    	}
+    	                
+    	target.DOLocalMoveX(direction*800, 0.3f, false).From().SetEase(Ease.OutBack).SetId("infoTabSwipeAnim");
     }
 }
