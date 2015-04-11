@@ -45,8 +45,7 @@ namespace DG.DOTweenEditor
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        const string _SrcFile = "DOTweenSettings.asset";
-        static readonly Vector2 _WinSize = new Vector2(300,350);
+        static readonly Vector2 _WinSize = new Vector2(300,365);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -59,6 +58,7 @@ namespace DG.DOTweenEditor
 
         int _selectedTab;
         string[] _tabLabels = new[] { "Setup", "Preferences" };
+        string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources"};
 
         // If force is FALSE opens the window only if DOTween's version has changed
         // (set to FALSE by OnPostprocessAllAssets)
@@ -182,6 +182,9 @@ namespace DG.DOTweenEditor
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
+            DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
+            _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
+            if (_src.storeSettingsLocation != prevSettingsLocation) Connect(true);
             GUILayout.Space(8);
             GUILayout.Label("DEFAULTS ▼");
             _src.defaultRecyclable = EditorGUILayout.Toggle("Recycle Tweens", _src.defaultRecyclable);
@@ -200,25 +203,74 @@ namespace DG.DOTweenEditor
         // ===================================================================================
         // METHODS ---------------------------------------------------------------------------
 
-        void Connect()
+        void Connect(bool forceReconnect = false)
         {
+            if (_src != null && !forceReconnect) return;
+
+            string externalSrcDir = EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources";
+            string externalSrcFilePath = externalSrcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
+            string externalAdbSrcFilePath = EditorUtils.FullPathToADBPath(externalSrcFilePath);
+            string internalSrcDir = EditorUtils.dotweenDir + "Resources";
+            string internalSrcFilePath = internalSrcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
+            string internalAdbSrcFilePath = EditorUtils.FullPathToADBPath(internalSrcFilePath);
+
             if (_src == null) {
-                string srcDir = EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources";
-                if (!Directory.Exists(srcDir)) AssetDatabase.CreateFolder("Assets", "Resources");
-                string adbSrcFilePath = EditorUtils.FullPathToADBPath(srcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset");
-
-                // Legacy: check if there are settings saved in old mode (inside DOTween/Resources folder) and eventually move them
-                string legacySrcDir = EditorUtils.dotweenDir + "Resources";
-                string legacySrcFilePath = legacySrcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
-                if (File.Exists(legacySrcFilePath)) {
-                    // Move legacy src file to correct folder
-                    AssetDatabase.MoveAsset(EditorUtils.FullPathToADBPath(legacySrcFilePath), adbSrcFilePath);
-                    // Delete legacy Resources folder
-                    AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(legacySrcDir));
-                }
-
-                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(adbSrcFilePath, true);
+                // Load eventual existing settings
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(externalAdbSrcFilePath, false);
+                if (_src == null) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(internalAdbSrcFilePath, false);
             }
+            if (_src == null) {
+                // Settings don't exist. Create it in external folder
+                if (!Directory.Exists(externalSrcDir)) AssetDatabase.CreateFolder("Assets", "Resources");
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(externalAdbSrcFilePath, true);
+            }
+
+            // Move eventual settings from previous location and setup everything correctly
+            DOTweenSettings.SettingsLocation settingsLoc = _src.storeSettingsLocation;
+            switch (settingsLoc) {
+            case DOTweenSettings.SettingsLocation.AssetsDirectory:
+                if (!Directory.Exists(externalSrcDir)) AssetDatabase.CreateFolder("Assets", "Resources");
+                if (File.Exists(internalSrcFilePath)) {
+                    // Move internal src file to correct folder
+                    AssetDatabase.MoveAsset(internalAdbSrcFilePath, externalAdbSrcFilePath);
+                    // Delete internal Resources folder
+                    AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(internalSrcDir));
+                }
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(externalAdbSrcFilePath, true);
+                break;
+            case DOTweenSettings.SettingsLocation.DOTweenDirectory:
+                if (!Directory.Exists(internalSrcDir)) AssetDatabase.CreateFolder(EditorUtils.FullPathToADBPath(EditorUtils.dotweenDir.Substring(0, EditorUtils.dotweenDir.LastIndexOf(EditorUtils.pathSlash))), "Resources");
+                if (File.Exists(externalSrcFilePath)) {
+                    // Move external src file to correct folder
+                    AssetDatabase.MoveAsset(externalAdbSrcFilePath, internalAdbSrcFilePath);
+                    // Delete external settings
+                    AssetDatabase.DeleteAsset(externalAdbSrcFilePath);
+                    // Check if external Resources folder is empty and in case delete it
+                    if (Directory.GetDirectories(externalSrcDir).Length == 0 && Directory.GetFiles(externalSrcDir).Length == 0) {
+                        AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(externalSrcDir));
+                    }
+                }
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(internalAdbSrcFilePath, true);
+                break;
+            }
+
+//            if (_src == null) {
+//                string srcDir = EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources";
+//                if (!Directory.Exists(srcDir)) AssetDatabase.CreateFolder("Assets", "Resources");
+//                string adbSrcFilePath = EditorUtils.FullPathToADBPath(srcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset");
+//
+//                // Legacy: check if there are settings saved in previous mode and eventually move them
+//                string altSrcDir = EditorUtils.dotweenDir + "Resources";
+//                string legacySrcFilePath = altSrcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
+//                if (File.Exists(legacySrcFilePath)) {
+//                    // Move legacy src file to correct folder
+//                    AssetDatabase.MoveAsset(EditorUtils.FullPathToADBPath(legacySrcFilePath), adbSrcFilePath);
+//                    // Delete legacy Resources folder
+//                    AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(altSrcDir));
+//                }
+//
+//                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(adbSrcFilePath, true);
+//            }
         }
     }
 }

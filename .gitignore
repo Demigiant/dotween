@@ -6,6 +6,7 @@ _DOTween.Assembly/*.suo
 _DOTween.Assembly/*.user
 _DOTween.Assembly/.gitignore
 _DOTween.Assembly/.git
+ExternalPluginsTestsAndExamples*
 *.Unity*/_ReSharper*
 *.Unity*/Library
 *.Unity*/obj

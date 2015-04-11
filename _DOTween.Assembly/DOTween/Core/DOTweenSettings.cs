@@ -22,5 +22,13 @@ namespace DG.Tweening.Core
         public float defaultEasePeriod = 0;
         public bool defaultAutoKill = true;
         public LoopType defaultLoopType = LoopType.Restart;
+
+        // Editor-only
+        public enum SettingsLocation
+        {
+            AssetsDirectory,
+            DOTweenDirectory
+        }
+        public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
     }
 }
