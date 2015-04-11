@@ -27,7 +27,8 @@ namespace DG.Tweening.Core
         public enum SettingsLocation
         {
             AssetsDirectory,
-            DOTweenDirectory
+            DOTweenDirectory,
+            DemigiantDirectory
         }
         public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
     }
