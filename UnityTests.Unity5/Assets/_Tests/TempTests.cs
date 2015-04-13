@@ -7,14 +7,13 @@ using System;
 
 public class TempTests : BrainBase
 {
-	public Transform target;
-	public Ease ease = Ease.Linear;
-
-	void OnGUI()
+	void OnEnable()
 	{
-		if (GUILayout.Button("SHAKE")) {
-			target.DOKill();
-			target.DOShakePosition(4, 1, 3).SetEase(ease);
-		}
+		Debug.Log("ENABLE");
+	}
+
+	void OnDisable()
+	{
+		Debug.Log("DISABLE");
 	}
 }

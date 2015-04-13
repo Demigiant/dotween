@@ -92,7 +92,8 @@ namespace DG.Tweening
                     if (iplug != null) {
                         Debug.Log(">> IPlugin found");
                         try {
-                            t.tweenPlugin = (ABSTweenPlugin<T1, T2, TPlugOptions>)(object)iplug;
+                            System.Object pObj = (object)iplug;
+                            t.tweenPlugin = (ABSTweenPlugin<T1, T2, TPlugOptions>)pObj;
                         } catch (Exception e) {
                             Debug.Log(">> Error while assigning IPlugin > " + e.Message);
                         }

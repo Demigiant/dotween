@@ -33,7 +33,8 @@ public class UIMisc : BrainBase
 		circleOutT.DORotate(new Vector3(0,0,360), 0.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
 		circleInT.DORotate(new Vector3(0,0,-360), 2f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
 		// Move
-		moveT.DOMoveX(50, 1, true).SetRelative().SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
+		// moveT.DOMoveX(50, 1, true).SetRelative().SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
+		moveT.DOAnchorPos3D(new Vector2(50, 0), 1, true).SetRelative().SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
 
 		// Text
 		DOTween.Sequence()

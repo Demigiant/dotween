@@ -12,6 +12,7 @@ public class TestScene : MonoBehaviour
 {
 	public Text logText;
 	public Transform target;
+	public TextMesh text;
 
 	string log;
 	string logPrefix = "\n➨ ";
@@ -24,6 +25,8 @@ public class TestScene : MonoBehaviour
 	Vector3Plugin dotweenV3Class;
 	ITweenPlugin idotweenClass;
 	string testId;
+
+	int intToTween;
 
 	IEnumerator Start()
 	{
@@ -47,6 +50,7 @@ public class TestScene : MonoBehaviour
 		yield return null;
 
 		target.DOMove(new Vector3(3, 0, 0), 2);
+		// DOTween.To(()=>intToTween, x=> intToTween = x, 100, 4).OnUpdate(()=> text.text = intToTween.ToString());
 	}
 
 	void DOTweenVector3Test()

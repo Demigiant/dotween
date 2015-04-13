@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening.Plugins.Core
@@ -102,37 +103,53 @@ namespace DG.Tweening.Plugins.Core
             if (plugin != null) {
                 Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
                 ABSTweenPlugin<T1, T2, TPlugOptions> p;
+                ABSTweenPlugin<Vector3, Vector3, VectorOptions> pExplicit;
+                // Explicit casting to Vector3Plugin
+                try {
+                    pExplicit = (ABSTweenPlugin<Vector3, Vector3, VectorOptions>)plugin;
+                    if (pExplicit != null) Debug.Log("- EXPLICIT CAST SUCCESS X");
+                    p = pExplicit as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("- PLUGIN SUCCESS X");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL X > " + e.Message);
+                }
+                // More regular ways
                 try {
                     p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
                     if (p != null) {
-                        Debug.Log("PLUGIN SUCCESS A");
+                        Debug.Log("- PLUGIN SUCCESS A");
                         return p;
                     }
                 } catch (Exception e) {
-                    Debug.Log("PLUGIN FAIL A > " + e.Message);
+                    Debug.Log("- PLUGIN FAIL A > " + e.Message);
                 }
                 try {
-                    p = (object)plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    System.Object obj = (object)plugin;
+                    p = obj as ABSTweenPlugin<T1, T2, TPlugOptions>;
                     if (p != null) {
-                        Debug.Log("PLUGIN SUCCESS A2");
+                        Debug.Log("- PLUGIN SUCCESS A2");
                         return p;
                     }
                 } catch (Exception e) {
-                    Debug.Log("PLUGIN FAIL A2 > " + e.Message);
+                    Debug.Log("- PLUGIN FAIL A2 > " + e.Message);
                 }
                 try {
                     p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
-                    Debug.Log("PLUGIN SUCCESS B");
+                    Debug.Log("- PLUGIN SUCCESS B");
                     return p;
                 } catch (Exception e) {
-                    Debug.Log("PLUGIN FAIL B > " + e.Message);
+                    Debug.Log("- PLUGIN FAIL B > " + e.Message);
                 }
                 try {
-                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)(object)plugin;
-                    Debug.Log("PLUGIN SUCCESS B2");
+                    System.Object obj = (object)plugin;
+                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)obj;
+                    Debug.Log("- PLUGIN SUCCESS B2");
                     return p;
                 } catch (Exception e) {
-                    Debug.Log("PLUGIN FAIL B2 > " + e.Message);
+                    Debug.Log("- PLUGIN FAIL B2 > " + e.Message);
                 }
                 return null;
             }

@@ -201,6 +201,11 @@
             <param name="sequencesCapacity">Max Sequences capacity.
             Default: 50</param>
         </member>
+        <member name="T:DG.Tweening.Core.Debugger">
+            <summary>
+            Public so it can be used by lose scripts related to DOTween (like DOTweenAnimation)
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Sequence">
             <summary>
             Controls other tweens as a group
@@ -1040,6 +1045,11 @@
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOScale(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Tweens a Transform's localScale uniformly to the given value.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOScaleX(UnityEngine.Transform,System.Single,System.Single)">
             <summary>Tweens a Transform's X localScale to the given value.
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
@@ -1265,14 +1275,14 @@
             and returns the total number of tweens played.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component,System.Boolean)">
             <summary>
             Restarts all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
             and returns the total number of tweens restarted.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component,System.Boolean)">
             <summary>
             Rewinds all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1664,6 +1674,10 @@
             <summary>Plays all tweens with the given ID or target and returns the number of actual tweens played
             (meaning the tweens that were not already playing or complete)</summary>
         </member>
+        <member name="M:DG.Tweening.DOTween.Play(System.Object,System.Object)">
+            <summary>Plays all tweens with the given target and the given ID, and returns the number of actual tweens played
+            (meaning the tweens that were not already playing or complete)</summary>
+        </member>
         <member name="M:DG.Tweening.DOTween.PlayBackwardsAll">
             <summary>Plays backwards all tweens and returns the number of actual tweens played
             (meaning tweens that were not already started, playing backwards or rewinded)</summary>
@@ -1685,6 +1699,10 @@
         </member>
         <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Boolean)">
             <summary>Restarts all tweens with the given ID or target, then returns the number of actual tweens restarted</summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Object,System.Boolean)">
+            <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
+            (meaning the tweens that were not already playing or complete)</summary>
         </member>
         <member name="M:DG.Tweening.DOTween.RewindAll(System.Boolean)">
             <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded
@@ -1753,6 +1771,32 @@
             <summary>
             Path plugin works exclusively with Transforms
             </summary>
+        </member>
+        <member name="T:DG.Tweening.EaseFactory">
+            <summary>
+            Allows to wrap ease method in special ways, adding extra features
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,System.Nullable{DG.Tweening.Ease})">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="ease">Ease type</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,UnityEngine.AnimationCurve)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="animCurve">AnimationCurve to use for the ease</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,DG.Tweening.EaseFunction)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="customEase">Custom ease function to use</param>
         </member>
         <member name="T:DG.Tweening.LoopType">
             <summary>
@@ -1857,6 +1901,7 @@
         <member name="T:DG.Tweening.Core.Easing.EaseCurve">
             <summary>
             Used to interpret AnimationCurves as eases.
+            Public so it can be used by external ease factories
             </summary>
         </member>
         <member name="T:DG.Tweening.Core.Easing.Bounce">
