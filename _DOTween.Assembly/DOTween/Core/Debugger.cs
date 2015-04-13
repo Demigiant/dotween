@@ -60,6 +60,11 @@ namespace DG.Tweening.Core
             LogWarning("This Tween is not a path tween");
         }
 
+        public static void LogMissingMaterialProperty(string propertyName)
+        {
+            LogWarning(string.Format("This material doesn't have a {0} property", propertyName));
+        }
+
         public static void SetLogPriority(LogBehaviour logBehaviour)
         {
             switch (logBehaviour) {

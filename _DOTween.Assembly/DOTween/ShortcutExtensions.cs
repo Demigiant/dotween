@@ -166,6 +166,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOColor(this Material target, Color endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
         }
 
@@ -178,6 +182,20 @@ namespace DG.Tweening
             return DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration)
                 .SetTarget(target);
         }
+        /// <summary>Tweens a Material's alpha color to the given value
+        /// (will have no effect unless your material supports transparency).
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOFade(this Material target, float endValue, string property, float duration)
+        {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
+            return DOTween.ToAlpha(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
+        }
 
         /// <summary>Tweens a Material's named float property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -186,6 +204,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOFloat(this Material target, float endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
         }
 
@@ -196,6 +218,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOVector(this Material target, Vector4 endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration).SetTarget(target);
         }
 
