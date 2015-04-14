@@ -73,6 +73,7 @@
     <Compile Include="Core\SequenceCallback.cs" />
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\Utils.cs" />
+    <Compile Include="Core\Surrogates\Vector4Surrogate.cs" />
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Plugins\Core\PathCore\LinearDecoder.cs" />
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
+    <Compile Include="Plugins\Vector4SurrogatePlugin.cs" />
     <Compile Include="RotateMode.cs" />
     <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />

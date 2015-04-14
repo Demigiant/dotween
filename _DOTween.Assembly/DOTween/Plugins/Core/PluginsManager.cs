@@ -99,61 +99,62 @@ namespace DG.Tweening.Plugins.Core
 #if !WP81
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
 #else
+            if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
             // WP8.1 fix tries
-            if (plugin != null) {
-                Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
-                ABSTweenPlugin<T1, T2, TPlugOptions> p;
-                ABSTweenPlugin<Vector3, Vector3, VectorOptions> pExplicit;
-                // Explicit casting to Vector3Plugin
-                try {
-                    pExplicit = (ABSTweenPlugin<Vector3, Vector3, VectorOptions>)plugin;
-                    if (pExplicit != null) Debug.Log("- EXPLICIT CAST SUCCESS X");
-                    p = pExplicit as ABSTweenPlugin<T1, T2, TPlugOptions>;
-                    if (p != null) {
-                        Debug.Log("- PLUGIN SUCCESS X");
-                        return p;
-                    }
-                } catch (Exception e) {
-                    Debug.Log("- PLUGIN FAIL X > " + e.Message);
-                }
-                // More regular ways
-                try {
-                    p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-                    if (p != null) {
-                        Debug.Log("- PLUGIN SUCCESS A");
-                        return p;
-                    }
-                } catch (Exception e) {
-                    Debug.Log("- PLUGIN FAIL A > " + e.Message);
-                }
-                try {
-                    System.Object obj = (object)plugin;
-                    p = obj as ABSTweenPlugin<T1, T2, TPlugOptions>;
-                    if (p != null) {
-                        Debug.Log("- PLUGIN SUCCESS A2");
-                        return p;
-                    }
-                } catch (Exception e) {
-                    Debug.Log("- PLUGIN FAIL A2 > " + e.Message);
-                }
-                try {
-                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
-                    Debug.Log("- PLUGIN SUCCESS B");
-                    return p;
-                } catch (Exception e) {
-                    Debug.Log("- PLUGIN FAIL B > " + e.Message);
-                }
-                try {
-                    System.Object obj = (object)plugin;
-                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)obj;
-                    Debug.Log("- PLUGIN SUCCESS B2");
-                    return p;
-                } catch (Exception e) {
-                    Debug.Log("- PLUGIN FAIL B2 > " + e.Message);
-                }
-                return null;
-            }
-            Debug.Log("PLUGIN NOT FOUND");
+//            if (plugin != null) {
+//                Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
+//                ABSTweenPlugin<T1, T2, TPlugOptions> p;
+//                ABSTweenPlugin<Vector3, Vector3, VectorOptions> pExplicit;
+//                // Explicit casting to Vector3Plugin
+//                try {
+//                    pExplicit = (ABSTweenPlugin<Vector3, Vector3, VectorOptions>)plugin;
+//                    if (pExplicit != null) Debug.Log("- EXPLICIT CAST SUCCESS X");
+//                    p = pExplicit as ABSTweenPlugin<T1, T2, TPlugOptions>;
+//                    if (p != null) {
+//                        Debug.Log("- PLUGIN SUCCESS X");
+//                        return p;
+//                    }
+//                } catch (Exception e) {
+//                    Debug.Log("- PLUGIN FAIL X > " + e.Message);
+//                }
+//                // More regular ways
+//                try {
+//                    p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+//                    if (p != null) {
+//                        Debug.Log("- PLUGIN SUCCESS A");
+//                        return p;
+//                    }
+//                } catch (Exception e) {
+//                    Debug.Log("- PLUGIN FAIL A > " + e.Message);
+//                }
+//                try {
+//                    System.Object obj = (object)plugin;
+//                    p = obj as ABSTweenPlugin<T1, T2, TPlugOptions>;
+//                    if (p != null) {
+//                        Debug.Log("- PLUGIN SUCCESS A2");
+//                        return p;
+//                    }
+//                } catch (Exception e) {
+//                    Debug.Log("- PLUGIN FAIL A2 > " + e.Message);
+//                }
+//                try {
+//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
+//                    Debug.Log("- PLUGIN SUCCESS B");
+//                    return p;
+//                } catch (Exception e) {
+//                    Debug.Log("- PLUGIN FAIL B > " + e.Message);
+//                }
+//                try {
+//                    System.Object obj = (object)plugin;
+//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)obj;
+//                    Debug.Log("- PLUGIN SUCCESS B2");
+//                    return p;
+//                } catch (Exception e) {
+//                    Debug.Log("- PLUGIN FAIL B2 > " + e.Message);
+//                }
+//                return null;
+//            }
+//            Debug.Log("PLUGIN NOT FOUND");
             // WP8.1 fix tries END
 #endif
 
