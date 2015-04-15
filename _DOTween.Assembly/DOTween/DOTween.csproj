@@ -91,6 +91,7 @@
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
+    <Compile Include="Plugins\QuaternionSurrogatePlugin.cs" />
     <Compile Include="Plugins\UlongPlugin.cs" />
     <Compile Include="Plugins\Vector2SurrogatePlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />

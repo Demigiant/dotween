@@ -1,12 +1,10 @@
-﻿#if !WP81
+﻿#if WP81
 // Author: Daniele Giardini - http://www.demigiant.com
-// Created: 2014/07/07 20:02
-// 
-// License Copyright (c) Daniele Giardini.
-// This work is subject to the terms at http://dotween.demigiant.com/license.php
+// Created: 2015/04/15 12:32
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Surrogates;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -14,13 +12,13 @@ using UnityEngine;
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins
 {
-    public class QuaternionPlugin : ABSTweenPlugin<Quaternion,Vector3,QuaternionOptions>
+    public class QuaternionSurrogatePlugin : ABSTweenPlugin<Quaternion, Vector3Surrogate, QuaternionOptions>
     {
-        public override void Reset(TweenerCore<Quaternion, Vector3, QuaternionOptions> t) { }
+        public override void Reset(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t, bool isRelative)
         {
-            Vector3 prevEndVal = t.endValue;
+            Vector3Surrogate prevEndVal = t.endValue;
             t.endValue = t.getter().eulerAngles;
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
                 t.startValue = prevEndVal;
@@ -38,26 +36,26 @@ namespace DG.Tweening.Plugins
             t.setter(Quaternion.Euler(t.startValue));
         }
 
-        public override Vector3 ConvertToStartValue(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, Quaternion value)
+        public override Vector3Surrogate ConvertToStartValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t, Quaternion value)
         {
             return value.eulerAngles;
         }
 
-        public override void SetRelativeEndValue(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+        public override void SetRelativeEndValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t)
         {
             t.endValue += t.startValue;
         }
 
-        public override void SetChangeValue(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+        public override void SetChangeValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t)
         {
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
                 // Rotation will be adapted to 360° and will take the shortest route
                 // - Adapt to 360°
-                Vector3 ev = t.endValue;
+                Vector3Surrogate ev = t.endValue;
                 if (ev.x > 360) ev.x = ev.x % 360;
                 if (ev.y > 360) ev.y = ev.y % 360;
                 if (ev.z > 360) ev.z = ev.z % 360;
-                Vector3 changeVal = ev - t.startValue;
+                Vector3Surrogate changeVal = ev - t.startValue;
                 // - Find shortest rotation
                 float abs = (changeVal.x > 0 ? changeVal.x : -changeVal.x);
                 if (abs > 180) changeVal.x = changeVal.x > 0 ? -(360 - abs) : 360 - abs;
@@ -74,14 +72,14 @@ namespace DG.Tweening.Plugins
             }
         }
 
-        public override float GetSpeedBasedDuration(QuaternionOptions options, float unitsXSecond, Vector3 changeValue)
+        public override float GetSpeedBasedDuration(QuaternionOptions options, float unitsXSecond, Vector3Surrogate changeValue)
         {
             return changeValue.magnitude / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3 startValue, Vector3 changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3Surrogate startValue, Vector3Surrogate changeValue, float duration, bool usingInversePosition)
         {
-            Vector3 endValue = startValue;
+            Vector3Surrogate endValue = startValue;
 
             if (t.loopType == LoopType.Incremental) endValue += changeValue * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
             if (t.isSequenced && t.sequenceParent.loopType == LoopType.Incremental) {

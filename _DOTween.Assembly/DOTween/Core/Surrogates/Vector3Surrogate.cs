@@ -42,6 +42,10 @@ namespace DG.Tweening.Core.Surrogates
         {
             return new Vector3Surrogate(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
         }
+        public static Vector3Surrogate operator -(Vector3Surrogate v1)
+        {
+            return new Vector3Surrogate(-v1.x, -v1.y, -v1.z);
+        }
 
         public static Vector3Surrogate operator *(Vector3Surrogate v1, float f)
         {

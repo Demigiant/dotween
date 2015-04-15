@@ -672,7 +672,11 @@ namespace DG.Tweening
         /// <summary>Options for Quaternion tweens</summary>
         /// <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
         /// If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t, bool useShortest360Route = true)
+#else
         public static Tweener SetOptions(this TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool useShortest360Route = true)
+#endif
         {
             if (t == null || !t.active) return t;
 

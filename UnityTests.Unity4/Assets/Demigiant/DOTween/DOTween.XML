@@ -565,7 +565,7 @@
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Vector3,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
             <summary>Options for Quaternion tweens</summary>
             <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
             If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>

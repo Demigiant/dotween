@@ -294,7 +294,11 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DORotate(this Rigidbody target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, endValue, duration);
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, endValue, duration);
+#endif
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
             return t;
@@ -307,7 +311,11 @@ namespace DG.Tweening
         /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
         public static Tweener DOLookAt(this Rigidbody target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, towards, duration)
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, towards, duration)
+#endif
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetLookAt);
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.up = (up == null) ? Vector3.up : (Vector3)up;
@@ -430,7 +438,11 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DORotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
+#endif
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
             return t;
@@ -442,7 +454,11 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DOLocalRotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
+#endif
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
             return t;
@@ -502,7 +518,11 @@ namespace DG.Tweening
         /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
         public static Tweener DOLookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
+#endif
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetLookAt);
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.up = (up == null) ? Vector3.up : (Vector3)up;
@@ -746,7 +766,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             Quaternion to = target.rotation;
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+#endif
                 Quaternion diff = x * Quaternion.Inverse(to);
                 to = x;
                 target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
@@ -765,7 +789,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             Quaternion to = target.localRotation;
+#if WP81
+            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+#else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+#endif
                 Quaternion diff = x * Quaternion.Inverse(to);
                 to = x;
                 target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;

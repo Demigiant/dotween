@@ -67,7 +67,11 @@ namespace DG.Tweening.Plugins.Core
             else if (t1 == typeof(Quaternion)) {
                 if (t2 == typeof(Quaternion)) Debugger.LogError("Quaternion tweens require a Vector3 endValue");
                 else {
+#if WP81
+                    if (_quaternionPlugin == null) _quaternionPlugin = new QuaternionSurrogatePlugin();
+#else
                     if (_quaternionPlugin == null) _quaternionPlugin = new QuaternionPlugin();
+#endif
                     plugin = _quaternionPlugin;
                 }
             }
