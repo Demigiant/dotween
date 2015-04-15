@@ -565,7 +565,7 @@
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.QuaternionSurrogate,DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
             <summary>Options for Quaternion tweens</summary>
             <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
             If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>
@@ -1520,7 +1520,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},UnityEngine.Vector3,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.QuaternionSurrogate},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.QuaternionSurrogate},UnityEngine.Vector3,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>

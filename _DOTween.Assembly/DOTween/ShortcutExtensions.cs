@@ -295,7 +295,7 @@ namespace DG.Tweening
         public static Tweener DORotate(this Rigidbody target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, endValue, duration);
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), endValue, duration);
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, endValue, duration);
 #endif
@@ -312,7 +312,7 @@ namespace DG.Tweening
         public static Tweener DOLookAt(this Rigidbody target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, towards, duration)
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), towards, duration)
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, towards, duration)
 #endif
@@ -439,7 +439,7 @@ namespace DG.Tweening
         public static Tweener DORotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
 #endif
@@ -455,7 +455,7 @@ namespace DG.Tweening
         public static Tweener DOLocalRotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
 #endif
@@ -519,7 +519,7 @@ namespace DG.Tweening
         public static Tweener DOLookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
 #endif
@@ -767,11 +767,11 @@ namespace DG.Tweening
         {
             Quaternion to = target.rotation;
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
 #endif
-                Quaternion diff = x * Quaternion.Inverse(to);
+                Quaternion diff = (Quaternion)x * Quaternion.Inverse(to);
                 to = x;
                 target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
             }, byValue, duration)
@@ -790,11 +790,11 @@ namespace DG.Tweening
         {
             Quaternion to = target.localRotation;
 #if WP81
-            TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
 #endif
-                Quaternion diff = x * Quaternion.Inverse(to);
+                Quaternion diff = (Quaternion)x * Quaternion.Inverse(to);
                 to = x;
                 target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;
             }, byValue, duration)

@@ -24,7 +24,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.520";
+        public static readonly string Version = "1.0.521";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -347,8 +347,8 @@ namespace DG.Tweening
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
 #if WP81
-        public static TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> To(DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, Vector3 endValue, float duration)
-        { return ApplyTo<Quaternion, Vector3Surrogate, QuaternionOptions>(getter, setter, endValue, duration); }
+        public static TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> To(DOGetter<QuaternionSurrogate> getter, DOSetter<QuaternionSurrogate> setter, Vector3 endValue, float duration)
+        { return ApplyTo<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions>(getter, setter, endValue, duration); }
 #else
         public static TweenerCore<Quaternion, Vector3, QuaternionOptions> To(DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, Vector3 endValue, float duration)
         { return ApplyTo<Quaternion, Vector3, QuaternionOptions>(getter, setter, endValue, duration); }

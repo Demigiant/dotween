@@ -72,6 +72,7 @@
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
     <Compile Include="Core\Surrogates\ColorSurrogate.cs" />
+    <Compile Include="Core\Surrogates\QuaternionSurrogate.cs" />
     <Compile Include="Core\Surrogates\Vector2Surrogate.cs" />
     <Compile Include="Core\Surrogates\Vector3Surrogate.cs" />
     <Compile Include="Core\TweenManager.cs" />

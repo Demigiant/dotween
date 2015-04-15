@@ -7,6 +7,7 @@
 using System;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
+using DG.Tweening.Core.Surrogates;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -283,7 +284,11 @@ namespace DG.Tweening
             try {
                 switch (t.specialStartupMode) {
                 case SpecialStartupMode.SetLookAt:
+#if WP81
+                    if (!SpecialPluginsUtils.SetLookAt(t as TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions>)) return false;
+#else
                     if (!SpecialPluginsUtils.SetLookAt(t as TweenerCore<Quaternion, Vector3, QuaternionOptions>)) return false;
+#endif
                     break;
                 case SpecialStartupMode.SetPunch:
                     if (!SpecialPluginsUtils.SetPunch(t as TweenerCore<Vector3, Vector3[], Vector3ArrayOptions>)) return false;

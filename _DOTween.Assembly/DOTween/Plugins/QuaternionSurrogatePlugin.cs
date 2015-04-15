@@ -12,41 +12,41 @@ using UnityEngine;
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins
 {
-    public class QuaternionSurrogatePlugin : ABSTweenPlugin<Quaternion, Vector3Surrogate, QuaternionOptions>
+    public class QuaternionSurrogatePlugin : ABSTweenPlugin<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions>
     {
-        public override void Reset(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t) { }
+        public override void Reset(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t, bool isRelative)
         {
             Vector3Surrogate prevEndVal = t.endValue;
-            t.endValue = t.getter().eulerAngles;
+            t.endValue = ((Quaternion)t.getter()).eulerAngles;
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
                 t.startValue = prevEndVal;
             } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360) {
                 t.startValue = t.endValue + prevEndVal;
             } else {
-                Quaternion rot = t.getter();
+                QuaternionSurrogate rot = t.getter();
                 if (t.plugOptions.rotateMode == RotateMode.WorldAxisAdd) {
-                    t.startValue = (rot * Quaternion.Inverse(rot) * Quaternion.Euler(prevEndVal) * rot).eulerAngles;
+                    t.startValue = ((Quaternion)rot * Quaternion.Inverse(rot) * Quaternion.Euler(prevEndVal) * (Quaternion)rot).eulerAngles;
                 } else {
-                    t.startValue = (rot * Quaternion.Euler(prevEndVal)).eulerAngles;
+                    t.startValue = ((Quaternion)rot * Quaternion.Euler(prevEndVal)).eulerAngles;
                 }
                 t.endValue = -prevEndVal;
             }
             t.setter(Quaternion.Euler(t.startValue));
         }
 
-        public override Vector3Surrogate ConvertToStartValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t, Quaternion value)
+        public override Vector3Surrogate ConvertToStartValue(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t, QuaternionSurrogate value)
         {
-            return value.eulerAngles;
+            return ((Quaternion)value).eulerAngles;
         }
 
-        public override void SetRelativeEndValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t)
+        public override void SetRelativeEndValue(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t)
         {
             t.endValue += t.startValue;
         }
 
-        public override void SetChangeValue(TweenerCore<Quaternion, Vector3Surrogate, QuaternionOptions> t)
+        public override void SetChangeValue(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t)
         {
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
                 // Rotation will be adapted to 360° and will take the shortest route
@@ -77,7 +77,7 @@ namespace DG.Tweening.Plugins
             return changeValue.magnitude / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3Surrogate startValue, Vector3Surrogate changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<QuaternionSurrogate> getter, DOSetter<QuaternionSurrogate> setter, float elapsed, Vector3Surrogate startValue, Vector3Surrogate changeValue, float duration, bool usingInversePosition)
         {
             Vector3Surrogate endValue = startValue;
 
@@ -91,12 +91,12 @@ namespace DG.Tweening.Plugins
             switch (options.rotateMode) {
             case RotateMode.WorldAxisAdd:
             case RotateMode.LocalAxisAdd:
-                Quaternion startRot = Quaternion.Euler(startValue); // Reset rotation
+                QuaternionSurrogate startRot = Quaternion.Euler(startValue); // Reset rotation
                 endValue.x = changeValue.x * easeVal;
                 endValue.y = changeValue.y * easeVal;
                 endValue.z = changeValue.z * easeVal;
-                if (options.rotateMode == RotateMode.WorldAxisAdd) setter(startRot * Quaternion.Inverse(startRot) * Quaternion.Euler(endValue) * startRot);
-                else setter(startRot * Quaternion.Euler(endValue));
+                if (options.rotateMode == RotateMode.WorldAxisAdd) setter((Quaternion)startRot * Quaternion.Inverse(startRot) * Quaternion.Euler(endValue) * (Quaternion)startRot);
+                else setter((Quaternion)startRot * Quaternion.Euler(endValue));
                 break;
             default:
                 endValue.x += changeValue.x * easeVal;
