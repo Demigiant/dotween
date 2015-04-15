@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using System.Collections.Generic;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
@@ -235,7 +238,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMove(this Rigidbody target, Vector3 endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x=> target.MovePosition(x), endValue, duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, endValue, duration)
+#endif
                 .SetOptions(snapping).SetTarget(target);
         }
 
@@ -245,7 +252,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveX(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(endValue, 0, 0), duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(endValue, 0, 0), duration)
+#endif
                 .SetOptions(AxisConstraint.X, snapping).SetTarget(target);
         }
 
@@ -255,7 +266,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveY(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(0, endValue, 0), duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(0, endValue, 0), duration)
+#endif
                 .SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
         }
 
@@ -265,7 +280,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveZ(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(0, 0, endValue), duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(0, 0, endValue), duration)
+#endif
                 .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
         }
 
@@ -674,12 +693,21 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOBlendableMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
         {
+#if WP81
+            Vector3Surrogate to = Vector3Surrogate.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.position += diff;
+            }, byValue, duration)
+#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
                 Vector3 diff = x - to;
                 to = x;
                 target.position += diff;
             }, byValue, duration)
+#endif
                 .Blendable().SetOptions(snapping).SetTarget(target);
         }
 
@@ -691,12 +719,21 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOBlendableLocalMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
         {
+#if WP81
+            Vector3Surrogate to = Vector3Surrogate.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localPosition += diff;
+            }, byValue, duration)
+#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
                 Vector3 diff = x - to;
                 to = x;
                 target.localPosition += diff;
             }, byValue, duration)
+#endif
                 .Blendable().SetOptions(snapping).SetTarget(target);
         }
 
@@ -745,12 +782,21 @@ namespace DG.Tweening
         /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
         public static Tweener DOBlendableScaleBy(this Transform target, Vector3 byValue, float duration)
         {
+#if WP81
+            Vector3Surrogate to = Vector3Surrogate.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localScale += diff;
+            }, byValue, duration)
+#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
                 Vector3 diff = x - to;
                 to = x;
                 target.localScale += diff;
             }, byValue, duration)
+#endif
                 .Blendable().SetTarget(target);
         }
 

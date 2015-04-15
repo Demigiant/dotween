@@ -4,10 +4,12 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using System;
 using System.Collections.Generic;
 using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening.Plugins.Core
@@ -43,7 +45,15 @@ namespace DG.Tweening.Plugins.Core
             Type t1 = typeof(T1);
             Type t2 = typeof(T2);
             ITweenPlugin plugin = null;
-
+#if WP81
+            if (t1 == typeof(Vector3Surrogate) && t1 == t2) {
+                if (_vector3Plugin == null) _vector3Plugin = new Vector3SurrogatePlugin();
+                plugin = _vector3Plugin;
+            } else if (t1 == typeof(Vector3) && t2 == typeof(Vector3[])) {
+                if (_vector3ArrayPlugin == null) _vector3ArrayPlugin = new Vector3ArrayPlugin();
+                plugin = _vector3ArrayPlugin;
+            }
+#else
             if (t1 == typeof(Vector3)) {
                 if (t1 == t2) {
                     if (_vector3Plugin == null) _vector3Plugin = new Vector3Plugin();
@@ -52,16 +62,27 @@ namespace DG.Tweening.Plugins.Core
                     if (_vector3ArrayPlugin == null) _vector3ArrayPlugin = new Vector3ArrayPlugin();
                     plugin = _vector3ArrayPlugin;
                 }
-            } else if (t1 == typeof(Quaternion)) {
+            }
+#endif
+            else if (t1 == typeof(Quaternion)) {
                 if (t2 == typeof(Quaternion)) Debugger.LogError("Quaternion tweens require a Vector3 endValue");
                 else {
                     if (_quaternionPlugin == null) _quaternionPlugin = new QuaternionPlugin();
                     plugin = _quaternionPlugin;
                 }
-            } else if (t1 == typeof(Vector2)) {
+            }
+#if WP81
+            else if (t1 == typeof(Vector2Surrogate)) {
+                if (_vector2Plugin == null) _vector2Plugin = new Vector2SurrogatePlugin();
+                plugin = _vector2Plugin;
+            }
+#else
+            else if (t1 == typeof(Vector2)) {
                 if (_vector2Plugin == null) _vector2Plugin = new Vector2Plugin();
                 plugin = _vector2Plugin;
-            } else if (t1 == typeof(float)) {
+            }
+#endif
+            else if (t1 == typeof(float)) {
                 if (_floatPlugin == null) _floatPlugin = new FloatPlugin();
                 plugin = _floatPlugin;
             } else if (t1 == typeof(Color)) {
@@ -70,10 +91,19 @@ namespace DG.Tweening.Plugins.Core
             } else if (t1 == typeof(int)) {
                 if (_intPlugin == null) _intPlugin = new IntPlugin();
                 plugin = _intPlugin;
-            } else if (t1 == typeof(Vector4)) {
+            }
+#if WP81
+            else if (t1 == typeof(Vector4Surrogate)) {
+                if (_vector4Plugin == null) _vector4Plugin = new Vector4SurrogatePlugin();
+                plugin = _vector4Plugin;
+            }
+#else
+            else if (t1 == typeof(Vector4)) {
                 if (_vector4Plugin == null) _vector4Plugin = new Vector4Plugin();
                 plugin = _vector4Plugin;
-            } else if (t1 == typeof(Rect)) {
+            }
+#endif
+            else if (t1 == typeof(Rect)) {
                 if (_rectPlugin == null) _rectPlugin = new RectPlugin();
                 plugin = _rectPlugin;
             } else if (t1 == typeof(RectOffset)) {

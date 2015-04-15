@@ -15,6 +15,10 @@ namespace DG.Tweening.Core.Surrogates
     {
         public float x, y, z;
 
+        public static Vector3Surrogate zero {
+            get { return new Vector3Surrogate(0, 0, 0); }
+        }
+
         public float magnitude {
             get { return Mathf.Sqrt(x * x + y * y + z * z); }
         }
@@ -48,9 +52,14 @@ namespace DG.Tweening.Core.Surrogates
 
         #region Conversions
 
-        public static explicit operator Vector3(Vector3Surrogate v)
+        public static implicit operator Vector3(Vector3Surrogate v)
         {
             return new Vector3(v.x, v.y, v.z);
+        }
+
+        public static implicit operator Vector3Surrogate(Vector3 v)
+        {
+            return new Vector3Surrogate(v.x, v.y, v.z);
         }
 
         #endregion

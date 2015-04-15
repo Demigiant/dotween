@@ -35,6 +35,12 @@
         <member name="F:DG.Tweening.PathMode.Sidescroller2D">
             <summary>2D side-scroller path</summary>
         </member>
+        <member name="T:DG.Tweening.Core.Surrogates.Vector2Surrogate">
+            <summary>
+            A surrogate for Vector2/3/4 values to work around Unity's bug when trying to cast to
+            a Vector2/3/4 plugin on WP8.1
+            </summary>
+        </member>
         <member name="T:DG.Tweening.TweenType">
             <summary>
             Used internally
@@ -532,29 +538,29 @@
             <summary>Options for float tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector2Surrogate,DG.Tweening.Core.Surrogates.Vector2Surrogate,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector2 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector2Surrogate,DG.Tweening.Core.Surrogates.Vector2Surrogate,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector2 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector3 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Core.Surrogates.Vector3Surrogate,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector3 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector4,UnityEngine.Vector4,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector4Surrogate,DG.Tweening.Core.Surrogates.Vector4Surrogate,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector4 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector4,UnityEngine.Vector4,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector4Surrogate,DG.Tweening.Core.Surrogates.Vector4Surrogate,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector4 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
@@ -1304,6 +1310,12 @@
             and returns the total number of tweens involved.
             </summary>
         </member>
+        <member name="T:DG.Tweening.Core.Surrogates.Vector3Surrogate">
+            <summary>
+            A surrogate for Vector2/3/4 values to work around Unity's bug when trying to cast to
+            a Vector2/3/4 plugin on WP8.1
+            </summary>
+        </member>
         <member name="T:DG.Tweening.PathType">
             <summary>
             Type of path to use with DOPath tweens
@@ -1484,7 +1496,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector2},DG.Tweening.Core.DOSetter{UnityEngine.Vector2},UnityEngine.Vector2,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector2Surrogate},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector2Surrogate},UnityEngine.Vector2,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1492,7 +1504,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector3},DG.Tweening.Core.DOSetter{UnityEngine.Vector3},UnityEngine.Vector3,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector3Surrogate},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector3Surrogate},UnityEngine.Vector3,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1500,7 +1512,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector4},DG.Tweening.Core.DOSetter{UnityEngine.Vector4},UnityEngine.Vector4,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector4Surrogate},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector4Surrogate},UnityEngine.Vector4,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1551,7 +1563,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.ToAxis(DG.Tweening.Core.DOGetter{UnityEngine.Vector3},DG.Tweening.Core.DOSetter{UnityEngine.Vector3},System.Single,System.Single,DG.Tweening.AxisConstraint)">
+        <member name="M:DG.Tweening.DOTween.ToAxis(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector3Surrogate},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector3Surrogate},System.Single,System.Single,DG.Tweening.AxisConstraint)">
             <summary>Tweens only one axis of a Vector3 to the given value using default plugins.</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1820,6 +1832,12 @@
         <member name="F:DG.Tweening.LoopType.Incremental">
             <summary>Continuously increments the tween at the end of each loop cycle (A to B, B to B+(A-B), and so on), thus always moving "onward".
             <para>In case of String tweens works only if the tween is set as relative</para></summary>
+        </member>
+        <member name="T:DG.Tweening.Core.Surrogates.Vector4Surrogate">
+            <summary>
+            A surrogate for Vector2/3/4 values to work around Unity's bug when trying to cast to
+            a Vector2/3/4 plugin on WP8.1
+            </summary>
         </member>
         <member name="T:DG.Tweening.Tweener">
             <summary>

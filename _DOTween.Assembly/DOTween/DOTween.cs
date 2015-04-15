@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +24,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.490";
+        public static readonly string Version = "1.0.510";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -304,24 +307,39 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+#if WP81
+        public static TweenerCore<Vector2Surrogate, Vector2Surrogate, VectorOptions> To(DOGetter<Vector2Surrogate> getter, DOSetter<Vector2Surrogate> setter, Vector2 endValue, float duration)
+        { return ApplyTo<Vector2Surrogate, Vector2Surrogate, VectorOptions>(getter, setter, endValue, duration); }
+#else
         public static TweenerCore<Vector2, Vector2, VectorOptions> To(DOGetter<Vector2> getter, DOSetter<Vector2> setter, Vector2 endValue, float duration)
         { return ApplyTo<Vector2, Vector2, VectorOptions>(getter, setter, endValue, duration); }
+#endif
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+#if WP81
+        public static TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> To(DOGetter<Vector3Surrogate> getter, DOSetter<Vector3Surrogate> setter, Vector3 endValue, float duration)
+        { return ApplyTo<Vector3Surrogate, Vector3Surrogate, VectorOptions>(getter, setter, endValue, duration); }
+#else
         public static TweenerCore<Vector3, Vector3, VectorOptions> To(DOGetter<Vector3> getter, DOSetter<Vector3> setter, Vector3 endValue, float duration)
         { return ApplyTo<Vector3, Vector3, VectorOptions>(getter, setter, endValue, duration); }
+#endif
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+#if WP81
+        public static TweenerCore<Vector4Surrogate, Vector4Surrogate, VectorOptions> To(DOGetter<Vector4Surrogate> getter, DOSetter<Vector4Surrogate> setter, Vector4 endValue, float duration)
+        { return ApplyTo<Vector4Surrogate, Vector4Surrogate, VectorOptions>(getter, setter, endValue, duration); }
+#else
         public static TweenerCore<Vector4, Vector4, VectorOptions> To(DOGetter<Vector4> getter, DOSetter<Vector4> setter, Vector4 endValue, float duration)
         { return ApplyTo<Vector4, Vector4, VectorOptions>(getter, setter, endValue, duration); }
+#endif
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -377,12 +395,21 @@ namespace DG.Tweening
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         /// <param name="axisConstraint">The axis to tween</param>
+#if WP81
+        public static TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> ToAxis(DOGetter<Vector3Surrogate> getter, DOSetter<Vector3Surrogate> setter, float endValue, float duration, AxisConstraint axisConstraint = AxisConstraint.X)
+        {
+            TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> t = ApplyTo<Vector3Surrogate, Vector3Surrogate, VectorOptions>(getter, setter, new Vector3Surrogate(endValue, endValue, endValue), duration);
+            t.plugOptions.axisConstraint = axisConstraint;
+            return t;
+        }
+#else
         public static TweenerCore<Vector3, Vector3, VectorOptions> ToAxis(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float endValue, float duration, AxisConstraint axisConstraint = AxisConstraint.X)
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = ApplyTo<Vector3, Vector3, VectorOptions>(getter, setter, new Vector3(endValue, endValue, endValue), duration);
             t.plugOptions.axisConstraint = axisConstraint;
             return t;
         }
+#endif
         /// <summary>Tweens only the alpha of a Color to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>

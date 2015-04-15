@@ -46,7 +46,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMove(this Rigidbody2D target, Vector2 endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x=> target.MovePosition(x), endValue, duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, endValue, duration)
+#endif
                 .SetOptions(snapping).SetTarget(target);
         }
 
@@ -56,7 +60,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveX(this Rigidbody2D target, float endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector2(endValue, 0), duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue, 0), duration)
+#endif
                 .SetOptions(AxisConstraint.X, snapping).SetTarget(target);
         }
 
@@ -66,7 +74,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveY(this Rigidbody2D target, float endValue, float duration, bool snapping = false)
         {
+#if WP81
+            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector2(0, endValue), duration)
+#else
             return DOTween.To(() => target.position, target.MovePosition, new Vector2(0, endValue), duration)
+#endif
                 .SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
         }
 

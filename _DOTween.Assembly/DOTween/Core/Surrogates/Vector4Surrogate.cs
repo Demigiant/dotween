@@ -87,19 +87,24 @@ namespace DG.Tweening.Core.Surrogates
 
         #region Conversions
 
-//        public static explicit operator Vector2(Vector4Surrogate v)
+//        public static implicit operator Vector2(Vector4Surrogate v)
 //        {
 //            return new Vector2(v.x, v.y);
 //        }
 //
-//        public static explicit operator Vector3(Vector4Surrogate v)
+//        public static implicit operator Vector3(Vector4Surrogate v)
 //        {
 //            return new Vector3(v.x, v.y, v.z);
 //        }
 
-        public static explicit operator Vector4(Vector4Surrogate v)
+        public static implicit operator Vector4(Vector4Surrogate v)
         {
             return new Vector4(v.x, v.y, v.z, v.w);
+        }
+
+        public static implicit operator Vector4Surrogate(Vector4 v)
+        {
+            return new Vector4Surrogate(v.x, v.y, v.z, v.w);
         }
 
         #endregion

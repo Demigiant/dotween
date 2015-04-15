@@ -9,14 +9,7 @@ public class Temp : BrainBase
 
     IEnumerator Start()
     {
-    	target.DOMoveX(2, 3).OnComplete(()=> {
-    		Debug.Log("call");
-    		target.GetComponent<TempMonoBehaviour>().Goco();
-    		Debug.Log("after call");
-		});
-
-    	yield return new WaitForSeconds(1);
-
-    	target.gameObject.SetActive(false);
+    	yield return new WaitForSeconds(0.6f);
+    	target.DORotate(new Vector3(0,0,20f), 3f).SetRelative();
     }
 }

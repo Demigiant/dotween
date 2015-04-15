@@ -71,6 +71,8 @@
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
+    <Compile Include="Core\Surrogates\Vector2Surrogate.cs" />
+    <Compile Include="Core\Surrogates\Vector3Surrogate.cs" />
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\Utils.cs" />
     <Compile Include="Core\Surrogates\Vector4Surrogate.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
     <Compile Include="Plugins\UlongPlugin.cs" />
+    <Compile Include="Plugins\Vector2SurrogatePlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
     <Compile Include="Plugins\Core\ITPlugin.cs" />
     <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Plugins\Core\PathCore\LinearDecoder.cs" />
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
+    <Compile Include="Plugins\Vector3SurrogatePlugin.cs" />
     <Compile Include="Plugins\Vector4SurrogatePlugin.cs" />
     <Compile Include="RotateMode.cs" />
     <Compile Include="ScrambleMode.cs" />

@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
 using DG.Tweening.Plugins;
@@ -581,7 +584,11 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector2Surrogate, Vector2Surrogate, VectorOptions> t, bool snapping)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, bool snapping)
+#endif
         {
             if (t == null || !t.active) return t;
 
@@ -591,7 +598,11 @@ namespace DG.Tweening
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector2Surrogate, Vector2Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#endif
         {
             if (t == null || !t.active) return t;
 
@@ -602,7 +613,11 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> t, bool snapping)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, bool snapping)
+#endif
         {
             if (t == null || !t.active) return t;
 
@@ -612,7 +627,11 @@ namespace DG.Tweening
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#endif
         {
             if (t == null || !t.active) return t;
 
@@ -623,7 +642,11 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector4Surrogate, Vector4Surrogate, VectorOptions> t, bool snapping)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, bool snapping)
+#endif
         {
             if (t == null || !t.active) return t;
 
@@ -633,7 +656,11 @@ namespace DG.Tweening
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<Vector4Surrogate, Vector4Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#else
         public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+#endif
         {
             if (t == null || !t.active) return t;
 

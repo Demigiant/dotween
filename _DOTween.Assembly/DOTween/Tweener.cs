@@ -78,7 +78,7 @@ namespace DG.Tweening
                 if (t.tweenPlugin == null) t.tweenPlugin = PluginsManager.GetDefaultPlugin<T1, T2, TPlugOptions>();
                 if (t.tweenPlugin == null) {
                     // No suitable plugin found. Kill
-                    Debugger.LogError("No suitable plugin found for this type");
+                    Debugger.LogError(string.Format("No suitable plugin found for this type (<{0}, {1}, {2}>)", typeof(T1), typeof(T2), typeof(TPlugOptions)));
                     return false;
                 }
                 // WP8.1 fix tries
