@@ -682,7 +682,11 @@ namespace DG.Tweening
 
         /// <summary>Options for Color tweens</summary>
         /// <param name="alphaOnly">If TRUE only the alpha value of the color will be tweened</param>
+#if WP81
+        public static Tweener SetOptions(this TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t, bool alphaOnly)
+#else
         public static Tweener SetOptions(this TweenerCore<Color, Color, ColorOptions> t, bool alphaOnly)
+#endif
         {
             if (t == null || !t.active) return t;
 

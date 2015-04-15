@@ -24,7 +24,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.515";
+        public static readonly string Version = "1.0.520";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -354,8 +354,13 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+#if WP81
+        public static TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> To(DOGetter<ColorSurrogate> getter, DOSetter<ColorSurrogate> setter, Color endValue, float duration)
+        { return ApplyTo<ColorSurrogate, ColorSurrogate, ColorOptions>(getter, setter, endValue, duration); }
+#else
         public static TweenerCore<Color, Color, ColorOptions> To(DOGetter<Color> getter, DOSetter<Color> setter, Color endValue, float duration)
         { return ApplyTo<Color, Color, ColorOptions>(getter, setter, endValue, duration); }
+#endif
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -416,8 +421,13 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+#if WP81
+        public static Tweener ToAlpha(DOGetter<ColorSurrogate> getter, DOSetter<ColorSurrogate> setter, float endValue, float duration)
+        { return ApplyTo<ColorSurrogate, ColorSurrogate, ColorOptions>(getter, setter, new ColorSurrogate(0, 0, 0, endValue), duration).SetOptions(true); }
+#else
         public static Tweener ToAlpha(DOGetter<Color> getter, DOSetter<Color> setter, float endValue, float duration)
         { return ApplyTo<Color, Color, ColorOptions>(getter, setter, new Color(0, 0, 0, endValue), duration).SetOptions(true); }
+#endif
 
         #endregion
 

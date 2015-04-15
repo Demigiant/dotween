@@ -71,6 +71,7 @@
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
+    <Compile Include="Core\Surrogates\ColorSurrogate.cs" />
     <Compile Include="Core\Surrogates\Vector2Surrogate.cs" />
     <Compile Include="Core\Surrogates\Vector3Surrogate.cs" />
     <Compile Include="Core\TweenManager.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
+    <Compile Include="Plugins\ColorSurrogatePlugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
     <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />

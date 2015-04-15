@@ -85,10 +85,19 @@ namespace DG.Tweening.Plugins.Core
             else if (t1 == typeof(float)) {
                 if (_floatPlugin == null) _floatPlugin = new FloatPlugin();
                 plugin = _floatPlugin;
-            } else if (t1 == typeof(Color)) {
+            }
+#if WP81
+            else if (t1 == typeof(ColorSurrogate)) {
+                if (_colorPlugin == null) _colorPlugin = new ColorSurrogatePlugin();
+                plugin = _colorPlugin;
+            }
+#else
+            else if (t1 == typeof(Color)) {
                 if (_colorPlugin == null) _colorPlugin = new ColorPlugin();
                 plugin = _colorPlugin;
-            } else if (t1 == typeof(int)) {
+            }
+#endif
+            else if (t1 == typeof(int)) {
                 if (_intPlugin == null) _intPlugin = new IntPlugin();
                 plugin = _intPlugin;
             }

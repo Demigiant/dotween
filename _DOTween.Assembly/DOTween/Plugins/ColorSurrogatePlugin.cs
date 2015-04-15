@@ -1,55 +1,52 @@
-﻿#if !WP81
+﻿#if WP81
 // Author: Daniele Giardini - http://www.demigiant.com
-// Created: 2014/07/10 14:33
-// 
-// License Copyright (c) Daniele Giardini.
-// This work is subject to the terms at http://dotween.demigiant.com/license.php
+// Created: 2015/04/15 12:17
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Surrogates;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
-using UnityEngine;
 
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins
 {
-    public class ColorPlugin : ABSTweenPlugin<Color, Color, ColorOptions>
+    public class ColorSurrogatePlugin : ABSTweenPlugin<ColorSurrogate, ColorSurrogate, ColorOptions>
     {
-        public override void Reset(TweenerCore<Color, Color, ColorOptions> t) { }
+        public override void Reset(TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Color, Color, ColorOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t, bool isRelative)
         {
-            Color prevEndVal = t.endValue;
+            ColorSurrogate prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
-            Color to = t.endValue;
+            ColorSurrogate to = t.endValue;
             if (!t.plugOptions.alphaOnly) to = t.startValue;
             else to.a = t.startValue.a;
             t.setter(to);
         }
 
-        public override Color ConvertToStartValue(TweenerCore<Color, Color, ColorOptions> t, Color value)
+        public override ColorSurrogate ConvertToStartValue(TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t, ColorSurrogate value)
         {
             return value;
         }
 
-        public override void SetRelativeEndValue(TweenerCore<Color, Color, ColorOptions> t)
+        public override void SetRelativeEndValue(TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t)
         {
             t.endValue += t.startValue;
         }
 
-        public override void SetChangeValue(TweenerCore<Color, Color, ColorOptions> t)
+        public override void SetChangeValue(TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t)
         {
             t.changeValue = t.endValue - t.startValue;
         }
 
-        public override float GetSpeedBasedDuration(ColorOptions options, float unitsXSecond, Color changeValue)
+        public override float GetSpeedBasedDuration(ColorOptions options, float unitsXSecond, ColorSurrogate changeValue)
         {
             return 1f / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(ColorOptions options, Tween t, bool isRelative, DOGetter<Color> getter, DOSetter<Color> setter, float elapsed, Color startValue, Color changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(ColorOptions options, Tween t, bool isRelative, DOGetter<ColorSurrogate> getter, DOSetter<ColorSurrogate> setter, float elapsed, ColorSurrogate startValue, ColorSurrogate changeValue, float duration, bool usingInversePosition)
         {
             if (t.loopType == LoopType.Incremental) startValue += changeValue * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
             if (t.isSequenced && t.sequenceParent.loopType == LoopType.Incremental) {
@@ -68,7 +65,7 @@ namespace DG.Tweening.Plugins
             }
 
             // Alpha only
-            Color res = getter();
+            ColorSurrogate res = getter();
             res.a = startValue.a + changeValue.a * easeVal;
             setter(res);
         }
