@@ -24,7 +24,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.510";
+        public static readonly string Version = "1.0.515";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////

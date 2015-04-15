@@ -66,7 +66,7 @@ namespace DG.Tweening.Plugins
                 if (abs > 180) changeVal.z = changeVal.z > 0 ? -(360 - abs) : 360 - abs;
                 // - Assign
                 t.changeValue = changeVal;
-            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360) {
+            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360 || t.isRelative) {
                 t.changeValue = t.endValue - t.startValue;
             } else {
                 t.changeValue = t.endValue;
