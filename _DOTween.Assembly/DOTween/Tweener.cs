@@ -4,10 +4,12 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using System;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
-using DG.Tweening.Core.Surrogates;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;

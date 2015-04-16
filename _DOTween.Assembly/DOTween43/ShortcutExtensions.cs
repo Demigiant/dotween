@@ -92,5 +92,46 @@ namespace DG.Tweening
         }
 
         #endregion
+
+        #region Blendables
+
+        #region SpriteRenderer
+
+        /// <summary>Tweens a SpriteRenderer's color to the given value,
+        /// in a way that allows other DOBlendableColor tweens to work together on the same target,
+        /// instead than fight each other as multiple DOColor would do.
+        /// Also stores the SpriteRenderer as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableColor(this SpriteRenderer target, Color endValue, float duration)
+        {
+            endValue = endValue - target.color;
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+                Color diff = x - to;
+                to = x;
+                target.color += diff;
+            }, endValue, duration)
+                .Blendable().SetTarget(target);
+        }
+
+        /// <summary>Tweens a SpriteRenderer's alpha BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
+        /// instead than fight each other as multiple DOFade would do.
+        /// Also stores the SpriteRenderer as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableFadeBy(this SpriteRenderer target, float byValue, float duration)
+        {
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+                Color diff = x - to;
+                to.a = x.a;
+                target.color += diff;
+            }, new Color(0, 0, 0, byValue), duration)
+                .Blendable().SetTarget(target);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

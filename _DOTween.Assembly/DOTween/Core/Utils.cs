@@ -22,7 +22,7 @@ namespace DG.Tweening.Core
         /// <summary>
         /// Returns the 2D angle between two vectors
         /// </summary>
-        public static float Angle2D(Vector3 from, Vector3 to)
+        internal static float Angle2D(Vector3 from, Vector3 to)
         {
             Vector2 baseDir = Vector2.right;
             to -= from;
