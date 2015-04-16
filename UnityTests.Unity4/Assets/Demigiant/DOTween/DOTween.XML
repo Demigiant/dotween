@@ -1183,6 +1183,45 @@
             Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
             <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Light,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Light's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Light as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Material,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Material's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Material,UnityEngine.Color,System.String,System.Single)">
+            <summary>Tweens a Material's named color property to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param>
+            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableFadeBy(UnityEngine.Material,System.Single,System.Single)">
+            <summary>Tweens a Material's alpha BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
+            instead than fight each other as multiple DOFade would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableFadeBy(UnityEngine.Material,System.Single,System.String,System.Single)">
+            <summary>Tweens a Material's named alpha property BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
+            instead than fight each other as multiple DOFade would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param>
+            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableMoveBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Boolean)">
             <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
             in a way that allows other DOBlendableMove tweens to work together on the same target,

@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -14,7 +17,11 @@ namespace DG.Tweening.Plugins.Core
     internal static class SpecialPluginsUtils
     {
         // Returns TRUE if it's successful, FALSE otherwise
+#if WP81
+        internal static bool SetLookAt(TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t)
+#else
         internal static bool SetLookAt(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+#endif
         {
             Transform trans = t.target as Transform;
             Vector3 towards = t.endValue;

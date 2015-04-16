@@ -7,13 +7,8 @@ using System;
 
 public class TempTests : BrainBase
 {
-	void OnEnable()
+	void OnMouseDown()
 	{
-		Debug.Log("ENABLE");
-	}
-
-	void OnDisable()
-	{
-		Debug.Log("DISABLE");
+		this.GetComponent<DOTweenAnimation>().DOPlay();
 	}
 }

@@ -5,18 +5,11 @@ using System.Collections;
 
 public class Temp : BrainBase
 {
-	public Transform target;
+	public RectTransform t;
 
     IEnumerator Start()
     {
-    	target.DOMoveX(2, 3).OnComplete(()=> {
-    		Debug.Log("call");
-    		target.GetComponent<TempMonoBehaviour>().Goco();
-    		Debug.Log("after call");
-		});
-
-    	yield return new WaitForSeconds(1);
-
-    	target.gameObject.SetActive(false);
+    	yield return new WaitForSeconds(0.6f);
+    	DOTween.To(() => t.anchorMin, (x) => t.anchorMin = x, new Vector2(-1,0) , 2.0f).OnComplete(()=>Debug.Log(t.anchorMin.ToString("N16")));
     }
 }
