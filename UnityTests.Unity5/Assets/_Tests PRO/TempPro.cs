@@ -4,8 +4,9 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	void Start()
+	void OnMouseDown()
 	{
-		transform.DOMove(new Vector3(4,0,0), 1).From(true).SetDelay(1);
+		Debug.Log("DOWN");
+		this.GetComponent<DOTweenPath>().DOPlay();
 	}
 }
