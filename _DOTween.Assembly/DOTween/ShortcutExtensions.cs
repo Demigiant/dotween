@@ -4,10 +4,14 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-#if WP81
+#if COMPATIBLE
 using DG.Tweening.Core.Surrogates;
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+#else
+using DOVector3 = UnityEngine.Vector3;
+using DOQuaternion = UnityEngine.Quaternion;
 #endif
-using System.Collections.Generic;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins;
@@ -238,8 +242,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMove(this Rigidbody target, Vector3 endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x=> target.MovePosition(x), endValue, duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x=> target.MovePosition(x.value), endValue, duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, endValue, duration)
 #endif
@@ -252,8 +256,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveX(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(endValue, 0, 0), duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue, 0, 0), duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(endValue, 0, 0), duration)
 #endif
@@ -266,8 +270,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveY(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(0, endValue, 0), duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, endValue, 0), duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(0, endValue, 0), duration)
 #endif
@@ -280,8 +284,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveZ(this Rigidbody target, float endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector3(0, 0, endValue), duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, 0, endValue), duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, new Vector3(0, 0, endValue), duration)
 #endif
@@ -294,8 +298,8 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DORotate(this Rigidbody target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), endValue, duration);
+#if COMPATIBLE
+            TweenerCore<QuaternionWrapper, Vector3Wrapper, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), endValue, duration);
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, endValue, duration);
 #endif
@@ -311,8 +315,8 @@ namespace DG.Tweening
         /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
         public static Tweener DOLookAt(this Rigidbody target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), towards, duration)
+#if COMPATIBLE
+            TweenerCore<QuaternionWrapper, Vector3Wrapper, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.MoveRotation(x), towards, duration)
 #else
             TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, target.MoveRotation, towards, duration)
 #endif
@@ -333,8 +337,13 @@ namespace DG.Tweening
         public static Tweener DOResize(this TrailRenderer target, float toStartWidth, float toEndWidth, float duration)
         {
             return DOTween.To(() => new Vector2(target.startWidth, target.endWidth), x => {
+#if COMPATIBLE
+                    target.startWidth = x.value.x;
+                    target.endWidth = x.value.y;
+#else
                     target.startWidth = x.x;
                     target.endWidth = x.y;
+#endif
                 }, new Vector2(toStartWidth, toEndWidth), duration)
                 .SetTarget(target);
         }
@@ -438,11 +447,7 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DORotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
-#else
-            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
-#endif
+            TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
             return t;
@@ -454,11 +459,7 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DOLocalRotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
-#else
-            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
-#endif
+            TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
             return t;
@@ -518,11 +519,7 @@ namespace DG.Tweening
         /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
         public static Tweener DOLookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
         {
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
-#else
-            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
-#endif
+            TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetLookAt);
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.up = (up == null) ? Vector3.up : (Vector3)up;
@@ -717,13 +714,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Light target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -742,13 +739,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Material target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -769,13 +766,13 @@ namespace DG.Tweening
             }
 
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.SetColor(property, target.GetColor(property) + diff);
             }, endValue, duration)
@@ -794,21 +791,16 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOBlendableMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
         {
-#if WP81
-            Vector3Surrogate to = Vector3Surrogate.zero;
-            return DOTween.To(() => to, x => {
-                Vector3 diff = x - to;
-                to = x;
-                target.position += diff;
-            }, byValue, duration)
-#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Vector3 diff = x.value - to;
+#else
                 Vector3 diff = x - to;
+#endif
                 to = x;
                 target.position += diff;
             }, byValue, duration)
-#endif
                 .Blendable().SetOptions(snapping).SetTarget(target);
         }
 
@@ -820,21 +812,16 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOBlendableLocalMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
         {
-#if WP81
-            Vector3Surrogate to = Vector3Surrogate.zero;
-            return DOTween.To(() => to, x => {
-                Vector3 diff = x - to;
-                to = x;
-                target.localPosition += diff;
-            }, byValue, duration)
-#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Vector3 diff = x.value - to;
+#else
                 Vector3 diff = x - to;
+#endif
                 to = x;
                 target.localPosition += diff;
             }, byValue, duration)
-#endif
                 .Blendable().SetOptions(snapping).SetTarget(target);
         }
 
@@ -847,12 +834,12 @@ namespace DG.Tweening
         public static Tweener DOBlendableRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             Quaternion to = target.rotation;
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+            TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Quaternion diff = x.value * Quaternion.Inverse(to);
 #else
-            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
 #endif
-                Quaternion diff = (Quaternion)x * Quaternion.Inverse(to);
                 to = x;
                 target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
             }, byValue, duration)
@@ -870,12 +857,12 @@ namespace DG.Tweening
         public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             Quaternion to = target.localRotation;
-#if WP81
-            TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t = DOTween.To(() => to, x => {
+            TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Quaternion diff = x.value * Quaternion.Inverse(to);
 #else
-            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
 #endif
-                Quaternion diff = (Quaternion)x * Quaternion.Inverse(to);
                 to = x;
                 target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;
             }, byValue, duration)
@@ -891,21 +878,16 @@ namespace DG.Tweening
         /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
         public static Tweener DOBlendableScaleBy(this Transform target, Vector3 byValue, float duration)
         {
-#if WP81
-            Vector3Surrogate to = Vector3Surrogate.zero;
-            return DOTween.To(() => to, x => {
-                Vector3 diff = x - to;
-                to = x;
-                target.localScale += diff;
-            }, byValue, duration)
-#else
             Vector3 to = Vector3.zero;
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Vector3 diff = x.value - to;
+#else
                 Vector3 diff = x - to;
+#endif
                 to = x;
                 target.localScale += diff;
             }, byValue, duration)
-#endif
                 .Blendable().SetTarget(target);
         }
 

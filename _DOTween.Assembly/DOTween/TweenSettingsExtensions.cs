@@ -4,8 +4,18 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-#if WP81
-using DG.Tweening.Core.Surrogates;
+#if COMPATIBLE
+using DOVector2 = DG.Tweening.Core.Surrogates.Vector2Wrapper;
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOVector4 = DG.Tweening.Core.Surrogates.Vector4Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+using DOColor = DG.Tweening.Core.Surrogates.ColorWrapper;
+#else
+using DOVector2 = UnityEngine.Vector2;
+using DOVector3 = UnityEngine.Vector3;
+using DOVector4 = UnityEngine.Vector4;
+using DOQuaternion = UnityEngine.Quaternion;
+using DOColor = UnityEngine.Color;
 #endif
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
@@ -584,11 +594,7 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector2Surrogate, Vector2Surrogate, VectorOptions> t, bool snapping)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, bool snapping)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector2, DOVector2, VectorOptions> t, bool snapping)
         {
             if (t == null || !t.active) return t;
 
@@ -598,11 +604,7 @@ namespace DG.Tweening
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector2Surrogate, Vector2Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector2, DOVector2, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
             if (t == null || !t.active) return t;
 
@@ -613,11 +615,7 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> t, bool snapping)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, bool snapping)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector3, DOVector3, VectorOptions> t, bool snapping)
         {
             if (t == null || !t.active) return t;
 
@@ -627,11 +625,7 @@ namespace DG.Tweening
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector3Surrogate, Vector3Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector3, DOVector3, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
             if (t == null || !t.active) return t;
 
@@ -642,11 +636,7 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector4Surrogate, Vector4Surrogate, VectorOptions> t, bool snapping)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, bool snapping)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector4, DOVector4, VectorOptions> t, bool snapping)
         {
             if (t == null || !t.active) return t;
 
@@ -656,11 +646,7 @@ namespace DG.Tweening
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<Vector4Surrogate, Vector4Surrogate, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#else
-        public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOVector4, DOVector4, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
             if (t == null || !t.active) return t;
 
@@ -672,11 +658,7 @@ namespace DG.Tweening
         /// <summary>Options for Quaternion tweens</summary>
         /// <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
         /// If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<QuaternionSurrogate, Vector3Surrogate, QuaternionOptions> t, bool useShortest360Route = true)
-#else
-        public static Tweener SetOptions(this TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool useShortest360Route = true)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t, bool useShortest360Route = true)
         {
             if (t == null || !t.active) return t;
 
@@ -686,11 +668,7 @@ namespace DG.Tweening
 
         /// <summary>Options for Color tweens</summary>
         /// <param name="alphaOnly">If TRUE only the alpha value of the color will be tweened</param>
-#if WP81
-        public static Tweener SetOptions(this TweenerCore<ColorSurrogate, ColorSurrogate, ColorOptions> t, bool alphaOnly)
-#else
-        public static Tweener SetOptions(this TweenerCore<Color, Color, ColorOptions> t, bool alphaOnly)
-#endif
+        public static Tweener SetOptions(this TweenerCore<DOColor, DOColor, ColorOptions> t, bool alphaOnly)
         {
             if (t == null || !t.active) return t;
 

@@ -4,11 +4,7 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-#if WP81
-using DG.Tweening.Core.Surrogates;
-#endif
 using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -97,8 +93,13 @@ namespace DG.Tweening
         public static Tweener DOFlexibleSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.flexibleWidth, target.flexibleHeight), x => {
+#if COMPATIBLE
+                    target.flexibleWidth = x.value.x;
+                    target.flexibleHeight = x.value.y;
+#else
                     target.flexibleWidth = x.x;
                     target.flexibleHeight = x.y;
+#endif
                 }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -110,8 +111,13 @@ namespace DG.Tweening
         public static Tweener DOMinSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.minWidth, target.minHeight), x => {
+#if COMPATIBLE
+                target.minWidth = x.value.x;
+                target.minHeight = x.value.y;
+#else
                 target.minWidth = x.x;
                 target.minHeight = x.y;
+#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -123,8 +129,13 @@ namespace DG.Tweening
         public static Tweener DOPreferredSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.preferredWidth, target.preferredHeight), x => {
+#if COMPATIBLE
+                target.preferredWidth = x.value.x;
+                target.preferredHeight = x.value.y;
+#else
                 target.preferredWidth = x.x;
                 target.preferredHeight = x.y;
+#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -260,13 +271,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Graphic target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -285,13 +296,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Image target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -310,13 +321,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Text target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)

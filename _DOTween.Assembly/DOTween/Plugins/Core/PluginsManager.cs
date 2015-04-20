@@ -4,8 +4,28 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-#if WP81
-using DG.Tweening.Core.Surrogates;
+#if COMPATIBLE
+using DOVector2 = DG.Tweening.Core.Surrogates.Vector2Wrapper;
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOVector4 = DG.Tweening.Core.Surrogates.Vector4Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+using DOColor = DG.Tweening.Core.Surrogates.ColorWrapper;
+using DOVector2Plugin = DG.Tweening.Plugins.Vector2WrapperPlugin;
+using DOVector3Plugin = DG.Tweening.Plugins.Vector3WrapperPlugin;
+using DOVector4Plugin = DG.Tweening.Plugins.Vector4WrapperPlugin;
+using DOQuaternionPlugin = DG.Tweening.Plugins.QuaternionWrapperPlugin;
+using DOColorPlugin = DG.Tweening.Plugins.ColorWrapperPlugin;
+#else
+using DOVector2 = UnityEngine.Vector2;
+using DOVector3 = UnityEngine.Vector3;
+using DOVector4 = UnityEngine.Vector4;
+using DOQuaternion = UnityEngine.Quaternion;
+using DOColor = UnityEngine.Color;
+using DOVector2Plugin = DG.Tweening.Plugins.Vector2Plugin;
+using DOVector3Plugin = DG.Tweening.Plugins.Vector3Plugin;
+using DOVector4Plugin = DG.Tweening.Plugins.Vector4Plugin;
+using DOQuaternionPlugin = DG.Tweening.Plugins.QuaternionPlugin;
+using DOColorPlugin = DG.Tweening.Plugins.ColorPlugin;
 #endif
 using System;
 using System.Collections.Generic;
@@ -45,84 +65,34 @@ namespace DG.Tweening.Plugins.Core
             Type t1 = typeof(T1);
             Type t2 = typeof(T2);
             ITweenPlugin plugin = null;
-#if WP81
-            if (t1 == typeof(Vector3Surrogate) && t1 == t2) {
-                if (_vector3Plugin == null) _vector3Plugin = new Vector3SurrogatePlugin();
+            if (t1 == typeof(DOVector3) && t1 == t2) {
+                if (_vector3Plugin == null) _vector3Plugin = new DOVector3Plugin();
                 plugin = _vector3Plugin;
             } else if (t1 == typeof(Vector3) && t2 == typeof(Vector3[])) {
                 if (_vector3ArrayPlugin == null) _vector3ArrayPlugin = new Vector3ArrayPlugin();
                 plugin = _vector3ArrayPlugin;
-            }
-#else
-            if (t1 == typeof(Vector3)) {
-                if (t1 == t2) {
-                    if (_vector3Plugin == null) _vector3Plugin = new Vector3Plugin();
-                    plugin = _vector3Plugin;
-                } else if (t2 == typeof(Vector3[])) {
-                    if (_vector3ArrayPlugin == null) _vector3ArrayPlugin = new Vector3ArrayPlugin();
-                    plugin = _vector3ArrayPlugin;
-                }
-            }
-#endif
-#if WP81
-            else if (t1 == typeof(QuaternionSurrogate)) {
+            } else if (t1 == typeof(DOQuaternion)) {
                 if (t2 == typeof(Quaternion)) Debugger.LogError("Quaternion tweens require a Vector3 endValue");
                 else {
-                    if (_quaternionPlugin == null) _quaternionPlugin = new QuaternionSurrogatePlugin();
+                    if (_quaternionPlugin == null) _quaternionPlugin = new DOQuaternionPlugin();
                     plugin = _quaternionPlugin;
                 }
-            }
-#else
-            else if (t1 == typeof(Quaternion)) {
-                if (t2 == typeof(Quaternion)) Debugger.LogError("Quaternion tweens require a Vector3 endValue");
-                else {
-                    if (_quaternionPlugin == null) _quaternionPlugin = new QuaternionPlugin();
-                    plugin = _quaternionPlugin;
-                }
-            }
-#endif
-#if WP81
-            else if (t1 == typeof(Vector2Surrogate)) {
-                if (_vector2Plugin == null) _vector2Plugin = new Vector2SurrogatePlugin();
+            } else if (t1 == typeof(DOVector2)) {
+                if (_vector2Plugin == null) _vector2Plugin = new DOVector2Plugin();
                 plugin = _vector2Plugin;
-            }
-#else
-            else if (t1 == typeof(Vector2)) {
-                if (_vector2Plugin == null) _vector2Plugin = new Vector2Plugin();
-                plugin = _vector2Plugin;
-            }
-#endif
-            else if (t1 == typeof(float)) {
+            } else if (t1 == typeof(float)) {
                 if (_floatPlugin == null) _floatPlugin = new FloatPlugin();
                 plugin = _floatPlugin;
-            }
-#if WP81
-            else if (t1 == typeof(ColorSurrogate)) {
-                if (_colorPlugin == null) _colorPlugin = new ColorSurrogatePlugin();
+            } else if (t1 == typeof(DOColor)) {
+                if (_colorPlugin == null) _colorPlugin = new DOColorPlugin();
                 plugin = _colorPlugin;
-            }
-#else
-            else if (t1 == typeof(Color)) {
-                if (_colorPlugin == null) _colorPlugin = new ColorPlugin();
-                plugin = _colorPlugin;
-            }
-#endif
-            else if (t1 == typeof(int)) {
+            } else if (t1 == typeof(int)) {
                 if (_intPlugin == null) _intPlugin = new IntPlugin();
                 plugin = _intPlugin;
-            }
-#if WP81
-            else if (t1 == typeof(Vector4Surrogate)) {
-                if (_vector4Plugin == null) _vector4Plugin = new Vector4SurrogatePlugin();
+            } else if (t1 == typeof(DOVector4)) {
+                if (_vector4Plugin == null) _vector4Plugin = new DOVector4Plugin();
                 plugin = _vector4Plugin;
-            }
-#else
-            else if (t1 == typeof(Vector4)) {
-                if (_vector4Plugin == null) _vector4Plugin = new Vector4Plugin();
-                plugin = _vector4Plugin;
-            }
-#endif
-            else if (t1 == typeof(Rect)) {
+            } else if (t1 == typeof(Rect)) {
                 if (_rectPlugin == null) _rectPlugin = new RectPlugin();
                 plugin = _rectPlugin;
             } else if (t1 == typeof(RectOffset)) {
@@ -145,67 +115,7 @@ namespace DG.Tweening.Plugins.Core
                 plugin = _ulongPlugin;
             }
 
-#if !WP81
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-#else
-            if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-            // WP8.1 fix tries
-//            if (plugin != null) {
-//                Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
-//                ABSTweenPlugin<T1, T2, TPlugOptions> p;
-//                ABSTweenPlugin<Vector3, Vector3, VectorOptions> pExplicit;
-//                // Explicit casting to Vector3Plugin
-//                try {
-//                    pExplicit = (ABSTweenPlugin<Vector3, Vector3, VectorOptions>)plugin;
-//                    if (pExplicit != null) Debug.Log("- EXPLICIT CAST SUCCESS X");
-//                    p = pExplicit as ABSTweenPlugin<T1, T2, TPlugOptions>;
-//                    if (p != null) {
-//                        Debug.Log("- PLUGIN SUCCESS X");
-//                        return p;
-//                    }
-//                } catch (Exception e) {
-//                    Debug.Log("- PLUGIN FAIL X > " + e.Message);
-//                }
-//                // More regular ways
-//                try {
-//                    p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
-//                    if (p != null) {
-//                        Debug.Log("- PLUGIN SUCCESS A");
-//                        return p;
-//                    }
-//                } catch (Exception e) {
-//                    Debug.Log("- PLUGIN FAIL A > " + e.Message);
-//                }
-//                try {
-//                    System.Object obj = (object)plugin;
-//                    p = obj as ABSTweenPlugin<T1, T2, TPlugOptions>;
-//                    if (p != null) {
-//                        Debug.Log("- PLUGIN SUCCESS A2");
-//                        return p;
-//                    }
-//                } catch (Exception e) {
-//                    Debug.Log("- PLUGIN FAIL A2 > " + e.Message);
-//                }
-//                try {
-//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
-//                    Debug.Log("- PLUGIN SUCCESS B");
-//                    return p;
-//                } catch (Exception e) {
-//                    Debug.Log("- PLUGIN FAIL B > " + e.Message);
-//                }
-//                try {
-//                    System.Object obj = (object)plugin;
-//                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)obj;
-//                    Debug.Log("- PLUGIN SUCCESS B2");
-//                    return p;
-//                } catch (Exception e) {
-//                    Debug.Log("- PLUGIN FAIL B2 > " + e.Message);
-//                }
-//                return null;
-//            }
-//            Debug.Log("PLUGIN NOT FOUND");
-            // WP8.1 fix tries END
-#endif
 
             return null;
         }

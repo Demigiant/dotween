@@ -34,9 +34,9 @@
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP81|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
     <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE;WP81</DefineConstants>
+    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>1573</NoWarn>
@@ -71,13 +71,13 @@
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
-    <Compile Include="Core\Surrogates\ColorSurrogate.cs" />
-    <Compile Include="Core\Surrogates\QuaternionSurrogate.cs" />
-    <Compile Include="Core\Surrogates\Vector2Surrogate.cs" />
-    <Compile Include="Core\Surrogates\Vector3Surrogate.cs" />
+    <Compile Include="Core\Surrogates\ColorWrapper.cs" />
+    <Compile Include="Core\Surrogates\QuaternionWrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector2Wrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector3Wrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector4Wrapper.cs" />
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\Utils.cs" />
-    <Compile Include="Core\Surrogates\Vector4Surrogate.cs" />
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />
@@ -86,15 +86,15 @@
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
-    <Compile Include="Plugins\ColorSurrogatePlugin.cs" />
+    <Compile Include="Plugins\ColorWrapperPlugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
     <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
-    <Compile Include="Plugins\QuaternionSurrogatePlugin.cs" />
+    <Compile Include="Plugins\QuaternionWrapperPlugin.cs" />
     <Compile Include="Plugins\UlongPlugin.cs" />
-    <Compile Include="Plugins\Vector2SurrogatePlugin.cs" />
+    <Compile Include="Plugins\Vector2WrapperPlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
     <Compile Include="Plugins\Core\ITPlugin.cs" />
     <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
@@ -103,8 +103,8 @@
     <Compile Include="Plugins\Core\PathCore\LinearDecoder.cs" />
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
-    <Compile Include="Plugins\Vector3SurrogatePlugin.cs" />
-    <Compile Include="Plugins\Vector4SurrogatePlugin.cs" />
+    <Compile Include="Plugins\Vector3WrapperPlugin.cs" />
+    <Compile Include="Plugins\Vector4WrapperPlugin.cs" />
     <Compile Include="RotateMode.cs" />
     <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />

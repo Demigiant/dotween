@@ -34,9 +34,9 @@
     <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP81|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
     <OutputPath>..\bin\Editor\</OutputPath>
-    <DefineConstants>TRACE;WP81</DefineConstants>
+    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
     <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>1591</NoWarn>

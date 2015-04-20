@@ -4,12 +4,7 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-#if WP81
-using DG.Tweening.Core.Surrogates;
-#endif
 using DG.Tweening.Core;
-using DG.Tweening.Core.Enums;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening
@@ -49,8 +44,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMove(this Rigidbody2D target, Vector2 endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x=> target.MovePosition(x), endValue, duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x=> target.MovePosition(x.value), endValue, duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, endValue, duration)
 #endif
@@ -63,8 +58,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveX(this Rigidbody2D target, float endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector2(endValue, 0), duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector2(endValue, 0), duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue, 0), duration)
 #endif
@@ -77,8 +72,8 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DOMoveY(this Rigidbody2D target, float endValue, float duration, bool snapping = false)
         {
-#if WP81
-            return DOTween.To(() => target.position, x => target.MovePosition(x), new Vector2(0, endValue), duration)
+#if COMPATIBLE
+            return DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector2(0, endValue), duration)
 #else
             return DOTween.To(() => target.position, target.MovePosition, new Vector2(0, endValue), duration)
 #endif
@@ -108,13 +103,13 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this SpriteRenderer target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
-#if WP81
-            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
-#else
             Color to = new Color(0, 0, 0, 0);
-#endif
             return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
                 Color diff = x - to;
+#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)

@@ -1,4 +1,4 @@
-﻿#if !WP81
+﻿#if !COMPATIBLE
 // Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2014/07/10 16:53
 // 

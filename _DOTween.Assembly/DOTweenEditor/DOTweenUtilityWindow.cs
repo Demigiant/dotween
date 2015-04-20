@@ -80,8 +80,8 @@ namespace DG.DOTweenEditor
 
         void OnEnable()
         {
-#if WP81
-            _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug WP8.1 build]" : " [Release WP8.1 build]");
+#if COMPATIBLE
+            _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug Compatibility build]" : " [Release Compatibility build]");
 #else
             _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug build]" : " [Release build]");
 #endif
