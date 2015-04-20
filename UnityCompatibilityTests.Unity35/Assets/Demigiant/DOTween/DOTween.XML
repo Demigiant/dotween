@@ -1206,22 +1206,6 @@
             <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
             <param name="duration">The duration of the tween</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableFadeBy(UnityEngine.Material,System.Single,System.Single)">
-            <summary>Tweens a Material's alpha BY the given value (as if you chained a <code>SetRelative</code>),
-            in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
-            instead than fight each other as multiple DOFade would do.
-            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
-            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableFadeBy(UnityEngine.Material,System.Single,System.String,System.Single)">
-            <summary>Tweens a Material's named alpha property BY the given value (as if you chained a <code>SetRelative</code>),
-            in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
-            instead than fight each other as multiple DOFade would do.
-            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
-            <param name="byValue">The value to tween by</param>
-            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
-            <param name="duration">The duration of the tween</param>
-        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableMoveBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Boolean)">
             <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
             in a way that allows other DOBlendableMove tweens to work together on the same target,

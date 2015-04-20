@@ -770,44 +770,6 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
         }
 
-        /// <summary>Tweens a Material's alpha BY the given value (as if you chained a <code>SetRelative</code>),
-        /// in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
-        /// instead than fight each other as multiple DOFade would do.
-        /// Also stores the Material as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOBlendableFadeBy(this Material target, float byValue, float duration)
-        {
-            Color to = new Color(0, 0, 0, 0);
-            return DOTween.To(() => to, x => {
-                Color diff = x - to;
-                to.a = x.a;
-                target.color += diff;
-            }, new Color(0, 0, 0, byValue), duration)
-                .Blendable().SetTarget(target);
-        }
-        /// <summary>Tweens a Material's named alpha property BY the given value (as if you chained a <code>SetRelative</code>),
-        /// in a way that allows other DOBlendableFadeBy tweens to work together on the same target,
-        /// instead than fight each other as multiple DOFade would do.
-        /// Also stores the Material as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="byValue">The value to tween by</param>
-        /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
-        /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOBlendableFadeBy(this Material target, float byValue, string property, float duration)
-        {
-            if (!target.HasProperty(property)) {
-                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
-                return null;
-            }
-
-            Color to = new Color(0, 0, 0, 0);
-            return DOTween.To(() => to, x => {
-                Color diff = x - to;
-                to.a = x.a;
-                target.SetColor(property, target.GetColor(property) + diff);
-            }, new Color(0, 0, 0, byValue), duration)
-                .Blendable().SetTarget(target);
-        }
-
         #endregion
 
         #region Transform
