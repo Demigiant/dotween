@@ -717,7 +717,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Light target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;
@@ -738,7 +742,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Material target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;
@@ -761,7 +769,11 @@ namespace DG.Tweening
             }
 
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;

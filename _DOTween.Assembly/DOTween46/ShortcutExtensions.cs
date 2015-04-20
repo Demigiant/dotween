@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if WP81
+using DG.Tweening.Core.Surrogates;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -257,7 +260,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Graphic target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;
@@ -278,7 +285,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Image target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;
@@ -299,7 +310,11 @@ namespace DG.Tweening
         public static Tweener DOBlendableColor(this Text target, Color endValue, float duration)
         {
             endValue = endValue - target.color;
+#if WP81
+            ColorSurrogate to = new ColorSurrogate(0, 0, 0, 0);
+#else
             Color to = new Color(0, 0, 0, 0);
+#endif
             return DOTween.To(() => to, x => {
                 Color diff = x - to;
                 to = x;

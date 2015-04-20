@@ -6,6 +6,7 @@
 
 using UnityEngine;
 
+#pragma warning disable 1591
 namespace DG.Tweening.Core.Easing
 {
     /// <summary>

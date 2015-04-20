@@ -27,7 +27,6 @@ public class BlendableTweens : BrainBase
 
 		Vector3 to;
 		Color toCol;
-		float toFloat;
 		float duration;
 		int loops;
 
@@ -99,31 +98,6 @@ public class BlendableTweens : BrainBase
         	loops = repeatBlendable ? 3 : 1;
         	if (fromBlendable) sprites[0].DOBlendableColor(toCol, duration).From().SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
         	else sprites[0].DOBlendableColor(toCol, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
-        }
-
-        // Fade
-        duration = 3;
-        toFloat = -1;
-	    if (from) renderers[1].material.DOBlendableFadeBy(toFloat, duration).From().SetEase(ease).SetAutoKill(false).Pause();
-	    else renderers[1].material.DOBlendableFadeBy(toFloat, duration).SetEase(ease).SetAutoKill(false).Pause();
-        if (addBlendable) {
-        	toFloat = 1;
-        	duration = repeatBlendable ? 1 : 3;
-        	loops = repeatBlendable ? 3 : 1;
-        	if (fromBlendable) renderers[1].material.DOBlendableFadeBy(toFloat, duration).From().SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
-        	else renderers[1].material.DOBlendableFadeBy(toFloat, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
-        }
-
-        duration = 3;
-        toFloat = -1;
-	    if (from) sprites[1].DOBlendableFadeBy(toFloat, duration).From().SetEase(ease).SetAutoKill(false).Pause();
-	    else sprites[1].DOBlendableFadeBy(toFloat, duration).SetEase(ease).SetAutoKill(false).Pause();
-        if (addBlendable) {
-        	toFloat = 1;
-        	duration = repeatBlendable ? 1 : 3;
-        	loops = repeatBlendable ? 3 : 1;
-        	if (fromBlendable) sprites[1].DOBlendableFadeBy(toFloat, duration).From().SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
-        	else sprites[1].DOBlendableFadeBy(toFloat, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetAutoKill(false).Pause();
         }
 	}
 
