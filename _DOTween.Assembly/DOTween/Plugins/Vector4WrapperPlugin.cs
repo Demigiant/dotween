@@ -129,7 +129,7 @@ namespace DG.Tweening.Plugins
                     startValue.value.z = (float)Math.Round(startValue.value.z);
                     startValue.value.w = (float)Math.Round(startValue.value.w);
                 }
-                setter(startValue);
+                setter(startValue.value);
                 break;
             }
         }

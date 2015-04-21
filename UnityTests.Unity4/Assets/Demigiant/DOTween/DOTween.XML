@@ -532,39 +532,39 @@
             <summary>Options for float tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector2Wrapper,DG.Tweening.Core.Surrogates.Vector2Wrapper,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector2 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector2Wrapper,DG.Tweening.Core.Surrogates.Vector2Wrapper,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector2 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector3Wrapper,DG.Tweening.Core.Surrogates.Vector3Wrapper,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector3 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector3Wrapper,DG.Tweening.Core.Surrogates.Vector3Wrapper,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector3 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector4Wrapper,DG.Tweening.Core.Surrogates.Vector4Wrapper,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector4,UnityEngine.Vector4,DG.Tweening.Plugins.Options.VectorOptions},System.Boolean)">
             <summary>Options for Vector4 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.Vector4Wrapper,DG.Tweening.Core.Surrogates.Vector4Wrapper,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector4,UnityEngine.Vector4,DG.Tweening.Plugins.Options.VectorOptions},DG.Tweening.AxisConstraint,System.Boolean)">
             <summary>Options for Vector4 tweens</summary>
             <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.QuaternionWrapper,DG.Tweening.Core.Surrogates.Vector3Wrapper,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Vector3,DG.Tweening.Plugins.Options.QuaternionOptions},System.Boolean)">
             <summary>Options for Quaternion tweens</summary>
             <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
             If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{DG.Tweening.Core.Surrogates.ColorWrapper,DG.Tweening.Core.Surrogates.ColorWrapper,DG.Tweening.Plugins.Options.ColorOptions},System.Boolean)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Color,UnityEngine.Color,DG.Tweening.Plugins.Options.ColorOptions},System.Boolean)">
             <summary>Options for Color tweens</summary>
             <param name="alphaOnly">If TRUE only the alpha value of the color will be tweened</param>
         </member>
@@ -1507,7 +1507,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector2Wrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector2Wrapper},UnityEngine.Vector2,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector2},DG.Tweening.Core.DOSetter{UnityEngine.Vector2},UnityEngine.Vector2,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1515,7 +1515,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector3Wrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector3Wrapper},UnityEngine.Vector3,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector3},DG.Tweening.Core.DOSetter{UnityEngine.Vector3},UnityEngine.Vector3,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1523,7 +1523,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector4Wrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector4Wrapper},UnityEngine.Vector4,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Vector4},DG.Tweening.Core.DOSetter{UnityEngine.Vector4},UnityEngine.Vector4,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1531,7 +1531,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.QuaternionWrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.QuaternionWrapper},UnityEngine.Vector3,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},UnityEngine.Vector3,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1539,7 +1539,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.ColorWrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.ColorWrapper},UnityEngine.Color,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{UnityEngine.Color},DG.Tweening.Core.DOSetter{UnityEngine.Color},UnityEngine.Color,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1574,7 +1574,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.ToAxis(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.Vector3Wrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.Vector3Wrapper},System.Single,System.Single,DG.Tweening.AxisConstraint)">
+        <member name="M:DG.Tweening.DOTween.ToAxis(DG.Tweening.Core.DOGetter{UnityEngine.Vector3},DG.Tweening.Core.DOSetter{UnityEngine.Vector3},System.Single,System.Single,DG.Tweening.AxisConstraint)">
             <summary>Tweens only one axis of a Vector3 to the given value using default plugins.</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1583,7 +1583,7 @@
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
             <param name="axisConstraint">The axis to tween</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.ToAlpha(DG.Tweening.Core.DOGetter{DG.Tweening.Core.Surrogates.ColorWrapper},DG.Tweening.Core.DOSetter{DG.Tweening.Core.Surrogates.ColorWrapper},System.Single,System.Single)">
+        <member name="M:DG.Tweening.DOTween.ToAlpha(DG.Tweening.Core.DOGetter{UnityEngine.Color},DG.Tweening.Core.DOSetter{UnityEngine.Color},System.Single,System.Single)">
             <summary>Tweens only the alpha of a Color to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
