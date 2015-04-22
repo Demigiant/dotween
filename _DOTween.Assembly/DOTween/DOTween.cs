@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.605";
+        public static readonly string Version = "1.0.606";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -843,6 +843,8 @@ namespace DG.Tweening
         /// </summary>
         public static List<Tween> TweensById(object id)
         {
+            if (id == null) return null;
+
             return TweenManager.GetTweensById(id);
         }
 
