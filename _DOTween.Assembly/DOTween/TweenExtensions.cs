@@ -455,6 +455,17 @@ namespace DG.Tweening
             return t.isComplete;
         }
 
+        /// <summary>Returns TRUE if this tween has been initialized</summary>
+        public static bool IsInitialized(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return false;
+            }
+
+            return t.startupDone;
+        }
+
         /// <summary>Returns TRUE if this tween is playing</summary>
         public static bool IsPlaying(this Tween t)
         {
