@@ -91,6 +91,26 @@
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Shakes a RectTransform's anchoredPosition with the given values.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="duration">The duration of the tween</param>
+            <param name="strength">The shake strength</param>
+            <param name="vibrato">Indicates how much will the shake vibrate</param>
+            <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+            Setting it to 0 will shake along a single direction.</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean)">
+            <summary>Shakes a RectTransform's anchoredPosition with the given values.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="duration">The duration of the tween</param>
+            <param name="strength">The shake strength on each axis</param>
+            <param name="vibrato">Indicates how much will the shake vibrate</param>
+            <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+            Setting it to 0 will shake along a single direction.</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOValue(UnityEngine.UI.Slider,System.Single,System.Single,System.Boolean)">
             <summary>Tweens a Slider's value to the given value.
             Also stores the Slider as the tween's target so it can be used for filtered operations</summary>

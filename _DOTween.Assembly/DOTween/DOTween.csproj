@@ -154,6 +154,8 @@ set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween
 set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
 set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween
 set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
+set BinDirExtPluginsTests=ExternalPluginsTestsAndExamples.Unity5\Assets\Demigiant\DOTween
+set DestinationDirExtPluginsTests=$(SolutionDir)..\%25BinDirExtPluginsTests%25
 
 echo %25DestinationDir%25
 
@@ -179,7 +181,10 @@ echo Exporting Assembly to %25DestinationDirUnity5Tests%25
 echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirUnity5Tests%25 /Y /I /E
 
 echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
-echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E</PostBuildEvent>
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirExtPluginsTests%25
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirExtPluginsTests%25 /Y /I /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
