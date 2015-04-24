@@ -402,7 +402,7 @@ namespace DG.Tweening
         public static Sequence Append(this Sequence s, Tween t)
         {
             if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, s.duration);
             return s;
@@ -413,7 +413,7 @@ namespace DG.Tweening
         public static Sequence Prepend(this Sequence s, Tween t)
         {
             if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoPrepend(s, t);
             return s;
@@ -423,7 +423,7 @@ namespace DG.Tweening
         public static Sequence Join(this Sequence s, Tween t)
         {
             if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, s.lastTweenInsertTime);
             return s;
@@ -436,7 +436,7 @@ namespace DG.Tweening
         public static Sequence Insert(this Sequence s, float atPosition, Tween t)
         {
             if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, atPosition);
             return s;
