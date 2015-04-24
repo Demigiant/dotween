@@ -31,7 +31,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Complete(t);
@@ -45,7 +45,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Flip(t);
@@ -59,7 +59,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.ForceInit(t);
@@ -76,7 +76,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             if (to < 0) to = 0;
@@ -92,7 +92,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             if (complete) {
@@ -114,7 +114,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return t;
             }
 
             TweenManager.Pause(t);
@@ -129,7 +129,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return t;
             }
 
             TweenManager.Play(t);
@@ -144,7 +144,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.PlayBackwards(t);
@@ -158,7 +158,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.PlayForward(t);
@@ -173,7 +173,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Restart(t, includeDelay);
@@ -188,7 +188,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Rewind(t, includeDelay);
@@ -202,7 +202,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.TogglePause(t);
@@ -225,7 +225,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;
@@ -491,7 +491,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return -1;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return -1;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return -1;
             }
 
             TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;
