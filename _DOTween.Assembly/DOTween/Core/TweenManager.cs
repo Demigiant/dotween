@@ -538,7 +538,8 @@ namespace DG.Tweening.Core
             t.delayComplete = true;
             t.elapsedDelay = t.delay;
 //            int toCompletedLoops = (int)(to / t.duration); // With very small floats creates floating points imprecisions
-            int toCompletedLoops = Mathf.FloorToInt(to / t.duration); // Takes care of floating points imprecision ((int)Math.Floot doesn't suffice)
+//            int toCompletedLoops = Mathf.FloorToInt(to / t.duration); // Still generates imprecision with some values (like 0.4)
+            int toCompletedLoops = (int)((decimal)to / (decimal)t.duration); // Takes care of floating points imprecision
             float toPosition = to % t.duration;
             if (t.loops != -1 && toCompletedLoops >= t.loops) {
                 toCompletedLoops = t.loops;
