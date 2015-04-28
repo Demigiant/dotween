@@ -676,6 +676,7 @@ namespace DG.Tweening
                 .SetTarget(target);
 
             t.plugOptions.mode = pathMode;
+            t.plugOptions.useLocalPosition = true;
             return t;
         }
         // Used by path editor when creating the actual tween, so it can pass a pre-compiled path
@@ -697,6 +698,7 @@ namespace DG.Tweening
                 .SetTarget(target);
 
             t.plugOptions.mode = pathMode;
+            t.plugOptions.useLocalPosition = true;
             return t;
         }
 
