@@ -1,29 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using DG.Tweening.Core;
 
 public class NestedSequencesCallbacks : BrainBase
 {
-	public Transform target;
-	int count;
+	public float[] durations = new[] {
+		0.2f, 0.2f, 5.16f, 3f, 0.4f
+	};
 
 	void Start()
 	{
-		int loops = 10;
-		DOTween.Sequence()
-			// .Append(DOTween.Sequence()
-			// 	.InsertCallback(0.0000001f, ()=> Debug.Log("Nested Sequence callback"))
-			// 	// .AppendInterval(0.5f)
-			// 	.SetLoops(10)
-			// )
-			.Append(
-				target.DOMoveX(3, 0.0000001f)
-					.SetLoops(loops)
-					.OnStepComplete(()=> {
-						count++;
-						Debug.Log("Nested Tween callback " + count + "/" + loops);
-					})
-			)
-			.OnComplete(()=> Debug.Log("Sequence complete"));
+		Sequence timeline = DOTween.Sequence().OnComplete(()=> Debug.Log("timeline complete"));
+		DOGetter<int> emptyGetter = () => 0;
+		DOSetter<int> emptySetter = value => {};
+		
+		int count = durations.Length;
+		for (int i = 0; i < count; ++i) {
+			int id = i;
+			float duration = durations[i];
+			timeline.Append(
+				DOTween.To(emptyGetter, emptySetter, 0, duration)
+					.OnComplete(()=> Debug.Log(string.Format("step {0}/{1} ({2})", id, (count - 1), duration)))
+			);
+		}
 	}
 }
