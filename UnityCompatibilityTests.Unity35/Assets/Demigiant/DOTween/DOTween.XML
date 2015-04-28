@@ -390,9 +390,13 @@
             <summary>Sets the update type to UpdateType.Normal and lets you choose if it should be independent from Unity's Time.timeScale</summary>
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType,System.Boolean)">
-            <summary>Sets the type of update (default or independent) for the tween</summary>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType)">
+            <summary>Sets the type of update for the tween</summary>
             <param name="updateType">The type of update (defalt: UpdateType.Normal)</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType,System.Boolean)">
+            <summary>Sets the type of update for the tween and lets you choose if it should be independent from Unity's Time.timeScale</summary>
+            <param name="updateType">The type of update</param>
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnStart``1(``0,DG.Tweening.TweenCallback)">
