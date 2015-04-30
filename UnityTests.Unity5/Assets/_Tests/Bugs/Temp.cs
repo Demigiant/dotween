@@ -6,16 +6,18 @@ using System.Collections;
 
 public class Temp : BrainBase
 {
-	public Transform[] targets;
+	public Transform target;
+	public bool independentUpdate = true;
 
 	void Start()
 	{
-		for (int i = 0; i < targets.Length; ++i) {
-            Transform t = targets[i];
-            Tweener tween = t.DOLocalMove(Vector3.zero, 1).SetLoops(4, LoopType.Restart).SetEase(Ease.Linear);
-            float time = ((i+1) / (float)targets.Length);
-            t.GetComponentInChildren<TextMesh>().text = i + "-" + time;
-            tween.Goto(time, false);
-        }
+		target.DORotate(new Vector3(0, 180, 0), 2, RotateMode.Fast).SetUpdate(independentUpdate).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
+	}
+
+	void OnGUI()
+	{
+		if (GUILayout.Button("VSync 0")) QualitySettings.vSyncCount = 0;
+		if (GUILayout.Button("VSync 1")) QualitySettings.vSyncCount = 1;
+		if (GUILayout.Button("VSync 2")) QualitySettings.vSyncCount = 2;
 	}
 }

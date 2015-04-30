@@ -679,7 +679,7 @@ namespace DG.Tweening.Core
         }
 
         // Returns all active tweens with the given id
-        internal static List<Tween> GetTweensById(object id)
+        internal static List<Tween> GetTweensById(object id, bool playingOnly)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
@@ -688,14 +688,15 @@ namespace DG.Tweening.Core
             List<Tween> ts = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t != null && Equals(id, t.id)) ts.Add(t);
+                if (t == null || !Equals(id, t.id)) continue;
+                if (!playingOnly || t.isPlaying) ts.Add(t);
             }
             if (ts.Count > 0) return ts;
             return null;
         }
 
         // Returns all active tweens with the given target
-        internal static List<Tween> GetTweensByTarget(object target)
+        internal static List<Tween> GetTweensByTarget(object target, bool playingOnly)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
@@ -704,7 +705,8 @@ namespace DG.Tweening.Core
             List<Tween> ts = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t.target == target) ts.Add(t);
+                if (t.target != target) continue;
+                if (!playingOnly || t.isPlaying) ts.Add(t);
             }
             if (ts.Count > 0) return ts;
             return null;

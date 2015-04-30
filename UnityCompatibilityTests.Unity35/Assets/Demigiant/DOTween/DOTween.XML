@@ -1787,18 +1787,20 @@
             <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
             </summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.TweensById(System.Object)">
+        <member name="M:DG.Tweening.DOTween.TweensById(System.Object,System.Boolean)">
             <summary>
             Returns a list of all active tweens with the given id.
             Returns NULL if there are no active tweens with the given id.
             <para>Beware: each time you call this method a new list is generated</para>
+            <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
             </summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.TweensByTarget(System.Object)">
+        <member name="M:DG.Tweening.DOTween.TweensByTarget(System.Object,System.Boolean)">
             <summary>
             Returns a list of all active tweens with the given target.
             Returns NULL if there are no active tweens with the given target.
             <para>Beware: each time you call this method a new list is generated</para>
+            <param name="playingOnly">If TRUE returns only the tweens with the given target that are currently playing</param>
             </summary>
         </member>
         <member name="P:DG.Tweening.DOTween.logBehaviour">

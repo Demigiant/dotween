@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.640";
+        public static readonly string Version = "1.0.645";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -840,22 +840,24 @@ namespace DG.Tweening
         /// Returns a list of all active tweens with the given id.
         /// Returns NULL if there are no active tweens with the given id.
         /// <para>Beware: each time you call this method a new list is generated</para>
+        /// <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
         /// </summary>
-        public static List<Tween> TweensById(object id)
+        public static List<Tween> TweensById(object id, bool playingOnly = false)
         {
             if (id == null) return null;
 
-            return TweenManager.GetTweensById(id);
+            return TweenManager.GetTweensById(id, playingOnly);
         }
 
         /// <summary>
         /// Returns a list of all active tweens with the given target.
         /// Returns NULL if there are no active tweens with the given target.
         /// <para>Beware: each time you call this method a new list is generated</para>
+        /// <param name="playingOnly">If TRUE returns only the tweens with the given target that are currently playing</param>
         /// </summary>
-        public static List<Tween> TweensByTarget(object target)
+        public static List<Tween> TweensByTarget(object target, bool playingOnly = false)
         {
-            return TweenManager.GetTweensByTarget(target);
+            return TweenManager.GetTweensByTarget(target, playingOnly);
         }
 
         #endregion

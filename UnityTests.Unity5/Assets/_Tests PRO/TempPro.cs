@@ -4,9 +4,10 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	void OnMouseDown()
+	public float timeScale = 0;
+
+	void Start()
 	{
-		Debug.Log("DOWN");
-		this.GetComponent<DOTweenPath>().DOPlay();
+		Time.timeScale = timeScale;
 	}
 }
