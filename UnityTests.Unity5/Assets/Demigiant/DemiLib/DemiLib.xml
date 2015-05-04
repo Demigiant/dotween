@@ -1,33 +1,33 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>DemiGUI</name>
+        <name>DemiLib</name>
     </assembly>
     <members>
-        <member name="T:DG.DemiGUI.DeSkinColor">
+        <member name="T:DG.DemiLib.DeSkinColor">
             <summary>
             Contains both free and pro skins color variations,
             and automatically returns the correct one when converted to Color
             </summary>
         </member>
-        <member name="T:DG.DemiGUI.DeColorPalette">
+        <member name="T:DG.DemiLib.DeColorPalette">
             <summary>
-            Stores a color palette, which can be passed to default DeGUI layouts when calling <code>DeGUIManager.BeginGUI</code>,
-            and changed at any time by calling <code>DeGUIManager.ChangePalette</code>.
+            Stores a color palette, which can be passed to default DeGUI layouts when calling <code>DeGUI.BeginGUI</code>,
+            and changed at any time by calling <code>DeGUI.ChangePalette</code>.
             You can inherit from this class to create custom color palettes with more color options.
             </summary>
         </member>
-        <member name="T:DG.DemiGUI.DeColorBG">
+        <member name="T:DG.DemiLib.DeColorBG">
             <summary>
             Background colors
             </summary>
         </member>
-        <member name="T:DG.DemiGUI.DeColorContent">
+        <member name="T:DG.DemiLib.DeColorContent">
             <summary>
             Content colors
             </summary>
         </member>
-        <member name="F:DG.DemiGUI.Core.GUIUtils.isProSkin">
+        <member name="F:DG.DemiLib.Core.GUIUtils.isProSkin">
             <summary>
             Set when calling <code>DeGUIManage.BeginGUI</code>
             </summary>

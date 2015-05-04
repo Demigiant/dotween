@@ -168,7 +168,7 @@ namespace DG.DOTweenEditor.Core
 
                 logoIconStyle = new GUIStyle(GUI.skin.box);
                 logoIconStyle.active.background = logoIconStyle.normal.background = null;
-                logoIconStyle.margin = new RectOffset(0, 0, 4, 4);
+                logoIconStyle.margin = new RectOffset(0, 0, 0, 0);
                 logoIconStyle.padding = new RectOffset(0, 0, 0, 0);
 
                 //
@@ -179,7 +179,7 @@ namespace DG.DOTweenEditor.Core
 
                 sideLogoIconBoldLabelStyle = new GUIStyle(boldLabelStyle);
                 sideLogoIconBoldLabelStyle.alignment = TextAnchor.MiddleLeft;
-                sideLogoIconBoldLabelStyle.padding.top = 6;
+                sideLogoIconBoldLabelStyle.padding.top = 2;
 
                 wordWrapTextArea = new GUIStyle(GUI.skin.textArea);
                 wordWrapTextArea.wordWrap = true;

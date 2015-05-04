@@ -7,17 +7,28 @@ using System.Collections;
 public class Temp : BrainBase
 {
 	public Transform target;
-	public bool independentUpdate = true;
+	Vector3 orPos;
 
 	void Start()
 	{
-		target.DORotate(new Vector3(0, 180, 0), 2, RotateMode.Fast).SetUpdate(independentUpdate).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental);
+		orPos = target.position;
 	}
 
 	void OnGUI()
 	{
-		if (GUILayout.Button("VSync 0")) QualitySettings.vSyncCount = 0;
-		if (GUILayout.Button("VSync 1")) QualitySettings.vSyncCount = 1;
-		if (GUILayout.Button("VSync 2")) QualitySettings.vSyncCount = 2;
+		if (GUILayout.Button("Default")) CreateTween();
+		if (GUILayout.Button("0")) CreateTween(0);
+		if (GUILayout.Button("1")) CreateTween(1);
+		if (GUILayout.Button("2")) CreateTween(2);
+		if (GUILayout.Button("3")) CreateTween(3);
+	}
+
+	void CreateTween(float amplitude = -1)
+	{
+		DOTween.KillAll();
+
+		target.position = orPos;
+		if (amplitude > 0) target.DOMoveX(3, 2).SetEase(Ease.OutElastic, amplitude);
+		else target.DOMoveX(3, 2).SetEase(Ease.OutElastic);
 	}
 }
