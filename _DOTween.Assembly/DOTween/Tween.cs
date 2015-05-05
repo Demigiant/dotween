@@ -234,7 +234,7 @@ namespace DG.Tweening
             if (t.ApplyTween(prevPosition, prevCompletedLoops, newCompletedSteps, useInversePosition, updateMode)) return true;
 
             // Additional callbacks
-            if (t.onUpdate != null) {
+            if (t.onUpdate != null && updateMode != UpdateMode.IgnoreOnUpdate) {
                 OnTweenCallback(t.onUpdate);
             }
             if (t.position <= 0 && t.completedLoops <= 0 && !wasRewinded && t.onRewind != null) {

@@ -170,7 +170,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
@@ -208,7 +208,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
@@ -235,7 +235,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
