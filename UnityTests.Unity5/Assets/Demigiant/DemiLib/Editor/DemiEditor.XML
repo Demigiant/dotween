@@ -19,6 +19,11 @@
             Default style palette
             </summary>
         </member>
+        <member name="F:DG.DemiEditor.DeGUI.isProSkin">
+            <summary>
+            TRUE if we're using the PRO skin
+            </summary>
+        </member>
         <member name="M:DG.DemiEditor.DeGUI.BeginGUI(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
             <summary>
             Call this at the beginning of GUI methods

@@ -4,10 +4,10 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public float timeScale = 0;
+	public DOTweenPath tweenP;
 
 	void Start()
 	{
-		Time.timeScale = timeScale;
+		Debug.Log(tweenP.GetTween().PathGetPoint(0.5f));
 	}
 }
