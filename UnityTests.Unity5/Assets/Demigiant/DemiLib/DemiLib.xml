@@ -4,10 +4,9 @@
         <name>DemiLib</name>
     </assembly>
     <members>
-        <member name="T:DG.DemiLib.DeSkinColor">
+        <member name="F:DG.DemiLib.Core.GUIUtils.isProSkin">
             <summary>
-            Contains both free and pro skins color variations,
-            and automatically returns the correct one when converted to Color
+            Set when calling <code>DeGUIManage.BeginGUI</code>
             </summary>
         </member>
         <member name="T:DG.DemiLib.DeColorPalette">
@@ -27,9 +26,10 @@
             Content colors
             </summary>
         </member>
-        <member name="F:DG.DemiLib.Core.GUIUtils.isProSkin">
+        <member name="T:DG.DemiLib.DeSkinColor">
             <summary>
-            Set when calling <code>DeGUIManage.BeginGUI</code>
+            Contains both free and pro skins color variations,
+            and automatically returns the correct one when converted to Color
             </summary>
         </member>
     </members>

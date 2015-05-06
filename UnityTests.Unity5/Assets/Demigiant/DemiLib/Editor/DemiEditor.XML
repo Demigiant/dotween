@@ -4,6 +4,16 @@
         <name>DemiEditor</name>
     </assembly>
     <members>
+        <member name="T:DG.DemiEditor.TextureExtensions">
+            <summary>
+            Texture extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.TextureExtensions.SetFormat(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
+            <summary>
+            Checks that the texture uses the correct import settings, and applies them if they're incorrect.
+            </summary>
+        </member>
         <member name="T:DG.DemiEditor.DeGUI">
             <summary>
             Global Demigiant GUI manager
@@ -35,6 +45,31 @@
             Changes the active palettes to the given ones
             (or resets them to the default ones if NULL)
             </summary>
+        </member>
+        <member name="T:DG.DemiEditor.AssemblyExtensions">
+            <summary>
+            Assembly extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.AssemblyExtensions.ADBDir(System.Reflection.Assembly)">
+            <summary>AssetDatabase path to the assembly directory, without final slash</summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeFileUtils">
+            <summary>
+            File utils
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlash">
+            <summary>Path slash for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlashToReplace">
+            <summary>Path slash to replace for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.PathSlash">
+            <summary>Current OS path slash</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.PathSlashToReplace">
+            <summary>Path slash to replace on current OS</summary>
         </member>
         <member name="T:DG.DemiEditor.DeStylePalette">
             <summary>
@@ -134,6 +169,16 @@
             Sets the margin of the style
             </summary>
         </member>
+        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginLeft(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the left margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginRight(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the right margin of the style
+            </summary>
+        </member>
         <member name="M:DG.DemiEditor.DeGUIExtensions.MarginTop(UnityEngine.GUIStyle,System.Int32)">
             <summary>
             Sets the top margin of the style
@@ -194,23 +239,6 @@
             Sets the stretchWidth property of the style
             </summary>
         </member>
-        <member name="T:DG.DemiEditor.DeFileUtils">
-            <summary>
-            File utils
-            </summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlash">
-            <summary>Path slash for AssetDatabase format</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlashToReplace">
-            <summary>Path slash to replace for AssetDatabase format</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlash">
-            <summary>Current OS path slash</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlashToReplace">
-            <summary>Path slash to replace on current OS</summary>
-        </member>
         <member name="T:DG.DemiEditor.DeGUILayout">
             <summary>
             GUILayout methods
@@ -228,6 +256,9 @@
         <member name="M:DG.DemiEditor.DeGUILayout.ColoredButton(UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
             <summary>Button that can be toggled on and off</summary>
             <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToolbarFoldoutButton(System.Boolean,System.String)">
+            <summary>Toolbar foldout button</summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,System.String,UnityEngine.GUILayoutOption[])">
             <summary>Button that can be toggled on and off</summary>
@@ -281,25 +312,22 @@
         <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
             <summary>A toolbar with a label</summary>
         </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginVBox(UnityEngine.GUIStyle)">
+            <summary>Vertical box layout with style and color options</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginVBox(System.Nullable{UnityEngine.Color},UnityEngine.GUIStyle)">
+            <summary>Vertical box layout with style and color options</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.EndVBox">
+            <summary>End vertical box layout</summary>
+        </member>
         <member name="M:DG.DemiEditor.DeGUILayout.HorizontalDivider(System.Nullable{UnityEngine.Color},System.Int32,System.Int32,System.Int32)">
             <summary>Divider</summary>
         </member>
-        <member name="T:DG.DemiEditor.AssemblyExtensions">
+        <member name="T:DG.DemiEditor.DeSkinStyle">
             <summary>
-            Assembly extensions
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.AssemblyExtensions.ADBDir(System.Reflection.Assembly)">
-            <summary>AssetDatabase path to the assembly, without final slash</summary>
-        </member>
-        <member name="T:DG.DemiEditor.TextureExtensions">
-            <summary>
-            Texture extensions
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.TextureExtensions.SetFormat(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
-            <summary>
-            Checks that the texture uses the correct import settings, and applies them if they're incorrect.
+            Contains both free and pro skins GUIStyle variations,
+            and automatically returns the correct one when converted to GUIStyle
             </summary>
         </member>
     </members>

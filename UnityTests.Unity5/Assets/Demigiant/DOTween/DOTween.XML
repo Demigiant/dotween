@@ -781,12 +781,12 @@
         </member>
         <member name="M:DG.Tweening.TweenExtensions.PathGetPoint(DG.Tweening.Tween,System.Single)">
             <summary>
-            Returns the a point on a path (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized),
-            based on the given path percentage (0 to 1).
+            Returns a point on a path based on the given path percentage
+            (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized)
             A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
             You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
             </summary>
-            <param name="pathPercentage">Percentage of the path on which to get the point (0 to 1)</param>
+            <param name="pathPercentage">Percentage of the path (0 to 1) on which to get the point</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.PathLength(DG.Tweening.Tween)">
             <summary>

@@ -141,6 +141,27 @@ namespace DG.DOTweenEditor.Core
             return source;
         }
 
+        /// <summary>
+        /// Full path for the given loaded assembly, assembly file included
+        /// </summary>
+        public static string GetAssemblyFilePath(Assembly assembly)
+        {
+
+            string codeBase = assembly.CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            if (path.Substring(path.Length - 3) == "dll") return path;
+
+//            string codeBase = assembly.CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            string path = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string lastChar = path.Substring(path.Length - 4);
+//            if (lastChar == "dll") return path;
+
+            // Invalid path, use Location
+            return Path.GetFullPath(assembly.Location);
+        }
+
         // ===================================================================================
         // METHODS ---------------------------------------------------------------------------
 
@@ -161,18 +182,20 @@ namespace DG.DOTweenEditor.Core
         // AssetDatabase formatted path to DOTween's Editor folder
         static void StoreEditorADBDir()
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            string fullPath = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string adbPath = fullPath.Substring(Application.dataPath.Length + 1);
             _editorADBDir = adbPath.Replace("\\", "/") + "/";
         }
 
         static void StoreDOTweenDirs()
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            _dotweenDir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            _dotweenDir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
             _dotweenDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator) + 1);
 
