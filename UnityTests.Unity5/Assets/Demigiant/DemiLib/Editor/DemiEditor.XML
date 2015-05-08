@@ -46,6 +46,131 @@
             (or resets them to the default ones if NULL)
             </summary>
         </member>
+        <member name="T:DG.DemiEditor.GUIStyleExtensions">
+            <summary>
+            GUI extension methods
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Clone(UnityEngine.GUIStyle,System.Object[])">
+            <summary>
+            Clones the style and adds the given formats to it
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Add(UnityEngine.GUIStyle,System.Object[])">
+            <summary>
+            Adds the given formats to the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Border(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the border of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Border(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the border of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Background(UnityEngine.GUIStyle,UnityEngine.Texture2D)">
+            <summary>
+            Sets the background of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffset(UnityEngine.GUIStyle,UnityEngine.Vector2)">
+            <summary>
+            Sets the contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffsetX(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the X contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffsetY(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the Y contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Margin(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Margin(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginLeft(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the left margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginRight(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the right margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginTop(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the top margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginBottom(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the bottom margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Padding(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Padding(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingLeft(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the left padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingRight(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the right padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingTop(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the top padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingBottom(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the bottom padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Width(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the Y fixedWidth of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Height(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the fixedHeight of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.StretchHeight(UnityEngine.GUIStyle,System.Boolean)">
+            <summary>
+            Sets the stretchHeight property of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.StretchWidth(UnityEngine.GUIStyle,System.Boolean)">
+            <summary>
+            Sets the stretchWidth property of the style
+            </summary>
+        </member>
         <member name="T:DG.DemiEditor.AssemblyExtensions">
             <summary>
             Assembly extensions
@@ -112,131 +237,6 @@
         <member name="M:DG.DemiEditor.Misc.Init">
             <summary>
             Needs to be overridden in order to initialize new styles added from inherited classes
-            </summary>
-        </member>
-        <member name="T:DG.DemiEditor.DeGUIExtensions">
-            <summary>
-            GUI extension methods
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Clone(UnityEngine.GUIStyle,System.Object[])">
-            <summary>
-            Clones the style and adds the given formats to it
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Add(UnityEngine.GUIStyle,System.Object[])">
-            <summary>
-            Adds the given formats to the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Border(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
-            <summary>
-            Sets the border of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Border(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Sets the border of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Background(UnityEngine.GUIStyle,UnityEngine.Texture2D)">
-            <summary>
-            Sets the background of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.ContentOffset(UnityEngine.GUIStyle,UnityEngine.Vector2)">
-            <summary>
-            Sets the contentOffset of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.ContentOffsetX(UnityEngine.GUIStyle,System.Single)">
-            <summary>
-            Sets the X contentOffset of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.ContentOffsetY(UnityEngine.GUIStyle,System.Single)">
-            <summary>
-            Sets the Y contentOffset of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Margin(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
-            <summary>
-            Sets the margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Margin(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Sets the margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginLeft(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the left margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginRight(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the right margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginTop(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the top margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.MarginBottom(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the bottom margin of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Padding(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
-            <summary>
-            Sets the padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Padding(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Sets the padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.PaddingLeft(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the left padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.PaddingRight(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the right padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.PaddingTop(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the top padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.PaddingBottom(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the bottom padding of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Width(UnityEngine.GUIStyle,System.Single)">
-            <summary>
-            Sets the Y fixedWidth of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.Height(UnityEngine.GUIStyle,System.Int32)">
-            <summary>
-            Sets the fixedHeight of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.StretchHeight(UnityEngine.GUIStyle,System.Boolean)">
-            <summary>
-            Sets the stretchHeight property of the style
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeGUIExtensions.StretchWidth(UnityEngine.GUIStyle,System.Boolean)">
-            <summary>
-            Sets the stretchWidth property of the style
             </summary>
         </member>
         <member name="T:DG.DemiEditor.DeGUILayout">

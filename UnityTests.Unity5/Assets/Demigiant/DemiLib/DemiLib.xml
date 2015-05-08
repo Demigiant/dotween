@@ -6,7 +6,7 @@
     <members>
         <member name="F:DG.DemiLib.Core.GUIUtils.isProSkin">
             <summary>
-            Set when calling <code>DeGUIManage.BeginGUI</code>
+            Set when calling <code>DeGUI.BeginGUI</code>
             </summary>
         </member>
         <member name="T:DG.DemiLib.DeColorPalette">
