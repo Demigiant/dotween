@@ -218,6 +218,50 @@ namespace DG.Tweening
             return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
         }
 
+        /// <summary>Tweens a Material's texture offset to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOOffset(this Material target, Vector2 endValue, float duration)
+        {
+            return DOTween.To(() => target.mainTextureOffset, x => target.mainTextureOffset = x, endValue, duration).SetTarget(target);
+        }
+        /// <summary>Tweens a Material's named texture offset property to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="property">The name of the material property to tween</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOOffset(this Material target, Vector2 endValue, string property, float duration)
+        {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
+            return DOTween.To(() => target.GetTextureOffset(property), x => target.SetTextureOffset(property, x), endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Material's texture scale to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOTiling(this Material target, Vector2 endValue, float duration)
+        {
+            return DOTween.To(() => target.mainTextureScale, x => target.mainTextureScale = x, endValue, duration).SetTarget(target);
+        }
+        /// <summary>Tweens a Material's named texture scale property to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="property">The name of the material property to tween</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOTiling(this Material target, Vector2 endValue, string property, float duration)
+        {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
+            return DOTween.To(() => target.GetTextureScale(property), x => target.SetTextureScale(property, x), endValue, duration).SetTarget(target);
+        }
+
         /// <summary>Tweens a Material's named Vector property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
