@@ -4,10 +4,11 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public DOTweenPath tweenP;
+	public Transform target;
+	public Vector3[] path;
 
 	void Start()
 	{
-		Debug.Log(tweenP.GetTween().PathGetPoint(0.5f));
+		target.DOPath(path, 4);
 	}
 }
