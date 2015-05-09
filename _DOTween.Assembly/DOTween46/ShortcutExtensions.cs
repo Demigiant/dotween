@@ -205,6 +205,22 @@ namespace DG.Tweening
                 .SetOptions(snapping).SetTarget(target);
         }
 
+        /// <summary>Punches a RectTransform's anchoredPosition towards the given direction and then back to the starting one
+        /// as if it was connected to the starting position via an elastic.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="punch">The direction and strength of the punch (added to the RectTransform's current position)</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="vibrato">Indicates how much will the punch vibrate</param>
+        /// <param name="elasticity">Represents how much (0 to 1) the vector will go beyond the starting position when bouncing backwards.
+        /// 1 creates a full oscillation between the punch direction and the opposite direction,
+        /// while 0 oscillates only between the punch and the start position</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOPunchAnchorPos(this RectTransform target, Vector2 punch, float duration, int vibrato = 10, float elasticity = 1, bool snapping = false)
+        {
+            return DOTween.Punch(() => target.anchoredPosition, x => target.anchoredPosition = x, punch, duration, vibrato, elasticity)
+                .SetTarget(target).SetOptions(snapping);
+        }
+
         /// <summary>Shakes a RectTransform's anchoredPosition with the given values.
         /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="duration">The duration of the tween</param>
