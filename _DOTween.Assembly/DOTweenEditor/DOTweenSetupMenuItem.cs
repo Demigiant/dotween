@@ -111,7 +111,6 @@ namespace DG.DOTweenEditor
             if (leftoverAddonFiles.Length > 0) {
                 EditorUtility.DisplayProgressBar(_Title, "Removing " + leftoverAddonFiles.Length + " unused additional meta files...", 0.75f);
                 foreach (string leftoverAddonFile in leftoverAddonFiles) {
-                    totRemoved++;
                     File.Delete(leftoverAddonFile);
                 }
             }
@@ -120,7 +119,6 @@ namespace DG.DOTweenEditor
                 if (leftoverAddonFiles.Length > 0) {
                     EditorUtility.DisplayProgressBar(_Title, "Removing " + leftoverAddonFiles.Length + " unused additional meta files...", 0.75f);
                     foreach (string leftoverAddonFile in leftoverAddonFiles) {
-                        totRemoved++;
                         File.Delete(leftoverAddonFile);
                     }
                 }
