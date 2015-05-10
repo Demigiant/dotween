@@ -54,6 +54,70 @@ namespace DG.Tweening
 
         #region Camera Shortcuts
 
+        /// <summary>Tweens a Camera's <code>aspect</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOAspect(this Camera target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.aspect, x => target.aspect = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's backgroundColor to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOColor(this Camera target, Color endValue, float duration)
+        {
+            return DOTween.To(() => target.backgroundColor, x => target.backgroundColor = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>farClipPlane</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOFarClipPlane(this Camera target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.farClipPlane, x => target.farClipPlane = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>fieldOfView</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOFieldOfView(this Camera target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.fieldOfView, x => target.fieldOfView = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>nearClipPlane</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DONearClipPlane(this Camera target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.nearClipPlane, x => target.nearClipPlane = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>orthographicSize</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOOrthoSize(this Camera target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.orthographicSize, x => target.orthographicSize = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>pixelRect</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOPixelRect(this Camera target, Rect endValue, float duration)
+        {
+            return DOTween.To(() => target.pixelRect, x => target.pixelRect = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Camera's <code>rect</code> to the given value.
+        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DORect(this Camera target, Rect endValue, float duration)
+        {
+            return DOTween.To(() => target.rect, x => target.rect = x, endValue, duration).SetTarget(target);
+        }
+
         /// <summary>Shakes a Camera's localPosition along its relative X Y axes with the given values.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="duration">The duration of the tween</param>
@@ -102,14 +166,6 @@ namespace DG.Tweening
         {
             return DOTween.Shake(() => target.transform.localEulerAngles, x => target.transform.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
-        }
-
-        /// <summary>Tweens a Camera's backgroundColor to the given value.
-        /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Camera target, Color endValue, float duration)
-        {
-            return DOTween.To(() => target.backgroundColor, x => target.backgroundColor = x, endValue, duration).SetTarget(target);
         }
 
         #endregion
