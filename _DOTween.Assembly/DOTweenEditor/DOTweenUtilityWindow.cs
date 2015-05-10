@@ -81,7 +81,7 @@ namespace DG.DOTweenEditor
         void OnEnable()
         {
 #if COMPATIBLE
-            _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug Compatibility build]" : " [Release Compatibility build]");
+            _innerTitle = "DOTween v" + DOTween.Version + " [Compatibility build]";
 #else
             _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug build]" : " [Release build]");
 #endif
