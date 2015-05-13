@@ -426,6 +426,46 @@ namespace DG.Tweening
             return t;
         }
 
+        #region Special
+
+        /// <summary>Tweens a Rigidbody's X/Z position to the given value, while also applying a jump effect along the Y axis.
+        /// Returns a Sequence instead of a Tweener.
+        /// Also stores the Rigidbody as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The X/Z end value to reach, and the Y jump height</param>
+        /// <param name="numJumps">Total number of jumps</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Sequence DOJump(this Rigidbody target, Vector3 endValue, int numJumps, float duration, bool snapping = false)
+        {
+            if (numJumps < 1) numJumps = 1;
+            return DOTween.Sequence()
+#if COMPATIBLE
+                .Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
+#else
+                .Append(DOTween.To(() => target.position, target.MovePosition, new Vector3(endValue.x, 0, 0), duration)
+#endif
+                    .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
+                )
+#if COMPATIBLE
+                .Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, 0, endValue.z), duration)
+#else
+                .Join(DOTween.To(() => target.position, target.MovePosition, new Vector3(0, 0, endValue.z), duration)
+#endif
+                    .SetOptions(AxisConstraint.Z, snapping).SetEase(Ease.Linear)
+                )
+#if COMPATIBLE
+                .Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, endValue.y, 0), duration / (numJumps * 2))
+#else
+                .Join(DOTween.To(() => target.position, target.MovePosition, new Vector3(0, endValue.y, 0), duration / (numJumps * 2))
+#endif
+                    .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
+                    .SetLoops(numJumps * 2, LoopType.Yoyo)
+                )
+                .SetTarget(target).SetEase(DOTween.defaultEaseType);
+        }
+
+        #endregion
+
         #endregion
 
         #region TrailRenderer Shortcuts
@@ -736,6 +776,32 @@ namespace DG.Tweening
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
 
+        #region Special
+
+        /// <summary>Tweens a Transform's X/Z position to the given value, while also applying a jump effect along the Y axis.
+        /// Returns a Sequence instead of a Tweener.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The X/Z end value to reach, and the Y jump height</param>
+        /// <param name="numJumps">Total number of jumps</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Sequence DOJump(this Transform target, Vector3 endValue, int numJumps, float duration, bool snapping = false)
+        {
+            if (numJumps < 1) numJumps = 1;
+            return DOTween.Sequence()
+                .Append(DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue.x, 0, 0), duration)
+                    .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
+                )
+                .Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue.z), duration)
+                    .SetOptions(AxisConstraint.Z, snapping).SetEase(Ease.Linear)
+                )
+                .Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, endValue.y, 0), duration / (numJumps * 2))
+                    .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
+                    .SetLoops(numJumps * 2, LoopType.Yoyo)
+                )
+                .SetTarget(target).SetEase(DOTween.defaultEaseType);
+        }
+
         /// <summary>Tweens a Transform's position through the given path waypoints, using the chosen path algorithm.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="path">The waypoints to go through</param>
@@ -801,6 +867,8 @@ namespace DG.Tweening
             t.plugOptions.useLocalPosition = true;
             return t;
         }
+
+        #endregion
 
         #endregion
 
