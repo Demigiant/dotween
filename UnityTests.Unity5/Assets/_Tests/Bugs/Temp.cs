@@ -5,16 +5,12 @@ using System.Collections;
 
 public class Temp : BrainBase
 {
-	public Transform target, follow;
+	public Transform target;
 
 	void Start()
 	{
-		Tweener tween = target.DOMove(follow.position, 2f)
-            .SetEase(Ease.OutExpo);
-       
-        tween.OnUpdate(() =>
-        {
-            tween.ChangeEndValue(follow.position, true);
-        });
+		for (int i = 0; i < 300; ++i) {
+			DOTween.Sequence().AppendInterval(3).Append(target.DOMoveX(1, 1));
+		}
 	}
 }

@@ -284,7 +284,8 @@ namespace DG.Tweening.Core
         {
             if (tweenersCapacity < sequencesCapacity) tweenersCapacity = sequencesCapacity;
 
-            maxActive = tweenersCapacity;
+//            maxActive = tweenersCapacity;
+            maxActive = tweenersCapacity + sequencesCapacity;
             maxTweeners = tweenersCapacity;
             maxSequences = sequencesCapacity;
             Array.Resize(ref _activeTweens, maxActive);
@@ -834,7 +835,8 @@ namespace DG.Tweening.Core
                 Array.Resize(ref _pooledTweeners, maxTweeners);
                 break;
             }
-            maxActive = Mathf.Max(maxTweeners, maxSequences);
+//            maxActive = Mathf.Max(maxTweeners, maxSequences);
+            maxActive = maxTweeners + maxSequences;
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;
         }

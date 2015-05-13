@@ -201,6 +201,7 @@
             Stores a GUIStyle palette, which can be passed to default DeGUI layouts when calling <code>DeGUI.BeginGUI</code>,
             and changed at any time by calling <code>DeGUI.ChangePalette</code>.
             You can inherit from this class to create custom GUIStyle palettes with more options.
+            Each of the sub-options require a public Init method to initialize the styles, which will be called via Reflection.
             </summary>
         </member>
         <member name="M:DG.DemiEditor.DeStylePalette.Init">
@@ -212,31 +213,6 @@
         <member name="T:DG.DemiEditor.DeStyleSubPalette">
             <summary>
             Extend any custom subpalettes from this, so they will be initialized correctly
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.Box.Init">
-            <summary>
-            Needs to be overridden in order to initialize new styles added from inherited classes
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.Button.Init">
-            <summary>
-            Needs to be overridden in order to initialize new styles added from inherited classes
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.Label.Init">
-            <summary>
-            Needs to be overridden in order to initialize new styles added from inherited classes
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.Toolbar.Init">
-            <summary>
-            Needs to be overridden in order to initialize new styles added from inherited classes
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.Misc.Init">
-            <summary>
-            Needs to be overridden in order to initialize new styles added from inherited classes
             </summary>
         </member>
         <member name="T:DG.DemiEditor.DeGUILayout">
