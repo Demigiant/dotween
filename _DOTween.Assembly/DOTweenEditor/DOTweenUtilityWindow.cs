@@ -89,11 +89,11 @@ namespace DG.DOTweenEditor
             else _innerTitle += "\nDOTweenPro not installed";
 
             if (_headerImg == null) {
-                _headerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);

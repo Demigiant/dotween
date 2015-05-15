@@ -34,7 +34,7 @@ namespace DG.DOTweenEditor.Core
             get
             {
                 if (_logo == null) {
-                    _logo = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                    _logo = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
                     EditorUtils.SetEditorTexture(_logo, FilterMode.Bilinear, 128);
                 }
                 return _logo;
