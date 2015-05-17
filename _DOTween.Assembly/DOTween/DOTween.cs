@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.720";
+        public static readonly string Version = "1.0.725";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -56,6 +56,9 @@ namespace DG.Tweening
             set { _logBehaviour = value; Debugger.SetLogPriority(_logBehaviour); }
         }
         static LogBehaviour _logBehaviour = LogBehaviour.ErrorsOnly;
+        /// <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
+        /// Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
+        public static bool drawGizmos = true;
 
         ///////////////////////////////////////////////
         // Default options for Tweens /////////////////
@@ -166,6 +169,7 @@ namespace DG.Tweening
                 if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
                 DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
+                DOTween.drawGizmos = settings.drawGizmos;
                 DOTween.defaultAutoPlay = settings.defaultAutoPlay;
                 DOTween.defaultUpdateType = settings.defaultUpdateType;
                 DOTween.defaultTimeScaleIndependent = settings.defaultTimeScaleIndependent;
@@ -213,6 +217,7 @@ namespace DG.Tweening
             initialized = false;
             useSafeMode = false;
             showUnityEditorReport = false;
+            drawGizmos = true;
             timeScale = 1;
             logBehaviour = LogBehaviour.ErrorsOnly;
             defaultEaseType = Ease.OutQuad;

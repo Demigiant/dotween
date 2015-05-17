@@ -13,6 +13,7 @@ namespace DG.Tweening.Core
         public bool useSafeMode = true;
         public bool showUnityEditorReport;
         public LogBehaviour logBehaviour = LogBehaviour.ErrorsOnly;
+        public bool drawGizmos = true;
         public bool defaultRecyclable;
         public AutoPlay defaultAutoPlay = AutoPlay.All;
         public UpdateType defaultUpdateType;

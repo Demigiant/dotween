@@ -1465,6 +1465,10 @@
             <summary>Global DOTween timeScale.
             <para>Default: 1</para></summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.drawGizmos">
+            <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
+            Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.defaultUpdateType">
             <summary>Default updateType for new tweens.
             <para>Default: UpdateType.Normal</para></summary>

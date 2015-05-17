@@ -171,6 +171,7 @@ namespace DG.DOTweenEditor
                 _src.useSafeMode = true;
                 _src.showUnityEditorReport = false;
                 _src.logBehaviour = LogBehaviour.ErrorsOnly;
+                _src.drawGizmos = true;
                 _src.defaultRecyclable = false;
                 _src.defaultAutoPlay = AutoPlay.All;
                 _src.defaultUpdateType = UpdateType.Normal;
@@ -186,6 +187,7 @@ namespace DG.DOTweenEditor
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
+            _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);
             DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
             _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
             if (_src.storeSettingsLocation != prevSettingsLocation) {
