@@ -95,29 +95,35 @@ namespace DG.Tweening
         /// Returns a Sequence instead of a Tweener.
         /// Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The X end value to reach, and the Y jump height</param>
+        /// <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
         /// <param name="numJumps">Total number of jumps</param>
         /// <param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Sequence DOJump(this Rigidbody2D target, Vector2 endValue, int numJumps, float duration, bool snapping = false)
+        public static Sequence DOJump(this Rigidbody2D target, Vector2 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            return DOTween.Sequence()
+            float offsetY = endValue.y - target.position.y;
+            Sequence s = DOTween.Sequence()
 #if COMPATIBLE
-                .Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector2(endValue.x, 0), duration)
+                .Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
 #else
                 .Append(DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue.x, 0), duration)
 #endif
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
-                )
 #if COMPATIBLE
-                .Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector2(0, endValue.y), duration / (numJumps * 2))
+                ).Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
 #else
-                .Join(DOTween.To(() => target.position, target.MovePosition, new Vector2(0, endValue.y), duration / (numJumps * 2))
+                ).Join(DOTween.To(() => target.position, target.MovePosition, new Vector2(0, jumpPower), duration / (numJumps * 2))
 #endif
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
                     .SetLoops(numJumps * 2, LoopType.Yoyo)
-                )
-                .SetTarget(target).SetEase(DOTween.defaultEaseType);
+                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
+            s.OnUpdate(() => {
+                Vector2 pos = target.position;
+                pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                target.MovePosition(pos);
+            });
+            return s;
         }
 
         #endregion

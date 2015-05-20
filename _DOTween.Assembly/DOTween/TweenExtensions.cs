@@ -407,7 +407,7 @@ namespace DG.Tweening
         }
         /// <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded)</summary>
         /// <param name="includeLoops">If TRUE returns the elapsed percentage since startup loops included,
-        ///  otherwise the elapsed percentage within the current loop cycle</param>
+        /// otherwise the elapsed percentage within the current loop cycle</param>
         public static float ElapsedPercentage(this Tween t, bool includeLoops = true)
         {
             if (!t.active) {
@@ -420,6 +420,19 @@ namespace DG.Tweening
                 return ((loopsToCount * t.duration) + t.position) / t.fullDuration;
             }
             return t.position / t.duration;
+        }
+        /// <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded),
+        /// based on a single loop, and calculating eventual backwards Yoyo loops as 1 to 0 instead of 0 to 1</summary>
+        public static float ElapsedDirectionalPercentage(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return 0;
+            }
+
+            float perc = t.position / t.duration;
+            bool isInverse = t.completedLoops > 0 && t.loopType == LoopType.Yoyo && t.completedLoops % 2 != 0;
+            return isInverse ? 1 - perc : perc;
         }
 
         /// <summary>Returns FALSE if this tween has been killed.

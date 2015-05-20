@@ -6,14 +6,16 @@ public class Jump : BrainBase
 {
 	public Transform target;
 	public Vector3 jump = new Vector3(4, 3, 0);
+	public float jumpHeight = 3;
 	public int numJumps = 1;
 	public float duration = 1;
 	public Ease ease = Ease.OutQuad;
+	public int loops = -1;
 
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(1);
 
-		target.DOJump(jump, numJumps, duration).SetEase(ease).SetLoops(-1, LoopType.Yoyo);
+		target.DOJump(jump, jumpHeight, numJumps, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo);
 	}
 }
