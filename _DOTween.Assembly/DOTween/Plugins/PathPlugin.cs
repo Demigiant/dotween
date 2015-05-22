@@ -53,6 +53,9 @@ namespace DG.Tweening.Plugins
         // then sets the final path version
         public override void SetChangeValue(TweenerCore<Vector3, Path, PathOptions> t)
         {
+            Transform trans = (Transform)t.target;
+            if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
+
             if (t.endValue.isFinalized) {
                 t.changeValue = t.endValue;
                 return;
@@ -84,9 +87,7 @@ namespace DG.Tweening.Plugins
             // Finalize path
             path.FinalizePath(t.plugOptions.isClosedPath, t.plugOptions.lockPositionAxis, currVal);
 
-            Transform trans = (Transform)t.target;
             t.plugOptions.startupZRot = trans.eulerAngles.z;
-            if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
 
             // Set changeValue as a reference to endValue
             t.changeValue = t.endValue;

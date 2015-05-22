@@ -22,7 +22,7 @@ public class TestScene : MonoBehaviour
 	SampleFloatClass sampleFloatClass;
 	SampleVector3Class sampleV3Class;
 	ISampleClass isampleClass;
-	Vector3Plugin dotweenV3Class;
+	// Vector3Plugin dotweenV3Class;
 	ITweenPlugin idotweenClass;
 	string testId;
 
@@ -33,8 +33,8 @@ public class TestScene : MonoBehaviour
 		FloatTest();
 		log += "\n";
 		Vector3Test();
-		log += "\n";
-		DOTweenVector3Test();
+		// log += "\n";
+		// DOTweenVector3Test();
 
 		log += "\n\n<color=#00ff00>FIRST TEST ENDED</color>";
 		log += "\n\n<color=#00ff00>NOW WAITING 1 SECOND...</color>";
@@ -53,72 +53,72 @@ public class TestScene : MonoBehaviour
 		// DOTween.To(()=>intToTween, x=> intToTween = x, 100, 4).OnUpdate(()=> text.text = intToTween.ToString());
 	}
 
-	void DOTweenVector3Test()
-	{
-		testId = "DOVector3 Class AsCast:";
-		try {
-			dotweenV3Class = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// void DOTweenVector3Test()
+	// {
+	// 	testId = "DOVector3 Class AsCast:";
+	// 	try {
+	// 		dotweenV3Class = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Class AsCast (object):";
-		try {
-			dotweenV3Class = new Vector3Plugin();
-			log += string.Format("{0}{1} " + (((object)dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Class AsCast (object):";
+	// 	try {
+	// 		dotweenV3Class = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + (((object)dotweenV3Class as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Class PrefCast:";
-		try {
-			dotweenV3Class = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)dotweenV3Class == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Class PrefCast:";
+	// 	try {
+	// 		dotweenV3Class = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)dotweenV3Class == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Class PrefCast (object):";
-		try {
-			dotweenV3Class = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)dotweenV3Class) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Class PrefCast (object):";
+	// 	try {
+	// 		dotweenV3Class = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)dotweenV3Class) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Interface AsCast:";
-		try {
-			idotweenClass = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Interface AsCast:";
+	// 	try {
+	// 		idotweenClass = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Interface AsCast (object):";
-		try {
-			idotweenClass = new Vector3Plugin();
-			log += string.Format("{0}{1} " + (((object)idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Interface AsCast (object):";
+	// 	try {
+	// 		idotweenClass = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + (((object)idotweenClass as ABSTweenPlugin<Vector3,Vector3,VectorOptions>) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Interface PrefCast:";
-		try {
-			idotweenClass = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)idotweenClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
+	// 	testId = "DOVector3 Interface PrefCast:";
+	// 	try {
+	// 		idotweenClass = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)idotweenClass == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
 
-		testId = "DOVector3 Interface PrefCast (object):";
-		try {
-			idotweenClass = new Vector3Plugin();
-			log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)idotweenClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
-		} catch (Exception e) {
-			log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
-		}
-	}
+	// 	testId = "DOVector3 Interface PrefCast (object):";
+	// 	try {
+	// 		idotweenClass = new Vector3Plugin();
+	// 		log += string.Format("{0}{1} " + ((ABSTweenPlugin<Vector3,Vector3,VectorOptions>)((object)idotweenClass) == null ? "{2}" : "{3}"), logPrefix, testId, failStr, successStr);
+	// 	} catch (Exception e) {
+	// 		log += string.Format("{0}{1} <color=#ff0000>error > " + e.Message + "</color>", logPrefix, testId);
+	// 	}
+	// }
 
 	void Vector3Test()
 	{

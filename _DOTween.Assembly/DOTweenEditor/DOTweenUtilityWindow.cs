@@ -80,16 +80,20 @@ namespace DG.DOTweenEditor
 
         void OnEnable()
         {
+#if COMPATIBLE
+            _innerTitle = "DOTween v" + DOTween.Version + " [Compatibility build]";
+#else
             _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug build]" : " [Release build]");
+#endif
             if (EditorUtils.hasPro) _innerTitle += "\nDOTweenPro v" + EditorUtils.proVersion;
             else _innerTitle += "\nDOTweenPro not installed";
 
             if (_headerImg == null) {
-                _headerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
@@ -167,6 +171,7 @@ namespace DG.DOTweenEditor
                 _src.useSafeMode = true;
                 _src.showUnityEditorReport = false;
                 _src.logBehaviour = LogBehaviour.ErrorsOnly;
+                _src.drawGizmos = true;
                 _src.defaultRecyclable = false;
                 _src.defaultAutoPlay = AutoPlay.All;
                 _src.defaultUpdateType = UpdateType.Normal;
@@ -182,6 +187,7 @@ namespace DG.DOTweenEditor
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
+            _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);
             DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
             _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
             if (_src.storeSettingsLocation != prevSettingsLocation) {

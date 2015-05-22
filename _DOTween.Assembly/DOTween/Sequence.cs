@@ -250,6 +250,7 @@ namespace DG.Tweening
                     } else {
                         // Nested Tweener/Sequence
                         float gotoPos = toPos - sequentiable.sequencedPosition;
+//                        float gotoPos = (float)((decimal)toPos - (decimal)sequentiable.sequencedPosition);
                         if (gotoPos < 0) gotoPos = 0;
                         Tween t = (Tween)sequentiable;
                         if (!t.startupDone) continue; // since we're going backwards and this tween never started just ignore it
@@ -286,6 +287,7 @@ namespace DG.Tweening
                     } else {
                         // Nested Tweener/Sequence
                         float gotoPos = toPos - sequentiable.sequencedPosition;
+//                        float gotoPos = (float)((decimal)toPos - (decimal)sequentiable.sequencedPosition);
                         if (gotoPos < 0) gotoPos = 0;
                         Tween t = (Tween)sequentiable;
                         t.isBackwards = false;

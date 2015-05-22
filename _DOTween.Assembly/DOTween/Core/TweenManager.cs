@@ -284,7 +284,8 @@ namespace DG.Tweening.Core
         {
             if (tweenersCapacity < sequencesCapacity) tweenersCapacity = sequencesCapacity;
 
-            maxActive = tweenersCapacity;
+//            maxActive = tweenersCapacity;
+            maxActive = tweenersCapacity + sequencesCapacity;
             maxTweeners = tweenersCapacity;
             maxSequences = sequencesCapacity;
             Array.Resize(ref _activeTweens, maxActive);
@@ -538,7 +539,8 @@ namespace DG.Tweening.Core
             t.delayComplete = true;
             t.elapsedDelay = t.delay;
 //            int toCompletedLoops = (int)(to / t.duration); // With very small floats creates floating points imprecisions
-            int toCompletedLoops = Mathf.FloorToInt(to / t.duration); // Takes care of floating points imprecision ((int)Math.Floot doesn't suffice)
+            int toCompletedLoops = Mathf.FloorToInt(to / t.duration); // Still generates imprecision with some values (like 0.4)
+//            int toCompletedLoops = (int)((decimal)to / (decimal)t.duration); // Takes care of floating points imprecision (nahh doesn't work correctly either)
             float toPosition = to % t.duration;
             if (t.loops != -1 && toCompletedLoops >= t.loops) {
                 toCompletedLoops = t.loops;
@@ -678,7 +680,7 @@ namespace DG.Tweening.Core
         }
 
         // Returns all active tweens with the given id
-        internal static List<Tween> GetTweensById(object id)
+        internal static List<Tween> GetTweensById(object id, bool playingOnly)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
@@ -687,14 +689,15 @@ namespace DG.Tweening.Core
             List<Tween> ts = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t.id == id) ts.Add(t);
+                if (t == null || !Equals(id, t.id)) continue;
+                if (!playingOnly || t.isPlaying) ts.Add(t);
             }
             if (ts.Count > 0) return ts;
             return null;
         }
 
         // Returns all active tweens with the given target
-        internal static List<Tween> GetTweensByTarget(object target)
+        internal static List<Tween> GetTweensByTarget(object target, bool playingOnly)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
@@ -703,7 +706,8 @@ namespace DG.Tweening.Core
             List<Tween> ts = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t.target == target) ts.Add(t);
+                if (t.target != target) continue;
+                if (!playingOnly || t.isPlaying) ts.Add(t);
             }
             if (ts.Count > 0) return ts;
             return null;
@@ -831,7 +835,8 @@ namespace DG.Tweening.Core
                 Array.Resize(ref _pooledTweeners, maxTweeners);
                 break;
             }
-            maxActive = Mathf.Max(maxTweeners, maxSequences);
+//            maxActive = Mathf.Max(maxTweeners, maxSequences);
+            maxActive = maxTweeners + maxSequences;
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;
         }

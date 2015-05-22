@@ -390,9 +390,13 @@
             <summary>Sets the update type to UpdateType.Normal and lets you choose if it should be independent from Unity's Time.timeScale</summary>
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType,System.Boolean)">
-            <summary>Sets the type of update (default or independent) for the tween</summary>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType)">
+            <summary>Sets the type of update for the tween</summary>
             <param name="updateType">The type of update (defalt: UpdateType.Normal)</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetUpdate``1(``0,DG.Tweening.UpdateType,System.Boolean)">
+            <summary>Sets the type of update for the tween and lets you choose if it should be independent from Unity's Time.timeScale</summary>
+            <param name="updateType">The type of update</param>
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnStart``1(``0,DG.Tweening.TweenCallback)">
@@ -753,7 +757,11 @@
         <member name="M:DG.Tweening.TweenExtensions.ElapsedPercentage(DG.Tweening.Tween,System.Boolean)">
             <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded)</summary>
             <param name="includeLoops">If TRUE returns the elapsed percentage since startup loops included,
-             otherwise the elapsed percentage within the current loop cycle</param>
+            otherwise the elapsed percentage within the current loop cycle</param>
+        </member>
+        <member name="M:DG.Tweening.TweenExtensions.ElapsedDirectionalPercentage(DG.Tweening.Tween)">
+            <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded),
+            based on a single loop, and calculating eventual backwards Yoyo loops as 1 to 0 instead of 0 to 1</summary>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.IsActive(DG.Tweening.Tween)">
             <summary>Returns FALSE if this tween has been killed.
@@ -769,8 +777,20 @@
             <summary>Returns TRUE if the tween is complete
             (silently fails and returns FALSE if the tween has been killed)</summary>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.IsInitialized(DG.Tweening.Tween)">
+            <summary>Returns TRUE if this tween has been initialized</summary>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.IsPlaying(DG.Tweening.Tween)">
             <summary>Returns TRUE if this tween is playing</summary>
+        </member>
+        <member name="M:DG.Tweening.TweenExtensions.PathGetPoint(DG.Tweening.Tween,System.Single)">
+            <summary>
+            Returns a point on a path based on the given path percentage
+            (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized)
+            A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
+            You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
+            </summary>
+            <param name="pathPercentage">Percentage of the path (0 to 1) on which to get the point</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.PathLength(DG.Tweening.Tween)">
             <summary>
@@ -836,6 +856,46 @@
             Also stores the AudioSource as the tween's target so it can be used for filtered operations</summary>
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOAspect(UnityEngine.Camera,System.Single,System.Single)">
+            <summary>Tweens a Camera's <code>aspect</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOColor(UnityEngine.Camera,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Camera's backgroundColor to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOFarClipPlane(UnityEngine.Camera,System.Single,System.Single)">
+            <summary>Tweens a Camera's <code>farClipPlane</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOFieldOfView(UnityEngine.Camera,System.Single,System.Single)">
+            <summary>Tweens a Camera's <code>fieldOfView</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DONearClipPlane(UnityEngine.Camera,System.Single,System.Single)">
+            <summary>Tweens a Camera's <code>nearClipPlane</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOOrthoSize(UnityEngine.Camera,System.Single,System.Single)">
+            <summary>Tweens a Camera's <code>orthographicSize</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPixelRect(UnityEngine.Camera,UnityEngine.Rect,System.Single)">
+            <summary>Tweens a Camera's <code>pixelRect</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DORect(UnityEngine.Camera,UnityEngine.Rect,System.Single)">
+            <summary>Tweens a Camera's <code>rect</code> to the given value.
+            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOShakePosition(UnityEngine.Camera,System.Single,System.Single,System.Int32,System.Single)">
             <summary>Shakes a Camera's localPosition along its relative X Y axes with the given values.
             Also stores the camera as the tween's target so it can be used for filtered operations</summary>
@@ -871,11 +931,6 @@
             <param name="vibrato">Indicates how much will the shake vibrate</param>
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOColor(UnityEngine.Camera,UnityEngine.Color,System.Single)">
-            <summary>Tweens a Camera's backgroundColor to the given value.
-            Also stores the camera as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOColor(UnityEngine.Light,UnityEngine.Color,System.Single)">
             <summary>Tweens a Light's color to the given value.
@@ -933,6 +988,32 @@
             <param name="property">The name of the material property to tween</param>
             <param name="duration">The duration of the tween</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOOffset(UnityEngine.Material,UnityEngine.Vector2,System.Single)">
+            <summary>Tweens a Material's texture offset to the given value.
+            Also stores the material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOOffset(UnityEngine.Material,UnityEngine.Vector2,System.String,System.Single)">
+            <summary>Tweens a Material's named texture offset property to the given value.
+            Also stores the material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="property">The name of the material property to tween</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOTiling(UnityEngine.Material,UnityEngine.Vector2,System.Single)">
+            <summary>Tweens a Material's texture scale to the given value.
+            Also stores the material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOTiling(UnityEngine.Material,UnityEngine.Vector2,System.String,System.Single)">
+            <summary>Tweens a Material's named texture scale property to the given value.
+            Also stores the material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="property">The name of the material property to tween</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOVector(UnityEngine.Material,UnityEngine.Vector4,System.String,System.Single)">
             <summary>Tweens a Material's named Vector property to the given value.
             Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -976,6 +1057,16 @@
             <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
             <param name="axisConstraint">Eventual axis constraint for the rotation</param>
             <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOJump(UnityEngine.Rigidbody,UnityEngine.Vector3,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Tweens a Rigidbody's X/Z position to the given value, while also applying a jump effect along the Y axis.
+            Returns a Sequence instead of a Tweener.
+            Also stores the Rigidbody as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The X/Z end value to reach, and the Y jump height</param>
+            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+            <param name="numJumps">Total number of jumps</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOResize(UnityEngine.TrailRenderer,System.Single,System.Single,System.Single)">
             <summary>Tweens a TrailRenderer's startWidth/endWidth to the given value.
@@ -1161,6 +1252,26 @@
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOJump(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Tweens a Transform's position to the given value, while also applying a jump effect along the Y axis.
+            Returns a Sequence instead of a Tweener.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+            <param name="numJumps">Total number of jumps</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOLocalJump(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Tweens a Transform's X/Z localPosition to the given value, while also applying a jump effect along the Y axis.
+            Returns a Sequence instead of a Tweener.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The X/Z end value to reach, and the Y jump height</param>
+            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+            <param name="numJumps">Total number of jumps</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOPath(UnityEngine.Transform,UnityEngine.Vector3[],System.Single,DG.Tweening.PathType,DG.Tweening.PathMode,System.Int32,System.Nullable{UnityEngine.Color})">
             <summary>Tweens a Transform's position through the given path waypoints, using the chosen path algorithm.
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
@@ -1182,6 +1293,29 @@
             <param name="resolution">The resolution of the path: higher resolutions make for more detailed curved paths but are more expensive.
             Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
             <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Light,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Light's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Light as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Material,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Material's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableColor(UnityEngine.Material,UnityEngine.Color,System.String,System.Single)">
+            <summary>Tweens a Material's named color property to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param>
+            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+            <param name="duration">The duration of the tween</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableMoveBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Boolean)">
             <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
@@ -1337,6 +1471,10 @@
         <member name="F:DG.Tweening.DOTween.timeScale">
             <summary>Global DOTween timeScale.
             <para>Default: 1</para></summary>
+        </member>
+        <member name="F:DG.Tweening.DOTween.drawGizmos">
+            <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
+            Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         </member>
         <member name="F:DG.Tweening.DOTween.defaultUpdateType">
             <summary>Default updateType for new tweens.
@@ -1757,18 +1895,20 @@
             <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
             </summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.TweensById(System.Object)">
+        <member name="M:DG.Tweening.DOTween.TweensById(System.Object,System.Boolean)">
             <summary>
             Returns a list of all active tweens with the given id.
             Returns NULL if there are no active tweens with the given id.
             <para>Beware: each time you call this method a new list is generated</para>
+            <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
             </summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.TweensByTarget(System.Object)">
+        <member name="M:DG.Tweening.DOTween.TweensByTarget(System.Object,System.Boolean)">
             <summary>
             Returns a list of all active tweens with the given target.
             Returns NULL if there are no active tweens with the given target.
             <para>Beware: each time you call this method a new list is generated</para>
+            <param name="playingOnly">If TRUE returns only the tweens with the given target that are currently playing</param>
             </summary>
         </member>
         <member name="P:DG.Tweening.DOTween.logBehaviour">

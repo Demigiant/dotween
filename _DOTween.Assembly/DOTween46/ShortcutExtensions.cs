@@ -5,7 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
+using DG.Tweening.Core.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,8 +94,13 @@ namespace DG.Tweening
         public static Tweener DOFlexibleSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.flexibleWidth, target.flexibleHeight), x => {
+#if COMPATIBLE
+                    target.flexibleWidth = x.value.x;
+                    target.flexibleHeight = x.value.y;
+#else
                     target.flexibleWidth = x.x;
                     target.flexibleHeight = x.y;
+#endif
                 }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -107,8 +112,13 @@ namespace DG.Tweening
         public static Tweener DOMinSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.minWidth, target.minHeight), x => {
+#if COMPATIBLE
+                target.minWidth = x.value.x;
+                target.minHeight = x.value.y;
+#else
                 target.minWidth = x.x;
                 target.minHeight = x.y;
+#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -120,8 +130,13 @@ namespace DG.Tweening
         public static Tweener DOPreferredSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.preferredWidth, target.preferredHeight), x => {
+#if COMPATIBLE
+                target.preferredWidth = x.value.x;
+                target.preferredHeight = x.value.y;
+#else
                 target.preferredWidth = x.x;
                 target.preferredHeight = x.y;
+#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -190,6 +205,49 @@ namespace DG.Tweening
                 .SetOptions(snapping).SetTarget(target);
         }
 
+        /// <summary>Punches a RectTransform's anchoredPosition towards the given direction and then back to the starting one
+        /// as if it was connected to the starting position via an elastic.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="punch">The direction and strength of the punch (added to the RectTransform's current position)</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="vibrato">Indicates how much will the punch vibrate</param>
+        /// <param name="elasticity">Represents how much (0 to 1) the vector will go beyond the starting position when bouncing backwards.
+        /// 1 creates a full oscillation between the punch direction and the opposite direction,
+        /// while 0 oscillates only between the punch and the start position</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOPunchAnchorPos(this RectTransform target, Vector2 punch, float duration, int vibrato = 10, float elasticity = 1, bool snapping = false)
+        {
+            return DOTween.Punch(() => target.anchoredPosition, x => target.anchoredPosition = x, punch, duration, vibrato, elasticity)
+                .SetTarget(target).SetOptions(snapping);
+        }
+
+        /// <summary>Shakes a RectTransform's anchoredPosition with the given values.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="strength">The shake strength</param>
+        /// <param name="vibrato">Indicates how much will the shake vibrate</param>
+        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+        /// Setting it to 0 will shake along a single direction.</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOShakeAnchorPos(this RectTransform target, float duration, float strength = 100, int vibrato = 10, float randomness = 90, bool snapping = false)
+        {
+            return DOTween.Shake(() => target.anchoredPosition, x => target.anchoredPosition = x, duration, strength, vibrato, randomness, true)
+                .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
+        }
+        /// <summary>Shakes a RectTransform's anchoredPosition with the given values.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="strength">The shake strength on each axis</param>
+        /// <param name="vibrato">Indicates how much will the shake vibrate</param>
+        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+        /// Setting it to 0 will shake along a single direction.</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOShakeAnchorPos(this RectTransform target, float duration, Vector2 strength, int vibrato = 10, float randomness = 90, bool snapping = false)
+        {
+            return DOTween.Shake(() => target.anchoredPosition, x => target.anchoredPosition = x, duration, strength, vibrato, randomness)
+                .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
+        }
+
         #endregion
 
         #region Slider
@@ -239,6 +297,85 @@ namespace DG.Tweening
             return DOTween.To(() => target.text, x => target.text = x, endValue, duration)
                 .SetOptions(richTextEnabled, scrambleMode, scrambleChars)
                 .SetTarget(target);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Blendables
+
+        #region Graphic
+
+        /// <summary>Tweens a Graphic's color to the given value,
+        /// in a way that allows other DOBlendableColor tweens to work together on the same target,
+        /// instead than fight each other as multiple DOColor would do.
+        /// Also stores the Graphic as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableColor(this Graphic target, Color endValue, float duration)
+        {
+            endValue = endValue - target.color;
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
+                Color diff = x - to;
+#endif
+                to = x;
+                target.color += diff;
+            }, endValue, duration)
+                .Blendable().SetTarget(target);
+        }
+
+        #endregion
+
+        #region Image
+
+        /// <summary>Tweens a Image's color to the given value,
+        /// in a way that allows other DOBlendableColor tweens to work together on the same target,
+        /// instead than fight each other as multiple DOColor would do.
+        /// Also stores the Image as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableColor(this Image target, Color endValue, float duration)
+        {
+            endValue = endValue - target.color;
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
+                Color diff = x - to;
+#endif
+                to = x;
+                target.color += diff;
+            }, endValue, duration)
+                .Blendable().SetTarget(target);
+        }
+
+        #endregion
+
+        #region Text
+
+        /// <summary>Tweens a Text's color BY the given value,
+        /// in a way that allows other DOBlendableColor tweens to work together on the same target,
+        /// instead than fight each other as multiple DOColor would do.
+        /// Also stores the Text as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableColor(this Text target, Color endValue, float duration)
+        {
+            endValue = endValue - target.color;
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
+                Color diff = x - to;
+#endif
+                to = x;
+                target.color += diff;
+            }, endValue, duration)
+                .Blendable().SetTarget(target);
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿// Author: Daniele Giardini - http://www.demigiant.com
+﻿#if !COMPATIBLE
+// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2014/07/07 20:02
 // 
 // License Copyright (c) Daniele Giardini.
@@ -66,7 +67,7 @@ namespace DG.Tweening.Plugins
                 if (abs > 180) changeVal.z = changeVal.z > 0 ? -(360 - abs) : 360 - abs;
                 // - Assign
                 t.changeValue = changeVal;
-            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360) {
+            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360 || t.isRelative) {
                 t.changeValue = t.endValue - t.startValue;
             } else {
                 t.changeValue = t.endValue;
@@ -109,3 +110,4 @@ namespace DG.Tweening.Plugins
         }
     }
 }
+#endif

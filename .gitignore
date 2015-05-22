@@ -22,3 +22,6 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Assets/Console*Pro*
 *.Unity*/Assets/Text*Mesh*Pro*
 *HOPoolOperator*
+*HOTools*
+zz builds
+zz UnityTests*

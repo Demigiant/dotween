@@ -7,13 +7,17 @@ using System;
 
 public class TempTests : BrainBase
 {
-	void OnEnable()
+	IEnumerator Start()
 	{
-		Debug.Log("ENABLE");
-	}
+		yield return new WaitForSeconds(0.8f);
 
-	void OnDisable()
-	{
-		Debug.Log("DISABLE");
+		Debug.Log(Time.realtimeSinceStartup + " Create tween");
+
+		DOTween.Sequence()
+            .SetId(123)
+            .PrependInterval(3)
+            .OnComplete(() => Debug.Log(Time.realtimeSinceStartup + " First callback!"));
+
+        DOTween.Kill(123, true);
 	}
 }

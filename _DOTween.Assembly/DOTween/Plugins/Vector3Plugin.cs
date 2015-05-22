@@ -1,4 +1,5 @@
-﻿// Author: Daniele Giardini - http://www.demigiant.com
+﻿#if !COMPATIBLE
+// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2014/05/06 19:35
 // 
 // License Copyright (c) Daniele Giardini.
@@ -122,3 +123,4 @@ namespace DG.Tweening.Plugins
         }
     }
 }
+#endif

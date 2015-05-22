@@ -31,7 +31,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Complete(t);
@@ -45,7 +45,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Flip(t);
@@ -59,7 +59,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.ForceInit(t);
@@ -76,7 +76,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             if (to < 0) to = 0;
@@ -92,7 +92,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             if (complete) {
@@ -114,7 +114,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return t;
             }
 
             TweenManager.Pause(t);
@@ -129,7 +129,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return t;
             }
 
             TweenManager.Play(t);
@@ -144,7 +144,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.PlayBackwards(t);
@@ -158,7 +158,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.PlayForward(t);
@@ -173,7 +173,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Restart(t, includeDelay);
@@ -188,7 +188,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.Rewind(t, includeDelay);
@@ -202,7 +202,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenManager.TogglePause(t);
@@ -225,7 +225,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
             TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;
@@ -407,7 +407,7 @@ namespace DG.Tweening
         }
         /// <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded)</summary>
         /// <param name="includeLoops">If TRUE returns the elapsed percentage since startup loops included,
-        ///  otherwise the elapsed percentage within the current loop cycle</param>
+        /// otherwise the elapsed percentage within the current loop cycle</param>
         public static float ElapsedPercentage(this Tween t, bool includeLoops = true)
         {
             if (!t.active) {
@@ -420,6 +420,19 @@ namespace DG.Tweening
                 return ((loopsToCount * t.duration) + t.position) / t.fullDuration;
             }
             return t.position / t.duration;
+        }
+        /// <summary>Returns the elapsed percentage (0 to 1) of this tween (delays exluded),
+        /// based on a single loop, and calculating eventual backwards Yoyo loops as 1 to 0 instead of 0 to 1</summary>
+        public static float ElapsedDirectionalPercentage(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return 0;
+            }
+
+            float perc = t.position / t.duration;
+            bool isInverse = t.completedLoops > 0 && t.loopType == LoopType.Yoyo && t.completedLoops % 2 != 0;
+            return isInverse ? 1 - perc : perc;
         }
 
         /// <summary>Returns FALSE if this tween has been killed.
@@ -455,6 +468,17 @@ namespace DG.Tweening
             return t.isComplete;
         }
 
+        /// <summary>Returns TRUE if this tween has been initialized</summary>
+        public static bool IsInitialized(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return false;
+            }
+
+            return t.startupDone;
+        }
+
         /// <summary>Returns TRUE if this tween is playing</summary>
         public static bool IsPlaying(this Tween t)
         {
@@ -469,6 +493,36 @@ namespace DG.Tweening
         #region Path Tweens
 
         /// <summary>
+        /// Returns a point on a path based on the given path percentage
+        /// (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized)
+        /// A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
+        /// You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
+        /// </summary>
+        /// <param name="pathPercentage">Percentage of the path (0 to 1) on which to get the point</param>
+        public static Vector3 PathGetPoint(this Tween t, float pathPercentage)
+        {
+            if (pathPercentage > 1) pathPercentage = 1;
+            else if (pathPercentage < 0) pathPercentage = 0;
+
+            if (t == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return Vector3.zero;
+            } else if (!t.active) {
+                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return Vector3.zero;
+            } else if (t.isSequenced) {
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return Vector3.zero;
+            }
+
+            TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;
+            if (pathTween == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return Vector3.zero;
+            } else if (!pathTween.endValue.isFinalized) {
+                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet"); return Vector3.zero;
+            }
+
+            return pathTween.endValue.GetPoint(pathPercentage, true);
+        }
+
+        /// <summary>
         /// Returns the length of a path (returns -1 if this is not a path tween, if the tween is invalid, or if the path is not yet initialized).
         /// A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
         /// You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
@@ -480,7 +534,7 @@ namespace DG.Tweening
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return -1;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return -1;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return -1;
             }
 
             TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;

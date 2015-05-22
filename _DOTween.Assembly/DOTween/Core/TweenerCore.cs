@@ -4,6 +4,9 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if COMPATIBLE
+using DG.Tweening.Core.Surrogates;
+#endif
 using System;
 using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
@@ -51,6 +54,9 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newStartValue);
+#endif
             Type valT = newStartValue.GetType();
             if (valT != typeofT2) {
                 if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeStartValue: incorrect newStartValue type (is " + valT + ", should be " + typeofT2 + ")");
@@ -69,6 +75,9 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newEndValue);
+#endif
             Type valT = newEndValue.GetType();
             if (valT != typeofT2) {
                 if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeEndValue: incorrect newEndValue type (is " + valT + ", should be " + typeofT2 + ")");
@@ -84,6 +93,10 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newStartValue);
+            ConvertToWrapper(ref newEndValue);
+#endif
             Type valT0 = newStartValue.GetType();
             Type valT1 = newEndValue.GetType();
             if (valT0 != typeofT2) {
@@ -169,5 +182,20 @@ namespace DG.Tweening.Core
             }
             return false;
         }
+
+#if COMPATIBLE
+
+        // Eventually converts a Unity struct to the correct wrapper
+        static void ConvertToWrapper(ref object value)
+        {
+            Type t = value.GetType();
+            if (t == typeof(Vector3)) value = (Vector3Wrapper)((Vector3)value);
+            else if (t == typeof(Vector2)) value = (Vector2Wrapper)((Vector2)value);
+            else if (t == typeof(Quaternion)) value = (QuaternionWrapper)((Quaternion)value);
+            else if (t == typeof(Color)) value = (ColorWrapper)((Color)value);
+            else if (t == typeof(Vector4)) value = (Vector4Wrapper)((Vector4)value);
+        }
+
+#endif
     }
 }

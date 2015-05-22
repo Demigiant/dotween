@@ -4,8 +4,11 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
+	public Transform target;
+	public Vector3[] path;
+
 	void Start()
 	{
-		transform.DOMove(new Vector3(4,0,0), 1).From(true).SetDelay(1);
+		target.DOPath(path, 4);
 	}
 }

@@ -81,6 +81,8 @@ namespace DG.Tweening.Core
 
         void OnDrawGizmos()
         {
+            if (!DOTween.drawGizmos || !DOTween.isUnityEditor) return;
+
             int len = DOTween.GizmosDelegates.Count;
             if (len == 0) return;
 

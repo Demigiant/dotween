@@ -4,7 +4,13 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-using System;
+#if COMPATIBLE
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+#else
+using DOVector3 = UnityEngine.Vector3;
+using DOQuaternion = UnityEngine.Quaternion;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
@@ -67,47 +73,12 @@ namespace DG.Tweening
         {
             if (plugin != null) t.tweenPlugin = plugin;
             else {
-#if !WP81
                 if (t.tweenPlugin == null) t.tweenPlugin = PluginsManager.GetDefaultPlugin<T1, T2, TPlugOptions>();
                 if (t.tweenPlugin == null) {
                     // No suitable plugin found. Kill
                     Debugger.LogError("No suitable plugin found for this type");
                     return false;
                 }
-#else
-                // WP8.1 fix tries
-                if (t.tweenPlugin == null) {
-                    Debug.Log("Assigning plugin to ABSTweenPlugin<T1, T2, TPlugOptions> var");
-                    ABSTweenPlugin<T1, T2, TPlugOptions> plug = PluginsManager.GetDefaultPlugin<T1, T2, TPlugOptions>();
-                    if (plug != null) {
-                        Debug.Log(">> Plugin found");
-                        t.tweenPlugin = plug;
-                        Debug.Log(">> Plugin assigned > " + t.tweenPlugin + " (t.tweenPlugin is null: " + (t.tweenPlugin == null) + ")");
-                        if (t.tweenPlugin == null) Debug.Log(">> Plugin assignment failed");
-                    } else Debug.Log(">> Plugin NOT found");
-                }
-                if (t.tweenPlugin == null) {
-                    Debug.Log("Assigning plugin to ITweenPlugin var");
-                    ITweenPlugin iplug = PluginsManager.GetDefaultPlugin<T1, T2, TPlugOptions>();
-                    if (iplug != null) {
-                        Debug.Log(">> IPlugin found");
-                        try {
-                            System.Object pObj = (object)iplug;
-                            t.tweenPlugin = (ABSTweenPlugin<T1, T2, TPlugOptions>)pObj;
-                        } catch (Exception e) {
-                            Debug.Log(">> Error while assigning IPlugin > " + e.Message);
-                        }
-                        Debug.Log(">> IPlugin assigned > " + t.tweenPlugin + " (t.tweenPlugin is null: " + (t.tweenPlugin == null) + ")");
-                        if (t.tweenPlugin == null) Debug.Log(">> IPlugin assignment failed");
-                    } else Debug.Log(">> IPlugin NOT found");
-                }
-                if (t.tweenPlugin == null) {
-                    // No suitable plugin found. Kill
-                    Debugger.LogError("No suitable plugin found for this type");
-                    return false;
-                }
-                // WP8.1 fix tries END
-#endif
             }
 
             t.getter = getter;
@@ -199,7 +170,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
@@ -237,7 +208,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
@@ -264,7 +235,7 @@ namespace DG.Tweening
             }
 
             // Force rewind
-            DoGoto(t, 0, 0, UpdateMode.Goto);
+            DoGoto(t, 0, 0, UpdateMode.IgnoreOnUpdate);
 
             return t;
         }
@@ -277,7 +248,7 @@ namespace DG.Tweening
             try {
                 switch (t.specialStartupMode) {
                 case SpecialStartupMode.SetLookAt:
-                    if (!SpecialPluginsUtils.SetLookAt(t as TweenerCore<Quaternion, Vector3, QuaternionOptions>)) return false;
+                    if (!SpecialPluginsUtils.SetLookAt(t as TweenerCore<DOQuaternion, DOVector3, QuaternionOptions>)) return false;
                     break;
                 case SpecialStartupMode.SetPunch:
                     if (!SpecialPluginsUtils.SetPunch(t as TweenerCore<Vector3, Vector3[], Vector3ArrayOptions>)) return false;
