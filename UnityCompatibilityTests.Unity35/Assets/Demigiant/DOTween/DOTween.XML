@@ -201,6 +201,11 @@
             <param name="sequencesCapacity">Max Sequences capacity.
             Default: 50</param>
         </member>
+        <member name="T:DG.Tweening.Core.Debugger">
+            <summary>
+            Public so it can be used by lose scripts related to DOTween (like DOTweenAnimation)
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Sequence">
             <summary>
             Controls other tweens as a group
@@ -567,9 +572,11 @@
             <summary>Options for Vector4 tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{System.String,System.String,DG.Tweening.Plugins.Options.StringOptions},System.Boolean,System.String)">
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{System.String,System.String,DG.Tweening.Plugins.Options.StringOptions},System.Boolean,DG.Tweening.ScrambleMode,System.String)">
             <summary>Options for Vector4 tweens</summary>
-            <param name="scramble">If TRUE the string will appear from a random animation of characters</param>
+            <param name="richTextEnabled">If TRUE, rich text will be interpreted correctly while animated,
+            otherwise all tags will be considered as normal text</param>
+            <param name="scrambleMode">The type of scramble to use, if any</param>
             <param name="scrambleChars">A string containing the characters to use for scrambling.
             Use as many characters as possible (minimum 10) because DOTween uses a fast scramble mode which gives better results with more characters.
             Leave it to NULL to use default ones</param>
@@ -675,7 +682,7 @@
             <summary>Send a path tween to the given waypoint.
             Has no effect if this is not a path tween.
             <para>BEWARE, this is a special utility method:
-            the lookAt direction might be wrong after calling this and might need to be set manually
+            it works only with Linear eases. Also, the lookAt direction might be wrong after calling this and might need to be set manually
             (because it relies on a smooth path movement and doesn't work well with jumps that encompass dramatic direction changes)</para></summary>
             <param name="waypointIndex">Waypoint index to reach
             (if higher than the max waypoint index the tween will simply go to the last one)</param>
@@ -911,6 +918,14 @@
             Also stores the material as the tween's target so it can be used for filtered operations</summary>
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOFade(UnityEngine.Material,System.Single,System.String,System.Single)">
+            <summary>Tweens a Material's alpha color to the given value
+            (will have no effect unless your material supports transparency).
+            Also stores the material as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOFloat(UnityEngine.Material,System.Single,System.String,System.Single)">
             <summary>Tweens a Material's named float property to the given value.
             Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -1035,6 +1050,11 @@
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOScale(UnityEngine.Transform,UnityEngine.Vector3,System.Single)">
             <summary>Tweens a Transform's localScale to the given value.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOScale(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Tweens a Transform's localScale uniformly to the given value.
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
@@ -1163,6 +1183,45 @@
             Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
             <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableMoveBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Boolean)">
+            <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableMove tweens to work together on the same target,
+            instead than fight each other as multiple DOMove would do.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableLocalMoveBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Boolean)">
+            <summary>Tweens a Transform's localPosition BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableMove tweens to work together on the same target,
+            instead than fight each other as multiple DOMove would do.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableRotateBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.RotateMode)">
+            <summary>EXPERIMENTAL METHOD - Tweens a Transform's rotation BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableRotate tweens to work together on the same target,
+            instead than fight each other as multiple DORotate would do.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+            <param name="mode">Rotation mode</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableLocalRotateBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.RotateMode)">
+            <summary>EXPERIMENTAL METHOD - Tweens a Transform's lcoalRotation BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableRotate tweens to work together on the same target,
+            instead than fight each other as multiple DORotate would do.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+            <param name="mode">Rotation mode</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableScaleBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single)">
+            <summary>Tweens a Transform's localScale BY the given value (as if you chained a <code>SetRelative</code>),
+            in a way that allows other DOBlendableScale tweens to work together on the same target,
+            instead than fight each other as multiple DOScale would do.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOComplete(UnityEngine.Component)">
             <summary>
             Completes all tweens that have this target as a reference
@@ -1224,14 +1283,14 @@
             and returns the total number of tweens played.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component,System.Boolean)">
             <summary>
             Restarts all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
             and returns the total number of tweens restarted.
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Component,System.Boolean)">
             <summary>
             Rewinds all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1394,6 +1453,22 @@
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
         <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.UInt32},DG.Tweening.Core.DOSetter{System.UInt32},System.UInt32,System.Single)">
+            <summary>Tweens a property or field to the given value using default plugins</summary>
+            <param name="getter">A getter for the field or property to tween.
+            <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
+            <param name="setter">A setter for the field or property to tween
+            <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
+            <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+        </member>
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Int64},DG.Tweening.Core.DOSetter{System.Int64},System.Int64,System.Single)">
+            <summary>Tweens a property or field to the given value using default plugins</summary>
+            <param name="getter">A getter for the field or property to tween.
+            <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
+            <param name="setter">A setter for the field or property to tween
+            <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
+            <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+        </member>
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.UInt64},DG.Tweening.Core.DOSetter{System.UInt64},System.UInt64,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1607,6 +1682,10 @@
             <summary>Plays all tweens with the given ID or target and returns the number of actual tweens played
             (meaning the tweens that were not already playing or complete)</summary>
         </member>
+        <member name="M:DG.Tweening.DOTween.Play(System.Object,System.Object)">
+            <summary>Plays all tweens with the given target and the given ID, and returns the number of actual tweens played
+            (meaning the tweens that were not already playing or complete)</summary>
+        </member>
         <member name="M:DG.Tweening.DOTween.PlayBackwardsAll">
             <summary>Plays backwards all tweens and returns the number of actual tweens played
             (meaning tweens that were not already started, playing backwards or rewinded)</summary>
@@ -1628,6 +1707,10 @@
         </member>
         <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Boolean)">
             <summary>Restarts all tweens with the given ID or target, then returns the number of actual tweens restarted</summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Object,System.Boolean)">
+            <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
+            (meaning the tweens that were not already playing or complete)</summary>
         </member>
         <member name="M:DG.Tweening.DOTween.RewindAll(System.Boolean)">
             <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded
@@ -1696,6 +1779,32 @@
             <summary>
             Path plugin works exclusively with Transforms
             </summary>
+        </member>
+        <member name="T:DG.Tweening.EaseFactory">
+            <summary>
+            Allows to wrap ease method in special ways, adding extra features
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,System.Nullable{DG.Tweening.Ease})">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="ease">Ease type</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,UnityEngine.AnimationCurve)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="animCurve">AnimationCurve to use for the ease</param>
+        </member>
+        <member name="M:DG.Tweening.EaseFactory.StopMotion(System.Int32,DG.Tweening.EaseFunction)">
+            <summary>
+            Converts the given ease so that it also creates a stop-motion effect, by playing the tween at the given FPS
+            </summary>
+            <param name="motionFps">FPS at which the tween should be played</param>
+            <param name="customEase">Custom ease function to use</param>
         </member>
         <member name="T:DG.Tweening.LoopType">
             <summary>
@@ -1800,6 +1909,7 @@
         <member name="T:DG.Tweening.Core.Easing.EaseCurve">
             <summary>
             Used to interpret AnimationCurves as eases.
+            Public so it can be used by external ease factories
             </summary>
         </member>
         <member name="T:DG.Tweening.Core.Easing.Bounce">
@@ -1863,6 +1973,41 @@
         <member name="T:DG.Tweening.AxisConstraint">
             <summary>
             What axis to constrain in case of Vector tweens
+            </summary>
+        </member>
+        <member name="T:DG.Tweening.ScrambleMode">
+            <summary>
+            Type of scramble to apply to string tweens
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.None">
+            <summary>
+            No scrambling of characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.All">
+            <summary>
+            A-Z + a-z + 0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Uppercase">
+            <summary>
+            A-Z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Lowercase">
+            <summary>
+            a-z characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Numerals">
+            <summary>
+            0-9 characters
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.ScrambleMode.Custom">
+            <summary>
+            Custom characters
             </summary>
         </member>
         <member name="T:DG.Tweening.Plugins.Core.PathCore.ControlPoint">

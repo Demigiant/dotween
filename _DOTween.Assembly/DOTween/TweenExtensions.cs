@@ -5,6 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using DG.Tweening.Core;
+using DG.Tweening.Core.Easing;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -96,7 +97,7 @@ namespace DG.Tweening
 
             if (complete) {
                 TweenManager.Complete(t);
-                if (t.autoKill) return; // Already killed by Complete, so no need to go on
+                if (t.autoKill && t.loops >= 0) return; // Already killed by Complete, so no need to go on
             }
 
             if (TweenManager.isUpdateLoop) {
@@ -212,7 +213,7 @@ namespace DG.Tweening
         /// <summary>Send a path tween to the given waypoint.
         /// Has no effect if this is not a path tween.
         /// <para>BEWARE, this is a special utility method:
-        /// the lookAt direction might be wrong after calling this and might need to be set manually
+        /// it works only with Linear eases. Also, the lookAt direction might be wrong after calling this and might need to be set manually
         /// (because it relies on a smooth path movement and doesn't work well with jumps that encompass dramatic direction changes)</para></summary>
         /// <param name="waypointIndex">Waypoint index to reach
         /// (if higher than the max waypoint index the tween will simply go to the last one)</param>
@@ -232,6 +233,7 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return;
             }
 
+            if (!t.startupDone) TweenManager.ForceInit(t); // Initialize the tween if it's not initialized already (required)
             if (waypointIndex < 0) waypointIndex = 0;
             else if (waypointIndex > pathTween.changeValue.wps.Length - 1) waypointIndex = pathTween.changeValue.wps.Length - 1;
             // Find path percentage relative to given waypoint

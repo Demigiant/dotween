@@ -5,30 +5,18 @@ using System.Collections;
 
 public class Temp : BrainBase
 {
-	public Image img;
-	Sequence _seq;
+	public Transform target;
 
-	void Start()
-	{
-		Debug.Log("START");
-		_seq = DOTween.Sequence().SetId("SEQ");
-        _seq.Append(img.DOFade(1, 0.5f));
-        _seq.AppendInterval(3f);
-        _seq.Append(img.DOFade(0, 0.5f));
-        _seq.AppendCallback(BalloonComplete);
-        // _seq.OnComplete(BalloonComplete);
-	}
+    IEnumerator Start()
+    {
+    	target.DOMoveX(2, 3).OnComplete(()=> {
+    		Debug.Log("call");
+    		target.GetComponent<TempMonoBehaviour>().Goco();
+    		Debug.Log("after call");
+		});
 
-	void BalloonComplete()
-	{
-		Debug.Log("Complete");
-		_seq.Rewind();
-		Debug.Log("Rewind called");
-	}
+    	yield return new WaitForSeconds(1);
 
-	public void Goforit()
-	{
-		Debug.Log("GO");
-		_seq.Restart();
-	}
+    	target.gameObject.SetActive(false);
+    }
 }

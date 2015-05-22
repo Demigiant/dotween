@@ -34,6 +34,16 @@
     <DocumentationFile>..\bin\DOTween46.xml</DocumentationFile>
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP81|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\bin\DOTween46.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1573</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">

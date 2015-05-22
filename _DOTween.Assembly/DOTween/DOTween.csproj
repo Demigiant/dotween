@@ -34,6 +34,18 @@
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP81|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;WP81</DefineConstants>
+    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1573</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -64,14 +76,17 @@
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />
+    <Compile Include="EaseFactory.cs" />
     <Compile Include="IDOTweenInit.cs" />
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
+    <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
+    <Compile Include="Plugins\UlongPlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
     <Compile Include="Plugins\Core\ITPlugin.cs" />
     <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
@@ -81,6 +96,7 @@
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
     <Compile Include="RotateMode.cs" />
+    <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />
     <Compile Include="LoopType.cs" />
     <Compile Include="Plugins\ColorPlugin.cs" />

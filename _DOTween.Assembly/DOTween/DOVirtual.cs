@@ -80,7 +80,7 @@ namespace DG.Tweening
         /// <param name="ignoreTimeScale">If TRUE (default) ignores Unity's timeScale</param>
         public static Tween DelayedCall(float delay, TweenCallback callback, bool ignoreTimeScale = true)
         {
-            return DOTween.Sequence().AppendInterval(delay).OnComplete(callback).SetUpdate(UpdateType.Normal, ignoreTimeScale).SetAutoKill(true);
+            return DOTween.Sequence().AppendInterval(delay).OnStepComplete(callback).SetUpdate(UpdateType.Normal, ignoreTimeScale).SetAutoKill(true);
         }
 
         #endregion

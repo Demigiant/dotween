@@ -72,9 +72,13 @@ namespace DG.DOTweenEditor
             // Additional plugin files
             // Pro plugins
             if (EditorUtils.hasPro) {
-                if (Directory.Exists(projectPath + "TK2DROOT")) {
+                if (Directory.GetDirectories(EditorUtils.projectPath, "TK2DROOT", SearchOption.AllDirectories).Length > 0) {
                     // PRO > 2DToolkit shortcuts
                     totImported += ImportAddons("Tk2d", proAddonsDir);
+                }
+                if (Directory.GetDirectories(EditorUtils.projectPath, "TextMesh Pro", SearchOption.AllDirectories).Length > 0) {
+                    // PRO > TextMeshPro shortcuts
+                    totImported += ImportAddons("TextMeshPro", proAddonsDir);
                 }
             }
 

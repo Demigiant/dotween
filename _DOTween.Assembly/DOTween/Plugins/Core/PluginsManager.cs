@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening.Plugins.Core
@@ -17,6 +18,8 @@ namespace DG.Tweening.Plugins.Core
         static ITweenPlugin _floatPlugin;
         static ITweenPlugin _intPlugin;
         static ITweenPlugin _uintPlugin;
+        static ITweenPlugin _longPlugin;
+        static ITweenPlugin _ulongPlugin;
         static ITweenPlugin _vector2Plugin;
         static ITweenPlugin _vector3Plugin;
         static ITweenPlugin _vector4Plugin;
@@ -85,9 +88,74 @@ namespace DG.Tweening.Plugins.Core
             } else if (t1 == typeof(Color2)) {
                 if (_color2Plugin == null) _color2Plugin = new Color2Plugin();
                 plugin = _color2Plugin;
+            } else if (t1 == typeof(long)) {
+                if (_longPlugin == null) _longPlugin = new LongPlugin();
+                plugin = _longPlugin;
+            } else if (t1 == typeof(ulong)) {
+                if (_ulongPlugin == null) _ulongPlugin = new UlongPlugin();
+                plugin = _ulongPlugin;
             }
 
+#if !WP81
             if (plugin != null) return plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+#else
+            // WP8.1 fix tries
+            if (plugin != null) {
+                Debug.Log("PLUGIN FOUND, trying to assign it correctly...");
+                ABSTweenPlugin<T1, T2, TPlugOptions> p;
+                ABSTweenPlugin<Vector3, Vector3, VectorOptions> pExplicit;
+                // Explicit casting to Vector3Plugin
+                try {
+                    pExplicit = (ABSTweenPlugin<Vector3, Vector3, VectorOptions>)plugin;
+                    if (pExplicit != null) Debug.Log("- EXPLICIT CAST SUCCESS X");
+                    p = pExplicit as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("- PLUGIN SUCCESS X");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL X > " + e.Message);
+                }
+                // More regular ways
+                try {
+                    p = plugin as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("- PLUGIN SUCCESS A");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL A > " + e.Message);
+                }
+                try {
+                    System.Object obj = (object)plugin;
+                    p = obj as ABSTweenPlugin<T1, T2, TPlugOptions>;
+                    if (p != null) {
+                        Debug.Log("- PLUGIN SUCCESS A2");
+                        return p;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL A2 > " + e.Message);
+                }
+                try {
+                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)plugin;
+                    Debug.Log("- PLUGIN SUCCESS B");
+                    return p;
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL B > " + e.Message);
+                }
+                try {
+                    System.Object obj = (object)plugin;
+                    p = (ABSTweenPlugin<T1, T2, TPlugOptions>)obj;
+                    Debug.Log("- PLUGIN SUCCESS B2");
+                    return p;
+                } catch (Exception e) {
+                    Debug.Log("- PLUGIN FAIL B2 > " + e.Message);
+                }
+                return null;
+            }
+            Debug.Log("PLUGIN NOT FOUND");
+            // WP8.1 fix tries END
+#endif
 
             return null;
         }
@@ -114,6 +182,8 @@ namespace DG.Tweening.Plugins.Core
             _floatPlugin = null;
             _intPlugin = null;
             _uintPlugin = null;
+            _longPlugin = null;
+            _ulongPlugin = null;
             _vector2Plugin = null;
             _vector3Plugin = null;
             _vector4Plugin = null;

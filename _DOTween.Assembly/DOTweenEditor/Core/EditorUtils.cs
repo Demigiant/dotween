@@ -18,6 +18,8 @@ namespace DG.DOTweenEditor.Core
         public static string proVersion { get { if (!_hasCheckedForPro) CheckForPro(); return _proVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
         public static string editorADBDir { get { if (string.IsNullOrEmpty(_editorADBDir)) StoreEditorADBDir(); return _editorADBDir; } }
+        // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
+        public static string demigiantDir { get { if (string.IsNullOrEmpty(_demigiantDir)) StoreDOTweenDirs(); return _demigiantDir; } }
         // With final slash (system based)
         public static string dotweenDir { get { if (string.IsNullOrEmpty(_dotweenDir)) StoreDOTweenDirs(); return _dotweenDir; } }
         // With final slash (system based)
@@ -30,6 +32,7 @@ namespace DG.DOTweenEditor.Core
         static string _proVersion;
         static bool _hasCheckedForPro;
         static string _editorADBDir;
+        static string _demigiantDir; // with final slash
         static string _dotweenDir; // with final slash
         static string _dotweenProDir; // with final slash
 
@@ -176,8 +179,13 @@ namespace DG.DOTweenEditor.Core
             _dotweenProDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
             _dotweenProDir = _dotweenProDir.Substring(0, _dotweenProDir.LastIndexOf(pathSeparator) + 1) + "DOTweenPro" + pathSeparator;
 
+            _demigiantDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
+            _demigiantDir = _demigiantDir.Substring(0, _demigiantDir.LastIndexOf(pathSeparator) + 1);
+            if (_demigiantDir.Substring(_demigiantDir.Length - 10, 9) != "Demigiant") _demigiantDir = null;
+
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);
+            if (_demigiantDir != null) _demigiantDir = _demigiantDir.Replace(pathSlashToReplace, pathSlash);
         }
 
         static void CreateScriptableAsset<T>(string adbFilePath) where T : ScriptableObject

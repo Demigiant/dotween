@@ -166,6 +166,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOColor(this Material target, Color endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
         }
 
@@ -178,6 +182,20 @@ namespace DG.Tweening
             return DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration)
                 .SetTarget(target);
         }
+        /// <summary>Tweens a Material's alpha color to the given value
+        /// (will have no effect unless your material supports transparency).
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOFade(this Material target, float endValue, string property, float duration)
+        {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
+            return DOTween.ToAlpha(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
+        }
 
         /// <summary>Tweens a Material's named float property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -186,6 +204,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOFloat(this Material target, float endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
         }
 
@@ -196,6 +218,10 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         public static Tweener DOVector(this Material target, Vector4 endValue, string property, float duration)
         {
+            if (!target.HasProperty(property)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
+                return null;
+            }
             return DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration).SetTarget(target);
         }
 
@@ -409,6 +435,15 @@ namespace DG.Tweening
         public static Tweener DOScale(this Transform target, Vector3 endValue, float duration)
         {
             return DOTween.To(() => target.localScale, x => target.localScale = x, endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Transform's localScale uniformly to the given value.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOScale(this Transform target, float endValue, float duration)
+        {
+            Vector3 endValueV3 = new Vector3(endValue, endValue, endValue);
+            return DOTween.To(() => target.localScale, x => target.localScale = x, endValueV3, duration).SetTarget(target);
         }
 
         /// <summary>Tweens a Transform's X localScale to the given value.
@@ -629,6 +664,98 @@ namespace DG.Tweening
             return t;
         }
 
+        #region Blendables
+
+        /// <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOBlendableMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.position += diff;
+            }, byValue, duration)
+                .Blendable().SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Transform's localPosition BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableMove tweens to work together on the same target,
+        /// instead than fight each other as multiple DOMove would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOBlendableLocalMoveBy(this Transform target, Vector3 byValue, float duration, bool snapping = false)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localPosition += diff;
+            }, byValue, duration)
+                .Blendable().SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>EXPERIMENTAL METHOD - Tweens a Transform's rotation BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableRotate tweens to work together on the same target,
+        /// instead than fight each other as multiple DORotate would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="mode">Rotation mode</param>
+        public static Tweener DOBlendableRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
+        {
+            Quaternion to = target.rotation;
+            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
+                to = x;
+                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+            t.plugOptions.rotateMode = mode;
+            return t;
+        }
+
+        /// <summary>EXPERIMENTAL METHOD - Tweens a Transform's lcoalRotation BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableRotate tweens to work together on the same target,
+        /// instead than fight each other as multiple DORotate would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        /// <param name="mode">Rotation mode</param>
+        public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
+        {
+            Quaternion to = target.localRotation;
+            TweenerCore<Quaternion, Vector3, QuaternionOptions> t = DOTween.To(() => to, x => {
+                Quaternion diff = x * Quaternion.Inverse(to);
+                to = x;
+                target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+            t.plugOptions.rotateMode = mode;
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's localScale BY the given value (as if you chained a <code>SetRelative</code>),
+        /// in a way that allows other DOBlendableScale tweens to work together on the same target,
+        /// instead than fight each other as multiple DOScale would do.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableScaleBy(this Transform target, Vector3 byValue, float duration)
+        {
+            Vector3 to = Vector3.zero;
+            return DOTween.To(() => to, x => {
+                Vector3 diff = x - to;
+                to = x;
+                target.localScale += diff;
+            }, byValue, duration)
+                .Blendable().SetTarget(target);
+        }
+
+        #endregion
+
         #endregion
 
         // ===================================================================================
@@ -728,9 +855,9 @@ namespace DG.Tweening
         /// (meaning tweens that were started from this target, or that had this target added as an Id)
         /// and returns the total number of tweens restarted.
         /// </summary>
-        public static int DORestart(this Component target)
+        public static int DORestart(this Component target, bool includeDelay = true)
         {
-            return DOTween.RestartAll(target);
+            return DOTween.Restart(target, includeDelay);
         }
 
         /// <summary>
@@ -738,9 +865,9 @@ namespace DG.Tweening
         /// (meaning tweens that were started from this target, or that had this target added as an Id)
         /// and returns the total number of tweens rewinded.
         /// </summary>
-        public static int DORewind(this Component target)
+        public static int DORewind(this Component target, bool includeDelay = true)
         {
-            return DOTween.RewindAll(target);
+            return DOTween.Rewind(target, includeDelay);
         }
 
         /// <summary>

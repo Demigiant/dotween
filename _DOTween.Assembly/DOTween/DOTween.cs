@@ -21,7 +21,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.327";
+        public static readonly string Version = "1.0.490";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -129,34 +129,31 @@ namespace DG.Tweening
             if (initialized) return instance;
             if (!Application.isPlaying || isQuitting) return null;
 
-            bool doRecycleAllByDefault = recycleAllByDefault == null ? false : (bool)recycleAllByDefault;
-            bool doUseSafeMode = useSafeMode == null ? true : (bool)useSafeMode;
-            LogBehaviour doLogBehaviour = logBehaviour == null ? LogBehaviour.ErrorsOnly : (LogBehaviour)logBehaviour;
             DOTweenSettings settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
-            return Init(settings, doRecycleAllByDefault, doUseSafeMode, doLogBehaviour);
+            return Init(settings, recycleAllByDefault, useSafeMode, logBehaviour);
         }
         // Auto-init
         static void AutoInit()
         {
             DOTweenSettings settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
-            if (settings == null) Init(null, defaultRecyclable, useSafeMode, logBehaviour);
-            else Init(settings, settings.defaultRecyclable, settings.useSafeMode, settings.logBehaviour);
+            Init(settings, null, null, null);
         }
         // Full init
-        static IDOTweenInit Init(DOTweenSettings settings, bool recycleAllByDefault, bool useSafeMode, LogBehaviour logBehaviour)
+        static IDOTweenInit Init(DOTweenSettings settings, bool? recycleAllByDefault, bool? useSafeMode, LogBehaviour? logBehaviour)
         {
             initialized = true;
             // Options
-            DOTween.defaultRecyclable = recycleAllByDefault;
-            DOTween.useSafeMode = useSafeMode;
-            DOTween.logBehaviour = logBehaviour;
+            if (recycleAllByDefault != null) DOTween.defaultRecyclable = (bool)recycleAllByDefault;
+            if (useSafeMode != null) DOTween.useSafeMode = (bool)useSafeMode;
+            if (logBehaviour != null) DOTween.logBehaviour = (LogBehaviour)logBehaviour;
             // Gameobject - also assign instance
             DOTweenComponent.Create();
             // Assign settings
             if (settings != null) {
-//                DOTween.useSafeMode = settings.useSafeMode;
-//                DOTween.logBehaviour = settings.logBehaviour;
-//                DOTween.defaultRecyclable = settings.defaultRecyclable;
+                if (useSafeMode == null) DOTween.useSafeMode = settings.useSafeMode;
+                if (logBehaviour == null) DOTween.logBehaviour = settings.logBehaviour;
+                if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
+                DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
                 DOTween.defaultAutoPlay = settings.defaultAutoPlay;
                 DOTween.defaultUpdateType = settings.defaultUpdateType;
@@ -168,7 +165,7 @@ namespace DG.Tweening
                 DOTween.defaultLoopType = settings.defaultLoopType;
             }
             // Log
-            if (Debugger.logPriority >= 2) Debugger.Log("DOTween initialization (useSafeMode: " + useSafeMode + ", logBehaviour: " + logBehaviour + ")");
+            if (Debugger.logPriority >= 2) Debugger.Log("DOTween initialization (useSafeMode: " + DOTween.useSafeMode + ", recycling: " + (DOTween.defaultRecyclable ? "ON" : "OFF") + ", logBehaviour: " + DOTween.logBehaviour + ")");
 
             return instance;
         }
@@ -277,6 +274,22 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         public static Tweener To(DOGetter<uint> getter, DOSetter<uint> setter, uint endValue, float duration)
         { return ApplyTo<uint, uint, NoOptions>(getter, setter, endValue, duration); }
+        /// <summary>Tweens a property or field to the given value using default plugins</summary>
+        /// <param name="getter">A getter for the field or property to tween.
+        /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
+        /// <param name="setter">A setter for the field or property to tween
+        /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+        public static Tweener To(DOGetter<long> getter, DOSetter<long> setter, long endValue, float duration)
+        { return ApplyTo<long, long, NoOptions>(getter, setter, endValue, duration); }
+        /// <summary>Tweens a property or field to the given value using default plugins</summary>
+        /// <param name="getter">A getter for the field or property to tween.
+        /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
+        /// <param name="setter">A setter for the field or property to tween
+        /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+        public static Tweener To(DOGetter<ulong> getter, DOSetter<ulong> setter, ulong endValue, float duration)
+        { return ApplyTo<ulong, ulong, NoOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -685,6 +698,13 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Play, FilterType.TargetOrId, targetOrId, false, 0);
         }
+        /// <summary>Plays all tweens with the given target and the given ID, and returns the number of actual tweens played
+        /// (meaning the tweens that were not already playing or complete)</summary>
+        public static int Play(object target, object id)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.Play, FilterType.TargetAndId, id, false, 0, target);
+        }
 
         /// <summary>Plays backwards all tweens and returns the number of actual tweens played
         /// (meaning tweens that were not already started, playing backwards or rewinded)</summary>
@@ -724,6 +744,13 @@ namespace DG.Tweening
         {
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetOrId, targetOrId, includeDelay, 0);
+        }
+        /// <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
+        /// (meaning the tweens that were not already playing or complete)</summary>
+        public static int Restart(object target, object id, bool includeDelay = true)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetAndId, id, includeDelay, 0, target);
         }
 
         /// <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded
@@ -827,9 +854,7 @@ namespace DG.Tweening
         {
             if (initialized || !Application.isPlaying || isQuitting) return;
 
-//            Init(defaultRecyclable, useSafeMode, logBehaviour);
             AutoInit();
-//            Debugger.LogWarning("DOTween auto-initialized with default settings (recycleAllByDefault: " + defaultRecyclable + ", useSafeMode: " + useSafeMode + ", logBehaviour: " + logBehaviour + "). Call DOTween.Init before creating your first tween in order to choose the settings yourself");
         }
 
         static TweenerCore<T1, T2, TPlugOptions> ApplyTo<T1, T2, TPlugOptions>(

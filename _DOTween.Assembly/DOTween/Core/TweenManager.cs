@@ -15,7 +15,7 @@ namespace DG.Tweening.Core
     {
         const int _DefaultMaxTweeners = 200;
         const int _DefaultMaxSequences = 50;
-        const string _MaxTweensReached = "Max Tweens reached: capacity will be automatically increased from #0 to #1. Use DOTween.SetTweensCapacity to set it manually at startup";
+        const string _MaxTweensReached = "Max Tweens reached: capacity has automatically been increased from #0 to #1. Use DOTween.SetTweensCapacity to set it manually at startup";
 
         internal static int maxActive = _DefaultMaxTweeners; // Always equal to maxTweeners
         internal static int maxTweeners = _DefaultMaxTweeners; // Always >= maxSequences
@@ -81,12 +81,14 @@ namespace DG.Tweening.Core
                 }
             } else {
                 // Increase capacity in case max number of Tweeners has already been reached, then continue
-                if (totTweeners >= maxTweeners) {
-                    if (Debugger.logPriority >= 1) Debugger.LogWarning(_MaxTweensReached
-                        .Replace("#0", maxTweeners + "/" + maxSequences)
-                        .Replace("#1", (maxTweeners + _DefaultMaxTweeners) + "/" + maxSequences)
-                    );
+                if (totTweeners >= maxTweeners - 1) {
+                    int prevMaxTweeners = maxTweeners;
+                    int prevMaxSequences = maxSequences;
                     IncreaseCapacities(CapacityIncreaseMode.TweenersOnly);
+                    if (Debugger.logPriority >= 1) Debugger.LogWarning(_MaxTweensReached
+                        .Replace("#0", prevMaxTweeners + "/" + prevMaxSequences)
+                        .Replace("#1", maxTweeners + "/" + maxSequences)
+                    );
                 }
             }
             // Not found: create new TweenerController
@@ -108,12 +110,14 @@ namespace DG.Tweening.Core
                 return s;
             }
             // Increase capacity in case max number of Sequences has already been reached, then continue
-            if (totSequences >= maxSequences) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_MaxTweensReached
-                    .Replace("#0", maxTweeners + "/" + maxSequences)
-                    .Replace("#1", maxTweeners + "/" + (maxSequences + _DefaultMaxSequences))
-                );
+            if (totSequences >= maxSequences - 1) {
+                int prevMaxTweeners = maxTweeners;
+                int prevMaxSequences = maxSequences;
                 IncreaseCapacities(CapacityIncreaseMode.SequencesOnly);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_MaxTweensReached
+                    .Replace("#0", prevMaxTweeners + "/" + prevMaxSequences)
+                        .Replace("#1", maxTweeners + "/" + maxSequences)
+                );
             }
             // Not found: create new Sequence
             s = new Sequence();
@@ -399,7 +403,7 @@ namespace DG.Tweening.Core
             isUpdateLoop = false;
         }
 
-        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat)
+        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat, object optionalObj = null)
         {
             int totInvolved = 0;
             bool hasDespawned = false;
@@ -414,6 +418,9 @@ namespace DG.Tweening.Core
                     break;
                 case FilterType.TargetOrId:
                     isFilterCompliant = id.Equals(t.id) || id.Equals(t.target);
+                    break;
+                case FilterType.TargetAndId:
+                    isFilterCompliant = id.Equals(t.id) && optionalObj != null && optionalObj.Equals(t.target);
                     break;
                 }
                 if (isFilterCompliant) {
@@ -470,7 +477,7 @@ namespace DG.Tweening.Core
                         if (TogglePause(t)) totInvolved++;
                         break;
                     case OperationType.IsTweening:
-                        totInvolved++;
+                        if (!t.isComplete || !t.autoKill) totInvolved++;
                         break;
                     }
                 }
@@ -530,7 +537,8 @@ namespace DG.Tweening.Core
             t.isPlaying = andPlay;
             t.delayComplete = true;
             t.elapsedDelay = t.delay;
-            int toCompletedLoops = (int)(to / t.duration);
+//            int toCompletedLoops = (int)(to / t.duration); // With very small floats creates floating points imprecisions
+            int toCompletedLoops = Mathf.FloorToInt(to / t.duration); // Takes care of floating points imprecision ((int)Math.Floot doesn't suffice)
             float toPosition = to % t.duration;
             if (t.loops != -1 && toCompletedLoops >= t.loops) {
                 toCompletedLoops = t.loops;
@@ -802,24 +810,28 @@ namespace DG.Tweening.Core
         static void IncreaseCapacities(CapacityIncreaseMode increaseMode)
         {
             int killAdd = 0;
+//            int increaseTweenersBy = _DefaultMaxTweeners;
+//            int increaseSequencesBy = _DefaultMaxSequences;
+            int increaseTweenersBy = Mathf.Max((int)(maxTweeners * 1.5f), _DefaultMaxTweeners);
+            int increaseSequencesBy = Mathf.Max((int)(maxSequences * 1.5f), _DefaultMaxSequences);
             switch (increaseMode) {
             case CapacityIncreaseMode.TweenersOnly:
-                killAdd += _DefaultMaxTweeners;
-                maxTweeners += _DefaultMaxTweeners;
+                killAdd += increaseTweenersBy;
+                maxTweeners += increaseTweenersBy;
                 Array.Resize(ref _pooledTweeners, maxTweeners);
                 break;
             case CapacityIncreaseMode.SequencesOnly:
-                killAdd += _DefaultMaxSequences;
-                maxSequences += _DefaultMaxSequences;
+                killAdd += increaseSequencesBy;
+                maxSequences += increaseSequencesBy;
                 break;
             default:
-                killAdd += _DefaultMaxTweeners;
-                maxTweeners += _DefaultMaxTweeners;
-                maxSequences += _DefaultMaxSequences;
+                killAdd += increaseTweenersBy;
+                maxTweeners += increaseTweenersBy;
+                maxSequences += increaseSequencesBy;
                 Array.Resize(ref _pooledTweeners, maxTweeners);
                 break;
             }
-            maxActive = maxTweeners;
+            maxActive = Mathf.Max(maxTweeners, maxSequences);
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;
         }

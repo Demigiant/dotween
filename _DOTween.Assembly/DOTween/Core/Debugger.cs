@@ -6,57 +6,66 @@
 
 using UnityEngine;
 
+#pragma warning disable 1591
 namespace DG.Tweening.Core
 {
-    internal static class Debugger
+    /// <summary>
+    /// Public so it can be used by lose scripts related to DOTween (like DOTweenAnimation)
+    /// </summary>
+    public static class Debugger
     {
         // 0: errors only - 1: default - 2: verbose
-        internal static int logPriority;
+        public static int logPriority;
 
-        internal static void Log(object message)
+        public static void Log(object message)
         {
             Debug.Log("DOTWEEN :: " + message);
         }
-        internal static void LogWarning(object message)
+        public static void LogWarning(object message)
         {
             Debug.LogWarning("DOTWEEN :: " + message);
         }
-        internal static void LogError(object message)
+        public static void LogError(object message)
         {
             Debug.LogError("DOTWEEN :: " + message);
         }
 
-        internal static void LogReport(object message)
+        public static void LogReport(object message)
         {
             Debug.Log("<color=#00B500FF>DOTWEEN :: " + message + "</color>");
         }
 
-        internal static void LogInvalidTween(Tween t)
+        public static void LogInvalidTween(Tween t)
         {
             LogWarning("This Tween has been killed and is now invalid");
         }
 
-//        internal static void LogNullTarget()
+//        public static void LogNullTarget()
 //        {
 //            LogWarning("The target for this tween shortcut is null");
 //        }
 
-        internal static void LogNestedTween(Tween t)
+        public static void LogNestedTween(Tween t)
         {
             LogWarning("This Tween was added to a Sequence and can't be controlled directly");
         }
 
-        internal static void LogNullTween(Tween t)
+        public static void LogNullTween(Tween t)
         {
             LogWarning("Null Tween");
         }
 
-        internal static void LogNonPathTween(Tween t)
+        public static void LogNonPathTween(Tween t)
         {
             LogWarning("This Tween is not a path tween");
         }
 
-        internal static void SetLogPriority(LogBehaviour logBehaviour)
+        public static void LogMissingMaterialProperty(string propertyName)
+        {
+            LogWarning(string.Format("This material doesn't have a {0} property", propertyName));
+        }
+
+        public static void SetLogPriority(LogBehaviour logBehaviour)
         {
             switch (logBehaviour) {
             case LogBehaviour.Default:
