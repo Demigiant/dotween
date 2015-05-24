@@ -91,10 +91,10 @@ namespace DG.Tweening
 
         #region Special
 
-        /// <summary>Tweens a Rigidbody2D's X position to the given value, while also applying a jump effect along the Y axis.
+        /// <summary>Tweens a Rigidbody2D's position to the given value, while also applying a jump effect along the Y axis.
         /// Returns a Sequence instead of a Tweener.
         /// Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="endValue">The X end value to reach, and the Y jump height</param>
+        /// <param name="endValue">The end value to reach</param>
         /// <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
         /// <param name="numJumps">Total number of jumps</param>
         /// <param name="duration">The duration of the tween</param>

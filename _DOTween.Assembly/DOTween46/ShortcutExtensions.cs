@@ -248,6 +248,37 @@ namespace DG.Tweening
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
         }
 
+        #region Special
+
+        /// <summary>Tweens a RectTransform's anchoredPosition to the given value, while also applying a jump effect along the Y axis.
+        /// Returns a Sequence instead of a Tweener.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+        /// <param name="numJumps">Total number of jumps</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Sequence DOJumpAnchorPos(this RectTransform target, Vector2 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
+        {
+            if (numJumps < 1) numJumps = 1;
+            float offsetY = endValue.y - target.anchoredPosition.y;
+            Sequence s = DOTween.Sequence()
+                .Append(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(endValue.x, 0), duration)
+                    .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
+                ).Join(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(0, jumpPower), duration / (numJumps * 2))
+                    .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
+                    .SetLoops(numJumps * 2, LoopType.Yoyo)
+                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
+            s.OnUpdate(() => {
+                Vector2 pos = target.anchoredPosition;
+                pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                target.anchoredPosition = pos;
+            });
+            return s;
+        }
+
+        #endregion
+
         #endregion
 
         #region Slider
