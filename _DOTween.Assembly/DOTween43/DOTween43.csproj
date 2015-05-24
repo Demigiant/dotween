@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShortcutExtensions.cs" />
+    <Compile Include="ShortcutExtensions43.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DOTween\DOTween.csproj">

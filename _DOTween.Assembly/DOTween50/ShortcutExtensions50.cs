@@ -9,7 +9,7 @@ namespace DG.Tweening
     /// Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
     /// These, as all DOTween50 methods, require Unity 5.0 or later.
     /// </summary>
-    public static class ShortcutExtensions
+    public static class ShortcutExtensions50
     {
         #region AudioMixerGroup
 

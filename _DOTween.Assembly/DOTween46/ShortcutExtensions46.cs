@@ -15,7 +15,7 @@ namespace DG.Tweening
     /// Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
     /// These, as all DOTween46 methods, require Unity 4.6 or later.
     /// </summary>
-    public static class ShortcutExtensions
+    public static class ShortcutExtensions46
     {
         #region Unity UI
 
