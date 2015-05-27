@@ -31,6 +31,7 @@ namespace DG.Tweening.Plugins.Options
         public bool useLocalPosition;
         public Transform parent; // Only used with OrientType.ToPath and useLocalPosition set as TRUE
 
+        internal Quaternion startupRot; // Used to reset orientation when rewinding
         internal float startupZRot; // Used to store Z value in case of lock Z, in order to rotate things differently 
     }
 }

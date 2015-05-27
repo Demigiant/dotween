@@ -163,8 +163,9 @@ namespace DG.Tweening
         internal abstract bool Startup();
 
         // Applies the tween set by DoGoto.
-        // Returns TRUE if the tween needs to be killed
-        internal abstract bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode);
+        // Returns TRUE if the tween needs to be killed.
+        // UpdateNotice is only used by Tweeners, since Sequences re-evaluate for it
+        internal abstract bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode, UpdateNotice updateNotice);
 
         #endregion
 
@@ -231,7 +232,10 @@ namespace DG.Tweening
                 && (t.position < t.duration ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0);
 
             // Get values from plugin and set them
-            if (t.ApplyTween(prevPosition, prevCompletedLoops, newCompletedSteps, useInversePosition, updateMode)) return true;
+            UpdateNotice updateNotice =
+                !wasRewinded && (t.loopType == LoopType.Restart && t.completedLoops != prevCompletedLoops || t.position <= 0 && t.completedLoops <= 0)
+                ? UpdateNotice.RewindStep : UpdateNotice.None;
+            if (t.ApplyTween(prevPosition, prevCompletedLoops, newCompletedSteps, useInversePosition, updateMode, updateNotice)) return true;
 
             // Additional callbacks
             if (t.onUpdate != null && updateMode != UpdateMode.IgnoreOnUpdate) {

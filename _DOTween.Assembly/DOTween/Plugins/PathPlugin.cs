@@ -6,6 +6,7 @@
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
@@ -87,6 +88,7 @@ namespace DG.Tweening.Plugins
             // Finalize path
             path.FinalizePath(t.plugOptions.isClosedPath, t.plugOptions.lockPositionAxis, currVal);
 
+            t.plugOptions.startupRot = trans.rotation;
             t.plugOptions.startupZRot = trans.eulerAngles.z;
 
             // Set changeValue as a reference to endValue
@@ -98,7 +100,7 @@ namespace DG.Tweening.Plugins
             return changeValue.length / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(PathOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Path startValue, Path changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(PathOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Path startValue, Path changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             float pathPerc = EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
             float constantPathPerc = changeValue.ConvertToConstantPathPerc(pathPerc);
@@ -106,7 +108,7 @@ namespace DG.Tweening.Plugins
             changeValue.targetPosition = newPos; // Used to draw editor gizmos
             setter(newPos);
 
-            if (options.mode != PathMode.Ignore && options.orientType != OrientType.None) SetOrientation(options, t, changeValue, constantPathPerc, newPos);
+            if (options.mode != PathMode.Ignore && options.orientType != OrientType.None) SetOrientation(options, t, changeValue, constantPathPerc, newPos, updateNotice);
 
             // Determine if current waypoint changed and eventually dispatch callback
             bool isForward = !usingInversePosition;
@@ -119,10 +121,15 @@ namespace DG.Tweening.Plugins
         }
 
         // Public so it can be called by GotoWaypoint
-        public void SetOrientation(PathOptions options, Tween t, Path path, float pathPerc, Vector3 tPos)
+        public void SetOrientation(PathOptions options, Tween t, Path path, float pathPerc, Vector3 tPos, UpdateNotice updateNotice)
         {
             Transform trans = (Transform)t.target;
             Quaternion newRot = Quaternion.identity;
+
+            if (updateNotice == UpdateNotice.RewindStep) {
+                // Reset orientation before continuing
+                trans.rotation = options.startupRot;
+            }
 
             switch (options.orientType) {
             case OrientType.LookAtPosition:

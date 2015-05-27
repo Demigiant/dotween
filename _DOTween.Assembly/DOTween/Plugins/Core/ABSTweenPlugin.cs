@@ -5,6 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using DG.Tweening.Core;
+using DG.Tweening.Core.Enums;
 
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Core
@@ -19,6 +20,6 @@ namespace DG.Tweening.Plugins.Core
         public abstract void SetChangeValue(TweenerCore<T1, T2, TPlugOptions> t);
         public abstract float GetSpeedBasedDuration(TPlugOptions options, float unitsXSecond, T2 changeValue);
         // usingInversePosition is used by PathPlugin to calculate correctly the current waypoint reached
-        public abstract void EvaluateAndApply(TPlugOptions options, Tween t, bool isRelative, DOGetter<T1> getter, DOSetter<T1> setter, float elapsed, T2 startValue, T2 changeValue, float duration, bool usingInversePosition);
+        public abstract void EvaluateAndApply(TPlugOptions options, Tween t, bool isRelative, DOGetter<T1> getter, DOSetter<T1> setter, float elapsed, T2 startValue, T2 changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice);
     }
 }

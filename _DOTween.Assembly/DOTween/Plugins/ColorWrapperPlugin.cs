@@ -4,6 +4,7 @@
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Core.Surrogates;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
@@ -47,7 +48,7 @@ namespace DG.Tweening.Plugins
             return 1f / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(ColorOptions options, Tween t, bool isRelative, DOGetter<ColorWrapper> getter, DOSetter<ColorWrapper> setter, float elapsed, ColorWrapper startValue, ColorWrapper changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(ColorOptions options, Tween t, bool isRelative, DOGetter<ColorWrapper> getter, DOSetter<ColorWrapper> setter, float elapsed, ColorWrapper startValue, ColorWrapper changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             if (t.loopType == LoopType.Incremental) startValue.value += changeValue.value * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
             if (t.isSequenced && t.sequenceParent.loopType == LoopType.Incremental) {

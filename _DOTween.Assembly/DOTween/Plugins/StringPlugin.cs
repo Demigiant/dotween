@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace DG.Tweening.Plugins
         }
 
         // ChangeValue is the same as endValue in this plugin
-        public override void EvaluateAndApply(StringOptions options, Tween t, bool isRelative, DOGetter<string> getter, DOSetter<string> setter, float elapsed, string startValue, string changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(StringOptions options, Tween t, bool isRelative, DOGetter<string> getter, DOSetter<string> setter, float elapsed, string startValue, string changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             _Buffer.Remove(0, _Buffer.Length);
 

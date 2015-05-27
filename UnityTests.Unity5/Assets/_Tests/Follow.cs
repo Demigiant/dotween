@@ -6,6 +6,7 @@ using System.Collections;
 public class Follow : BrainBase
 {
 	public Transform target, follow;
+	public float someInt;
 
 	void Start()
 	{
@@ -14,7 +15,15 @@ public class Follow : BrainBase
        
         tween.OnUpdate(() =>
         {
-            tween.ChangeEndValue(follow.position, true);
+        	// someInt = 0;
+        	// someInt = follow.position.x + tween.ElapsedPercentage();
+            // tween.ChangeEndValue(follow.position, true);
+            SomeFunction<Vector3>(follow.position);
         });
+	}
+
+	void SomeFunction<T>(T obj)
+	{
+		someInt = 1;
 	}
 }

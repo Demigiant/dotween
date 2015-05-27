@@ -68,6 +68,7 @@
     <Compile Include="Core\Enums\FilterType.cs" />
     <Compile Include="Core\Enums\OperationType.cs" />
     <Compile Include="Core\Enums\SpecialStartupMode.cs" />
+    <Compile Include="Core\Enums\UpdateNotice.cs" />
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
