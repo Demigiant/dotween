@@ -1438,6 +1438,22 @@
             and returns the total number of tweens involved.
             </summary>
         </member>
+        <member name="T:DG.Tweening.Core.Enums.UpdateNotice">
+            <summary>
+            Additional notices passed to plugins when updating.
+            Public so it can be used by custom plugins. Internally, only PathPlugin uses it
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.UpdateNotice.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.UpdateNotice.RewindStep">
+            <summary>
+            Lets the plugin know that we restarted or rewinded
+            </summary>
+        </member>
         <member name="T:DG.Tweening.PathType">
             <summary>
             Type of path to use with DOPath tweens
@@ -2185,22 +2201,6 @@
         <member name="T:DG.Tweening.Core.Extensions">
             <summary>
             Public only so custom shortcuts can access some of these methods
-            </summary>
-        </member>
-        <member name="T:DG.Tweening.Core.Enums.UpdateNotice">
-            <summary>
-            Additional notices passed to plugins when updating.
-            Public so it can be used by custom plugins. Internally, only PathPlugin uses it
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.Core.Enums.UpdateNotice.None">
-            <summary>
-            None
-            </summary>
-        </member>
-        <member name="F:DG.Tweening.Core.Enums.UpdateNotice.RewindStep">
-            <summary>
-            Lets the plugin know that we restarted or rewinded
             </summary>
         </member>
     </members>
