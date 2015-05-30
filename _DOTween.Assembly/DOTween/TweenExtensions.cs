@@ -493,8 +493,8 @@ namespace DG.Tweening
         #region Path Tweens
 
         /// <summary>
-        /// Returns a point on a path based on the given path percentage
-        /// (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized)
+        /// Returns a point on a path based on the given path percentage.
+        /// Returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
         /// A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
         /// You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
         /// </summary>
@@ -523,7 +523,37 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Returns the length of a path (returns -1 if this is not a path tween, if the tween is invalid, or if the path is not yet initialized).
+        /// Returns an array of points that can be used to draw the path.
+        /// Note that this method generates allocations, because it creates a new array.
+        /// Returns <code>NULL</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
+        /// A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
+        /// You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
+        /// </summary>
+        /// <param name="subdivisionsXSegment">How many points to create for each path segment (waypoint to waypoint).
+        /// Only used in case of non-Linear paths</param>
+        public static Vector3[] PathGetDrawPoints(this Tween t, int subdivisionsXSegment = 10)
+        {
+            if (t == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return null;
+            } else if (!t.active) {
+                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return null;
+            } else if (t.isSequenced) {
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return null;
+            }
+
+            TweenerCore<Vector3, Path, PathOptions> pathTween = t as TweenerCore<Vector3, Path, PathOptions>;
+            if (pathTween == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return null;
+            } else if (!pathTween.endValue.isFinalized) {
+                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet"); return null;
+            }
+
+            return Path.GetDrawPoints(pathTween.endValue, subdivisionsXSegment);
+        }
+
+        /// <summary>
+        /// Returns the length of a path.
+        /// Returns -1 if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
         /// A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
         /// You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
         /// </summary>

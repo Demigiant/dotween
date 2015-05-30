@@ -138,6 +138,23 @@ namespace DG.Tweening.Plugins.Core.PathCore
             return 0;
         }
 
+        // USED EXTERNALLY, to output a series of points that can be used to draw the path outside of DOTween
+        // (called by TweenExtensions.PathGetDrawPoints)
+        internal static Vector3[] GetDrawPoints(Path p, int drawSubdivisionsXSegment)
+        {
+            int wpsCount = p.wps.Length;
+            if (p.type == PathType.Linear) return p.wps;
+
+            int gizmosSubdivisions = wpsCount * drawSubdivisionsXSegment;
+            Vector3[] drawPoints = new Vector3[gizmosSubdivisions + 1];
+            for (int i = 0; i <= gizmosSubdivisions; ++i) {
+                float perc = i / (float)gizmosSubdivisions;
+                Vector3 wp = p.GetPoint(perc);
+                drawPoints[i] = wp;
+            }
+            return drawPoints;
+        }
+
         // Refreshes the waypoints used to draw non-linear gizmos and the PathInspector scene view.
         // Called by Draw method or by DOTweenPathInspector
         internal static void RefreshNonLinearDrawWps(Path p)

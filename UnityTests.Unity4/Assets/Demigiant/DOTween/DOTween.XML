@@ -785,16 +785,28 @@
         </member>
         <member name="M:DG.Tweening.TweenExtensions.PathGetPoint(DG.Tweening.Tween,System.Single)">
             <summary>
-            Returns a point on a path based on the given path percentage
-            (returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized)
+            Returns a point on a path based on the given path percentage.
+            Returns <code>Vector3.zero</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
             A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
             You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
             </summary>
             <param name="pathPercentage">Percentage of the path (0 to 1) on which to get the point</param>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.PathGetDrawPoints(DG.Tweening.Tween,System.Int32)">
+            <summary>
+            Returns an array of points that can be used to draw the path.
+            Note that this method generates allocations, because it creates a new array.
+            Returns <code>NULL</code> if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
+            A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
+            You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
+            </summary>
+            <param name="subdivisionsXSegment">How many points to create for each path segment (waypoint to waypoint).
+            Only used in case of non-Linear paths</param>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.PathLength(DG.Tweening.Tween)">
             <summary>
-            Returns the length of a path (returns -1 if this is not a path tween, if the tween is invalid, or if the path is not yet initialized).
+            Returns the length of a path.
+            Returns -1 if this is not a path tween, if the tween is invalid, or if the path is not yet initialized.
             A path is initialized after its tween starts, or immediately if the tween was created with the Path Editor (DOTween Pro feature).
             You can force a path to be initialized by calling <code>myTween.ForceInit()</code>.
             </summary>
