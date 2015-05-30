@@ -47,7 +47,7 @@ namespace DG.Tweening.Core
         {
             _unscaledDeltaTime = Time.realtimeSinceStartup - _unscaledTime;
             if (TweenManager.hasActiveDefaultTweens) {
-                TweenManager.Update(UpdateType.Normal, Time.deltaTime * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Normal, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
             }
             _unscaledTime = Time.realtimeSinceStartup;
 
@@ -63,14 +63,14 @@ namespace DG.Tweening.Core
         void LateUpdate()
         {
             if (TweenManager.hasActiveLateTweens) {
-                TweenManager.Update(UpdateType.Late, Time.deltaTime * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Late, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
             }
         }
 
         void FixedUpdate()
         {
             if (TweenManager.hasActiveFixedTweens && Time.timeScale > 0) {
-                TweenManager.Update(UpdateType.Fixed, Time.deltaTime * DOTween.timeScale, (Time.deltaTime / Time.timeScale) * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Fixed, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, ((DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) / Time.timeScale) * DOTween.timeScale);
             }
         }
 

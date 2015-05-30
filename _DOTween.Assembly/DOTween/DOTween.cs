@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.755";
+        public static readonly string Version = "1.0.765";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -49,6 +49,11 @@ namespace DG.Tweening
         /// <summary>Global DOTween timeScale.
         /// <para>Default: 1</para></summary>
         public static float timeScale = 1;
+        /// <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens
+        /// (unless they're set as timeScaleIndependent, in which case this setting will be ignored).
+        /// Setting this to TRUE will lead to smoother animations.
+        /// <para>Default: FALSE</para></summary>
+        public static bool useSmoothDeltaTime;
         /// <summary>DOTween's log behaviour.
         /// <para>Default: LogBehaviour.ErrorsOnly</para></summary>
         public static LogBehaviour logBehaviour {
@@ -167,6 +172,8 @@ namespace DG.Tweening
                 if (useSafeMode == null) DOTween.useSafeMode = settings.useSafeMode;
                 if (logBehaviour == null) DOTween.logBehaviour = settings.logBehaviour;
                 if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
+                DOTween.timeScale = settings.timeScale;
+                DOTween.useSmoothDeltaTime = settings.useSmoothDeltaTime;
                 DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
                 DOTween.drawGizmos = settings.drawGizmos;
@@ -219,6 +226,7 @@ namespace DG.Tweening
             showUnityEditorReport = false;
             drawGizmos = true;
             timeScale = 1;
+            useSmoothDeltaTime = false;
             logBehaviour = LogBehaviour.ErrorsOnly;
             defaultEaseType = Ease.OutQuad;
             defaultEaseOvershootOrAmplitude = 1.70158f;

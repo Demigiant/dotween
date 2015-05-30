@@ -1500,6 +1500,12 @@
             <summary>Global DOTween timeScale.
             <para>Default: 1</para></summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.useSmoothDeltaTime">
+            <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens
+            (unless they're set as timeScaleIndependent, in which case this setting will be ignored).
+            Setting this to TRUE will lead to smoother animations.
+            <para>Default: FALSE</para></summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.drawGizmos">
             <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
             Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
