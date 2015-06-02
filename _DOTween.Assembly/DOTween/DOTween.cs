@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.765";
+        public static readonly string Version = "1.0.770";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -789,6 +789,26 @@ namespace DG.Tweening
         {
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Rewind, FilterType.TargetOrId, targetOrId, includeDelay, 0);
+        }
+
+        /// <summary>Smoothly rewinds all tweens (delays excluded), then returns the number of actual tweens rewinding/rewinded
+        /// (meaning tweens that were not already rewinded).
+        /// A "smooth rewind" animates the tween to its start position,
+        /// skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+        /// <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
+        public static int SmoothRewindAll()
+        {
+            return TweenManager.FilteredOperation(OperationType.SmoothRewind, FilterType.All, null, false, 0);
+        }
+        /// <summary>Smoothly rewinds all tweens (delays excluded) with the given ID or target, then returns the number of actual tweens rewinding/rewinded
+        /// (meaning the tweens that were not already rewinded).
+        /// A "smooth rewind" animates the tween to its start position,
+        /// skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+        /// <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
+        public static int SmoothRewind(object targetOrId)
+        {
+            if (targetOrId == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.SmoothRewind, FilterType.TargetOrId, targetOrId, false, 0);
         }
 
         /// <summary>Toggles the play state of all tweens and returns the number of actual tweens toggled

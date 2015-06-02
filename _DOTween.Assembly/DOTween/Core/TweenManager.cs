@@ -474,6 +474,9 @@ namespace DG.Tweening.Core
                     case OperationType.Rewind:
                         if (Rewind(t, optionalBool)) totInvolved++;
                         break;
+                    case OperationType.SmoothRewind:
+                        if (SmoothRewind(t)) totInvolved++;
+                        break;
                     case OperationType.TogglePause:
                         if (TogglePause(t)) totInvolved++;
                         break;
@@ -631,6 +634,25 @@ namespace DG.Tweening.Core
                 bool needsKilling = Tween.DoGoto(t, 0, 0, UpdateMode.Goto);
                 if (!needsKilling && wasPlaying && t.onPause != null) Tween.OnTweenCallback(t.onPause);
             }
+            return rewinded;
+        }
+
+        internal static bool SmoothRewind(Tween t)
+        {
+            bool rewinded = false;
+            if (t.delay > 0) {
+                rewinded = t.elapsedDelay < t.delay;
+                t.elapsedDelay = t.delay;
+                t.delayComplete = true;
+            }
+            if (t.position > 0 || t.completedLoops > 0 || !t.startupDone) {
+                rewinded = true;
+                if (t.loopType == LoopType.Incremental) t.PlayBackwards();
+                else {
+                    t.Goto(t.ElapsedDirectionalPercentage() * t.duration);
+                    t.PlayBackwards();
+                }
+            } else t.isPlaying = false;
             return rewinded;
         }
 

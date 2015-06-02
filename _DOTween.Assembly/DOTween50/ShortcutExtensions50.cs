@@ -126,7 +126,7 @@ namespace DG.Tweening
         /// </summary>
         public static int DORestart(this AudioMixer target)
         {
-            return DOTween.RestartAll(target);
+            return DOTween.Restart(target);
         }
 
         /// <summary>
@@ -136,7 +136,17 @@ namespace DG.Tweening
         /// </summary>
         public static int DORewind(this AudioMixer target)
         {
-            return DOTween.RewindAll(target);
+            return DOTween.Rewind(target);
+        }
+
+        /// <summary>
+        /// Smoothly rewinds all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens rewinded.
+        /// </summary>
+        public static int DOSmoothRewind(this AudioMixer target)
+        {
+            return DOTween.SmoothRewind(target);
         }
 
         /// <summary>

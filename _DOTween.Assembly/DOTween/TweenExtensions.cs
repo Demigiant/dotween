@@ -179,7 +179,7 @@ namespace DG.Tweening
             TweenManager.Restart(t, includeDelay);
         }
 
-        /// <summary>Rewinds the tween</summary>
+        /// <summary>Rewinds and pauses the tween</summary>
         /// <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
         public static void Rewind(this Tween t, bool includeDelay = true)
         {
@@ -192,6 +192,24 @@ namespace DG.Tweening
             }
 
             TweenManager.Rewind(t, includeDelay);
+        }
+
+        /// <summary>Smoothly rewinds the tween (delays excluded).
+        /// A "smooth rewind" animates the tween to its start position,
+        /// skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+        /// If called on a tween who is still waiting for its delay to happen, it will simply set the delay to 0 and pause the tween.
+        /// <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
+        public static void SmoothRewind(this Tween t)
+        {
+            if (t == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
+            } else if (!t.active) {
+                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+            } else if (t.isSequenced) {
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
+            }
+
+            TweenManager.SmoothRewind(t);
         }
 
         /// <summary>Plays the tween if it was paused, pauses it if it was playing</summary>

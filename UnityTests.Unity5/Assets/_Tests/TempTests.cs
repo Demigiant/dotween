@@ -7,40 +7,27 @@ using DG.Tweening.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TempTests : BrainBase
+public class TempTests : MonoBehaviour
 {
-	public Transform targetA, targetB;
+	Sequence sequence;
 
-	public DOGetter<Vector3> getterA, getterB;
-
-	IEnumerator Start()
+	void Start()
 	{
-		yield return new WaitForSeconds(1);
+		sequence = DOTween.Sequence();              
+		sequence.AppendInterval(3);               
+		sequence.AppendCallback(() => {
+			this.transform.GetComponent<MeshRenderer>().enabled = !this.transform.GetComponent<MeshRenderer>().enabled;
+		});
 
-		getterA = ()=> targetA.position;
-		getterB = ()=> targetB.position;
-
-		Debug.Log(getterA == getterB);
-		Debug.Log(getterA.Equals(getterB));
-
-		float time = Time.realtimeSinceStartup;
-		Debug.Log(CompareGetters(getterA, getterB));
-		float elapsed = Time.realtimeSinceStartup - time;
-		Debug.Log("Compare executed in " + elapsed + " seconds");
+		sequence.SetLoops(-1, LoopType.Restart);
+		sequence.Play();
 	}
 
-	bool CompareGetters<T>(DOGetter<T> a, DOGetter<T> b)
-	{
-		var aBody = a.Method.GetMethodBody().GetILAsByteArray();
-		var bBody = b.Method.GetMethodBody().GetILAsByteArray();
-
-		int aLen = aBody.Length;
-		Debug.Log("LEN: " + aLen);
-		if (aLen != bBody.Length) return false;
-
-		for(int i = 0; i < aLen; i++) {
-			if(aBody[i] != bBody[i]) return false;
-		}
-		return true;
-	}
+	void OnDestroy()
+    {
+        if (sequence != null) {
+        	Debug.Log("Killing Sequence");
+        	sequence.Kill();
+        }
+    }
 }

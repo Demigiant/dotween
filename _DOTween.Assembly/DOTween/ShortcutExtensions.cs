@@ -1216,6 +1216,16 @@ namespace DG.Tweening
         }
 
         /// <summary>
+        /// Smoothly rewinds all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens rewinded.
+        /// </summary>
+        public static int DOSmoothRewind(this Component target)
+        {
+            return DOTween.SmoothRewind(target);
+        }
+
+        /// <summary>
         /// Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
         /// (meaning tweens that were started from this target, or that had this target added as an Id)
         /// and returns the total number of tweens involved.

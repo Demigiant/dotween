@@ -676,8 +676,15 @@
             <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Rewind(DG.Tweening.Tween,System.Boolean)">
-            <summary>Rewinds the tween</summary>
+            <summary>Rewinds and pauses the tween</summary>
             <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
+        </member>
+        <member name="M:DG.Tweening.TweenExtensions.SmoothRewind(DG.Tweening.Tween)">
+            <summary>Smoothly rewinds the tween (delays excluded).
+            A "smooth rewind" animates the tween to its start position,
+            skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+            If called on a tween who is still waiting for its delay to happen, it will simply set the delay to 0 and pause the tween.
+            <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.TogglePause(DG.Tweening.Tween)">
             <summary>Plays the tween if it was paused, pauses it if it was playing</summary>
@@ -1443,6 +1450,13 @@
             and returns the total number of tweens rewinded.
             </summary>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOSmoothRewind(UnityEngine.Component)">
+            <summary>
+            Smoothly eewinds all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens rewinded.
+            </summary>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOTogglePause(UnityEngine.Component)">
             <summary>
             Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
@@ -1891,6 +1905,20 @@
         <member name="M:DG.Tweening.DOTween.Rewind(System.Object,System.Boolean)">
             <summary>Rewinds and pauses all tweens with the given ID or target, then returns the number of actual tweens rewinded
             (meaning the tweens that were not already rewinded)</summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.SmoothRewindAll">
+            <summary>Smoothly rewinds all tweens (delays excluded), then returns the number of actual tweens rewinding/rewinded
+            (meaning tweens that were not already rewinded).
+            A "smooth rewind" animates the tween to its start position,
+            skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+            <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.SmoothRewind(System.Object)">
+            <summary>Smoothly rewinds all tweens (delays excluded) with the given ID or target, then returns the number of actual tweens rewinding/rewinded
+            (meaning the tweens that were not already rewinded).
+            A "smooth rewind" animates the tween to its start position,
+            skipping all elapsed loops (except in case of LoopType.Incremental) while keeping the animation fluent.
+            <para>Note that a tween that was smoothly rewinded will have its play direction flipped</para></summary>
         </member>
         <member name="M:DG.Tweening.DOTween.TogglePauseAll">
             <summary>Toggles the play state of all tweens and returns the number of actual tweens toggled

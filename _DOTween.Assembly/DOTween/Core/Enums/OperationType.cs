@@ -17,6 +17,7 @@ namespace DG.Tweening.Core.Enums
         PlayForward,
         PlayBackwards,
         Rewind,
+        SmoothRewind,
         Restart,
         TogglePause,
         IsTweening
