@@ -1452,7 +1452,7 @@
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOSmoothRewind(UnityEngine.Component)">
             <summary>
-            Smoothly eewinds all tweens that have this target as a reference
+            Smoothly rewinds all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
             and returns the total number of tweens rewinded.
             </summary>

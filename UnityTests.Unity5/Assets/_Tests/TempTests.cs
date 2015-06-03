@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class TempTests : MonoBehaviour
 {
+	public Transform t;
 	Sequence sequence;
 
 	void Start()
@@ -18,6 +19,8 @@ public class TempTests : MonoBehaviour
 		sequence.AppendCallback(() => {
 			this.transform.GetComponent<MeshRenderer>().enabled = !this.transform.GetComponent<MeshRenderer>().enabled;
 		});
+
+		sequence.OnStart(MyCallback);
 
 		sequence.SetLoops(-1, LoopType.Restart);
 		sequence.Play();
@@ -29,5 +32,10 @@ public class TempTests : MonoBehaviour
         	Debug.Log("Killing Sequence");
         	sequence.Kill();
         }
+    }
+
+    void MyCallback()
+    {
+    	t.position = Vector3.zero;
     }
 }
