@@ -508,6 +508,18 @@ namespace DG.Tweening
             return t.isPlaying;
         }
 
+        /// <summary>Returns the total number of loops set for this tween
+        /// (returns -1 if the loops are infinite)</summary>
+        public static int Loops(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return 0;
+            }
+
+            return t.loops;
+        }
+
         #region Path Tweens
 
         /// <summary>

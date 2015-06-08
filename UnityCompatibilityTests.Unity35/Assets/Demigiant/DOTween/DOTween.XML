@@ -790,6 +790,10 @@
         <member name="M:DG.Tweening.TweenExtensions.IsPlaying(DG.Tweening.Tween)">
             <summary>Returns TRUE if this tween is playing</summary>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.Loops(DG.Tweening.Tween)">
+            <summary>Returns the total number of loops set for this tween
+            (returns -1 if the loops are infinite)</summary>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.PathGetPoint(DG.Tweening.Tween,System.Single)">
             <summary>
             Returns a point on a path based on the given path percentage.
