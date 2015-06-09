@@ -755,8 +755,17 @@ namespace DG.Tweening.Core
             t.isIndependentUpdate = DOTween.defaultTimeScaleIndependent;
             t.activeId = _maxActiveLookupId = totActiveTweens;
             _activeTweens[totActiveTweens] = t;
-            hasActiveDefaultTweens = true;
-            totActiveDefaultTweens++;
+            if (t.updateType == UpdateType.Normal) {
+                totActiveDefaultTweens++;
+                hasActiveDefaultTweens = true;
+            } else if (t.updateType == UpdateType.Fixed) {
+                totActiveFixedTweens++;
+                hasActiveFixedTweens = true;
+            } else {
+                totActiveLateTweens++;
+                hasActiveLateTweens = true;
+            }
+
             totActiveTweens++;
             if (t.tweenType == TweenType.Tweener) totActiveTweeners++;
             else totActiveSequences++;

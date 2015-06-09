@@ -9,33 +9,13 @@ using UnityEngine.UI;
 
 public class TempTests : MonoBehaviour
 {
-	public Transform t;
-	Sequence sequence;
+	public bool straightFixedUpdate;
 
-	void Start()
+	IEnumerator Start()
 	{
-		sequence = DOTween.Sequence();              
-		sequence.AppendInterval(3);               
-		sequence.AppendCallback(() => {
-			this.transform.GetComponent<MeshRenderer>().enabled = !this.transform.GetComponent<MeshRenderer>().enabled;
-		});
+		yield return new WaitForSeconds(1);
 
-		sequence.OnStart(MyCallback);
-
-		sequence.SetLoops(-1, LoopType.Restart);
-		sequence.Play();
+		Tween t = transform.DORotate(new Vector3(0, 180, 0), 2).OnComplete(()=> Debug.Log("Complete"));
+		if (straightFixedUpdate) t.SetUpdate(UpdateType.Fixed);
 	}
-
-	void OnDestroy()
-    {
-        if (sequence != null) {
-        	Debug.Log("Killing Sequence");
-        	sequence.Kill();
-        }
-    }
-
-    void MyCallback()
-    {
-    	t.position = Vector3.zero;
-    }
 }
