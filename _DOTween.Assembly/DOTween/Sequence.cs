@@ -163,6 +163,12 @@ namespace DG.Tweening
             s.fullDuration = s.loops > -1 ? s.duration * s.loops : Mathf.Infinity;
             // Order sequencedObjs by start position
             s._sequencedObjs.Sort(SortSequencedObjs);
+            // Set relative nested tweens
+            if (s.isRelative) {
+                for (int len = s.sequencedTweens.Count, i = 0; i < len; ++i) {
+                    s.sequencedTweens[i].isRelative = true;
+                }
+            }
             return true;
         }
 

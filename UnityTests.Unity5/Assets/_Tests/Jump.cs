@@ -16,6 +16,6 @@ public class Jump : BrainBase
 	{
 		yield return new WaitForSeconds(1);
 
-		target.DOJump(jump, jumpHeight, numJumps, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo);
+		target.DOJump(jump, jumpHeight, numJumps, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetRelative();
 	}
 }
