@@ -31,6 +31,8 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal float[] timesTable; // Connected to lengthsTable, used for constant speed calculations
         [SerializeField] internal float[] lengthsTable; // Connected to timesTable, used for constant speed calculations
         internal int linearWPIndex = -1; // Waypoint towards which we're moving (only stored for linear paths, when calling GetPoint)
+        Path _incrementalClone; // Last incremental clone. Stored in case of incremental loops, to avoid recreating a new path every time
+        int _incrementalIndex = 0;
 
         ABSPathDecoder _decoder;
 
@@ -57,6 +59,11 @@ namespace DG.Tweening.Plugins.Core.PathCore
             AssignDecoder(type);
 
             if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(Draw);
+        }
+
+        internal Path()
+        {
+            // Used when cloning it
         }
 
         // Needs to be called once waypoints and decoder are assigned, to setup or refresh path data.
@@ -179,6 +186,52 @@ namespace DG.Tweening.Plugins.Core.PathCore
             wpLengths = timesTable = lengthsTable = null;
             nonLinearDrawWps = null;
             isFinalized = false;
+        }
+
+        // Clones this path with the given loop increment
+        internal Path CloneIncremental(int loopIncrement)
+        {
+            if (_incrementalClone != null) {
+                if (_incrementalIndex == loopIncrement) return _incrementalClone;
+                _incrementalClone.Destroy();
+            }
+
+            int wpsLen = wps.Length;
+            Vector3 diff = wps[wpsLen - 1] - wps[0];
+            Vector3[] incrWps = new Vector3[wps.Length];
+            for (int i = 0; i < wpsLen; ++i) incrWps[i] = wps[i] + (diff * loopIncrement);
+
+            int cpsLen = controlPoints.Length;
+            ControlPoint[] incrCps = new ControlPoint[cpsLen];
+            for (int i = 0; i < cpsLen; ++i) incrCps[i] = controlPoints[i] + (diff * loopIncrement);
+
+            Vector3[] incrNonLinearDrawWps  = null;
+            if (nonLinearDrawWps != null) {
+                int nldLen = nonLinearDrawWps.Length;
+                incrNonLinearDrawWps = new Vector3[nldLen];
+                for (int i = 0; i < nldLen; ++i) incrNonLinearDrawWps[i] = nonLinearDrawWps[i] + (diff * loopIncrement);
+            }
+            
+            _incrementalClone = new Path();
+            _incrementalIndex = loopIncrement;
+            _incrementalClone.type = type;
+            _incrementalClone.subdivisionsXSegment = subdivisionsXSegment;
+            _incrementalClone.subdivisions = subdivisions;
+            _incrementalClone.wps = incrWps;
+            _incrementalClone.controlPoints = incrCps;
+            if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(_incrementalClone.Draw);
+
+            _incrementalClone.length = length;
+            _incrementalClone.wpLengths = wpLengths;
+            _incrementalClone.timesTable = timesTable;
+            _incrementalClone.lengthsTable = lengthsTable;
+            _incrementalClone._decoder = _decoder;
+            _incrementalClone.nonLinearDrawWps = incrNonLinearDrawWps;
+            _incrementalClone.targetPosition = targetPosition;
+            _incrementalClone.lookAtPosition = lookAtPosition;
+
+            _incrementalClone.isFinalized = true;
+            return _incrementalClone;
         }
 
         #endregion

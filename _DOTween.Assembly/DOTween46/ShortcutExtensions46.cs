@@ -261,15 +261,21 @@ namespace DG.Tweening
         public static Sequence DOJumpAnchorPos(this RectTransform target, Vector2 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            float offsetY = endValue.y - target.anchoredPosition.y;
+            float startPosY = target.anchoredPosition.y;
+            float offsetY = -1;
+            bool offsetYSet = false;
             Sequence s = DOTween.Sequence()
                 .Append(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(endValue.x, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(0, jumpPower), duration / (numJumps * 2))
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
-                    .SetLoops(numJumps * 2, LoopType.Yoyo)
+                    .SetLoops(numJumps * 2, LoopType.Yoyo).SetRelative()
                 ).SetTarget(target).SetEase(DOTween.defaultEaseType);
             s.OnUpdate(() => {
+                if (!offsetYSet) {
+                    offsetYSet = false;
+                    offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
+                }
                 Vector2 pos = target.anchoredPosition;
                 pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
                 target.anchoredPosition = pos;

@@ -102,6 +102,11 @@ namespace DG.Tweening.Plugins
 
         public override void EvaluateAndApply(PathOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Path startValue, Path changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
+            if (t.loopType == LoopType.Incremental && !options.isClosedPath) {
+                int increment = (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
+                if (increment > 0) changeValue = changeValue.CloneIncremental(increment);
+            }
+
             float pathPerc = EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
             float constantPathPerc = changeValue.ConvertToConstantPathPerc(pathPerc);
             Vector3 newPos = changeValue.GetPoint(constantPathPerc);

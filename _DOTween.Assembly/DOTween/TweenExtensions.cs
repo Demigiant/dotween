@@ -449,7 +449,7 @@ namespace DG.Tweening
             }
 
             float perc = t.position / t.duration;
-            bool isInverse = t.completedLoops > 0 && t.loopType == LoopType.Yoyo && t.completedLoops % 2 != 0;
+            bool isInverse = t.completedLoops > 0 && t.loopType == LoopType.Yoyo && (!t.isComplete && t.completedLoops % 2 != 0 || t.isComplete && t.completedLoops % 2 == 0);
             return isInverse ? 1 - perc : perc;
         }
 

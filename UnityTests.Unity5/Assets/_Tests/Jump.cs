@@ -11,11 +11,13 @@ public class Jump : BrainBase
 	public float duration = 1;
 	public Ease ease = Ease.OutQuad;
 	public int loops = -1;
+	public bool isRelative;
 
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(1);
 
-		target.DOJump(jump, jumpHeight, numJumps, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo).SetRelative();
+		Tween t = target.DOJump(jump, jumpHeight, numJumps, duration).SetEase(ease).SetLoops(loops, LoopType.Yoyo);
+		if (isRelative) t.SetRelative();
 	}
 }

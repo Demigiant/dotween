@@ -22,5 +22,10 @@ namespace DG.Tweening.Plugins.Core.PathCore
             this.a = a;
             this.b = b;
         }
+
+        public static ControlPoint operator +(ControlPoint cp, Vector3 v)
+        {
+            return new ControlPoint(cp.a + v, cp.b + v);
+        }
     }
 }
