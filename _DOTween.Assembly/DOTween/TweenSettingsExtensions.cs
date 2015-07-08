@@ -540,8 +540,12 @@ namespace DG.Tweening
         {
             if (t == null || !t.active || t.creationLocked) return t;
 
-            t.delay = delay;
-            t.delayComplete = delay <= 0;
+            if (t.tweenType == TweenType.Sequence) {
+                (t as Sequence).PrependInterval(delay);
+            } else {
+                t.delay = delay;
+                t.delayComplete = delay <= 0;
+            }
             return t;
         }
 

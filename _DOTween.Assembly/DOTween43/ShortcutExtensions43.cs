@@ -105,13 +105,22 @@ namespace DG.Tweening
             float startPosY = target.position.y;
             float offsetY = -1;
             bool offsetYSet = false;
-            Sequence s = DOTween.Sequence()
+            Sequence s = DOTween.Sequence();
 #if COMPATIBLE
-                .Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
+            s.Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
 #else
-                .Append(DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue.x, 0), duration)
+            s.Append(DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue.x, 0), duration)
 #endif
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
+                    .OnUpdate(() => {
+                        if (!offsetYSet) {
+                            offsetYSet = false;
+                            offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
+                        }
+                        Vector2 pos = target.position;
+                        pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                        target.MovePosition(pos);
+                    })
 #if COMPATIBLE
                 ).Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
 #else
@@ -120,15 +129,6 @@ namespace DG.Tweening
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
                     .SetLoops(numJumps * 2, LoopType.Yoyo).SetRelative()
                 ).SetTarget(target).SetEase(DOTween.defaultEaseType);
-            s.OnUpdate(() => {
-                if (!offsetYSet) {
-                    offsetYSet = false;
-                    offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
-                }
-                Vector2 pos = target.position;
-                pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-                target.MovePosition(pos);
-            });
             return s;
         }
 

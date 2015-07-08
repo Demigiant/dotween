@@ -9,15 +9,20 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public Transform trans;
-	public Renderer rend;
+	public Transform target;
+	public float delay = 0;
 
-	IEnumerator Start()
+	void Start()
 	{
-		yield return new WaitForSeconds(1);
+		Tween t = target.DOJump(new Vector3(4, 3, 0), 2, 1, 1).SetRelative();
+		if (delay > 0) t.SetDelay(delay);
+		t.OnStart(()=>Debug.Log("Start"));
+		t.OnComplete(()=>Debug.Log("Complete"));
 
-		DOTween.Sequence()
-			.Append(rend.material.DOFade(0, 0.5f))
-			.Append(rend.material.DOFade(1, 1f));
+
+		// Tween t = DOTween.Sequence().Append(target.DOMoveX(2, 1).SetRelative());
+		// if (delay > 0) t.SetDelay(delay);
+		// t.OnStart(()=>Debug.Log("Start"));
+		// t.OnComplete(()=>Debug.Log("Complete"));
 	}
 }

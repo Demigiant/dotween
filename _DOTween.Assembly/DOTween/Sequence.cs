@@ -39,7 +39,8 @@ namespace DG.Tweening
         internal static Sequence DoPrepend(Sequence inSequence, Tween t)
         {
             if (t.loops == -1) t.loops = 1;
-            float tFullTime = t.delay + (t.duration * t.loops);
+//            float tFullTime = t.delay + (t.duration * t.loops);
+            float tFullTime = t.duration * t.loops;
             inSequence.duration += tFullTime;
             int len = inSequence._sequencedObjs.Count;
             for (int i = 0; i < len; ++i) {
@@ -55,17 +56,17 @@ namespace DG.Tweening
         {
             TweenManager.AddActiveTweenToSequence(t);
 
-            // If t has a delay add it as an interval
-            atPosition += t.delay;
-            inSequence.lastTweenInsertTime = atPosition;
+//            // If t has a delay add it as an interval
+//            atPosition += t.delay;
+//            inSequence.lastTweenInsertTime = atPosition;
 
             t.isSequenced = t.creationLocked = true;
             t.sequenceParent = inSequence;
             if (t.loops == -1) t.loops = 1;
             float tFullTime = t.duration * t.loops;
             t.autoKill = false;
-            t.delay = t.elapsedDelay = 0;
-            t.delayComplete = true;
+//            t.delay = t.elapsedDelay = 0;
+//            t.delayComplete = true;
             t.isSpeedBased = false;
             t.sequencedPosition = atPosition;
             t.sequencedEndPosition = atPosition + tFullTime;
