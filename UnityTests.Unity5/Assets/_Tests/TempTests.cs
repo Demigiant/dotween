@@ -14,15 +14,10 @@ public class TempTests : BrainBase
 
 	void Start()
 	{
-		Tween t = target.DOJump(new Vector3(4, 3, 0), 2, 1, 1).SetRelative();
-		if (delay > 0) t.SetDelay(delay);
-		t.OnStart(()=>Debug.Log("Start"));
-		t.OnComplete(()=>Debug.Log("Complete"));
-
-
-		// Tween t = DOTween.Sequence().Append(target.DOMoveX(2, 1).SetRelative());
-		// if (delay > 0) t.SetDelay(delay);
-		// t.OnStart(()=>Debug.Log("Start"));
-		// t.OnComplete(()=>Debug.Log("Complete"));
+		DOTween.Sequence()
+			.Append(target.DOMoveX(2, 2))
+			.Join(target.DOMoveY(2, 2))
+			.Append(target.DOScale(2, 2))
+			.Join(target.DORotate(new Vector3(0, 0, 180), 2));
 	}
 }
