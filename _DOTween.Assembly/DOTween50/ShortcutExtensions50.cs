@@ -38,9 +38,11 @@ namespace DG.Tweening
         /// and returns the total number of tweens completed
         /// (meaning the tweens that don't have infinite loops and were not already complete)
         /// </summary>
-        public static int DOComplete(this AudioMixer target)
+        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// otherwise they will be ignored</param>
+        public static int DOComplete(this AudioMixer target, bool withCallbacks = false)
         {
-            return DOTween.Complete(target);
+            return DOTween.Complete(target, withCallbacks);
         }
 
         /// <summary>

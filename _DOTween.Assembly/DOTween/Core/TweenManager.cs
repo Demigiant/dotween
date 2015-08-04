@@ -437,7 +437,8 @@ namespace DG.Tweening.Core
                         break;
                     case OperationType.Complete:
                         bool hasAutoKill = t.autoKill;
-                        if (Complete(t, false)) {
+                        // If optionalFloat is > 0 completes with callbacks
+                        if (Complete(t, false, optionalFloat > 0 ? UpdateMode.Update : UpdateMode.Goto)) {
                             // If optionalBool is TRUE only returns tweens killed by completion
                             totInvolved += !optionalBool ? 1 : hasAutoKill ? 1 : 0;
                             if (hasAutoKill) {
@@ -500,11 +501,11 @@ namespace DG.Tweening.Core
 
         #region Play Operations
 
-        internal static bool Complete(Tween t, bool modifyActiveLists = true)
+        internal static bool Complete(Tween t, bool modifyActiveLists = true, UpdateMode updateMode = UpdateMode.Goto)
         {
             if (t.loops == -1) return false;
             if (!t.isComplete) {
-                Tween.DoGoto(t, t.duration, t.loops, UpdateMode.Goto);
+                Tween.DoGoto(t, t.duration, t.loops, updateMode);
                 t.isPlaying = false;
                 // Despawn if needed
                 if (t.autoKill) {

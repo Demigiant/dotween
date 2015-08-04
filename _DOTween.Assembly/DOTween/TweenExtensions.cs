@@ -6,6 +6,7 @@
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -24,7 +25,9 @@ namespace DG.Tweening
         #region Runtime Operations
 
         /// <summary>Completes the tween</summary>
-        public static void Complete(this Tween t)
+        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// otherwise they will be ignored</param>
+        public static void Complete(this Tween t, bool withCallbacks = false)
         {
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
@@ -34,7 +37,7 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
-            TweenManager.Complete(t);
+            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
         }
 
         /// <summary>Flips the direction of this tween (backwards if it was going forward or viceversa)</summary>

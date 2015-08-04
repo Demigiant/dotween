@@ -115,7 +115,7 @@ public class Sequences : BrainBase
 		seqPre.Append(seq);
 		seqPre.PrependInterval(1);
 
-		Sequence mainSeq = DOTween.Sequence().SetUpdate(true).SetLoops(loops, loopType).SetAutoKill(false)
+		Sequence mainSeq = DOTween.Sequence().SetUpdate(false).SetLoops(loops, loopType).SetAutoKill(false)
 			.SetId("MAIN SEQUENCE")
 			.OnStart(()=> DGUtils.Log("MAINSequence Start"))
 			.OnStepComplete(()=> { stepCompleteMS++; DGUtils.Log("MAINSEQUENCE Step Complete"); })

@@ -12,12 +12,19 @@ public class TempTests : BrainBase
 	public Transform target;
 	public float delay = 0;
 
-	void Start()
+	IEnumerator Start()
 	{
-		DOTween.Sequence()
-			.Append(target.DOMoveX(2, 2))
-			.Join(target.DOMoveY(2, 2))
-			.Append(target.DOScale(2, 2))
-			.Join(target.DORotate(new Vector3(0, 0, 180), 2));
+		Vector3[] wps = new[] {
+			new Vector3(-9.9f, -4.9f, 15.0f), new Vector3(-9.9f, -2.4f, 10.0f), new Vector3(-9.9f, 2.7f, 10.0f), new Vector3(-9.9f, 5.2f, 15.0f)
+		};
+		Tween t = target.DOPath(wps, 4).SetEase(Ease.Linear).Pause();
+
+		yield return new WaitForSeconds(1);
+		t.Goto(1);
+		Debug.Log("1 " + target.position);
+
+		yield return new WaitForSeconds(2);
+		t.Goto(2);
+		Debug.Log("2 " + target.position);
 	}
 }

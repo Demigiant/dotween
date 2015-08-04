@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.805";
+        public static readonly string Version = "1.0.810";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -630,16 +630,20 @@ namespace DG.Tweening
 
         /// <summary>Completes all tweens and returns the number of actual tweens completed
         /// (meaning tweens that don't have infinite loops and were not already complete)</summary>
-        public static int CompleteAll()
+        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// otherwise they will be ignored</param>
+        public static int CompleteAll(bool withCallbacks = false)
         {
-            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.All, null, false, 0);
+            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.All, null, false, withCallbacks ? 1 : 0);
         }
         /// <summary>Completes all tweens with the given ID or target and returns the number of actual tweens completed
         /// (meaning the tweens that don't have infinite loops and were not already complete)</summary>
-        public static int Complete(object targetOrId)
+        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// otherwise they will be ignored</param>
+        public static int Complete(object targetOrId, bool withCallbacks = false)
         {
             if (targetOrId == null) return 0;
-            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.TargetOrId, targetOrId, false, 0);
+            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.TargetOrId, targetOrId, false, withCallbacks ? 1 : 0);
         }
         // Used internally to complete a tween and return only the number of killed tweens instead than just the completed ones
         // (necessary for Kill(complete) operation. Sets optionalBool to TRUE)

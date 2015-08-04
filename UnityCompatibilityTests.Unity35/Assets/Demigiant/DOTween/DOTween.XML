@@ -523,13 +523,17 @@
             Returns a new <see cref="M:DG.Tweening.DOTween.Sequence"/> to be used for tween groups
             </summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.CompleteAll">
+        <member name="M:DG.Tweening.DOTween.CompleteAll(System.Boolean)">
             <summary>Completes all tweens and returns the number of actual tweens completed
             (meaning tweens that don't have infinite loops and were not already complete)</summary>
+            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            otherwise they will be ignored</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.Complete(System.Object)">
+        <member name="M:DG.Tweening.DOTween.Complete(System.Object,System.Boolean)">
             <summary>Completes all tweens with the given ID or target and returns the number of actual tweens completed
             (meaning the tweens that don't have infinite loops and were not already complete)</summary>
+            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            otherwise they will be ignored</param>
         </member>
         <member name="M:DG.Tweening.DOTween.FlipAll">
             <summary>Flips all tweens (changing their direction to forward if it was backwards and viceversa),
@@ -903,8 +907,10 @@
             Methods that extend Tween objects and allow to control or get data from them
             </summary>
         </member>
-        <member name="M:DG.Tweening.TweenExtensions.Complete(DG.Tweening.Tween)">
+        <member name="M:DG.Tweening.TweenExtensions.Complete(DG.Tweening.Tween,System.Boolean)">
             <summary>Completes the tween</summary>
+            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            otherwise they will be ignored</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Flip(DG.Tweening.Tween)">
             <summary>Flips the direction of this tween (backwards if it was going forward or viceversa)</summary>
@@ -1620,13 +1626,15 @@
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
             <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOComplete(UnityEngine.Component)">
+        <member name="M:DG.Tweening.ShortcutExtensions.DOComplete(UnityEngine.Component,System.Boolean)">
             <summary>
             Completes all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
             and returns the total number of tweens completed
             (meaning the tweens that don't have infinite loops and were not already complete)
             </summary>
+            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            otherwise they will be ignored</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOKill(UnityEngine.Component,System.Boolean)">
             <summary>
