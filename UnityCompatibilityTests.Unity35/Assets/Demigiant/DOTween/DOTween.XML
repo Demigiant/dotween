@@ -532,7 +532,7 @@
         <member name="M:DG.Tweening.DOTween.Complete(System.Object,System.Boolean)">
             <summary>Completes all tweens with the given ID or target and returns the number of actual tweens completed
             (meaning the tweens that don't have infinite loops and were not already complete)</summary>
-            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            <param name="withCallbacks">For Sequences only: if TRUE internal Sequence callbacks will be fired,
             otherwise they will be ignored</param>
         </member>
         <member name="M:DG.Tweening.DOTween.FlipAll">

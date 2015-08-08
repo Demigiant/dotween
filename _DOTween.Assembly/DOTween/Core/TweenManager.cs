@@ -603,7 +603,7 @@ namespace DG.Tweening.Core
 
         internal static bool Restart(Tween t, bool includeDelay = true)
         {
-            bool wasPaused = t.isPlaying;
+            bool wasPaused = !t.isPlaying;
             t.isBackwards = false;
             Rewind(t, includeDelay);
             t.isPlaying = true;

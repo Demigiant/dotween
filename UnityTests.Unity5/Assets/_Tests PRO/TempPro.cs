@@ -4,11 +4,10 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public Transform target;
-	public Vector3[] path;
+	public DOTweenAnimation anime;
 
-	void Start()
+	void Update()
 	{
-		target.DOPath(path, 4);
+		if (Input.GetKeyDown(KeyCode.Space)) anime.DORestart(true);
 	}
 }

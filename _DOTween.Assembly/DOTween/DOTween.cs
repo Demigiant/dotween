@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.810";
+        public static readonly string Version = "1.0.815";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -638,7 +638,7 @@ namespace DG.Tweening
         }
         /// <summary>Completes all tweens with the given ID or target and returns the number of actual tweens completed
         /// (meaning the tweens that don't have infinite loops and were not already complete)</summary>
-        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// <param name="withCallbacks">For Sequences only: if TRUE internal Sequence callbacks will be fired,
         /// otherwise they will be ignored</param>
         public static int Complete(object targetOrId, bool withCallbacks = false)
         {
