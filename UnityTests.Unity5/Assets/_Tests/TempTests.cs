@@ -10,17 +10,16 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
 	public Transform target;
-	Tween tween;
 
 	void Start()
 	{
-		tween = target.DOMoveX(2, 1).SetAutoKill(false).OnPlay(()=> Debug.Log("Play"));
-	}
+		float delay = 0.15f;
+	    Sequence seq = DOTween.Sequence();
+	    seq.Insert(delay, target.DOMoveX(0.5f, 0.5f).OnComplete(() => {
+	      Debug.Log("Doesn't work");
+	    }));
+	    seq.OnComplete(()=> Debug.Log("Works"));
 
-	void OnGUI()
-	{
-		if (GUILayout.Button("Restart")) tween.Restart();
-		if (GUILayout.Button("Flip")) tween.Flip();
-		if (GUILayout.Button("TogglePause")) tween.TogglePause();
+		target.DORotate (new Vector3 (1, 2, 1), 2);
 	}
 }

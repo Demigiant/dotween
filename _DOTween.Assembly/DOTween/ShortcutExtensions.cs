@@ -1140,6 +1140,18 @@ namespace DG.Tweening
         {
             return DOTween.Complete(target, withCallbacks);
         }
+        /// <summary>
+        /// Completes all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens completed
+        /// (meaning the tweens that don't have infinite loops and were not already complete)
+        /// </summary>
+        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+        /// otherwise they will be ignored</param>
+        public static int DOComplete(this Material target, bool withCallbacks = false)
+        {
+            return DOTween.Complete(target, withCallbacks);
+        }
 
         /// <summary>
         /// Kills all tweens that have this target as a reference
@@ -1153,6 +1165,16 @@ namespace DG.Tweening
 //            return tot + DOTween.Kill(target);
             return DOTween.Kill(target, complete);
         }
+        /// <summary>
+        /// Kills all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens killed.
+        /// </summary>
+        /// <param name="complete">If TRUE completes the tween before killing it</param>
+        public static int DOKill(this Material target, bool complete = false)
+        {
+            return DOTween.Kill(target, complete);
+        }
 
         /// <summary>
         /// Flips the direction (backwards if it was going forward or viceversa) of all tweens that have this target as a reference
@@ -1160,6 +1182,15 @@ namespace DG.Tweening
         /// and returns the total number of tweens flipped.
         /// </summary>
         public static int DOFlip(this Component target)
+        {
+            return DOTween.Flip(target);
+        }
+        /// <summary>
+        /// Flips the direction (backwards if it was going forward or viceversa) of all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens flipped.
+        /// </summary>
+        public static int DOFlip(this Material target)
         {
             return DOTween.Flip(target);
         }
@@ -1176,6 +1207,18 @@ namespace DG.Tweening
         {
             return DOTween.Goto(target, to, andPlay);
         }
+        /// <summary>
+        /// Sends to the given position all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens involved.
+        /// </summary>
+        /// <param name="to">Time position to reach
+        /// (if higher than the whole tween duration the tween will simply reach its end)</param>
+        /// <param name="andPlay">If TRUE will play the tween after reaching the given position, otherwise it will pause it</param>
+        public static int DOGoto(this Material target, float to, bool andPlay = false)
+        {
+            return DOTween.Goto(target, to, andPlay);
+        }
 
         /// <summary>
         /// Pauses all tweens that have this target as a reference
@@ -1183,6 +1226,15 @@ namespace DG.Tweening
         /// and returns the total number of tweens paused.
         /// </summary>
         public static int DOPause(this Component target)
+        {
+            return DOTween.Pause(target);
+        }
+        /// <summary>
+        /// Pauses all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens paused.
+        /// </summary>
+        public static int DOPause(this Material target)
         {
             return DOTween.Pause(target);
         }
@@ -1196,6 +1248,15 @@ namespace DG.Tweening
         {
             return DOTween.Play(target);
         }
+        /// <summary>
+        /// Plays all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens played.
+        /// </summary>
+        public static int DOPlay(this Material target)
+        {
+            return DOTween.Play(target);
+        }
 
         /// <summary>
         /// Plays backwards all tweens that have this target as a reference
@@ -1203,6 +1264,15 @@ namespace DG.Tweening
         /// and returns the total number of tweens played.
         /// </summary>
         public static int DOPlayBackwards(this Component target)
+        {
+            return DOTween.PlayBackwards(target);
+        }
+        /// <summary>
+        /// Plays backwards all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens played.
+        /// </summary>
+        public static int DOPlayBackwards(this Material target)
         {
             return DOTween.PlayBackwards(target);
         }
@@ -1216,6 +1286,15 @@ namespace DG.Tweening
         {
             return DOTween.PlayForward(target);
         }
+        /// <summary>
+        /// Plays forward all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens played.
+        /// </summary>
+        public static int DOPlayForward(this Material target)
+        {
+            return DOTween.PlayForward(target);
+        }
 
         /// <summary>
         /// Restarts all tweens that have this target as a reference
@@ -1223,6 +1302,15 @@ namespace DG.Tweening
         /// and returns the total number of tweens restarted.
         /// </summary>
         public static int DORestart(this Component target, bool includeDelay = true)
+        {
+            return DOTween.Restart(target, includeDelay);
+        }
+        /// <summary>
+        /// Restarts all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens restarted.
+        /// </summary>
+        public static int DORestart(this Material target, bool includeDelay = true)
         {
             return DOTween.Restart(target, includeDelay);
         }
@@ -1236,6 +1324,15 @@ namespace DG.Tweening
         {
             return DOTween.Rewind(target, includeDelay);
         }
+        /// <summary>
+        /// Rewinds all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens rewinded.
+        /// </summary>
+        public static int DORewind(this Material target, bool includeDelay = true)
+        {
+            return DOTween.Rewind(target, includeDelay);
+        }
 
         /// <summary>
         /// Smoothly rewinds all tweens that have this target as a reference
@@ -1246,6 +1343,15 @@ namespace DG.Tweening
         {
             return DOTween.SmoothRewind(target);
         }
+        /// <summary>
+        /// Smoothly rewinds all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens rewinded.
+        /// </summary>
+        public static int DOSmoothRewind(this Material target)
+        {
+            return DOTween.SmoothRewind(target);
+        }
 
         /// <summary>
         /// Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
@@ -1253,6 +1359,15 @@ namespace DG.Tweening
         /// and returns the total number of tweens involved.
         /// </summary>
         public static int DOTogglePause(this Component target)
+        {
+            return DOTween.TogglePause(target);
+        }
+        /// <summary>
+        /// Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
+        /// (meaning tweens that were started from this target, or that had this target added as an Id)
+        /// and returns the total number of tweens involved.
+        /// </summary>
+        public static int DOTogglePause(this Material target)
         {
             return DOTween.TogglePause(target);
         }

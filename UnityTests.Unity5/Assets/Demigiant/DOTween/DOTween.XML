@@ -1636,6 +1636,16 @@
             <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
             otherwise they will be ignored</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOComplete(UnityEngine.Material,System.Boolean)">
+            <summary>
+            Completes all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens completed
+            (meaning the tweens that don't have infinite loops and were not already complete)
+            </summary>
+            <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+            otherwise they will be ignored</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOKill(UnityEngine.Component,System.Boolean)">
             <summary>
             Kills all tweens that have this target as a reference
@@ -1644,7 +1654,22 @@
             </summary>
             <param name="complete">If TRUE completes the tween before killing it</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOKill(UnityEngine.Material,System.Boolean)">
+            <summary>
+            Kills all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens killed.
+            </summary>
+            <param name="complete">If TRUE completes the tween before killing it</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOFlip(UnityEngine.Component)">
+            <summary>
+            Flips the direction (backwards if it was going forward or viceversa) of all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens flipped.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOFlip(UnityEngine.Material)">
             <summary>
             Flips the direction (backwards if it was going forward or viceversa) of all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1661,7 +1686,24 @@
             (if higher than the whole tween duration the tween will simply reach its end)</param>
             <param name="andPlay">If TRUE will play the tween after reaching the given position, otherwise it will pause it</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOGoto(UnityEngine.Material,System.Single,System.Boolean)">
+            <summary>
+            Sends to the given position all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens involved.
+            </summary>
+            <param name="to">Time position to reach
+            (if higher than the whole tween duration the tween will simply reach its end)</param>
+            <param name="andPlay">If TRUE will play the tween after reaching the given position, otherwise it will pause it</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOPause(UnityEngine.Component)">
+            <summary>
+            Pauses all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens paused.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPause(UnityEngine.Material)">
             <summary>
             Pauses all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1675,7 +1717,21 @@
             and returns the total number of tweens played.
             </summary>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPlay(UnityEngine.Material)">
+            <summary>
+            Plays all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens played.
+            </summary>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOPlayBackwards(UnityEngine.Component)">
+            <summary>
+            Plays backwards all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens played.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPlayBackwards(UnityEngine.Material)">
             <summary>
             Plays backwards all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1689,7 +1745,21 @@
             and returns the total number of tweens played.
             </summary>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPlayForward(UnityEngine.Material)">
+            <summary>
+            Plays forward all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens played.
+            </summary>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Component,System.Boolean)">
+            <summary>
+            Restarts all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens restarted.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DORestart(UnityEngine.Material,System.Boolean)">
             <summary>
             Restarts all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
@@ -1703,6 +1773,13 @@
             and returns the total number of tweens rewinded.
             </summary>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DORewind(UnityEngine.Material,System.Boolean)">
+            <summary>
+            Rewinds all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens rewinded.
+            </summary>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOSmoothRewind(UnityEngine.Component)">
             <summary>
             Smoothly rewinds all tweens that have this target as a reference
@@ -1710,7 +1787,21 @@
             and returns the total number of tweens rewinded.
             </summary>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOSmoothRewind(UnityEngine.Material)">
+            <summary>
+            Smoothly rewinds all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens rewinded.
+            </summary>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOTogglePause(UnityEngine.Component)">
+            <summary>
+            Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
+            (meaning tweens that were started from this target, or that had this target added as an Id)
+            and returns the total number of tweens involved.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOTogglePause(UnityEngine.Material)">
             <summary>
             Toggles the paused state (plays if it was paused, pauses if it was playing) of all tweens that have this target as a reference
             (meaning tweens that were started from this target, or that had this target added as an Id)
