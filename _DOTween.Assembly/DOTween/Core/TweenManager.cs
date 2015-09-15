@@ -404,10 +404,11 @@ namespace DG.Tweening.Core
             isUpdateLoop = false;
         }
 
-        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat, object optionalObj = null)
+        internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat, object optionalObj = null, object[] optionalArray = null)
         {
             int totInvolved = 0;
             bool hasDespawned = false;
+            int optionalArrayLen = optionalArray == null ? 0 : optionalArray.Length;
             for (int i = _maxActiveLookupId; i > -1; --i) {
                 Tween t = _activeTweens[i];
                 if (t == null || !t.active) continue;
@@ -422,6 +423,16 @@ namespace DG.Tweening.Core
                     break;
                 case FilterType.TargetAndId:
                     isFilterCompliant = id.Equals(t.id) && optionalObj != null && optionalObj.Equals(t.target);
+                    break;
+                case FilterType.AllExceptTargetsOrIds:
+                    isFilterCompliant = true;
+                    for (int c = 0; c < optionalArrayLen; ++c) {
+                        object objId = optionalArray[c];
+                        if (objId.Equals(t.id) || objId.Equals(t.target)) {
+                            isFilterCompliant = false;
+                            break;
+                        }
+                    }
                     break;
                 }
                 if (isFilterCompliant) {

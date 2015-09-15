@@ -554,6 +554,11 @@
             <summary>Kills all tweens and returns the number of actual tweens killed</summary>
             <param name="complete">If TRUE completes the tweens before killing them</param>
         </member>
+        <member name="M:DG.Tweening.DOTween.KillAll(System.Boolean,System.Object[])">
+            <summary>Kills all tweens and returns the number of actual tweens killed</summary>
+            <param name="complete">If TRUE completes the tweens before killing them</param>
+            <param name="idsOrTargetsToExclude">Eventual IDs or targets to exclude from the killing</param>
+        </member>
         <member name="M:DG.Tweening.DOTween.Kill(System.Object,System.Boolean)">
             <summary>Kills all tweens with the given ID or target and returns the number of actual tweens killed</summary>
             <param name="complete">If TRUE completes the tweens before killing them</param>

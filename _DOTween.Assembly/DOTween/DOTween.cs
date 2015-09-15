@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.820";
+        public static readonly string Version = "1.0.830";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -656,6 +656,11 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Complete, FilterType.TargetOrId, targetOrId, true, 0);
         }
+        internal static int CompleteAndReturnKilledTotExceptFor(params object[] excludeTargetsOrIds)
+        {
+            // excludeTargetsOrIds is never NULL (checked by DOTween.KillAll)
+            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.AllExceptTargetsOrIds, null, true, 0, null, excludeTargetsOrIds);
+        }
 
         /// <summary>Flips all tweens (changing their direction to forward if it was backwards and viceversa),
         /// then returns the number of actual tweens flipped</summary>
@@ -690,6 +695,19 @@ namespace DG.Tweening
         {
             int tot = complete ? CompleteAndReturnKilledTot() : 0;
             return tot + TweenManager.DespawnAll();
+        }
+        /// <summary>Kills all tweens and returns the number of actual tweens killed</summary>
+        /// <param name="complete">If TRUE completes the tweens before killing them</param>
+        /// <param name="idsOrTargetsToExclude">Eventual IDs or targets to exclude from the killing</param>
+        public static int KillAll(bool complete, params object[] idsOrTargetsToExclude)
+        {
+            int tot;
+            if (idsOrTargetsToExclude == null) {
+                tot = complete ? CompleteAndReturnKilledTot() : 0;
+                return tot + TweenManager.DespawnAll();
+            }
+            tot = complete ? CompleteAndReturnKilledTotExceptFor(idsOrTargetsToExclude) : 0;
+            return tot + TweenManager.FilteredOperation(OperationType.Despawn, FilterType.AllExceptTargetsOrIds, null, false, 0, null, idsOrTargetsToExclude);
         }
         /// <summary>Kills all tweens with the given ID or target and returns the number of actual tweens killed</summary>
         /// <param name="complete">If TRUE completes the tweens before killing them</param>

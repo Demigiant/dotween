@@ -4,17 +4,6 @@
         <name>DOTweenEditor</name>
     </assembly>
     <members>
-        <member name="T:DG.DOTweenEditor.DOTweenSetupMenuItem">
-            <summary>
-            Not used as menu item anymore, but as a utiity function
-            </summary>
-        </member>
-        <member name="M:DG.DOTweenEditor.DOTweenSetupMenuItem.Setup(System.Boolean)">
-            <summary>
-            Setups DOTween
-            </summary>
-            <param name="partiallySilent">If TRUE, no warning window appears in case there is no need for setup</param>
-        </member>
         <member name="M:DG.DOTweenEditor.Core.EditorUtils.SetEditorTexture(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
             <summary>
             Checks that the given editor texture use the correct import settings,
@@ -60,6 +49,17 @@
             <summary>
             Full path for the given loaded assembly, assembly file included
             </summary>
+        </member>
+        <member name="T:DG.DOTweenEditor.DOTweenSetupMenuItem">
+            <summary>
+            Not used as menu item anymore, but as a utiity function
+            </summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenSetupMenuItem.Setup(System.Boolean)">
+            <summary>
+            Setups DOTween
+            </summary>
+            <param name="partiallySilent">If TRUE, no warning window appears in case there is no need for setup</param>
         </member>
     </members>
 </doc>
