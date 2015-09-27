@@ -15,6 +15,57 @@ namespace DG.Tweening
     /// </summary>
     public static class ShortcutExtensions43
     {
+        #region Material
+
+        /// <summary>Tweens a Material's color using the given gradient
+        /// (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+        /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        public static Sequence DOGradientColor(this Material target, Gradient gradient, float duration)
+        {
+            Sequence s = DOTween.Sequence();
+            GradientColorKey[] colors = gradient.colorKeys;
+            int len = colors.Length;
+            for (int i = 0; i < len; ++i) {
+                GradientColorKey c = colors[i];
+                if (i == 0 && c.time <= 0) {
+                    target.color = c.color;
+                    continue;
+                }
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+                s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
+            }
+            return s;
+        }
+        /// <summary>Tweens a Material's named color property using the given gradient
+        /// (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+        /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="gradient">The gradient to use</param>
+        /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Sequence DOGradientColor(this Material target, Gradient gradient, string property, float duration)
+        {
+            Sequence s = DOTween.Sequence();
+            GradientColorKey[] colors = gradient.colorKeys;
+            int len = colors.Length;
+            for (int i = 0; i < len; ++i) {
+                GradientColorKey c = colors[i];
+                if (i == 0 && c.time <= 0) {
+                    target.color = c.color;
+                    continue;
+                }
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+                s.Append(target.DOColor(c.color, property, colorDuration).SetEase(Ease.Linear));
+            }
+            return s;
+        }
+
+        #endregion
+
         #region SpriteRenderer
 
         /// <summary>Tweens a SpriteRenderer's color to the given value.
@@ -32,6 +83,29 @@ namespace DG.Tweening
         {
             return DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration)
                 .SetTarget(target);
+        }
+
+        /// <summary>Tweens a SpriteRenderer's colors using the given gradient
+        /// (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+        /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        public static Sequence DOGradientColor(this SpriteRenderer target, Gradient gradient, float duration)
+        {
+            Sequence s = DOTween.Sequence();
+            GradientColorKey[] colors = gradient.colorKeys;
+            int len = colors.Length;
+            for (int i = 0; i < len; ++i) {
+                GradientColorKey c = colors[i];
+                if (i == 0 && c.time <= 0) {
+                    target.color = c.color;
+                    continue;
+                }
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+                s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
+            }
+            return s;
         }
 
         #endregion
@@ -93,7 +167,8 @@ namespace DG.Tweening
 
         /// <summary>Tweens a Rigidbody2D's position to the given value, while also applying a jump effect along the Y axis.
         /// Returns a Sequence instead of a Tweener.
-        /// Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
+        /// Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations.
+        /// <para>IMPORTANT: a rigidbody2D can't be animated in a jump arc using MovePosition, so the tween will directly set the position</para></summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
         /// <param name="numJumps">Total number of jumps</param>
@@ -107,24 +182,24 @@ namespace DG.Tweening
             bool offsetYSet = false;
             Sequence s = DOTween.Sequence();
 #if COMPATIBLE
-            s.Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
+            s.Append(DOTween.To(() => target.position, x => target.position = x.value, new Vector3(endValue.x, 0, 0), duration)
 #else
-            s.Append(DOTween.To(() => target.position, target.MovePosition, new Vector2(endValue.x, 0), duration)
+            s.Append(DOTween.To(() => target.position, x => target.position = x, new Vector2(endValue.x, 0), duration)
 #endif
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                     .OnUpdate(() => {
                         if (!offsetYSet) {
-                            offsetYSet = false;
+                            offsetYSet = true;
                             offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
                         }
                         Vector2 pos = target.position;
                         pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-                        target.MovePosition(pos);
+                        target.position = pos;
                     })
 #if COMPATIBLE
-                ).Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
+                ).Join(DOTween.To(() => target.position, x => target.position = x.value, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
 #else
-                ).Join(DOTween.To(() => target.position, target.MovePosition, new Vector2(0, jumpPower), duration / (numJumps * 2))
+                ).Join(DOTween.To(() => target.position, x=> target.position = x, new Vector2(0, jumpPower), duration / (numJumps * 2))
 #endif
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
                     .SetLoops(numJumps * 2, LoopType.Yoyo).SetRelative()

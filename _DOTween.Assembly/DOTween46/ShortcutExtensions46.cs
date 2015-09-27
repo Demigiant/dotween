@@ -83,6 +83,29 @@ namespace DG.Tweening
                 .SetTarget(target);
         }
 
+        /// <summary>Tweens an Image's colors using the given gradient
+        /// (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+        /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        public static Sequence DOGradientColor(this Image target, Gradient gradient, float duration)
+        {
+            Sequence s = DOTween.Sequence();
+            GradientColorKey[] colors = gradient.colorKeys;
+            int len = colors.Length;
+            for (int i = 0; i < len; ++i) {
+                GradientColorKey c = colors[i];
+                if (i == 0 && c.time <= 0) {
+                    target.color = c.color;
+                    continue;
+                }
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+                s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
+            }
+            return s;
+        }
+
         #endregion
 
         #region LayoutElement
@@ -273,7 +296,7 @@ namespace DG.Tweening
                 ).SetTarget(target).SetEase(DOTween.defaultEaseType);
             s.OnUpdate(() => {
                 if (!offsetYSet) {
-                    offsetYSet = false;
+                    offsetYSet = true;
                     offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
                 }
                 Vector2 pos = target.anchoredPosition;

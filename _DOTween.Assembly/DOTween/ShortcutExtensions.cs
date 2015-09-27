@@ -451,7 +451,7 @@ namespace DG.Tweening
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                     .OnUpdate(() => {
                         if (!offsetYSet) {
-                            offsetYSet = false;
+                            offsetYSet = true;
                             offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
                         }
                         Vector3 pos = target.position;
@@ -810,7 +810,7 @@ namespace DG.Tweening
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                     .OnUpdate(() => {
                         if (!offsetYSet) {
-                            offsetYSet = false;
+                            offsetYSet = true;
                             offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
                         }
                         Vector3 pos = target.position;
