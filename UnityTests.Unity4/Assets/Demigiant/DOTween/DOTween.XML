@@ -912,6 +912,9 @@
             Methods that extend Tween objects and allow to control or get data from them
             </summary>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.Complete(DG.Tweening.Tween)">
+            <summary>Completes the tween</summary>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.Complete(DG.Tweening.Tween,System.Boolean)">
             <summary>Completes the tween</summary>
             <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,

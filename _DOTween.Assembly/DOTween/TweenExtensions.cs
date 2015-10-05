@@ -24,10 +24,28 @@ namespace DG.Tweening
 
         #region Runtime Operations
 
+//        /// <summary>Completes the tween</summary>
+//        /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
+//        /// otherwise they will be ignored</param>
+//        public static void Complete(this Tween t, bool withCallbacks = false)
+//        {
+//            if (t == null) {
+//                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
+//            } else if (!t.active) {
+//                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+//            } else if (t.isSequenced) {
+//                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
+//            }
+//
+//            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
+//        }
+        /// <summary>Completes the tween</summary>
+        public static void Complete(this Tween t)
+        { Complete(t, false); }
         /// <summary>Completes the tween</summary>
         /// <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
         /// otherwise they will be ignored</param>
-        public static void Complete(this Tween t, bool withCallbacks = false)
+        public static void Complete(this Tween t, bool withCallbacks)
         {
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;

@@ -96,6 +96,18 @@
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPosX(UnityEngine.RectTransform,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition X to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPosY(UnityEngine.RectTransform,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition Y to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPos3D(UnityEngine.RectTransform,UnityEngine.Vector3,System.Single,System.Boolean)">
             <summary>Tweens a RectTransform's anchoredPosition3D to the given value.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
