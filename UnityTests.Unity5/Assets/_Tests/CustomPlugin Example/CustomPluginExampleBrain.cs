@@ -1,23 +1,27 @@
 ﻿using DG.Tweening;
 using DG.Tweening.Plugins;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CustomPluginExampleBrain : BrainBase
+public class CustomPluginExampleBrain : MonoBehaviour
 {
-	public Transform target;
+    public Text txtCustomRange ; // Used to show the custom range tween results
+
+	CustomRange customRange = new CustomRange(0, 10);
+
+    // Store the plugin so you won't have to instantiate it every time you use it
+    // (you can pass the same plugin instance to each tween, since they just do calculations and don't store data)
+    static CustomRangePlugin customRangePlugin = new CustomRangePlugin();
 
 	void Start()
 	{
-		// DOTween.To(()=>target.position, x=> target.position = x, new Vector3(4, 4, 0), 1.5f)
-		// DOTween.To(new PlugCustomPlugin(()=>target.position, x=> target.position = x, 4), 1.5f)
-		// 	.SetDelay(2).SetRelative().SetLoops(5, LoopType.Yoyo).SetAutoKill(false)
-		// 	.OnStart(()=> Debug.Log("Start"))
-		// 	.OnStepComplete(()=> Debug.Log("Step Complete"))
-		// 	.OnComplete(()=> Debug.Log("Complete"));
+        // The difference with the regular generic way is simply
+        // that you have to pass the plugin to use as an additional first parameter
+	    DOTween.To(customRangePlugin, () => customRange, x => customRange = x, new CustomRange(20, 100), 4);
 	}
 
-	void OnGUI()
-	{
-		if (GUILayout.Button("Flip")) DOTween.FlipAll();
-	}
+    void Update()
+    {
+        txtCustomRange.text = customRange.min + "\n" + customRange.max;
+    }
 }
