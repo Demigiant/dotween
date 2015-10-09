@@ -89,6 +89,7 @@
     <Compile Include="Plugins\Color2Plugin.cs" />
     <Compile Include="Plugins\ColorWrapperPlugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
+    <Compile Include="Plugins\DoublePlugin.cs" />
     <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />

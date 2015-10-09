@@ -17,7 +17,7 @@ public class Basics : BrainBase
 	public GameObject specularSphere;
 	public Transform targetToDoLookAt, targetToDoLookFrom;
 	public GUITexture guiTexAlpha, guiTexColor;
-	public GUIText txtInfo, txtFloat, txtInt, txtUint, txtLong, txtUlong, txtVector2, txtVector4, txtRect, txtRectOffset, txtString0, txtString1, txtString2;
+	public GUIText txtInfo, txtFloat, txtDouble, txtInt, txtUint, txtLong, txtUlong, txtVector2, txtVector4, txtRect, txtRectOffset, txtString0, txtString1, txtString2;
 	public GameObject txtBackwards;
 
 	int intId = 4;
@@ -27,6 +27,7 @@ public class Basics : BrainBase
 	int intToTween;
 	uint uintToTween;
 	float floatToTween;
+	double doubleToTween;
 	long longToTween;
 	ulong ulongToTween;
 	Vector2 vector2toTween;
@@ -97,6 +98,8 @@ public class Basics : BrainBase
 		// Additional tweens //////////////////////////
 		// Float
 		DOTween.To(()=> floatToTween, x=> floatToTween = x, 100, 1.5f).SetAs(tp).Pause();
+		// Double
+		DOTween.To(()=> doubleToTween, x=> doubleToTween = x, 100, 1.5f).SetAs(tp).Pause();
 		// Int
 		DOTween.To(()=> intToTween, x=> intToTween = x, 100, 1.5f).SetAs(tp).Pause();
 		// Uint
@@ -142,6 +145,7 @@ public class Basics : BrainBase
 	void LateUpdate()
 	{
 		txtFloat.text = "float: " + floatToTween;
+		txtDouble.text = "double: " + doubleToTween;
 		txtInt.text = "int: " + intToTween;
 		txtUint.text = "uint: " + uintToTween;
 		txtLong.text = "long: " + longToTween.ToString("n");

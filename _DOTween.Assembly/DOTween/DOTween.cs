@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.0.865";
+        public static readonly string Version = "1.1.000";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -282,6 +282,14 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         public static TweenerCore<float, float, FloatOptions> To(DOGetter<float> getter, DOSetter<float> setter, float endValue, float duration)
         { return ApplyTo<float, float, FloatOptions>(getter, setter, endValue, duration); }
+        /// <summary>Tweens a property or field to the given value using default plugins</summary>
+        /// <param name="getter">A getter for the field or property to tween.
+        /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
+        /// <param name="setter">A setter for the field or property to tween
+        /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
+        public static TweenerCore<double, double, NoOptions> To(DOGetter<double> getter, DOSetter<double> setter, float endValue, float duration)
+        { return ApplyTo<double, double, NoOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
