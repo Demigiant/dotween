@@ -99,6 +99,7 @@ namespace DG.Tweening
 
         internal static Sequence DoInsertCallback(Sequence inSequence, TweenCallback callback, float atPosition)
         {
+            inSequence.lastTweenInsertTime = atPosition;
             SequenceCallback c = new SequenceCallback(atPosition, callback);
             c.sequencedPosition = c.sequencedEndPosition = atPosition;
             inSequence._sequencedObjs.Add(c);

@@ -427,7 +427,7 @@ namespace DG.Tweening
             Sequence.DoPrepend(s, t);
             return s;
         }
-        /// <summary>Inserts the given tween at the same time position of the last tween added to the Sequence.
+        /// <summary>Inserts the given tween at the same time position of the last tween or callback added to the Sequence.
         /// Has no effect if the Sequence has already started</summary>
         public static Sequence Join(this Sequence s, Tween t)
         {

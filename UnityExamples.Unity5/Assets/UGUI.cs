@@ -33,7 +33,7 @@ public class UGUI : MonoBehaviour
 		// Animate the second (relative) text...
 		relativeText.DOText(" - This text will be added to the existing one", 2).SetRelative().SetEase(Ease.Linear).SetAutoKill(false).Pause();
 		// Animate the third (scrambled) text...
-		scrambledText.DOText("This text will appear from scrambled chars", 2, true).SetEase(Ease.Linear).SetAutoKill(false).Pause();
+		scrambledText.DOText("This text will appear from scrambled chars", 2, true, ScrambleMode.All).SetEase(Ease.Linear).SetAutoKill(false).Pause();
 
 		// Animate the slider
 		slider.DOValue(1, 1.5f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).Pause();
