@@ -427,7 +427,8 @@ namespace DG.Tweening
             Sequence.DoPrepend(s, t);
             return s;
         }
-        /// <summary>Inserts the given tween at the same time position of the last tween or callback added to the Sequence.
+        /// <summary>Inserts the given tween at the same time position of the last tween, callback or intervale added to the Sequence.
+        /// Note that, in case of a Join after an interval, the insertion time will be the time where the interval starts, not where it finishes.
         /// Has no effect if the Sequence has already started</summary>
         public static Sequence Join(this Sequence s, Tween t)
         {

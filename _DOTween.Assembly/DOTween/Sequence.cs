@@ -80,12 +80,14 @@ namespace DG.Tweening
 
         internal static Sequence DoAppendInterval(Sequence inSequence, float interval)
         {
+            inSequence.lastTweenInsertTime = inSequence.duration;
             inSequence.duration += interval;
             return inSequence;
         }
 
         internal static Sequence DoPrependInterval(Sequence inSequence, float interval)
         {
+            inSequence.lastTweenInsertTime = 0;
             inSequence.duration += interval;
             int len = inSequence._sequencedObjs.Count;
             for (int i = 0; i < len; ++i) {
