@@ -14,6 +14,7 @@ using DOQuaternion = UnityEngine.Quaternion;
 #endif
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
+using DG.Tweening.CustomPlugins;
 using DG.Tweening.Plugins;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
@@ -604,6 +605,20 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>Tweens a Transform's rotation to the given value using pure quaternion values.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations.
+        /// <para>PLEASE NOTE: DORotate, which takes Vector3 values, is the preferred rotation method.
+        /// This method was implemented for very special cases, and doesn't support LoopType.Incremental loops
+        /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
+        /// </summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DORotateQuaternion(this Transform target, Quaternion endValue, float duration)
+        {
+            TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.rotation, x => target.rotation = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
+
         /// <summary>Tweens a Transform's localRotation to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
@@ -613,6 +628,20 @@ namespace DG.Tweening
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
             t.SetTarget(target);
             t.plugOptions.rotateMode = mode;
+            return t;
+        }
+
+        /// <summary>Tweens a Transform's rotation to the given value using pure quaternion values.
+        /// Also stores the transform as the tween's target so it can be used for filtered operations.
+        /// <para>PLEASE NOTE: DOLocalRotate, which takes Vector3 values, is the preferred rotation method.
+        /// This method was implemented for very special cases, and doesn't support LoopType.Incremental loops
+        /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
+        /// </summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOLocalRotateQuaternion(this Transform target, Quaternion endValue, float duration)
+        {
+            TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.localRotation, x => target.localRotation = x, endValue, duration);
+            t.SetTarget(target);
             return t;
         }
 
