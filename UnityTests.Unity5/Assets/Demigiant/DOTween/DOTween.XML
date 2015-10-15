@@ -331,7 +331,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Double},DG.Tweening.Core.DOSetter{System.Double},System.Single,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Double},DG.Tweening.Core.DOSetter{System.Double},System.Double,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
