@@ -60,7 +60,10 @@ namespace DG.Tweening.CustomPlugins
         /// <summary>INTERNAL: do not use</summary>
         public override void SetChangeValue(TweenerCore<Quaternion, Quaternion, NoOptions> t)
         {
-            t.changeValue = t.endValue * Quaternion.Inverse(t.startValue);
+            t.changeValue.x = t.endValue.x - t.startValue.x;
+            t.changeValue.y = t.endValue.y - t.startValue.y;
+            t.changeValue.z = t.endValue.z - t.startValue.z;
+            t.changeValue.w = t.endValue.w - t.startValue.w;
         }
 
         /// <summary>INTERNAL: do not use</summary>
