@@ -5,8 +5,10 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 // 
 // =============================================================
-// Contains Daniele Giardini's C# port of the easing equations created
-// by Robert Penner - http://robertpenner.com/easing, see license below:
+// Contains Daniele Giardini's C# port of the easing equations created by Robert Penner
+// (all easing equations except for Flash, InFlash, OutFlash, InOutFlash,
+// which use some parts of Robert Penner's equations but were created by Daniele Giardini)
+// http://robertpenner.com/easing, see license below:
 // =============================================================
 //
 // TERMS OF USE - EASING EQUATIONS
@@ -59,6 +61,9 @@ namespace DG.Tweening.Core.Easing
         /// </summary>
         public static float Evaluate(Ease easeType, EaseFunction customEase, float time, float duration, float overshootOrAmplitude, float period)
         {
+            float durationStep;
+            int dir;
+
             switch (easeType) {
             case Ease.Linear:
                 return time / duration;
@@ -162,6 +167,50 @@ namespace DG.Tweening.Core.Easing
             case Ease.INTERNAL_Zero:
                 // 0 duration tween
                 return 1;
+
+            // Extra custom eases ////////////////////////////////////////////////////
+            case Ease.Flash:
+                durationStep = duration / overshootOrAmplitude;
+                dir = 1;
+                while (time > durationStep) {
+                    time -= durationStep;
+                    dir = -dir;
+                }
+                if (dir < 0) time -= durationStep;
+                return (time * dir) / durationStep;
+            case Ease.InFlash:
+                durationStep = duration / overshootOrAmplitude;
+                dir = 1;
+                while (time > durationStep) {
+                    time -= durationStep;
+                    dir = -dir;
+                }
+                if (dir < 0) time -= durationStep;
+                time = time * dir;
+                return (time /= durationStep) * time;
+            case Ease.OutFlash:
+                durationStep = duration / overshootOrAmplitude;
+                dir = 1;
+                while (time > durationStep) {
+                    time -= durationStep;
+                    dir = -dir;
+                }
+                if (dir < 0) time -= durationStep;
+                time = time * dir;
+                return -(time /= durationStep) * (time - 2);
+            case Ease.InOutFlash:
+                durationStep = duration / overshootOrAmplitude;
+                dir = 1;
+                while (time > durationStep) {
+                    time -= durationStep;
+                    dir = -dir;
+                }
+                if (dir < 0) time -= durationStep;
+                time = time * dir;
+                if ((time /= durationStep * 0.5f) < 1) return 0.5f * time * time;
+                return -0.5f * ((--time) * (time - 2) - 1);
+
+            // Default
             default:
                 // OutQuad
                 return -(time /= duration) * (time - 2);
@@ -170,6 +219,9 @@ namespace DG.Tweening.Core.Easing
 
         public static EaseFunction ToEaseFunction(Ease ease)
         {
+            float durationStep;
+            int dir;
+
             switch (ease) {
             case Ease.Linear:
                 return (float time, float duration, float overshootOrAmplitude, float period) =>
@@ -310,6 +362,58 @@ namespace DG.Tweening.Core.Easing
             case Ease.InOutBounce:
                 return (float time, float duration, float overshootOrAmplitude, float period) => 
                     Bounce.EaseInOut(time, duration, overshootOrAmplitude, period);
+
+            // Extra custom eases ////////////////////////////////////////////////////
+            case Ease.Flash:
+                return (float time, float duration, float overshootOrAmplitude, float period) => {
+                    durationStep = duration / overshootOrAmplitude;
+                    dir = 1;
+                    while (time > durationStep) {
+                        time -= durationStep;
+                        dir = -dir;
+                    }
+                    if (dir < 0) time -= durationStep;
+                    return (time * dir) / durationStep;
+                };
+            case Ease.InFlash:
+                return (float time, float duration, float overshootOrAmplitude, float period) => {
+                    durationStep = duration / overshootOrAmplitude;
+                    dir = 1;
+                    while (time > durationStep) {
+                        time -= durationStep;
+                        dir = -dir;
+                    }
+                    if (dir < 0) time -= durationStep;
+                    time = time * dir;
+                    return (time /= durationStep) * time;
+                };
+            case Ease.OutFlash:
+                return (float time, float duration, float overshootOrAmplitude, float period) => {
+                    durationStep = duration / overshootOrAmplitude;
+                    dir = 1;
+                    while (time > durationStep) {
+                        time -= durationStep;
+                        dir = -dir;
+                    }
+                    if (dir < 0) time -= durationStep;
+                    time = time * dir;
+                    return -(time /= durationStep) * (time - 2);
+                };
+            case Ease.InOutFlash:
+                return (float time, float duration, float overshootOrAmplitude, float period) => {
+                    durationStep = duration / overshootOrAmplitude;
+                    dir = 1;
+                    while (time > durationStep) {
+                        time -= durationStep;
+                        dir = -dir;
+                    }
+                    if (dir < 0) time -= durationStep;
+                    time = time * dir;
+                    if ((time /= durationStep * 0.5f) < 1) return 0.5f * time * time;
+                    return -0.5f * ((--time) * (time - 2) - 1);
+                };
+
+            // Default
             default:
                 // OutQuad
                 return (float time, float duration, float overshootOrAmplitude, float period) => -(time /= duration) * (time - 2);

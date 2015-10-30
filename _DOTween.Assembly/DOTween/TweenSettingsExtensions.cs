@@ -126,7 +126,11 @@ namespace DG.Tweening
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
-        /// <param name="overshoot">Eventual overshoot to use with Back ease (default is 1.70158)</param>
+        /// <param name="overshoot">
+        /// Eventual overshoot to use with Back ease (default is 1.70158).
+        /// <para>In case of Flash ease it sets the total number of flashes that will happen.
+        /// Using an even number will end the tween on the starting value, while an odd one will end on the end value.</para>
+        /// </param>
         public static T SetEase<T>(this T t, Ease ease, float overshoot) where T : Tween
         {
             if (t == null || !t.active) return t;

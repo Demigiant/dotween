@@ -74,7 +74,12 @@ public class EaseCurves : BrainBase
             } else {
                 img.GetComponentInChildren<Text>().text = easeType.ToString();
                 if (easeType == Ease.INTERNAL_Custom) tween.SetEase(easeCurve);
-                else tween.SetEase(easeType);
+                else{
+                    float overshootOrAmplitude = easeType.ToString().IndexOf("Flash") == -1
+                        ? DOTween.defaultEaseOvershootOrAmplitude
+                        : 16;
+                    tween.SetEase(easeType, overshootOrAmplitude);
+                }
             }
         }
         // Disable original image
