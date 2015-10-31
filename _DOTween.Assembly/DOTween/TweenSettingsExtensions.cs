@@ -127,9 +127,9 @@ namespace DG.Tweening
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
         /// <param name="overshoot">
-        /// Eventual overshoot to use with Back ease (default is 1.70158).
+        /// Eventual overshoot to use with Back or Flash ease (default is 1.70158).
         /// <para>In case of Flash ease it sets the total number of flashes that will happen.
-        /// Using an even number will end the tween on the starting value, while an odd one will end on the end value.</para>
+        /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
         /// </param>
         public static T SetEase<T>(this T t, Ease ease, float overshoot) where T : Tween
         {
@@ -142,8 +142,14 @@ namespace DG.Tweening
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
-        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType (default is 1.70158)</param>
-        /// <param name="period">Eventual period to use with Elastic easeType (default is 0)</param>
+        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType or overshoot to use with Flash easeType (default is 1.70158).
+        /// <para>In case of Flash ease it sets the total number of flashes that will happen.
+        /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
+        /// </param>
+        /// <param name="period">Eventual period to use with Elastic or Flash easeType (default is 0).
+        /// <para>In case of Flash ease it indicates the power in time of the ease, and must be between -1 and 1.
+        /// 0 is balanced, 1 weakens the ease with time, -1 starts the ease weakened and gives it power towards the end.</para>
+        /// </param>
         public static T SetEase<T>(this T t, Ease ease, float amplitude, float period) where T : Tween
         {
             if (t == null || !t.active) return t;

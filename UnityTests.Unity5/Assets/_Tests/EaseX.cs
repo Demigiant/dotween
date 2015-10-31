@@ -10,14 +10,15 @@ public class EaseX : MonoBehaviour
 	[Header("Tween Settings")]
 	public float duration = 2;
 	public Ease ease;
-	public float overshootOrAmplitude = 10;
+	public float overshootOrAmplitude = 16;
+	public float period = 1;
 
 	public void Play()
 	{
 		DOTween.RewindAll();
 		DOTween.KillAll();
 		
-		imgFlash.DOColor(flashColor, duration).SetEase(ease, overshootOrAmplitude);
-		imgSmoothFlash.DOColor(flashColor, duration).SetEase(ease, overshootOrAmplitude);
+		imgFlash.DOColor(flashColor, duration).SetEase(ease, overshootOrAmplitude, period);
+		imgSmoothFlash.DOColor(flashColor, duration).SetEase(ease, overshootOrAmplitude - 1, period);
 	}
 }

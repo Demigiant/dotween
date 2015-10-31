@@ -65,6 +65,7 @@
     <Compile Include="Core\Easing\Bounce.cs" />
     <Compile Include="Core\Easing\EaseManager.cs" />
     <Compile Include="Core\Easing\EaseCurve.cs" />
+    <Compile Include="Core\Easing\Flash.cs" />
     <Compile Include="Core\Enums\FilterType.cs" />
     <Compile Include="Core\Enums\OperationType.cs" />
     <Compile Include="Core\Enums\SpecialStartupMode.cs" />

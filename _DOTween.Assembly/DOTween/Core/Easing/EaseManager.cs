@@ -61,10 +61,6 @@ namespace DG.Tweening.Core.Easing
         /// </summary>
         public static float Evaluate(Ease easeType, EaseFunction customEase, float time, float duration, float overshootOrAmplitude, float period)
         {
-            int stepIndex;
-            float stepDuration;
-            int dir;
-
             switch (easeType) {
             case Ease.Linear:
                 return time / duration;
@@ -171,79 +167,13 @@ namespace DG.Tweening.Core.Easing
 
             // Extra custom eases ////////////////////////////////////////////////////
             case Ease.Flash:
-//                stepIndex = Mathf.CeilToInt((time / duration) * overshootOrAmplitude); // 1 to overshootOrAmplitude
-//                stepDuration = duration / overshootOrAmplitude;
-//                time -= stepDuration * (stepIndex - 1);
-//                dir = (stepIndex % 2 != 0) ? 1 : - 1;
-//                if (dir < 0) time -= stepDuration;
-//                float res = (time * dir) / stepDuration;
-//                if (period > 0) {
-//                    float easedRes = (res * (overshootOrAmplitude - stepIndex)) / overshootOrAmplitude;
-//                    float diff = easedRes - res;
-//                    diff = diff * period;
-//                    return res + diff;
-//                }
-//                if (period < 0) {
-//                    period = -period;
-//                    float easedRes = (res * stepIndex) / overshootOrAmplitude;
-//                    float diff = easedRes - res;
-//                    diff = diff * period;
-//                    return res + diff;
-//                }
-//                return res;
-
-                float final = 0;
-                stepIndex = Mathf.CeilToInt((time / duration) * overshootOrAmplitude); // 1 to overshootOrAmplitude
-                stepDuration = duration / overshootOrAmplitude;
-                time -= stepDuration * (stepIndex - 1);
-                dir = (stepIndex % 2 != 0) ? 1 : - 1;
-                if (dir < 0) time -= stepDuration;
-                float res = (time * dir) / stepDuration;
-                float easedRes = 0;
-                if (period > 0) {
-                    final = overshootOrAmplitude - (float)Math.Truncate(overshootOrAmplitude);
-                    if ((float)Math.Truncate(overshootOrAmplitude) % 2 > 0) final = 1 - final;
-                    final = (final * stepIndex) / overshootOrAmplitude;
-                    easedRes = (res * (overshootOrAmplitude - stepIndex)) / overshootOrAmplitude;
-                } else if (period < 0) {
-                    period = -period;
-                    easedRes = (res * stepIndex) / overshootOrAmplitude;
-                }
-                float diff = easedRes - res;
-                res += (diff * period) + final;
-                if (res > 1) res = 1;
-                return res;
+                return Flash.Ease(time, duration, overshootOrAmplitude, period);
             case Ease.InFlash:
-                stepDuration = duration / overshootOrAmplitude;
-                dir = 1;
-                while (time > stepDuration) {
-                    time -= stepDuration;
-                    dir = -dir;
-                }
-                if (dir < 0) time -= stepDuration;
-                time = time * dir;
-                return (time /= stepDuration) * time;
+                return Flash.EaseIn(time, duration, overshootOrAmplitude, period);
             case Ease.OutFlash:
-                stepDuration = duration / overshootOrAmplitude;
-                dir = 1;
-                while (time > stepDuration) {
-                    time -= stepDuration;
-                    dir = -dir;
-                }
-                if (dir < 0) time -= stepDuration;
-                time = time * dir;
-                return -(time /= stepDuration) * (time - 2);
+                return Flash.EaseOut(time, duration, overshootOrAmplitude, period);
             case Ease.InOutFlash:
-                stepDuration = duration / overshootOrAmplitude;
-                dir = 1;
-                while (time > stepDuration) {
-                    time -= stepDuration;
-                    dir = -dir;
-                }
-                if (dir < 0) time -= stepDuration;
-                time = time * dir;
-                if ((time /= stepDuration * 0.5f) < 1) return 0.5f * time * time;
-                return -0.5f * ((--time) * (time - 2) - 1);
+                return Flash.EaseInOut(time, duration, overshootOrAmplitude, period);
 
             // Default
             default:
@@ -254,9 +184,6 @@ namespace DG.Tweening.Core.Easing
 
         public static EaseFunction ToEaseFunction(Ease ease)
         {
-            float durationStep;
-            int dir;
-
             switch (ease) {
             case Ease.Linear:
                 return (float time, float duration, float overshootOrAmplitude, float period) =>
@@ -400,53 +327,17 @@ namespace DG.Tweening.Core.Easing
 
             // Extra custom eases ////////////////////////////////////////////////////
             case Ease.Flash:
-                return (float time, float duration, float overshootOrAmplitude, float period) => {
-                    durationStep = duration / overshootOrAmplitude;
-                    dir = 1;
-                    while (time > durationStep) {
-                        time -= durationStep;
-                        dir = -dir;
-                    }
-                    if (dir < 0) time -= durationStep;
-                    return (time * dir) / durationStep;
-                };
+                return (float time, float duration, float overshootOrAmplitude, float period) =>
+                    Flash.Ease(time, duration, overshootOrAmplitude, period);
             case Ease.InFlash:
-                return (float time, float duration, float overshootOrAmplitude, float period) => {
-                    durationStep = duration / overshootOrAmplitude;
-                    dir = 1;
-                    while (time > durationStep) {
-                        time -= durationStep;
-                        dir = -dir;
-                    }
-                    if (dir < 0) time -= durationStep;
-                    time = time * dir;
-                    return (time /= durationStep) * time;
-                };
+                return (float time, float duration, float overshootOrAmplitude, float period) =>
+                    Flash.EaseIn(time, duration, overshootOrAmplitude, period);
             case Ease.OutFlash:
-                return (float time, float duration, float overshootOrAmplitude, float period) => {
-                    durationStep = duration / overshootOrAmplitude;
-                    dir = 1;
-                    while (time > durationStep) {
-                        time -= durationStep;
-                        dir = -dir;
-                    }
-                    if (dir < 0) time -= durationStep;
-                    time = time * dir;
-                    return -(time /= durationStep) * (time - 2);
-                };
+                return (float time, float duration, float overshootOrAmplitude, float period) =>
+                    Flash.EaseOut(time, duration, overshootOrAmplitude, period);
             case Ease.InOutFlash:
-                return (float time, float duration, float overshootOrAmplitude, float period) => {
-                    durationStep = duration / overshootOrAmplitude;
-                    dir = 1;
-                    while (time > durationStep) {
-                        time -= durationStep;
-                        dir = -dir;
-                    }
-                    if (dir < 0) time -= durationStep;
-                    time = time * dir;
-                    if ((time /= durationStep * 0.5f) < 1) return 0.5f * time * time;
-                    return -0.5f * ((--time) * (time - 2) - 1);
-                };
+                return (float time, float duration, float overshootOrAmplitude, float period) =>
+                    Flash.EaseInOut(time, duration, overshootOrAmplitude, period);
 
             // Default
             default:
