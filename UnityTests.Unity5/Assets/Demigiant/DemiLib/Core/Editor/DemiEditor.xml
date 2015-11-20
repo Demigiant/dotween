@@ -4,47 +4,100 @@
         <name>DemiEditor</name>
     </assembly>
     <members>
-        <member name="T:DG.DemiEditor.TextureExtensions">
+        <member name="T:DG.DemiEditor.DeFileUtils">
             <summary>
-            Texture extensions
+            File utils
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.TextureExtensions.SetFormat(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
+        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlash">
+            <summary>Path slash for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlashToReplace">
+            <summary>Path slash to replace for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.PathSlash">
+            <summary>Current OS path slash</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeFileUtils.PathSlashToReplace">
+            <summary>Path slash to replace on current OS</summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeFileUtils.projectPath">
             <summary>
-            Checks that the texture uses the correct import settings, and applies them if they're incorrect.
+            Full path to project directory, without final slash.
             </summary>
         </member>
-        <member name="T:DG.DemiEditor.DeGUI">
+        <member name="P:DG.DemiEditor.DeFileUtils.assetsPath">
             <summary>
-            Global Demigiant GUI manager
+            Full path to project's Assets directory, without final slash.
             </summary>
         </member>
-        <member name="F:DG.DemiEditor.DeGUI.colors">
+        <member name="M:DG.DemiEditor.DeFileUtils.ADBPathToFullPath(System.String)">
             <summary>
-            Default color palette
+            Converts the given project-relative path to a full path
             </summary>
         </member>
-        <member name="F:DG.DemiEditor.DeGUI.styles">
+        <member name="M:DG.DemiEditor.DeFileUtils.AssetExists(System.String)">
             <summary>
-            Default style palette
+            Returns TRUE if the file/directory at the given path exists.
+            </summary>
+            <param name="adbPath">Path, relative to Unity's project folder</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeFileUtils.GUIDToExistingAssetPath(System.String)">
+            <summary>
+            Returns the asset path of the given GUID (relative to Unity project's folder),
+            or an empty string if either the GUID is invalid or the related path doesn't exist.
             </summary>
         </member>
-        <member name="F:DG.DemiEditor.DeGUI.isProSkin">
+        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBPath(UnityEngine.ScriptableObject)">
+            <summary>Returns the adb path to the given ScriptableObject</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBPath(UnityEngine.MonoBehaviour)">
+            <summary>Returns the adb path to the given MonoBehaviour</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBDir(UnityEngine.ScriptableObject)">
+            <summary>Returns the adb directory that contains the given ScriptableObject without final slash</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBDir(UnityEngine.MonoBehaviour)">
+            <summary>Returns the adb directory that contains the given MonoBehaviour without final slash</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeFileUtils.SetScriptExecutionOrder(UnityEngine.MonoBehaviour,System.Int32)">
             <summary>
-            TRUE if we're using the PRO skin
+            Sets the script execution order of the given MonoBehaviour
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DeGUI.BeginGUI(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+        <member name="M:DG.DemiEditor.DeFileUtils.GetScriptExecutionOrder(UnityEngine.MonoBehaviour)">
             <summary>
-            Call this at the beginning of GUI methods
+            Gets the script execution order of the given MonoBehaviour
             </summary>
-            <param name="guiColorPalette"></param>
         </member>
-        <member name="M:DG.DemiEditor.DeGUI.ChangePalette(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+        <member name="T:DG.DemiEditor.DePanelUtils">
             <summary>
-            Changes the active palettes to the given ones
-            (or resets them to the default ones if NULL)
+            Utilities for Editor Panels.
             </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DePanelUtils.ConnectToSourceAsset``1(System.String,System.Boolean)">
+            <summary>
+            Connects to a <see cref="T:UnityEngine.ScriptableObject"/> asset.
+            If the asset already exists at the given path, loads it and returns it.
+            Otherwise, depending on the given parameters, either returns NULL or automatically creates it before loading and returning it.
+            </summary>
+            <typeparam name="T">Asset type</typeparam>
+            <param name="adbFilePath">File path (relative to Unity's project folder)</param>
+            <param name="createIfMissing">If TRUE and the requested asset doesn't exist, forces its creation</param>
+        </member>
+        <member name="T:DG.DemiEditor.DeSkinStyle">
+            <summary>
+            Contains both free and pro skins GUIStyle variations,
+            and automatically returns the correct one when converted to GUIStyle
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.AssemblyExtensions">
+            <summary>
+            Assembly extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.AssemblyExtensions.ADBDir(System.Reflection.Assembly)">
+            <summary>AssetDatabase path to the assembly directory, without final slash</summary>
         </member>
         <member name="T:DG.DemiEditor.GUIStyleExtensions">
             <summary>
@@ -171,31 +224,6 @@
             Sets the stretchWidth property of the style
             </summary>
         </member>
-        <member name="T:DG.DemiEditor.AssemblyExtensions">
-            <summary>
-            Assembly extensions
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.AssemblyExtensions.ADBDir(System.Reflection.Assembly)">
-            <summary>AssetDatabase path to the assembly directory, without final slash</summary>
-        </member>
-        <member name="T:DG.DemiEditor.DeFileUtils">
-            <summary>
-            File utils
-            </summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlash">
-            <summary>Path slash for AssetDatabase format</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlashToReplace">
-            <summary>Path slash to replace for AssetDatabase format</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlash">
-            <summary>Current OS path slash</summary>
-        </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlashToReplace">
-            <summary>Path slash to replace on current OS</summary>
-        </member>
         <member name="T:DG.DemiEditor.DeStylePalette">
             <summary>
             Stores a GUIStyle palette, which can be passed to default DeGUI layouts when calling <code>DeGUI.BeginGUI</code>,
@@ -300,10 +328,63 @@
         <member name="M:DG.DemiEditor.DeGUILayout.HorizontalDivider(System.Nullable{UnityEngine.Color},System.Int32,System.Int32,System.Int32)">
             <summary>Divider</summary>
         </member>
-        <member name="T:DG.DemiEditor.DeSkinStyle">
+        <member name="M:DG.DemiEditor.DeGUILayout.SceneField(System.String,UnityEngine.Object)">
+            <summary>Scene field</summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeGUI">
             <summary>
-            Contains both free and pro skins GUIStyle variations,
-            and automatically returns the correct one when converted to GUIStyle
+            Global Demigiant GUI manager
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.colors">
+            <summary>
+            Default color palette
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.styles">
+            <summary>
+            Default style palette
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.IsProSkin">
+            <summary>
+            TRUE if we're using the PRO skin
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.BeginGUI(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+            <summary>
+            Call this at the beginning of GUI methods
+            </summary>
+            <param name="guiColorPalette"></param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ChangePalette(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+            <summary>
+            Changes the active palettes to the given ones
+            (or resets them to the default ones if NULL)
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.SceneField(UnityEngine.Rect,System.String,UnityEngine.Object)">
+            <summary>Scene field</summary>
+        </member>
+        <member name="T:DG.DemiEditor.StringExtensions">
+            <summary>
+            String extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.StringExtensions.Parent(System.String)">
+            <summary>
+            If the given string is a directory path, returns its parent
+            with or without final slash depending on the original directory format
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.TextureExtensions">
+            <summary>
+            Texture extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.TextureExtensions.SetFormat(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
+            <summary>
+            Checks that the texture uses the correct import settings, and applies them if they're incorrect.
             </summary>
         </member>
     </members>

@@ -29,7 +29,7 @@ namespace DG.Tweening.Core
 
         // Tweens contained in Sequences are not inside the active lists
         // Arrays are organized (max once per update) so that existing elements are next to each other from 0 to (totActiveTweens - 1)
-        static Tween[] _activeTweens = new Tween[_DefaultMaxTweeners];
+        internal static Tween[] _activeTweens = new Tween[_DefaultMaxTweeners]; // Internal just to allow DOTweenInspector to access it
         static Tween[] _pooledTweeners = new Tween[_DefaultMaxTweeners];
         static readonly Stack<Tween> _PooledSequences = new Stack<Tween>();
 
