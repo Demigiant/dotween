@@ -4,78 +4,78 @@
         <name>DemiEditor</name>
     </assembly>
     <members>
-        <member name="T:DG.DemiEditor.DeFileUtils">
+        <member name="T:DG.DemiEditor.DeEditorFileUtils">
             <summary>
             File utils
             </summary>
         </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlash">
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.ADBPathSlash">
             <summary>Path slash for AssetDatabase format</summary>
         </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.ADBPathSlashToReplace">
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.ADBPathSlashToReplace">
             <summary>Path slash to replace for AssetDatabase format</summary>
         </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlash">
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.PathSlash">
             <summary>Current OS path slash</summary>
         </member>
-        <member name="F:DG.DemiEditor.DeFileUtils.PathSlashToReplace">
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.PathSlashToReplace">
             <summary>Path slash to replace on current OS</summary>
         </member>
-        <member name="P:DG.DemiEditor.DeFileUtils.projectPath">
+        <member name="P:DG.DemiEditor.DeEditorFileUtils.projectPath">
             <summary>
             Full path to project directory, without final slash.
             </summary>
         </member>
-        <member name="P:DG.DemiEditor.DeFileUtils.assetsPath">
+        <member name="P:DG.DemiEditor.DeEditorFileUtils.assetsPath">
             <summary>
             Full path to project's Assets directory, without final slash.
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.ADBPathToFullPath(System.String)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.ADBPathToFullPath(System.String)">
             <summary>
             Converts the given project-relative path to a full path
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.AssetExists(System.String)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.AssetExists(System.String)">
             <summary>
             Returns TRUE if the file/directory at the given path exists.
             </summary>
             <param name="adbPath">Path, relative to Unity's project folder</param>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.GUIDToExistingAssetPath(System.String)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.GUIDToExistingAssetPath(System.String)">
             <summary>
             Returns the asset path of the given GUID (relative to Unity project's folder),
             or an empty string if either the GUID is invalid or the related path doesn't exist.
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBPath(UnityEngine.ScriptableObject)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBPath(UnityEngine.ScriptableObject)">
             <summary>Returns the adb path to the given ScriptableObject</summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBPath(UnityEngine.MonoBehaviour)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBPath(UnityEngine.MonoBehaviour)">
             <summary>Returns the adb path to the given MonoBehaviour</summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBDir(UnityEngine.ScriptableObject)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBDir(UnityEngine.ScriptableObject)">
             <summary>Returns the adb directory that contains the given ScriptableObject without final slash</summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.MonoInstanceADBDir(UnityEngine.MonoBehaviour)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBDir(UnityEngine.MonoBehaviour)">
             <summary>Returns the adb directory that contains the given MonoBehaviour without final slash</summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.SetScriptExecutionOrder(UnityEngine.MonoBehaviour,System.Int32)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.SetScriptExecutionOrder(UnityEngine.MonoBehaviour,System.Int32)">
             <summary>
             Sets the script execution order of the given MonoBehaviour
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DeFileUtils.GetScriptExecutionOrder(UnityEngine.MonoBehaviour)">
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.GetScriptExecutionOrder(UnityEngine.MonoBehaviour)">
             <summary>
             Gets the script execution order of the given MonoBehaviour
             </summary>
         </member>
-        <member name="T:DG.DemiEditor.DePanelUtils">
+        <member name="T:DG.DemiEditor.DeEditorPanelUtils">
             <summary>
             Utilities for Editor Panels.
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.DePanelUtils.ConnectToSourceAsset``1(System.String,System.Boolean)">
+        <member name="M:DG.DemiEditor.DeEditorPanelUtils.ConnectToSourceAsset``1(System.String,System.Boolean)">
             <summary>
             Connects to a <see cref="T:UnityEngine.ScriptableObject"/> asset.
             If the asset already exists at the given path, loads it and returns it.
@@ -89,6 +89,21 @@
             <summary>
             Contains both free and pro skins GUIStyle variations,
             and automatically returns the correct one when converted to GUIStyle
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.Play(UnityEngine.AudioClip)">
+            <summary>
+            Plays the given clip in the Editor
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.Stop(UnityEngine.AudioClip)">
+            <summary>
+            Stops playing the given clip.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.StopAll">
+            <summary>
+            Stops all clips playing.
             </summary>
         </member>
         <member name="T:DG.DemiEditor.AssemblyExtensions">

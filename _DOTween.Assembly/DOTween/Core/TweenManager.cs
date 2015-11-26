@@ -833,19 +833,43 @@ namespace DG.Tweening.Core
             _activeTweens[index] = null;
 
             if (t.updateType == UpdateType.Normal) {
-                totActiveDefaultTweens--;
-                hasActiveDefaultTweens = totActiveDefaultTweens > 0;
+                if (totActiveDefaultTweens > 0) {
+                    totActiveDefaultTweens--;
+                    hasActiveDefaultTweens = totActiveDefaultTweens > 0;
+                } else {
+                    Debugger.LogRemoveActiveTweenError("totActiveDefaultTweens");
+                }
             } else if (t.updateType == UpdateType.Fixed) {
-                totActiveFixedTweens--;
-                hasActiveFixedTweens = totActiveFixedTweens > 0;
+                if (totActiveFixedTweens > 0) {
+                    totActiveFixedTweens--;
+                    hasActiveFixedTweens = totActiveFixedTweens > 0;
+                } else {
+                    Debugger.LogRemoveActiveTweenError("totActiveFixedTweens");
+                }
             } else {
-                totActiveLateTweens--;
-                hasActiveLateTweens = totActiveLateTweens > 0;
+                if (totActiveLateTweens > 0) {
+                    totActiveLateTweens--;
+                    hasActiveLateTweens = totActiveLateTweens > 0;
+                } else {
+                    Debugger.LogRemoveActiveTweenError("totActiveLateTweens");
+                }
             }
             totActiveTweens--;
             hasActiveTweens = totActiveTweens > 0;
             if (t.tweenType == TweenType.Tweener) totActiveTweeners--;
             else totActiveSequences--;
+            if (totActiveTweens < 0) {
+                totActiveTweens = 0;
+                Debugger.LogRemoveActiveTweenError("totActiveTweens");
+            }
+            if (totActiveTweeners < 0) {
+                totActiveTweeners = 0;
+                Debugger.LogRemoveActiveTweenError("totActiveTweeners");
+            }
+            if (totActiveSequences < 0) {
+                totActiveSequences = 0;
+                Debugger.LogRemoveActiveTweenError("totActiveSequences");
+            }
         }
 
         static void ClearTweenArray(Tween[] tweens)
