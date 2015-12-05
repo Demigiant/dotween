@@ -59,7 +59,8 @@ namespace DG.Tweening.Plugins
 
         public override float GetSpeedBasedDuration(StringOptions options, float unitsXSecond, string changeValue)
         {
-            float res = changeValue.Length / unitsXSecond;
+//            float res = changeValue.Length / unitsXSecond;
+            float res = (options.richTextEnabled ? options.changeValueStrippedLength : changeValue.Length) / unitsXSecond;
             if (res < 0) res = -res;
             return res;
         }

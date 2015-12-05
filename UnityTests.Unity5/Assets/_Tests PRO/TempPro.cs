@@ -10,4 +10,9 @@ public class TempPro : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space)) anime.DORestart(true);
 	}
+
+	public void OnCreated()
+	{
+		Debug.Log("Tween created > " + anime.tween);
+	}
 }

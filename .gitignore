@@ -21,6 +21,7 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Assets/-tk2d*
 *.Unity*/Assets/Console*Pro*
 *.Unity*/Assets/Text*Mesh*Pro*
+*.Unity*/Assets/CodeStage
 .vs
 *HOPoolOperator*
 *HOTools*
