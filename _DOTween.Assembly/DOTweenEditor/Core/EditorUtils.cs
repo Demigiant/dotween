@@ -113,6 +113,8 @@ namespace DG.DOTweenEditor.Core
             // Delete Editor folder if empty
             if (AssetExists(adbDemiLibDir + "/Editor") && Directory.GetFiles(demiLibDir + slash + "Editor").Length == 0)
                 AssetDatabase.DeleteAsset(adbDemiLibDir + "/Editor");
+            // Reimport correct Core libraries
+            AssetDatabase.ImportAsset(demiLibNewCoreDir, ImportAssetOptions.ImportRecursive);
         }
         static void DeleteAssetsIfExist(string[] adbFilePaths)
         {
@@ -120,6 +122,12 @@ namespace DG.DOTweenEditor.Core
                 if (AssetExists(f)) AssetDatabase.DeleteAsset(f);
             }
         }
+//        static void ReimportAssets(string[] adbFilePaths)
+//        {
+//            foreach (string f in adbFilePaths) {
+//                if (AssetExists(f)) AssetDatabase.ImportAsset(f, ImportAssetOptions.ForceUpdate);
+//            }
+//        }
 
         /// <summary>
         /// Returns TRUE if the file/directory at the given path exists.
