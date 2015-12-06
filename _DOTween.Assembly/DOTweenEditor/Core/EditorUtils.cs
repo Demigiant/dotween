@@ -111,10 +111,11 @@ namespace DG.DOTweenEditor.Core
                 adbDemiLibDir + "/Editor/Imgs"
             });
             // Delete Editor folder if empty
-            if (AssetExists(adbDemiLibDir + "/Editor") && Directory.GetFiles(demiLibDir + slash + "Editor").Length == 0)
+            if (AssetExists(adbDemiLibDir + "/Editor") && Directory.GetFiles(demiLibDir + slash + "Editor").Length == 0) {
                 AssetDatabase.DeleteAsset(adbDemiLibDir + "/Editor");
-            // Reimport correct Core libraries
-            AssetDatabase.ImportAsset(demiLibNewCoreDir, ImportAssetOptions.ImportRecursive);
+                // Reimport correct Core libraries
+                AssetDatabase.ImportAsset(demiLibNewCoreDir, ImportAssetOptions.ImportRecursive);
+            }
         }
         static void DeleteAssetsIfExist(string[] adbFilePaths)
         {

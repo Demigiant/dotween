@@ -28,3 +28,4 @@ ExternalPluginsTestsAndExamples*
 zz builds
 zz UnityTests*
 *.tmp
+*.pdb
