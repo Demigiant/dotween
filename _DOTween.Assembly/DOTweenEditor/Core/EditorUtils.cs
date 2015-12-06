@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.IO;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -84,6 +85,40 @@ namespace DG.DOTweenEditor.Core
         {
             if (!Directory.Exists(dotweenDir)) return false; // Can happen if we were deleting DOTween
             return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
+        }
+
+        // Deletes old DemiLib core if new one (inside Core directory) exists
+        public static void DeleteOldDemiLibCore()
+        {
+            string demiLibDir = EditorUtils.GetAssemblyFilePath(typeof(DOTween).Assembly);
+            string slash = demiLibDir.IndexOf("/") != -1 ? "/" : "\\";
+            demiLibDir = demiLibDir.Substring(0, demiLibDir.LastIndexOf(slash));
+            demiLibDir = demiLibDir.Substring(0, demiLibDir.LastIndexOf(slash)) + slash + "DemiLib";
+            string adbDemiLibDir = FullPathToADBPath(demiLibDir);
+            if (!AssetExists(adbDemiLibDir)) return;
+
+            string demiLibNewCoreDir = adbDemiLibDir + "/Core";
+            if (!AssetExists(demiLibNewCoreDir)) return;
+            
+            // New version present, delete old versions
+            DeleteAssetsIfExist(new[] {
+                adbDemiLibDir + "/DemiLib.dll",
+                adbDemiLibDir + "/DemiLib.xml",
+                adbDemiLibDir + "/DemiLib.dll.mdb",
+                adbDemiLibDir + "/Editor/DemiEditor.dll",
+                adbDemiLibDir + "/Editor/DemiEditor.xml",
+                adbDemiLibDir + "/Editor/DemiEditor.dll.mdb",
+                adbDemiLibDir + "/Editor/Imgs"
+            });
+            // Delete Editor folder if empty
+            if (AssetExists(adbDemiLibDir + "/Editor") && Directory.GetFiles(demiLibDir + slash + "Editor").Length == 0)
+                AssetDatabase.DeleteAsset(adbDemiLibDir + "/Editor");
+        }
+        static void DeleteAssetsIfExist(string[] adbFilePaths)
+        {
+            foreach (string f in adbFilePaths) {
+                if (AssetExists(f)) AssetDatabase.DeleteAsset(f);
+            }
         }
 
         /// <summary>

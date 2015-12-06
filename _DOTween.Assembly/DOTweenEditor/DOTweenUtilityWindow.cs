@@ -2,6 +2,7 @@
 // Created: 2014/12/24 13:37
 
 using System.IO;
+using System.Reflection;
 using DG.DOTweenEditor.Core;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -21,6 +22,9 @@ namespace DG.DOTweenEditor
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
             if (dotweenImported) {
+                // Delete old DemiLib configuration
+                EditorUtils.DeleteOldDemiLibCore();
+                //
                 bool openSetupDialog = EditorUtils.DOTweenSetupRequired()
                     && (EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version
                     || EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion);
