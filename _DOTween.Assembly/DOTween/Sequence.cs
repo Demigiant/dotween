@@ -282,7 +282,6 @@ namespace DG.Tweening
                     }
                 }
             } else {
-                // Debug
                 int len = s._sequencedObjs.Count;
                 for (int i = 0; i < len; ++i) {
                     if (!s.active) return true; // Killed by some internal callback
@@ -301,6 +300,12 @@ namespace DG.Tweening
 //                        float gotoPos = (float)((decimal)toPos - (decimal)sequentiable.sequencedPosition);
                         if (gotoPos < 0) gotoPos = 0;
                         Tween t = (Tween)sequentiable;
+                        // Fix for final nested tween not calling OnComplete in some cases
+                        if (toPos >= sequentiable.sequencedEndPosition) {
+                            if (!t.startupDone) TweenManager.ForceInit(t, true);
+                            if (gotoPos < t.fullDuration) gotoPos = t.fullDuration;
+                        }
+                        //
                         t.isBackwards = false;
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) return true;
 

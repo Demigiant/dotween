@@ -9,12 +9,12 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public RectTransform rectTrans;
+    public Transform target;
 
-    void Start()
+    IEnumerator Start()
     {
-    	DOTween.Sequence().SetDelay(2)
-    		// .AppendInterval(2)
-    		.Append(rectTrans.DOAnchorPosX(100, 1).SetRelative());
+    	yield return new WaitForSeconds(0.5f);
+
+    	target.DOMoveY(2, 5).SetRelative().SetEase(Ease.InOutFlash, 8, 1);
     }
 }

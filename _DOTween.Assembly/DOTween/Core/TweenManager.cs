@@ -535,11 +535,11 @@ namespace DG.Tweening.Core
         }
 
         // Forces the tween to startup and initialize all its data
-        internal static void ForceInit(Tween t)
+        internal static void ForceInit(Tween t, bool isSequenced = false)
         {
             if (t.startupDone) return;
 
-            if (!t.Startup()) {
+            if (!t.Startup() && !isSequenced) {
                 // Startup failed: kill tween
                 if (isUpdateLoop) t.active = false; // Just mark it for killing, so the update loop will take care of it
                 else RemoveActiveTween(t);
