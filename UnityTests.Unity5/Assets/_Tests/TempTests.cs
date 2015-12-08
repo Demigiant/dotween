@@ -10,11 +10,15 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
     public Transform target;
+    public float duration = 8;
+    public Ease ease;
+    public float amplitude = 8;
+    public float period = 1;
 
     IEnumerator Start()
     {
     	yield return new WaitForSeconds(0.5f);
 
-    	target.DOMoveY(2, 5).SetRelative().SetEase(Ease.InOutFlash, 8, 1);
+    	target.DOMoveY(2, duration).SetRelative().SetEase(ease, amplitude, period);
     }
 }

@@ -345,5 +345,17 @@ namespace DG.Tweening.Core.Easing
                 return (float time, float duration, float overshootOrAmplitude, float period) => -(time /= duration) * (time - 2);
             }
         }
+
+        internal static bool IsFlashEase(Ease ease)
+        {
+            switch (ease) {
+            case Ease.Flash:
+            case Ease.InFlash:
+            case Ease.OutFlash:
+            case Ease.InOutFlash:
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -64,6 +64,10 @@ namespace DG.Tweening.Core.Easing
         {
             float easedRes = 0;
             float finalDecimals = 0;
+            // Use previous stepIndex in case of odd ones, so that back ease is not clamped
+            if (dir > 0 && (int)overshootOrAmplitude % 2 == 0) stepIndex++;
+            else if (dir < 0 && (int)overshootOrAmplitude % 2 != 0) stepIndex++;
+
             if (period > 0) {
                 float finalTruncated = (float)Math.Truncate(overshootOrAmplitude);
                 finalDecimals = overshootOrAmplitude - finalTruncated;

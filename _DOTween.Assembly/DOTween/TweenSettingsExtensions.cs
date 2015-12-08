@@ -121,14 +121,16 @@ namespace DG.Tweening
             if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) t.easeOvershootOrAmplitude = (int)t.easeOvershootOrAmplitude;
+            
             t.customEase = null;
             return t;
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
         /// <param name="overshoot">
-        /// Eventual overshoot to use with Back or Flash ease (default is 1.70158).
-        /// <para>In case of Flash ease it sets the total number of flashes that will happen.
+        /// Eventual overshoot to use with Back or Flash ease (default is 1.70158 - 1 for Flash).
+        /// <para>In case of Flash ease it must be an intenger and sets the total number of flashes that will happen.
         /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
         /// </param>
         public static T SetEase<T>(this T t, Ease ease, float overshoot) where T : Tween
@@ -136,14 +138,15 @@ namespace DG.Tweening
             if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) overshoot = (int)overshoot;
             t.easeOvershootOrAmplitude = overshoot;
             t.customEase = null;
             return t;
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
-        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType or overshoot to use with Flash easeType (default is 1.70158).
-        /// <para>In case of Flash ease it sets the total number of flashes that will happen.
+        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType or overshoot to use with Flash easeType (default is 1.70158 - 1 for Flash).
+        /// <para>In case of Flash ease it must be an integer and sets the total number of flashes that will happen.
         /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
         /// </param>
         /// <param name="period">Eventual period to use with Elastic or Flash easeType (default is 0).
@@ -155,6 +158,7 @@ namespace DG.Tweening
             if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) amplitude = (int)amplitude;
             t.easeOvershootOrAmplitude = amplitude;
             t.easePeriod = period;
             t.customEase = null;
