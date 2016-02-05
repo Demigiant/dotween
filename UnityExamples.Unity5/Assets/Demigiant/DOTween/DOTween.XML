@@ -188,6 +188,43 @@
             Used for custom and animationCurve-based ease functions. Must return a value between 0 and 1.
             </summary>
         </member>
+        <member name="T:DG.Tweening.CustomPlugins.PureQuaternionPlugin">
+            <summary>
+            Straight Quaternion plugin. Instead of using Vector3 values accepts Quaternion values directly.
+            <para>Beware: doesn't work with LoopType.Incremental (neither directly nor if inside a LoopType.Incremental Sequence).</para>
+            <para>To use it, call DOTween.To with the plugin parameter overload, passing it <c>PureQuaternionPlugin.Plug()</c> as first parameter
+            (do not use any of the other public PureQuaternionPlugin methods):</para>
+            <code>DOTween.To(PureQuaternionPlugin.Plug(), ()=> myQuaternionProperty, x=> myQuaternionProperty = x, myQuaternionEndValue, duration);</code>
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.Plug">
+            <summary>
+            Plug this plugin inside a DOTween.To call.
+            <para>Example:</para>
+            <code>DOTween.To(PureQuaternionPlugin.Plug(), ()=> myQuaternionProperty, x=> myQuaternionProperty = x, myQuaternionEndValue, duration);</code>
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.Reset(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions})">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},System.Boolean)">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.ConvertToStartValue(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},UnityEngine.Quaternion)">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetRelativeEndValue(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions})">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetChangeValue(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions})">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.GetSpeedBasedDuration(DG.Tweening.Plugins.Options.NoOptions,System.Single,UnityEngine.Quaternion)">
+            <summary>INTERNAL: do not use</summary>
+        </member>
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.EvaluateAndApply(DG.Tweening.Plugins.Options.NoOptions,DG.Tweening.Tween,System.Boolean,DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},System.Single,UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single,System.Boolean,DG.Tweening.Core.Enums.UpdateNotice)">
+            <summary>INTERNAL: do not use</summary>
+        </member>
         <member name="T:DG.Tweening.DOTween">
             <summary>
             Main DOTween class. Contains static methods to create and control tweens in a generic way
@@ -331,7 +368,7 @@
             <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
             <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Double},DG.Tweening.Core.DOSetter{System.Double},System.Single,System.Single)">
+        <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Double},DG.Tweening.Core.DOSetter{System.Double},System.Double,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
             <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
@@ -1419,11 +1456,29 @@
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="mode">Rotation mode</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DORotateQuaternion(UnityEngine.Transform,UnityEngine.Quaternion,System.Single)">
+            <summary>Tweens a Transform's rotation to the given value using pure quaternion values.
+            Also stores the transform as the tween's target so it can be used for filtered operations.
+            <para>PLEASE NOTE: DORotate, which takes Vector3 values, is the preferred rotation method.
+            This method was implemented for very special cases, and doesn't support LoopType.Incremental loops
+            (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
+            </summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOLocalRotate(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.RotateMode)">
             <summary>Tweens a Transform's localRotation to the given value.
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="mode">Rotation mode</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOLocalRotateQuaternion(UnityEngine.Transform,UnityEngine.Quaternion,System.Single)">
+            <summary>Tweens a Transform's rotation to the given value using pure quaternion values.
+            Also stores the transform as the tween's target so it can be used for filtered operations.
+            <para>PLEASE NOTE: DOLocalRotate, which takes Vector3 values, is the preferred rotation method.
+            This method was implemented for very special cases, and doesn't support LoopType.Incremental loops
+            (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
+            </summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOScale(UnityEngine.Transform,UnityEngine.Vector3,System.Single)">
             <summary>Tweens a Transform's localScale to the given value.
@@ -1984,13 +2039,23 @@
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetEase``1(``0,DG.Tweening.Ease,System.Single)">
             <summary>Sets the ease of the tween.
             <para>If applied to Sequences eases the whole sequence animation</para></summary>
-            <param name="overshoot">Eventual overshoot to use with Back ease (default is 1.70158)</param>
+            <param name="overshoot">
+            Eventual overshoot to use with Back or Flash ease (default is 1.70158).
+            <para>In case of Flash ease it sets the total number of flashes that will happen.
+            Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
+            </param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetEase``1(``0,DG.Tweening.Ease,System.Single,System.Single)">
             <summary>Sets the ease of the tween.
             <para>If applied to Sequences eases the whole sequence animation</para></summary>
-            <param name="amplitude">Eventual amplitude to use with Elastic easeType (default is 1.70158)</param>
-            <param name="period">Eventual period to use with Elastic easeType (default is 0)</param>
+            <param name="amplitude">Eventual amplitude to use with Elastic easeType or overshoot to use with Flash easeType (default is 1.70158).
+            <para>In case of Flash ease it sets the total number of flashes that will happen.
+            Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
+            </param>
+            <param name="period">Eventual period to use with Elastic or Flash easeType (default is 0).
+            <para>In case of Flash ease it indicates the power in time of the ease, and must be between -1 and 1.
+            0 is balanced, 1 weakens the ease with time, -1 starts the ease weakened and gives it power towards the end.</para>
+            </param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetEase``1(``0,UnityEngine.AnimationCurve)">
             <summary>Sets the ease of the tween using an AnimationCurve.
@@ -2083,7 +2148,8 @@
             <param name="t">The tween to prepend</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.Join(DG.Tweening.Sequence,DG.Tweening.Tween)">
-            <summary>Inserts the given tween at the same time position of the last tween added to the Sequence.
+            <summary>Inserts the given tween at the same time position of the last tween, callback or intervale added to the Sequence.
+            Note that, in case of a Join after an interval, the insertion time will be the time where the interval starts, not where it finishes.
             Has no effect if the Sequence has already started</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.Insert(DG.Tweening.Sequence,System.Single,DG.Tweening.Tween)">

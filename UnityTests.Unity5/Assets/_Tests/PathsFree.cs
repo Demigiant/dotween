@@ -14,6 +14,7 @@ public class PathsFree : BrainBase
 	{
 		yield return new WaitForSeconds(1);
 
-		target.DOPath(waypoints, 3, pathType).SetOptions(closePath).SetEase(ease);
+		target.DOPath(waypoints, 3f, pathType).SetOptions(closePath).SetEase(ease)
+			.OnWaypointChange(x=> Debug.Log("CHANGE > " + x + " - " + target.position));
 	}
 }

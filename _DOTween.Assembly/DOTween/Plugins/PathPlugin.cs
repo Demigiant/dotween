@@ -120,8 +120,17 @@ namespace DG.Tweening.Plugins
             if (t.isBackwards) isForward = !isForward;
             int newWaypointIndex = changeValue.GetWaypointIndexFromPerc(pathPerc, isForward);
             if (newWaypointIndex != t.miscInt) {
+                int prevWPIndex = t.miscInt;
                 t.miscInt = newWaypointIndex;
-                if (t.onWaypointChange != null) Tween.OnTweenCallback(t.onWaypointChange, newWaypointIndex);
+                if (t.onWaypointChange != null) {
+                    // If more than one waypoint changed, dispatch multiple callbacks
+                    bool isBackwards = newWaypointIndex < prevWPIndex;
+                    if (isBackwards) {
+                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                    } else {
+                        for (int i = prevWPIndex + 1; i < newWaypointIndex + 1; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                    }
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using DG.Tweening.Plugins;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Basics : BrainBase
 {
@@ -213,9 +214,9 @@ public class Basics : BrainBase
 		}
 		if (GUILayout.Button("Clear & Reload")) {
 			Debug.Log(":::::::::::: CLEAR AND RELOAD");
-			int level = Application.loadedLevel;
+			int level = SceneManager.GetActiveScene().buildIndex;
 			DOTween.Clear();
-			Application.LoadLevel(level);
+            SceneManager.LoadScene(level);
 		}
 		GUILayout.EndHorizontal();
 		GUILayout.BeginHorizontal();

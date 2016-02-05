@@ -13,6 +13,7 @@ public class tk2dSlicedSprite : tk2dBaseSprite
 
 public class tk2dTextMesh : MonoBehaviour
 {
+	public Vector3 scale;
 	public Color color;
 	public string text;
 }
