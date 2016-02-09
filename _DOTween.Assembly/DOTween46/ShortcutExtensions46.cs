@@ -236,6 +236,26 @@ namespace DG.Tweening
                 .SetOptions(snapping).SetTarget(target);
         }
 
+        /// <summary>Tweens a RectTransform's anchorMax to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOAnchorMax(this RectTransform target, Vector2 endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.anchorMax, x => target.anchorMax = x, endValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+
+        /// <summary>Tweens a RectTransform's anchorMin to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOAnchorMin(this RectTransform target, Vector2 endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.anchorMin, x => target.anchorMin = x, endValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+
         /// <summary>Tweens a RectTransform's sizeDelta to the given value.
         /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
