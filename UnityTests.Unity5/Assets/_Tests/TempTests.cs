@@ -12,9 +12,14 @@ public class TempTests : BrainBase
 {
     public Transform target;
 
-    void Start()
+    IEnumerator Start()
     {
-        Sequence s = DOTween.Sequence()
-            .Append(target.DOMoveX(2, 2));
+        Tween t = target.DOMoveX(2, 1).OnPlay(()=>Debug.Log("PLAY")).SetAutoKill(false);
+        t.SetDelay(1);
+
+        yield return new WaitForSeconds(2.5f);
+
+        t.Rewind();
+        t.Play();
     }
 }

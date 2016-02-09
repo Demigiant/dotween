@@ -353,6 +353,11 @@ namespace DG.Tweening.Core
                         continue;
                     }
                     if (tDeltaTime <= 0) continue;
+                    // Delay elapsed - call OnPlay if required
+                    if (t.playedOnce && t.onPlay != null) {
+                        // Don't call in case it hasn't started because onStart routine will call it
+                        Tween.OnTweenCallback(t.onPlay);
+                    }
                 }
                 // Startup (needs to be here other than in Tween.DoGoto in case of speed-based tweens, to calculate duration correctly)
                 if (!t.startupDone) {
@@ -583,8 +588,8 @@ namespace DG.Tweening.Core
         {
             if (!t.isPlaying && (!t.isBackwards && !t.isComplete || t.isBackwards && (t.completedLoops > 0 || t.position > 0))) {
                 t.isPlaying = true;
-                if (t.playedOnce && t.onPlay != null) {
-                    // Don't call in case it hasn't started because onStart routine will call it
+                if (t.playedOnce && t.delayComplete && t.onPlay != null) {
+                    // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
                     Tween.OnTweenCallback(t.onPlay);
                 }
                 return true;
@@ -618,8 +623,8 @@ namespace DG.Tweening.Core
             t.isBackwards = false;
             Rewind(t, includeDelay);
             t.isPlaying = true;
-            if (wasPaused && t.playedOnce && t.onPlay != null) {
-                // Don't call in case it hasn't started because onStart routine will call it
+            if (wasPaused && t.playedOnce && t.delayComplete && t.onPlay != null) {
+                // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
                 Tween.OnTweenCallback(t.onPlay);
             }
             return true;

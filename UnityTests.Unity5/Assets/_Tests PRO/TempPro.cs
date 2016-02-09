@@ -15,4 +15,9 @@ public class TempPro : MonoBehaviour
 	{
 		Debug.Log("Tween created > " + anime.tween);
 	}
+
+	public void Output()
+	{
+		Debug.Log("HERE");
+	}
 }
