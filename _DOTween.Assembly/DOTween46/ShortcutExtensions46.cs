@@ -348,6 +348,42 @@ namespace DG.Tweening
 
         #endregion
 
+        #region ScrollRect
+
+        /// <summary>Tweens a ScrollRect's horizontal/verticalNormalizedPosition to the given value.
+        /// Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DONormalizedPos(this ScrollRect target, Vector2 endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => new Vector2(target.horizontalNormalizedPosition, target.verticalNormalizedPosition),
+                x => {
+                    target.horizontalNormalizedPosition = x.x;
+                    target.verticalNormalizedPosition = x.y;
+                }, endValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+        /// <summary>Tweens a ScrollRect's horizontalNormalizedPosition to the given value.
+        /// Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOHorizontalNormalizedPos(this ScrollRect target, float endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.horizontalNormalizedPosition, x => target.horizontalNormalizedPosition = x, endValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+        /// <summary>Tweens a ScrollRect's verticalNormalizedPosition to the given value.
+        /// Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOVerticalNormalizedPos(this ScrollRect target, float endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.verticalNormalizedPosition, x => target.verticalNormalizedPosition = x, endValue, duration)
+                .SetOptions(snapping).SetTarget(target);
+        }
+
+        #endregion
+
         #region Slider
 
         /// <summary>Tweens a Slider's value to the given value.
