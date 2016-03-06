@@ -11,15 +11,30 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
     public Transform target;
+    public float InitialDelay = 1;
+    public float ExpandDelay = 2;
+    public float ExpandSpeed = 0.1f;
+    public float RetractDelay = 2;
+    public float RetractSpeed = 2;
 
-    IEnumerator Start()
+    float time;
+ 
+    Sequence s;
+    // Use this for initialization
+    void Start ()
     {
-        Tween t = target.DOMoveX(2, 1).OnPlay(()=>Debug.Log("PLAY")).SetAutoKill(false);
-        t.SetDelay(1);
+        time = Time.realtimeSinceStartup;
 
-        yield return new WaitForSeconds(2.5f);
+        s =  DOTween.Sequence();
+        s.Append(target.DOMove(target.position + new Vector3(0, 0.1f, 0),0.1f).SetDelay(InitialDelay));
+        s.Append(target.DOMove(target.position + new Vector3(0, 1, 0), ExpandSpeed).SetDelay(ExpandDelay));
+        s.Append(target.DOMove(target.position - new Vector3(0, 1.1f, 0), RetractSpeed).SetDelay(RetractDelay));
+        s.SetLoops(-1, LoopType.Restart).OnStepComplete(Step);
+    }
 
-        t.Rewind();
-        t.Play();
+    void Step()
+    {
+        Debug.Log(Time.realtimeSinceStartup - time);
+        time = Time.realtimeSinceStartup;
     }
 }

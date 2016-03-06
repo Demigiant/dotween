@@ -4,20 +4,15 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public DOTweenAnimation anime;
+	public Rigidbody2D target;
 
-	void Update()
+	void Start()
 	{
-		if (Input.GetKeyDown(KeyCode.Space)) anime.DORestart(true);
+		target.transform.DOScale(2, 1).SetLoops(-1);
 	}
 
-	public void OnCreated()
+	void FixedUpdate()
 	{
-		Debug.Log("Tween created > " + anime.tween);
-	}
-
-	public void Output()
-	{
-		Debug.Log("HERE");
+		target.position += new Vector2(0.03f, 0);
 	}
 }

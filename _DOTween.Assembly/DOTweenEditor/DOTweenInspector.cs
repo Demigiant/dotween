@@ -60,6 +60,11 @@ namespace DG.DOTweenEditor
             if (GUILayout.Button(_showPlayingTweensData ? "Hide Playing Tweens" : "Show Playing Tweens")) _showPlayingTweensData = !_showPlayingTweensData;
             if (GUILayout.Button(_showPausedTweensData ? "Hide Paused Tweens" : "Show Paused Tweens")) _showPausedTweensData = !_showPausedTweensData;
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Play all")) DOTween.PlayAll();
+            if (GUILayout.Button("Pause all")) DOTween.PauseAll();
+            if (GUILayout.Button("Kill all")) DOTween.KillAll();
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
             _strBuilder.Length = 0;
