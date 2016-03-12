@@ -13,7 +13,7 @@ public class FollowTargetUntilReached : MonoBehaviour
 		// In this case, when the target is reached the tween will be
 		// automatically killed and the following will stop
 		Vector3 prevTargetPos = targetToFollow.position;
-		Tweener followTween = follower.DOMove(targetToFollow.position, 2);
+		Tweener followTween = follower.DOMove(targetToFollow.position, 4);
 		followTween.OnUpdate(()=> {
 			if (prevTargetPos != targetToFollow.position) {
 				prevTargetPos = targetToFollow.position;

@@ -21,7 +21,17 @@ namespace DG.Tweening.Core.Surrogates
             return v.value;
         }
 
+        public static implicit operator Color32(ColorWrapper v)
+        {
+            return v.value;
+        }
+
         public static implicit operator ColorWrapper(Color v)
+        {
+            return new ColorWrapper(v);
+        }
+
+        public static implicit operator ColorWrapper(Color32 v)
         {
             return new ColorWrapper(v);
         }
