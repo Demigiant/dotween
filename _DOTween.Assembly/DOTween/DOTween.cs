@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.190";
+        public static readonly string Version = "1.1.200";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -253,7 +253,6 @@ namespace DG.Tweening
         /// <summary>
         /// Checks all active tweens to find and remove eventually invalid ones (usually because their targets became NULL)
         /// and returns the total number of invalid tweens found and removed.
-        /// <para>Automatically called when loading a new scene if <see cref="useSafeMode"/> is TRUE.</para>
         /// BEWARE: this is a slightly expensive operation so use it with care
         /// </summary>
         public static int Validate()

@@ -74,10 +74,11 @@ namespace DG.Tweening.Core
             }
         }
 
-        void OnLevelWasLoaded()
-        {
-            if (DOTween.useSafeMode) DOTween.Validate();
-        }
+        // Removed to allow compatibility with Unity 5.4 and later
+//        void OnLevelWasLoaded()
+//        {
+//            if (DOTween.useSafeMode) DOTween.Validate();
+//        }
 
         void OnDrawGizmos()
         {

@@ -9,7 +9,7 @@ public class ShakeInverse : MonoBehaviour
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(0.6f);
-		Tween t = trans.DOShakePosition(4, 2).SetAutoKill(false);
+		Tween t = trans.DOShakePosition(2, 1, 14).SetAutoKill(false);
 		t.Complete();
 		t.PlayBackwards();
 	}
