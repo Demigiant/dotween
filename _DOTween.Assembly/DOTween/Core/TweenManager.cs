@@ -40,6 +40,9 @@ namespace DG.Tweening.Core
         static int _minPooledTweenerId = -1; // Lowest PooledTweeners id that is actually full
         static int _maxPooledTweenerId = -1; // Highest PooledTweeners id that is actually full
 
+        // Used to prevent tweens from being re-killed at the end of an update loop if KillAll was called during said loop
+        static bool _despawnAllCalledFromUpdateLoopCallback;
+
 #if DEBUG
         static public int updateLoopCount;
 #endif
@@ -179,6 +182,8 @@ namespace DG.Tweening.Core
             totActiveTweeners = totActiveSequences = 0;
             _maxActiveLookupId = _reorganizeFromId = -1;
             _requiresActiveReorganization = false;
+
+            if (isUpdateLoop) _despawnAllCalledFromUpdateLoopCallback = true;
 
             return totDespawned;
         }
@@ -401,9 +406,14 @@ namespace DG.Tweening.Core
             }
             // Kill all eventually marked tweens
             if (willKill) {
-                DespawnTweens(_KillList, false);
-                int count = _KillList.Count - 1;
-                for (int i = count; i > -1; --i) RemoveActiveTween(_KillList[i]);
+                if (_despawnAllCalledFromUpdateLoopCallback) {
+                    // Do not despawn tweens again, since Kill/DespawnAll was already called
+                    _despawnAllCalledFromUpdateLoopCallback = false;
+                } else {
+                    DespawnTweens(_KillList, false);
+                    int count = _KillList.Count - 1;
+                    for (int i = count; i > -1; --i) RemoveActiveTween(_KillList[i]);
+                }
                 _KillList.Clear();
             }
             isUpdateLoop = false;

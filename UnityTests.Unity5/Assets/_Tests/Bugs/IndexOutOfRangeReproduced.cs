@@ -30,6 +30,7 @@ public class IndexOutOfRangeReproduced : BrainBase
         	totCreatedTweens++;
         	Tween t = target.DOMove(new Vector3(1, 1), 0.5f);
         	if (i == 49) t.OnComplete(()=> DOTween.KillAll());
+        	t.Goto(100);
         }
     }
 
