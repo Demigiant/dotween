@@ -10,11 +10,17 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Color32 color;
-
-    void Start ()
+    IEnumerator Start ()
     {
-        DOTween.To(()=> color, x=> color = x, Color.red, 2)
-        	.OnUpdate(()=> Debug.Log(color));
+    	yield return new WaitForSeconds(0.5f);
+
+    	Debug.Log(Time.realtimeSinceStartup);
+    	DOVirtual.DelayedCall(2, ()=> Debug.Log("Call > " + Time.realtimeSinceStartup))
+    		.OnStart(()=> Debug.Log("Start > " + Time.realtimeSinceStartup));
+
+    	DOTween.Sequence()
+    		.OnStart(()=> Debug.Log("S Start > " + Time.realtimeSinceStartup))
+    		.AppendInterval(2)
+    		.OnComplete(()=> Debug.Log("S Complete > " + Time.realtimeSinceStartup));
     }
 }

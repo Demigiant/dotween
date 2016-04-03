@@ -17,7 +17,7 @@ namespace DG.Tweening.Core
         const int _DefaultMaxSequences = 50;
         const string _MaxTweensReached = "Max Tweens reached: capacity has automatically been increased from #0 to #1. Use DOTween.SetTweensCapacity to set it manually at startup";
 
-        internal static int maxActive = _DefaultMaxTweeners; // Always equal to maxTweeners
+        internal static int maxActive = _DefaultMaxTweeners + _DefaultMaxSequences; // Always equal to maxTweeners + maxSequences
         internal static int maxTweeners = _DefaultMaxTweeners; // Always >= maxSequences
         internal static int maxSequences = _DefaultMaxSequences; // Always <= maxTweeners
         internal static bool hasActiveTweens, hasActiveDefaultTweens, hasActiveLateTweens, hasActiveFixedTweens;
@@ -29,11 +29,11 @@ namespace DG.Tweening.Core
 
         // Tweens contained in Sequences are not inside the active lists
         // Arrays are organized (max once per update) so that existing elements are next to each other from 0 to (totActiveTweens - 1)
-        internal static Tween[] _activeTweens = new Tween[_DefaultMaxTweeners]; // Internal just to allow DOTweenInspector to access it
+        internal static Tween[] _activeTweens = new Tween[_DefaultMaxTweeners + _DefaultMaxSequences]; // Internal just to allow DOTweenInspector to access it
         static Tween[] _pooledTweeners = new Tween[_DefaultMaxTweeners];
         static readonly Stack<Tween> _PooledSequences = new Stack<Tween>();
 
-        static readonly List<Tween> _KillList = new List<Tween>(_DefaultMaxTweeners);
+        static readonly List<Tween> _KillList = new List<Tween>(_DefaultMaxTweeners + _DefaultMaxSequences);
         static int _maxActiveLookupId = -1; // Highest full ID in _activeTweens
         static bool _requiresActiveReorganization; // True when _activeTweens need to be reorganized to fill empty spaces
         static int _reorganizeFromId = -1; // First null ID from which to reorganize
