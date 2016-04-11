@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.260";
+        public static readonly string Version = "1.1.270";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -772,6 +772,13 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.PlayBackwards, FilterType.TargetOrId, targetOrId, false, 0);
         }
+        /// <summary>Plays backwards all tweens with the given target and ID and returns the number of actual tweens played
+        /// (meaning the tweens that were not already started, playing backwards or rewinded)</summary>
+        public static int PlayBackwards(object target, object id)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.PlayBackwards, FilterType.TargetAndId, id, false, 0, target);
+        }
 
         /// <summary>Plays forward all tweens and returns the number of actual tweens played
         /// (meaning tweens that were not already playing forward or complete)</summary>
@@ -785,6 +792,13 @@ namespace DG.Tweening
         {
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.PlayForward, FilterType.TargetOrId, targetOrId, false, 0);
+        }
+        /// <summary>Plays forward all tweens with the given target and ID and returns the number of actual tweens played
+        /// (meaning the tweens that were not already started, playing backwards or rewinded)</summary>
+        public static int PlayForward(object target, object id)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.PlayForward, FilterType.TargetAndId, id, false, 0, target);
         }
 
         /// <summary>Restarts all tweens, then returns the number of actual tweens restarted</summary>

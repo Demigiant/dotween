@@ -634,6 +634,10 @@
             <summary>Plays backwards all tweens with the given ID or target and returns the number of actual tweens played
             (meaning the tweens that were not already started, playing backwards or rewinded)</summary>
         </member>
+        <member name="M:DG.Tweening.DOTween.PlayBackwards(System.Object,System.Object)">
+            <summary>Plays backwards all tweens with the given target and ID and returns the number of actual tweens played
+            (meaning the tweens that were not already started, playing backwards or rewinded)</summary>
+        </member>
         <member name="M:DG.Tweening.DOTween.PlayForwardAll">
             <summary>Plays forward all tweens and returns the number of actual tweens played
             (meaning tweens that were not already playing forward or complete)</summary>
@@ -641,6 +645,10 @@
         <member name="M:DG.Tweening.DOTween.PlayForward(System.Object)">
             <summary>Plays forward all tweens with the given ID or target and returns the number of actual tweens played
             (meaning the tweens that were not already playing forward or complete)</summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.PlayForward(System.Object,System.Object)">
+            <summary>Plays forward all tweens with the given target and ID and returns the number of actual tweens played
+            (meaning the tweens that were not already started, playing backwards or rewinded)</summary>
         </member>
         <member name="M:DG.Tweening.DOTween.RestartAll(System.Boolean)">
             <summary>Restarts all tweens, then returns the number of actual tweens restarted</summary>
