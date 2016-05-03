@@ -10,15 +10,12 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public Transform target;
+	public RectTransform target;
 
     IEnumerator Start ()
     {
     	yield return new WaitForSeconds(0.5f);
 
-    	DOTween.Sequence()
-    		.Append(target.DOMoveX(1, 1))
-    		.Append(target.DOMoveY(1, 1))
-    		.SetLoops(-1, LoopType.Incremental);
+    	target.DOPivot(Vector2.zero, 2);
     }
 }

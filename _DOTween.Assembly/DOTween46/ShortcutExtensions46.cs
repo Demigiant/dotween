@@ -259,6 +259,31 @@ namespace DG.Tweening
                 .SetOptions(snapping).SetTarget(target);
         }
 
+        /// <summary>Tweens a RectTransform's pivot to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOPivot(this RectTransform target, Vector2 endValue, float duration)
+        {
+            return DOTween.To(() => target.pivot, x => target.pivot = x, endValue, duration)
+                .SetTarget(target);
+        }
+        /// <summary>Tweens a RectTransform's pivot X to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOPivotX(this RectTransform target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.pivot, x => target.pivot = x, new Vector2(endValue, 0), duration)
+                .SetOptions(AxisConstraint.X).SetTarget(target);
+        }
+        /// <summary>Tweens a RectTransform's pivot Y to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOPivotY(this RectTransform target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.pivot, x => target.pivot = x, new Vector2(0, endValue), duration)
+                .SetOptions(AxisConstraint.Y).SetTarget(target);
+        }
+
         /// <summary>Tweens a RectTransform's sizeDelta to the given value.
         /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
