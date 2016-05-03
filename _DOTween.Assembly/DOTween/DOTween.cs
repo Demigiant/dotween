@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.270";
+        public static readonly string Version = "1.1.290";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -503,10 +503,10 @@ namespace DG.Tweening
         /// Setting it to 0 will shake along a single direction and behave like a random punch.</param>
         /// <param name="ignoreZAxis">If TRUE only shakes on the X Y axis (looks better with things like cameras).</param>
         public static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            float strength = 3, int vibrato = 10, float randomness = 90, bool ignoreZAxis = true
+            float strength = 3, int vibrato = 10, float randomness = 90, bool ignoreZAxis = true, bool fadeOut = true
         )
         {
-            return Shake(getter, setter, duration, new Vector3(strength, strength, strength), vibrato, randomness, ignoreZAxis, false);
+            return Shake(getter, setter, duration, new Vector3(strength, strength, strength), vibrato, randomness, ignoreZAxis, false, fadeOut);
         }
         /// <summary>Shakes a Vector3 with the given values.</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -519,13 +519,13 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction and behave like a random punch.</param>
         public static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            Vector3 strength, int vibrato = 10, float randomness = 90
+            Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true
         )
         {
-            return Shake(getter, setter, duration, strength, vibrato, randomness, false, true);
+            return Shake(getter, setter, duration, strength, vibrato, randomness, false, true, fadeOut);
         }
         static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            Vector3 strength, int vibrato, float randomness, bool ignoreZAxis, bool vectorBased
+            Vector3 strength, int vibrato, float randomness, bool ignoreZAxis, bool vectorBased, bool fadeOut
         )
         {
             float shakeMagnitude = vectorBased ? strength.magnitude : strength.x;
@@ -537,7 +537,7 @@ namespace DG.Tweening
             float sum = 0;
             for (int i = 0; i < totIterations; ++i) {
                 float iterationPerc = (i + 1) / (float)totIterations;
-                float tDuration = duration * iterationPerc;
+                float tDuration = fadeOut ? duration * iterationPerc : duration / totIterations;
                 sum += tDuration;
                 tDurations[i] = tDuration;
             }
@@ -556,7 +556,7 @@ namespace DG.Tweening
                         to.y = Vector3.ClampMagnitude(to, strength.y).y;
                         to.z = Vector3.ClampMagnitude(to, strength.z).z;
                         tos[i] = to;
-                        shakeMagnitude -= decayXTween;
+                        if (fadeOut) shakeMagnitude -= decayXTween;
                         strength = Vector3.ClampMagnitude(strength, shakeMagnitude);
                     } else {
                         if (ignoreZAxis) {
@@ -565,7 +565,7 @@ namespace DG.Tweening
                             Quaternion rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
                             tos[i] = rndQuaternion * Utils.Vector3FromAngle(ang, shakeMagnitude);
                         }
-                        shakeMagnitude -= decayXTween;
+                        if (fadeOut) shakeMagnitude -= decayXTween;
                     }
                 } else tos[i] = Vector3.zero;
             }

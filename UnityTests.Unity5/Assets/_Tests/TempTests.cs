@@ -10,17 +10,15 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
+	public Transform target;
+
     IEnumerator Start ()
     {
     	yield return new WaitForSeconds(0.5f);
 
-    	Debug.Log(Time.realtimeSinceStartup);
-    	DOVirtual.DelayedCall(2, ()=> Debug.Log("Call > " + Time.realtimeSinceStartup))
-    		.OnStart(()=> Debug.Log("Start > " + Time.realtimeSinceStartup));
-
     	DOTween.Sequence()
-    		.OnStart(()=> Debug.Log("S Start > " + Time.realtimeSinceStartup))
-    		.AppendInterval(2)
-    		.OnComplete(()=> Debug.Log("S Complete > " + Time.realtimeSinceStartup));
+    		.Append(target.DOMoveX(1, 1))
+    		.Append(target.DOMoveY(1, 1))
+    		.SetLoops(-1, LoopType.Incremental);
     }
 }

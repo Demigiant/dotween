@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public Rigidbody2D target;
+	public DOTweenPath path;
 
-	void Start()
-	{
-		target.transform.DOScale(2, 1).SetLoops(-1);
-	}
+    IEnumerator Start()
+    {
+    	yield return new WaitForSeconds(0.5f);
 
-	void FixedUpdate()
-	{
-		target.position += new Vector2(0.03f, 0);
-	}
+    	Debug.Log("PLAY");
+    	Debug.Log(path.GetTween().id);
+    	DOTween.Play("myId");
+    }
 }

@@ -144,7 +144,7 @@
             while 0 oscillates only between the punch and the start position</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean)">
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean,System.Boolean)">
             <summary>Shakes a RectTransform's anchoredPosition with the given values.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
             <param name="duration">The duration of the tween</param>
@@ -154,7 +154,7 @@
             Setting it to 0 will shake along a single direction.</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean)">
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean,System.Boolean)">
             <summary>Shakes a RectTransform's anchoredPosition with the given values.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
             <param name="duration">The duration of the tween</param>
