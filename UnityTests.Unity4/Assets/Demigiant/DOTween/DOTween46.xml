@@ -168,6 +168,7 @@
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+            <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean,System.Boolean)">
             <summary>Shakes a RectTransform's anchoredPosition with the given values.
@@ -178,6 +179,7 @@
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+            <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOJumpAnchorPos(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Int32,System.Single,System.Boolean)">
             <summary>Tweens a RectTransform's anchoredPosition to the given value, while also applying a jump effect along the Y axis.

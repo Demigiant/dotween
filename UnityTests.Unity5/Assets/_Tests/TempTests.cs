@@ -10,10 +10,14 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public uint test = 1000;
-	public uint to = 0;
+	public Transform target;
 
-    void Start () {
-        DOTween.To(()=> test, x=> test = x, to, 2.0f).OnUpdate(()=> Debug.Log("1000 to 0 > " + test));
+    IEnumerator Start () {
+        yield return new WaitForSeconds(0.5f);
+        Tween t = target.DOMoveX(4, 2).SetRelative().SetAutoKill(false);
+        yield return new WaitForSeconds(0.5f);
+        t.PlayBackwards();
+        yield return new WaitForSeconds(1f);
+        t.Restart();
     }
 }
