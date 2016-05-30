@@ -130,7 +130,7 @@ namespace DG.Tweening.Plugins
             int fullLen = value.Length;
             int i;
             for (i = 0; i < length; ++i) {
-                Char c = value[i];
+                char c = value[i];
                 if (c == '<') {
                     bool hadOpenTag = hasOpenTag;
                     char nextChar = value[i + 1];
@@ -141,7 +141,7 @@ namespace DG.Tweening.Plugins
                     Match m = Regex.Match(s, tagMatch);
                     if (m.Success) {
                         if (!hasOpenTag && !hadOpenTag) {
-                            // We have a closing tag without an opening tag, try to find previous correct opening tag an apply it
+                            // We have a closing tag without an opening tag, try to find previous correct opening tag and apply it
                             char closingTagFirstChar = value[i + 1];
                             char[] openingTagLookouts;
                             if (closingTagFirstChar == 'c') openingTagLookouts = new[] { '#', 'c' };

@@ -16,7 +16,7 @@ public class RichText : BrainBase
 
 		TweenParams tp = new TweenParams().SetEase(Ease.Linear);
 		tp.SetSpeedBased(speedBased);
-		txtRichA.DOText("This is a <color=#ff0000>colored <color=#00ff00>text</color></color> and normal text", duration, true, scrambleMode).SetAs(tp);
+		txtRichA.DOText("This is a <color=#ff0000>colored <color=#00ff00>text</color></color> and normal text. And this is a minor sign: <", duration, true, scrambleMode).SetAs(tp);
 		txtA.DOText("This is a colored text and normal text", duration, true, scrambleMode).SetAs(tp);
 	}
 }

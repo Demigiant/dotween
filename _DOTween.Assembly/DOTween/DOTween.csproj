@@ -98,6 +98,7 @@
     <Compile Include="Plugins\LongPlugin.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
+    <Compile Include="Plugins\Options\UintOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
     <Compile Include="Plugins\QuaternionWrapperPlugin.cs" />
     <Compile Include="Plugins\UlongPlugin.cs" />
