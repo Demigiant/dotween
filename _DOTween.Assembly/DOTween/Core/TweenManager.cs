@@ -255,7 +255,10 @@ namespace DG.Tweening.Core
             // Fire eventual onKill callbacks
             for (int i = 0; i < totActiveTweens; ++i) {
                 Tween t = _activeTweens[i];
-                if (t != null && t.onKill != null) Tween.OnTweenCallback(t.onKill);
+                if (t != null) {
+                    t.active = false;
+                    if (t.onKill != null) Tween.OnTweenCallback(t.onKill);
+                }
             }
 
             ClearTweenArray(_activeTweens);
