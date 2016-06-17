@@ -18,6 +18,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
         // Static decoders stored to avoid creating new ones each time
         static CatmullRomDecoder _catmullRomDecoder;
         static LinearDecoder _linearDecoder;
+        public float[] wpLengths; // Unit length of each waypoint (public so it can be accessed at runtime by external scripts)
 
         [SerializeField] internal PathType type;
         [SerializeField] internal int subdivisionsXSegment; // Subdivisions x each segment
@@ -25,7 +26,6 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal Vector3[] wps; // Waypoints (modified by PathPlugin when setting relative end value and change value) - also modified by DOTweenPathInspector
         [SerializeField] internal ControlPoint[] controlPoints; // Control points used by non-linear paths
         [SerializeField] internal float length; // Unit length of the path
-        [SerializeField] internal float[] wpLengths; // Unit length of each waypoint
         [SerializeField] internal bool isFinalized; // TRUE when the path has been finalized (either by starting the tween or if the path was created by the Path Editor)
 
         [SerializeField] internal float[] timesTable; // Connected to lengthsTable, used for constant speed calculations
