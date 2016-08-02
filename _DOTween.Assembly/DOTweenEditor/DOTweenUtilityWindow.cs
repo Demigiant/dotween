@@ -45,7 +45,7 @@ namespace DG.DOTweenEditor
 
     class DOTweenUtilityWindow : EditorWindow
     {
-        [MenuItem("Tools/" + _Title)]
+        [MenuItem("Tools/Demigiant/" + _Title)]
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";

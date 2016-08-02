@@ -10,14 +10,13 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
+	public float randomness = 90;
+	public bool fadeOut;
 	public Transform target;
 
-    IEnumerator Start () {
-        yield return new WaitForSeconds(0.5f);
-        Tween t = target.DOMoveX(4, 2).SetRelative().SetAutoKill(false);
-        yield return new WaitForSeconds(0.5f);
-        t.PlayBackwards();
-        yield return new WaitForSeconds(1f);
-        t.Restart();
+    public void Shake()
+    {
+    	DOTween.KillAll(true);
+    	target.DOShakePosition(2, 2, 10, randomness, false, fadeOut);
     }
 }
