@@ -7,12 +7,13 @@ public class TempPro : MonoBehaviour
 {
 	public DOTweenPath path;
 
-    IEnumerator Start()
+    void Start ()
     {
-    	yield return new WaitForSeconds(0.5f);
+        path.GetTween().OnWaypointChange(OnWaypointChange);
+    }
 
-    	Debug.Log("PLAY");
-    	Debug.Log(path.GetTween().id);
-    	DOTween.Play("myId");
+    void OnWaypointChange (int index)
+    {
+        Debug.Log(index);
     }
 }

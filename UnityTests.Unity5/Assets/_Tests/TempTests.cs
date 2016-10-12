@@ -5,18 +5,43 @@ using System.Reflection;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public float randomness = 90;
-	public bool fadeOut;
-	public Transform target;
+    public int poolId;
+    public Transform target;
+    private Transform myTransform;
+    private Color baseColor;
+    void Awake () {
+        myTransform = transform;
+    }
 
-    public void Shake()
+    public void Show (string txt) {
+        myTransform.SetAsLastSibling ();
+        this.StartCoroutine(RemoveIn());
+    }
+
+    IEnumerator RemoveIn () {
+        yield return new WaitForSeconds(4);
+        Hide ();
+    }
+
+    private void Hide ()
     {
-    	DOTween.KillAll(true);
-    	target.DOShakePosition(2, 2, 10, randomness, false, fadeOut);
+        target.DOMoveX(2, 1).OnComplete (Remove);
+    }
+
+    private void Remove ()
+    {
+        target.gameObject.SetActive(false);
+//        Destroy(target.gameObject);
+    }
+
+    void OnDisable ()
+    {
+        target.DOKill();
     }
 }

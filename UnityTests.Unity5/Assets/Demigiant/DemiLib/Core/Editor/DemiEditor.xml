@@ -4,6 +4,13 @@
         <name>DemiEditor</name>
     </assembly>
     <members>
+        <member name="T:DG.DemiEditor.Core.DeGUIScope">
+            <summary>
+            Replicates Unity's GUI.Scope with Unity versions older than 5.X.
+            Thanks to Dmitriy Yukhanov for pointing this out and creating an initial version
+            (which I meant to use until we discovered Unity had implemented it too)
+            </summary>
+        </member>
         <member name="T:DG.DemiEditor.DeEditorFileUtils">
             <summary>
             File utils
@@ -47,6 +54,18 @@
             </summary>
             <param name="adbPath">Path, relative to Unity's project folder</param>
         </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.ConvertToValidFilename(System.String)">
+            <summary>
+            Converts the given string to a valid filename and returns it.
+            Beware: doesn't check for reserved words
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.GUIDToExistingAssetPath(System.String)">
+            <summary>
+            Returns the asset path of the given GUID (relative to Unity project's folder),
+            or an empty string if either the GUID is invalid or the related path doesn't exist.
+            </summary>
+        </member>
         <member name="M:DG.DemiEditor.DeEditorFileUtils.IsEmpty(System.String)">
             <summary>
             Checks if the given directory (full path) is empty or not
@@ -55,12 +74,6 @@
         <member name="M:DG.DemiEditor.DeEditorFileUtils.MakeEmpty(System.String)">
             <summary>
             Deletes all files and subdirectories from the given directory
-            </summary>
-        </member>
-        <member name="M:DG.DemiEditor.DeEditorFileUtils.GUIDToExistingAssetPath(System.String)">
-            <summary>
-            Returns the asset path of the given GUID (relative to Unity project's folder),
-            or an empty string if either the GUID is invalid or the related path doesn't exist.
             </summary>
         </member>
         <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBPath(UnityEngine.ScriptableObject)">
@@ -108,8 +121,54 @@
             <param name="createIfMissing">If TRUE and the requested asset doesn't exist, forces its creation</param>
             <param name="createFoldersIfMissing">If TRUE also creates the path folders if they don't exist</param>
         </member>
+        <member name="M:DG.DemiEditor.DeEditorPanelUtils.SetWindowTitle(UnityEditor.EditorWindow,UnityEngine.Texture,System.String)">
+            <summary>
+            Sets the icon and title of an editor window. Works with older versions of Unity, where the titleContent property wasn't available.
+            </summary>
+            <param name="editor">Reference to the editor panel whose icon to set</param>
+            <param name="icon">Icon to apply</param>
+            <param name="title">Title. If NULL doesn't change it</param>
+        </member>
+        <member name="T:DG.DemiEditor.DeEditorPrefabUtils">
+            <summary>
+            Prefab utilities
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorPrefabUtils.ApplyPrefabInstanceModifications(UnityEngine.GameObject)">
+            <summary>
+            Behaves as the Inspector's Apply button, applying any modification of this instance to the prefab parent
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorPrefabUtils.BreakPrefabInstances(System.Collections.Generic.List{UnityEngine.GameObject})">
+            <summary>
+            Completely removes any prefab connection from the given prefab instances.
+            <para>
+            Based on RodGreen's method (http://forum.unity3d.com/threads/82883-Breaking-connection-from-gameObject-to-prefab-for-good.?p=726602&amp;viewfull=1#post726602)
+            </para>
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorPrefabUtils.BreakPrefabInstance(UnityEngine.GameObject)">
+            <summary>
+            Completely removes any prefab connection from the given prefab instance.
+            <para>
+            Based on RodGreen's method (http://forum.unity3d.com/threads/82883-Breaking-connection-from-gameObject-to-prefab-for-good.?p=726602&amp;viewfull=1#post726602)
+            </para>
+            </summary>
+        </member>
         <member name="M:DG.DemiEditor.DeEditorUtils.DelayedCall(System.Single,System.Action)">
             <summary>Calls the given action after the given delay</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorUtils.GetGameViewSize">
+            <summary>
+            Return the size of the editor game view, eventual extra bars excluded (meaning the true size of the game area)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorUtils.ClearConsole">
+            <summary>
+            Clears all logs from Unity's console
+            </summary>
         </member>
         <member name="F:DG.DemiEditor.DeDragResultType.NoDrag">
             <summary>Nothing is being dragged</summary>
@@ -242,12 +301,26 @@
         </member>
         <member name="M:DG.DemiEditor.GUIStyleExtensions.Clone(UnityEngine.GUIStyle,System.Object[])">
             <summary>
-            Clones the style and adds the given formats to it
+            Clones the style and adds the given formats to it. You can pass any of these types of values:
+            <list type="bullet">
+            <item><term>Format:</term><description>Rich-text, wordwrap</description></item>
+            <item><term>FontStyle:</term><description>Font style</description></item>
+            <item><term>TextAnchor:</term><description>Content anchor</description></item>
+            <item><term>int:</term><description>Font size</description></item>
+            <item><term>Color/DeSkinColor:</term><description>Font color</description></item>
+            </list>
             </summary>
         </member>
         <member name="M:DG.DemiEditor.GUIStyleExtensions.Add(UnityEngine.GUIStyle,System.Object[])">
             <summary>
-            Adds the given formats to the style
+            Adds the given formats to the style. You can pass any of these types of values:
+            <list type="bullet">
+            <item><term>Format:</term><description>RichText, WordWrap</description></item>
+            <item><term>FontStyle:</term><description>Font style</description></item>
+            <item><term>TextAnchor:</term><description>Content anchor</description></item>
+            <item><term>int:</term><description>Font size</description></item>
+            <item><term>Color/DeSkinColor:</term><description>Font color</description></item>
+            </list>
             </summary>
         </member>
         <member name="M:DG.DemiEditor.GUIStyleExtensions.Border(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
@@ -488,6 +561,11 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
             <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,System.String,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
             <summary>Button that can be toggled on and off</summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.GUILayoutOption[])">
@@ -534,6 +612,59 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUILayout.HorizontalDivider(System.Nullable{UnityEngine.Color},System.Int32,System.Int32,System.Int32)">
             <summary>Horizontal Divider</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.DoubleClickTextField(UnityEditor.EditorWindow,System.String,System.String,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click
+            </summary>
+            <param name="editorWindow">EditorWindow reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.DoubleClickTextField(UnityEditor.Editor,System.String,System.String,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click
+            </summary>
+            <param name="editor">Editor reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.DoubleClickDraggableTextField(UnityEditor.EditorWindow,System.String,System.String,System.Int32,System.Collections.IList,System.Int32,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click and can also be dragged
+            </summary>
+            <param name="editorWindow">EditorWindow reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="dragId">ID for this drag operation (must be the same for both this and Drag</param>
+            <param name="draggableList">List containing the dragged item and all other relative draggable items</param>
+            <param name="draggedItemIndex">DraggableList index of the item being dragged</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+            <returns></returns>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.DoubleClickDraggableTextField(UnityEditor.Editor,System.String,System.String,System.Int32,System.Collections.IList,System.Int32,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click and can also be dragged
+            </summary>
+            <param name="editor">Editor reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="dragId">ID for this drag operation (must be the same for both this and Drag</param>
+            <param name="draggableList">List containing the dragged item and all other relative draggable items</param>
+            <param name="draggedItemIndex">DraggableList index of the item being dragged</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+            <returns></returns>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.GradientField(System.String,UnityEngine.Gradient,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Creates a Gradient field by using Unity 4.x hidden default one and Reflection.
+            </summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUILayout.SceneField(System.String,UnityEngine.Object)">
             <summary>Scene field</summary>
@@ -651,6 +782,17 @@
             A text field that becomes editable only on double-click
             </summary>
             <param name="rect">Area</param>
+            <param name="editorWindow">EditorWindow reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.DoubleClickTextField(UnityEngine.Rect,UnityEditor.Editor,System.String,System.String,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click
+            </summary>
+            <param name="rect">Area</param>
             <param name="editor">Editor reference</param>
             <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
             <param name="text">Text</param>
@@ -658,6 +800,21 @@
             <param name="editingStyle">Style for editing mode</param>
         </member>
         <member name="M:DG.DemiEditor.DeGUI.DoubleClickDraggableTextField(UnityEngine.Rect,UnityEditor.EditorWindow,System.String,System.String,System.Int32,System.Collections.IList,System.Int32,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+            <summary>
+            A text field that becomes editable only on double-click and can also be dragged
+            </summary>
+            <param name="rect">Area</param>
+            <param name="editorWindow">EditorWindow reference</param>
+            <param name="id">A unique ID to use in order to determine if the text is selected or not</param>
+            <param name="text">Text</param>
+            <param name="dragId">ID for this drag operation (must be the same for both this and Drag</param>
+            <param name="draggableList">List containing the dragged item and all other relative draggable items</param>
+            <param name="draggedItemIndex">DraggableList index of the item being dragged</param>
+            <param name="defaultStyle">Style for default (non-editing mode) appearance</param>
+            <param name="editingStyle">Style for editing mode</param>
+            <returns></returns>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.DoubleClickDraggableTextField(UnityEngine.Rect,UnityEditor.Editor,System.String,System.String,System.Int32,System.Collections.IList,System.Int32,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
             <summary>
             A text field that becomes editable only on double-click and can also be dragged
             </summary>
@@ -674,6 +831,24 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUI.FlatDivider(UnityEngine.Rect,System.Nullable{UnityEngine.Color})">
             <summary>Divider</summary>
+        </member>
+        <member name="M:DG.DemiEditor.SerializedPropertyExtensions.CastTo``1(UnityEditor.SerializedProperty)">
+            <summary>
+            Returns the value of the given property (works like a cast to type).
+            <para>
+            Improved from HiddenMonk's functions (http://answers.unity3d.com/questions/627090/convert-serializedproperty-to-custom-class.html)
+            </para>
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.SerializedPropertyExtensions.IsArrayElement(UnityEditor.SerializedProperty)">
+            <summary>
+            Returns TRUE if this property is inside an array
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.SerializedPropertyExtensions.GetIndexInArray(UnityEditor.SerializedProperty)">
+            <summary>
+            Returns -1 if the property is not inside an array, otherwise returns its index inside the array
+            </summary>
         </member>
         <member name="T:DG.DemiEditor.StringExtensions">
             <summary>

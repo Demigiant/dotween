@@ -138,6 +138,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             float currLen = 0;
             for (int i = 0, count = wpLengths.Length; i < count; i++) {
                 currLen += wpLengths[i];
+                if (i == count - 1) return isMovingForward ? i - 1 : i;
                 if (currLen < totPercLen) continue;
                 if (currLen > totPercLen) return isMovingForward ? i - 1 : i;
                 return i;
