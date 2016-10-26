@@ -125,7 +125,7 @@ namespace DG.Tweening.Core
         }
 
         // _tweenPlugin is not reset since it's useful to keep it as a reference
-        internal override sealed void Reset()
+        internal sealed override void Reset()
         {
             base.Reset();
 

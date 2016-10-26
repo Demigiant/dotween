@@ -5,15 +5,15 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public DOTweenPath path;
+	public Transform target;
 
     void Start ()
     {
-        path.GetTween().OnWaypointChange(OnWaypointChange);
+        target.DOMoveX(3, 1).OnComplete(TempPro.OnCompleteCallback);
     }
 
-    void OnWaypointChange (int index)
+    public static void OnCompleteCallback()
     {
-        Debug.Log(index);
+        Debug.Log("Hello I'm public! And Static! Love me!");
     }
 }

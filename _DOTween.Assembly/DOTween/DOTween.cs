@@ -253,6 +253,7 @@ namespace DG.Tweening
         /// <summary>
         /// Checks all active tweens to find and remove eventually invalid ones (usually because their targets became NULL)
         /// and returns the total number of invalid tweens found and removed.
+        /// IMPORTANT: this will cause an error on UWP platform, so don't use it there 
         /// BEWARE: this is a slightly expensive operation so use it with care
         /// </summary>
         public static int Validate()

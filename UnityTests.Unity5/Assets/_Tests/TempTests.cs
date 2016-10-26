@@ -11,37 +11,8 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public int poolId;
-    public Transform target;
-    private Transform myTransform;
-    private Color baseColor;
-    void Awake () {
-        myTransform = transform;
-    }
-
-    public void Show (string txt) {
-        myTransform.SetAsLastSibling ();
-        this.StartCoroutine(RemoveIn());
-    }
-
-    IEnumerator RemoveIn () {
-        yield return new WaitForSeconds(4);
-        Hide ();
-    }
-
-    private void Hide ()
+    public void OnComplete()
     {
-        target.DOMoveX(2, 1).OnComplete (Remove);
-    }
-
-    private void Remove ()
-    {
-        target.gameObject.SetActive(false);
-//        Destroy(target.gameObject);
-    }
-
-    void OnDisable ()
-    {
-        target.DOKill();
+        Debug.Log("ON COMPLETE");
     }
 }
