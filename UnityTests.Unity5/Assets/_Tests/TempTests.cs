@@ -11,8 +11,34 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public void OnComplete()
+    private int killCounter = 0;
+
+    private void Awake()
     {
-        Debug.Log("ON COMPLETE");
+        DOTween.Init(true, true, LogBehaviour.Verbose);
+        DOTween.SetTweensCapacity(200, 125);
+    }
+
+    private void Start()
+    {
+        const float Delay = 2;
+        DOTween.Sequence().AppendInterval(Delay).OnKill(OnKill);
+        DOTween.Sequence().AppendInterval(Delay).OnKill(OnKill);
+    }
+
+    private void OnKill()
+    {
+        if (++killCounter == 2)
+            StartCoroutine(Coroutine());
+    }
+
+    private IEnumerator Coroutine()
+    {
+        Sequence sequence = DOTween.Sequence().AppendInterval(2).OnKill(() => { });
+
+        yield return new WaitForSeconds(1);
+
+        Debug.Log("sequence.Kill()");
+        sequence.Kill(); // IndexOutOfRangeException
     }
 }

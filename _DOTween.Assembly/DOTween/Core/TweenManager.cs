@@ -319,9 +319,7 @@ namespace DG.Tweening.Core
             }
             // Kill all eventually marked tweens
             if (totInvalid > 0) {
-                DespawnTweens(_KillList, false);
-                int count = _KillList.Count - 1;
-                for (int i = count; i > -1; --i) RemoveActiveTween(_KillList[i]);
+                DespawnActiveTweens(_KillList);
                 _KillList.Clear();
             }
             return totInvalid;
@@ -413,9 +411,7 @@ namespace DG.Tweening.Core
                     // Do not despawn tweens again, since Kill/DespawnAll was already called
                     _despawnAllCalledFromUpdateLoopCallback = false;
                 } else {
-                    DespawnTweens(_KillList, false);
-                    int count = _KillList.Count - 1;
-                    for (int i = count; i > -1; --i) RemoveActiveTween(_KillList[i]);
+                    DespawnActiveTweens(_KillList);
                 }
                 _KillList.Clear();
             }
@@ -833,10 +829,10 @@ namespace DG.Tweening.Core
             _reorganizeFromId = -1;
         }
 
-        static void DespawnTweens(List<Tween> tweens, bool modifyActiveLists = true)
+        static void DespawnActiveTweens(List<Tween> tweens)
         {
-            int count = tweens.Count;
-            for (int i = 0; i < count; ++i) Despawn(tweens[i], modifyActiveLists);
+            int count = tweens.Count - 1;
+            for (int i = count; i > -1; --i) Despawn(tweens[i]);
         }
 
         // Removes a tween from the active list, reorganizes said list
