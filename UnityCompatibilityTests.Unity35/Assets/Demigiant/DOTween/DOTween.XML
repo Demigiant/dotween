@@ -693,14 +693,17 @@
             <summary>Toggles the play state of all tweens with the given ID or target and returns the number of actual tweens toggled
             (meaning the tweens that could be played or paused, depending on the toggle state)</summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.IsTweening(System.Object)">
+        <member name="M:DG.Tweening.DOTween.IsTweening(System.Object,System.Boolean)">
             <summary>
-            Returns TRUE if a tween with the given ID or target is active (regardless if it's playing or not).
+            Returns TRUE if a tween with the given ID or target is active.
             <para>You can also use this to know if a shortcut tween is active for a given target.</para>
             <para>Example:</para>
             <para><code>transform.DOMoveX(45, 1); // transform is automatically added as the tween target</code></para>
             <para><code>DOTween.IsTweening(transform); // Returns true</code></para>
             </summary>
+            <param name="targetOrId">The target or ID to look for</param>
+            <param name="alsoCheckIfIsPlaying">If FALSE (default) returns TRUE as long as a tween for the given target/ID is active,
+            otherwise also requires it to be playing</param>
         </member>
         <member name="M:DG.Tweening.DOTween.TotalPlayingTweens">
             <summary>

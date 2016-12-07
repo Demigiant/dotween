@@ -507,7 +507,7 @@ namespace DG.Tweening.Core
                         if (TogglePause(t)) totInvolved++;
                         break;
                     case OperationType.IsTweening:
-                        if (!t.isComplete || !t.autoKill) totInvolved++;
+                        if ((!t.isComplete || !t.autoKill) && (!optionalBool || t.isPlaying)) totInvolved++;
                         break;
                     }
                 }

@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.500";
+        public static readonly string Version = "1.1.510";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -875,15 +875,18 @@ namespace DG.Tweening
         #region Global Info Getters
 
         /// <summary>
-        /// Returns TRUE if a tween with the given ID or target is active (regardless if it's playing or not).
+        /// Returns TRUE if a tween with the given ID or target is active.
         /// <para>You can also use this to know if a shortcut tween is active for a given target.</para>
         /// <para>Example:</para>
         /// <para><code>transform.DOMoveX(45, 1); // transform is automatically added as the tween target</code></para>
         /// <para><code>DOTween.IsTweening(transform); // Returns true</code></para>
         /// </summary>
-        public static bool IsTweening(object targetOrId)
+        /// <param name="targetOrId">The target or ID to look for</param>
+        /// <param name="alsoCheckIfIsPlaying">If FALSE (default) returns TRUE as long as a tween for the given target/ID is active,
+        /// otherwise also requires it to be playing</param>
+        public static bool IsTweening(object targetOrId, bool alsoCheckIfIsPlaying = false)
         {
-            return TweenManager.FilteredOperation(OperationType.IsTweening, FilterType.TargetOrId, targetOrId, false, 0) > 0;
+            return TweenManager.FilteredOperation(OperationType.IsTweening, FilterType.TargetOrId, targetOrId, alsoCheckIfIsPlaying, 0) > 0;
         }
 
         /// <summary>
