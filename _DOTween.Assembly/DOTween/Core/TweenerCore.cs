@@ -130,7 +130,8 @@ namespace DG.Tweening.Core
             base.Reset();
 
             if (tweenPlugin != null) tweenPlugin.Reset(this);
-            plugOptions = new TPlugOptions();
+//            plugOptions = new TPlugOptions(); // Generates GC because converts to an Activator.CreateInstance
+            plugOptions = Utils.InstanceCreator<TPlugOptions>.Create(); // Fixes GC allocation using workaround
             getter = null;
             setter = null;
             hasManuallySetStartValue = false;

@@ -4,6 +4,8 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using System;
+using System.Linq.Expressions;
 using UnityEngine;
 
 namespace DG.Tweening.Core
@@ -31,6 +33,18 @@ namespace DG.Tweening.Core
             if (cross.z > 0) ang = 360 - ang;
             ang *= -1f;
             return ang;
+        }
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        // Uses code from BK > http://stackoverflow.com/a/1280832
+        public class InstanceCreator<T> where T : new()
+        {
+            static readonly Expression<Func<T>> _TExpression = () => new T();
+            static readonly Func<T> _TBuilder = _TExpression.Compile();
+            public static T Create() { return _TBuilder(); }
         }
     }
 }
