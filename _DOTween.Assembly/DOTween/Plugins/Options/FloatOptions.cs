@@ -7,8 +7,13 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct FloatOptions
+    public struct FloatOptions : IPlugOptions
     {
         public bool snapping;
+
+        public void Reset()
+        {
+            snapping = false;
+        }
     }
 }

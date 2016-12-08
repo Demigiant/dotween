@@ -891,6 +891,14 @@
             <param name="perc">The percentage (0 to 1) at which to get the point</param>
             <param name="convertToConstantPerc">If TRUE constant speed is taken into account, otherwise not</param>
         </member>
+        <member name="T:DG.Tweening.Plugins.Options.IPlugOptions">
+            <summary>
+            Base interface for all tween plugins options
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.Plugins.Options.IPlugOptions.Reset">
+            <summary>Resets the plugin</summary>
+        </member>
         <member name="T:DG.Tweening.Plugins.Vector3ArrayPlugin">
             <summary>
             This plugin generates some GC allocations at startup

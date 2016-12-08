@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening.Core.Enums;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening.Core
@@ -52,7 +53,7 @@ namespace DG.Tweening.Core
         // Returns a new Tweener, from the pool if there's one available,
         // otherwise by instantiating a new one
         internal static TweenerCore<T1,T2,TPlugOptions> GetTweener<T1,T2,TPlugOptions>()
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         {
             TweenerCore<T1,T2,TPlugOptions> t;
             // Search inside pool

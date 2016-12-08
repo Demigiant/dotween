@@ -6,8 +6,13 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct UintOptions
+    public struct UintOptions : IPlugOptions
     {
         public bool isNegativeChangeValue; // Necessary because uints can't obviously be negative
+
+        public void Reset()
+        {
+            isNegativeChangeValue = false;
+        }
     }
 }

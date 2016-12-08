@@ -7,5 +7,8 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct NoOptions {}
+    public struct NoOptions : IPlugOptions
+    {
+        public void Reset() {}
+    }
 }

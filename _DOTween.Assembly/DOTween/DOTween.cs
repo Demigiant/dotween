@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.510";
+        public static readonly string Version = "1.1.520";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -399,7 +399,7 @@ namespace DG.Tweening
         public static TweenerCore<T1, T2, TPlugOptions> To<T1, T2, TPlugOptions>(
             ABSTweenPlugin<T1, T2, TPlugOptions> plugin, DOGetter<T1> getter, DOSetter<T1> setter, T2 endValue, float duration
         )
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         { return ApplyTo(getter, setter, endValue, duration, plugin); }
 
         /// <summary>Tweens only one axis of a Vector3 to the given value using default plugins.</summary>
@@ -957,7 +957,7 @@ namespace DG.Tweening
         static TweenerCore<T1, T2, TPlugOptions> ApplyTo<T1, T2, TPlugOptions>(
             DOGetter<T1> getter, DOSetter<T1> setter, T2 endValue, float duration, ABSTweenPlugin<T1, T2, TPlugOptions> plugin = null
         )
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         {
             InitCheck();
             TweenerCore<T1, T2, TPlugOptions> tweener = TweenManager.GetTweener<T1, T2, TPlugOptions>();

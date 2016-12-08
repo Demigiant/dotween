@@ -7,11 +7,18 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct Vector3ArrayOptions
+    public struct Vector3ArrayOptions : IPlugOptions
     {
         public AxisConstraint axisConstraint;
         public bool snapping;
 
         internal float[] durations; // Duration of each segment
+
+        public void Reset()
+        {
+            axisConstraint = AxisConstraint.None;
+            snapping = false;
+            durations = null;
+        }
     }
 }

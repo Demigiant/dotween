@@ -5,6 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using DG.Tweening.Core.Enums;
+using DG.Tweening.Plugins.Options;
 
 namespace DG.Tweening.Core
 {
@@ -22,7 +23,7 @@ namespace DG.Tweening.Core
 
         // Prevents a tween to use a From setup even if passed
         internal static TweenerCore<T1, T2, TPlugOptions> NoFrom<T1, T2, TPlugOptions>(this TweenerCore<T1, T2, TPlugOptions> t)
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         {
             t.isFromAllowed = false;
             return t;
@@ -30,7 +31,7 @@ namespace DG.Tweening.Core
 
         // Sets the tween as blendable
         internal static TweenerCore<T1, T2, TPlugOptions> Blendable<T1, T2, TPlugOptions>(this TweenerCore<T1, T2, TPlugOptions> t)
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         {
             t.isBlendable = true;
             return t;

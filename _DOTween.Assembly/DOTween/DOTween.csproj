@@ -96,6 +96,7 @@
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
     <Compile Include="Plugins\DoublePlugin.cs" />
     <Compile Include="Plugins\LongPlugin.cs" />
+    <Compile Include="Plugins\Options\IPlugOptions.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
     <Compile Include="Plugins\Options\UintOptions.cs" />

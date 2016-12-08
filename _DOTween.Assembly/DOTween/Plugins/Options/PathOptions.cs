@@ -17,7 +17,7 @@ namespace DG.Tweening.Plugins.Options
         LookAtPosition
     }
 
-    public struct PathOptions
+    public struct PathOptions : IPlugOptions
     {
         public PathMode mode;
         public OrientType orientType;
@@ -32,6 +32,23 @@ namespace DG.Tweening.Plugins.Options
         public Transform parent; // Only used with OrientType.ToPath and useLocalPosition set as TRUE
 
         internal Quaternion startupRot; // Used to reset orientation when rewinding
-        internal float startupZRot; // Used to store Z value in case of lock Z, in order to rotate things differently 
+        internal float startupZRot; // Used to store Z value in case of lock Z, in order to rotate things differently
+
+        public void Reset()
+        {
+            mode = PathMode.Ignore;
+            orientType = OrientType.None;
+            lockPositionAxis = lockRotationAxis = AxisConstraint.None;
+            isClosedPath = false;
+            lookAtPosition = Vector3.zero;
+            lookAtTransform = null;
+            lookAhead = 0;
+            hasCustomForwardDirection = false;
+            forward = Quaternion.identity;
+            useLocalPosition = false;
+            parent = null;
+            startupRot = Quaternion.identity;
+            startupZRot = 0;
+        }
     }
 }

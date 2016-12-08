@@ -7,9 +7,15 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct VectorOptions
+    public struct VectorOptions : IPlugOptions
     {
         public AxisConstraint axisConstraint;
         public bool snapping;
+
+        public void Reset()
+        {
+            axisConstraint = AxisConstraint.None;
+            snapping = false;
+        }
     }
 }

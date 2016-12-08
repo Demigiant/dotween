@@ -30,6 +30,7 @@ using DOColorPlugin = DG.Tweening.Plugins.ColorPlugin;
 using System;
 using System.Collections.Generic;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace DG.Tweening.Plugins.Core
@@ -61,7 +62,7 @@ namespace DG.Tweening.Plugins.Core
         // ===================================================================================
         // INTERNAL METHODS ------------------------------------------------------------------
 
-        internal static ABSTweenPlugin<T1,T2,TPlugOptions> GetDefaultPlugin<T1,T2,TPlugOptions>() where TPlugOptions : struct
+        internal static ABSTweenPlugin<T1,T2,TPlugOptions> GetDefaultPlugin<T1,T2,TPlugOptions>() where TPlugOptions : struct, IPlugOptions
         {
             Type t1 = typeof(T1);
             Type t2 = typeof(T2);
@@ -127,7 +128,7 @@ namespace DG.Tweening.Plugins.Core
         // Public so it can be used by custom plugins Get method
         public static ABSTweenPlugin<T1, T2, TPlugOptions> GetCustomPlugin<TPlugin, T1, T2, TPlugOptions>()
             where TPlugin : ITweenPlugin, new()
-            where TPlugOptions : struct
+            where TPlugOptions : struct, IPlugOptions
         {
             Type t = typeof(TPlugin);
             ITweenPlugin plugin;
