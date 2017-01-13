@@ -385,10 +385,24 @@ namespace DG.Tweening.Core
                 } else {
                     if (t.isBackwards) {
                         toPosition -= tDeltaTime;
-                        while (toPosition < 0 && toCompletedLoops > 0) {
+                        while (toPosition < 0 && toCompletedLoops > -1) {
                             toPosition += t.duration;
                             toCompletedLoops--;
                         }
+                        if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
+                            // Result is equivalent to a rewind, so set values according to it
+                            toPosition = 0;
+                            toCompletedLoops = wasEndPosition ? 1 : 0;
+                        }
+//                        while (toPosition < 0 && toCompletedLoops > 0) {
+//                            toPosition += t.duration;
+//                            toCompletedLoops--;
+//                        }
+//                        if (wasEndPosition && toCompletedLoops <= 0) {
+//                            // Force-rewind
+//                            Rewind(t, false);
+//                            continue;
+//                        }
                     } else {
                         toPosition += tDeltaTime;
                         while (toPosition >= t.duration && (t.loops == -1 || toCompletedLoops < t.loops)) {

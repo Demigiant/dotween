@@ -17,7 +17,7 @@ public class IndexOutOfRange02 : BrainBase
 		foreach (Transform t in targets) t.DOMoveX(10, 10).Play();
 		yield return new WaitForSeconds(2);
 
-		// DOTween.Clear(true);
+		DOTween.Clear(true);
 	}
 
 	void OnDestroy()

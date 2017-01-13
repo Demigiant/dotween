@@ -13,24 +13,16 @@ public class TempTests : BrainBase
 {
 	public Transform target;
 
-	Sequence sequence;
-
-    void Start()
+    IEnumerator Start()
     {
-    	sequence = DOTween.Sequence();
-		sequence.Append(target.DORotate(new Vector3(0,45f,0), 1f).SetEase(Ease.InOutCubic));
-		sequence.AppendInterval(2f);
-		sequence.SetLoops(-1, LoopType.Incremental);
-		sequence.SetRelative(true);
-    }
+    	Tween t = target.DORotate(new Vector3(0, 0, 90), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear)
+    		.SetAutoKill(false).Pause();
+    	t.SetUpdate(true);
+    	t.OnUpdate(()=> Debug.Log("UPDATE " + t.Elapsed() + "/" + t.IsPlaying()));
+    	yield return new WaitForSeconds(0.5f);
 
-    public void Pause()
-    {
-    	sequence.Pause();
-    }
-
-    public void Kil()
-    {
-    	sequence.Kill();
+    	t.Complete();
+    	// t.Rewind();
+    	t.PlayBackwards();
     }
 }
