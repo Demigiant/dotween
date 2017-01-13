@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.540";
+        public static readonly string Version = "1.1.550";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -50,10 +50,15 @@ namespace DG.Tweening
         /// <para>Default: 1</para></summary>
         public static float timeScale = 1;
         /// <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens
-        /// (unless they're set as timeScaleIndependent, in which case this setting will be ignored).
+        /// (unless they're set as timeScaleIndependent, in which case a value between the last timestep
+        /// and <see cref="maxSmoothUnscaledTime"/> will be used instead).
         /// Setting this to TRUE will lead to smoother animations.
         /// <para>Default: FALSE</para></summary>
         public static bool useSmoothDeltaTime;
+        /// <summary>If <see cref="useSmoothDeltaTime"/> is TRUE, this indicates the max timeStep that an independent update call can last.
+        /// Setting this to TRUE will lead to smoother animations.
+        /// <para>Default: FALSE</para></summary>
+        public static float maxSmoothUnscaledTime = 0.15f;
         /// <summary>DOTween's log behaviour.
         /// <para>Default: LogBehaviour.ErrorsOnly</para></summary>
         public static LogBehaviour logBehaviour {
@@ -174,6 +179,7 @@ namespace DG.Tweening
                 if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
                 DOTween.timeScale = settings.timeScale;
                 DOTween.useSmoothDeltaTime = settings.useSmoothDeltaTime;
+                DOTween.maxSmoothUnscaledTime = settings.maxSmoothUnscaledTime;
                 DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
                 DOTween.drawGizmos = settings.drawGizmos;

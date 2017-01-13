@@ -49,7 +49,7 @@ namespace DG.DOTweenEditor
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(300,405);
+        static readonly Vector2 _WinSize = new Vector2(300,421);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -176,6 +176,7 @@ namespace DG.DOTweenEditor
                 _src.showUnityEditorReport = false;
                 _src.timeScale = 1;
                 _src.useSmoothDeltaTime = false;
+                _src.maxSmoothUnscaledTime = 0.15f;
                 _src.logBehaviour = LogBehaviour.ErrorsOnly;
                 _src.drawGizmos = true;
                 _src.defaultRecyclable = false;
@@ -193,6 +194,7 @@ namespace DG.DOTweenEditor
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
             _src.timeScale = EditorGUILayout.FloatField("DOTween's TimeScale", _src.timeScale);
             _src.useSmoothDeltaTime = EditorGUILayout.Toggle("Smooth DeltaTime", _src.useSmoothDeltaTime);
+            _src.maxSmoothUnscaledTime = EditorGUILayout.Slider("Max SmoothUnscaledTime", _src.maxSmoothUnscaledTime, 0.01f, 1f);
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
             _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);

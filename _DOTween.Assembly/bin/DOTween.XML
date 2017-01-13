@@ -250,7 +250,13 @@
         </member>
         <member name="F:DG.Tweening.DOTween.useSmoothDeltaTime">
             <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens
-            (unless they're set as timeScaleIndependent, in which case this setting will be ignored).
+            (unless they're set as timeScaleIndependent, in which case a value between the last timestep
+            and <see cref="F:DG.Tweening.DOTween.maxSmoothUnscaledTime"/> will be used instead).
+            Setting this to TRUE will lead to smoother animations.
+            <para>Default: FALSE</para></summary>
+        </member>
+        <member name="F:DG.Tweening.DOTween.maxSmoothUnscaledTime">
+            <summary>If <see cref="F:DG.Tweening.DOTween.useSmoothDeltaTime"/> is TRUE, this indicates the max timeStep that an independent update call can last.
             Setting this to TRUE will lead to smoother animations.
             <para>Default: FALSE</para></summary>
         </member>

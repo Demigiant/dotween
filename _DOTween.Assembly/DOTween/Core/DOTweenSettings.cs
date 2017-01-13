@@ -13,6 +13,7 @@ namespace DG.Tweening.Core
         public bool useSafeMode = true;
         public float timeScale = 1;
         public bool useSmoothDeltaTime;
+        public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
         public bool showUnityEditorReport;
         public LogBehaviour logBehaviour = LogBehaviour.ErrorsOnly;
         public bool drawGizmos = true;
