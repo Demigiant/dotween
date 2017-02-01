@@ -1110,7 +1110,7 @@ namespace DG.Tweening
                 return null;
             }
 
-            endValue = endValue - target.color;
+            endValue = endValue - target.GetColor(property);
             Color to = new Color(0, 0, 0, 0);
             return DOTween.To(() => to, x => {
 #if COMPATIBLE

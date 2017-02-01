@@ -114,6 +114,33 @@
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorMax(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchorMax to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorMin(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchorMin to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOPivot(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single)">
+            <summary>Tweens a RectTransform's pivot to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOPivotX(UnityEngine.RectTransform,System.Single,System.Single)">
+            <summary>Tweens a RectTransform's pivot X to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOPivotY(UnityEngine.RectTransform,System.Single,System.Single)">
+            <summary>Tweens a RectTransform's pivot Y to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOSizeDelta(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Boolean)">
             <summary>Tweens a RectTransform's sizeDelta to the given value.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
@@ -132,7 +159,7 @@
             while 0 oscillates only between the punch and the start position</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean)">
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean,System.Boolean)">
             <summary>Shakes a RectTransform's anchoredPosition with the given values.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
             <param name="duration">The duration of the tween</param>
@@ -141,8 +168,9 @@
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+            <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean)">
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean,System.Boolean)">
             <summary>Shakes a RectTransform's anchoredPosition with the given values.
             Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
             <param name="duration">The duration of the tween</param>
@@ -151,6 +179,7 @@
             <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
             Setting it to 0 will shake along a single direction.</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+            <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOJumpAnchorPos(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Int32,System.Single,System.Boolean)">
             <summary>Tweens a RectTransform's anchoredPosition to the given value, while also applying a jump effect along the Y axis.
@@ -160,6 +189,24 @@
             <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
             <param name="numJumps">Total number of jumps</param>
             <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DONormalizedPos(UnityEngine.UI.ScrollRect,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a ScrollRect's horizontal/verticalNormalizedPosition to the given value.
+            Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOHorizontalNormalizedPos(UnityEngine.UI.ScrollRect,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a ScrollRect's horizontalNormalizedPosition to the given value.
+            Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOVerticalNormalizedPos(UnityEngine.UI.ScrollRect,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a ScrollRect's verticalNormalizedPosition to the given value.
+            Also stores the ScrollRect as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions46.DOValue(UnityEngine.UI.Slider,System.Single,System.Single,System.Boolean)">
