@@ -568,6 +568,9 @@
         <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
             <summary>Button that can be toggled on and off</summary>
         </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,UnityEngine.Color,UnityEngine.Color,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
         <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.GUILayoutOption[])">
             <summary>Begins an horizontal toolbar layout</summary>
         </member>
@@ -766,10 +769,25 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle)">
             <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,System.String,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,UnityEngine.Color,UnityEngine.Color,UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIStyle)">
             <summary>Button that can be toggled on and off</summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUI.SceneField(UnityEngine.Rect,System.String,UnityEngine.Object)">
             <summary>Scene field</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.DefaultPropertyField(UnityEngine.Rect,UnityEditor.SerializedProperty,UnityEngine.GUIContent)">
+            <summary>
+            Can be used instead of EditorGUI.PropertyField, to draw a serializedProperty without its attributes
+            (very useful in case you want to use this from within a PropertyDrawer for that same property,
+            since otherwise bad infinite loops might happen)
+            </summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUI.Box(UnityEngine.Rect,UnityEngine.Color,UnityEngine.GUIStyle)">
             <summary>Box with style and color options</summary>
