@@ -1178,7 +1178,8 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DOBlendableRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-            Quaternion to = target.rotation;
+//            Quaternion to = target.rotation;
+            Quaternion to = Quaternion.identity;
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => to, x => {
 #if COMPATIBLE
                 Quaternion diff = x.value * Quaternion.Inverse(to);
@@ -1201,7 +1202,8 @@ namespace DG.Tweening
         /// <param name="mode">Rotation mode</param>
         public static Tweener DOBlendableLocalRotateBy(this Transform target, Vector3 byValue, float duration, RotateMode mode = RotateMode.Fast)
         {
-            Quaternion to = target.localRotation;
+//            Quaternion to = target.localRotation;
+            Quaternion to = Quaternion.identity;
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => to, x => {
 #if COMPATIBLE
                 Quaternion diff = x.value * Quaternion.Inverse(to);

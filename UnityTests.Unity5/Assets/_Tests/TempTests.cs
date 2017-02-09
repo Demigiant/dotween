@@ -13,16 +13,13 @@ public class TempTests : BrainBase
 {
 	public Transform target;
 
-    IEnumerator Start()
+    public void BlendableRotateX()
     {
-    	Tween t = target.DORotate(new Vector3(0, 0, 90), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear)
-    		.SetAutoKill(false).Pause();
-    	t.SetUpdate(true);
-    	t.OnUpdate(()=> Debug.Log("UPDATE " + t.Elapsed() + "/" + t.IsPlaying()));
-    	yield return new WaitForSeconds(0.5f);
+    	target.DOBlendableRotateBy(new Vector3(10, 0, 0), 1);
+    }
 
-    	t.Complete();
-    	// t.Rewind();
-    	t.PlayBackwards();
+    public void BlendableRotateY()
+    {
+    	target.DOBlendableRotateBy(new Vector3(0, 10, 0), 1);
     }
 }
