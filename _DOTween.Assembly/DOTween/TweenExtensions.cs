@@ -187,7 +187,8 @@ namespace DG.Tweening
 
         /// <summary>Restarts the tween from the beginning</summary>
         /// <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
-        public static void Restart(this Tween t, bool includeDelay = true)
+        /// <param name="changeDelayTo">If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
+        public static void Restart(this Tween t, bool includeDelay = true, float changeDelayTo = -1)
         {
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
@@ -197,7 +198,7 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
-            TweenManager.Restart(t, includeDelay);
+            TweenManager.Restart(t, includeDelay, changeDelayTo);
         }
 
         /// <summary>Rewinds and pauses the tween</summary>

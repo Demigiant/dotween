@@ -510,7 +510,7 @@ namespace DG.Tweening.Core
                         if (PlayForward(t)) totInvolved++;
                         break;
                     case OperationType.Restart:
-                        if (Restart(t, optionalBool)) totInvolved++;
+                        if (Restart(t, optionalBool, optionalFloat)) totInvolved++;
                         break;
                     case OperationType.Rewind:
                         if (Rewind(t, optionalBool)) totInvolved++;
@@ -641,10 +641,11 @@ namespace DG.Tweening.Core
             return Play(t);
         }
 
-        internal static bool Restart(Tween t, bool includeDelay = true)
+        internal static bool Restart(Tween t, bool includeDelay = true, float changeDelayTo = -1)
         {
             bool wasPaused = !t.isPlaying;
             t.isBackwards = false;
+            if (changeDelayTo >= 0) t.delay = changeDelayTo;
             Rewind(t, includeDelay);
             t.isPlaying = true;
             if (wasPaused && t.playedOnce && t.delayComplete && t.onPlay != null) {

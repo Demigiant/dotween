@@ -662,12 +662,16 @@
         <member name="M:DG.Tweening.DOTween.RestartAll(System.Boolean)">
             <summary>Restarts all tweens, then returns the number of actual tweens restarted</summary>
         </member>
-        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Boolean)">
+        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Boolean,System.Single)">
             <summary>Restarts all tweens with the given ID or target, then returns the number of actual tweens restarted</summary>
+            <param name="includeDelay">If TRUE includes the eventual tweens delays, otherwise skips them</param>
+            <param name="changeDelayTo">If >= 0 changes the startup delay of all involved tweens to this value, otherwise doesn't touch it</param>
         </member>
-        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Object,System.Boolean)">
+        <member name="M:DG.Tweening.DOTween.Restart(System.Object,System.Object,System.Boolean,System.Single)">
             <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
             (meaning the tweens that were not already playing or complete)</summary>
+            <param name="includeDelay">If TRUE includes the eventual tweens delays, otherwise skips them</param>
+            <param name="changeDelayTo">If >= 0 changes the startup delay of all involved tweens to this value, otherwise doesn't touch it</param>
         </member>
         <member name="M:DG.Tweening.DOTween.RewindAll(System.Boolean)">
             <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded
@@ -1020,9 +1024,10 @@
         <member name="M:DG.Tweening.TweenExtensions.PlayForward(DG.Tweening.Tween)">
             <summary>Sets the tween in a forward direction and plays it</summary>
         </member>
-        <member name="M:DG.Tweening.TweenExtensions.Restart(DG.Tweening.Tween,System.Boolean)">
+        <member name="M:DG.Tweening.TweenExtensions.Restart(DG.Tweening.Tween,System.Boolean,System.Single)">
             <summary>Restarts the tween from the beginning</summary>
             <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
+            <param name="changeDelayTo">If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Rewind(DG.Tweening.Tween,System.Boolean)">
             <summary>Rewinds and pauses the tween</summary>

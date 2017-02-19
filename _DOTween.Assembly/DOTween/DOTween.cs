@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.560";
+        public static readonly string Version = "1.1.570";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -816,17 +816,21 @@ namespace DG.Tweening
             return TweenManager.FilteredOperation(OperationType.Restart, FilterType.All, null, includeDelay, 0);
         }
         /// <summary>Restarts all tweens with the given ID or target, then returns the number of actual tweens restarted</summary>
-        public static int Restart(object targetOrId, bool includeDelay = true)
+        /// <param name="includeDelay">If TRUE includes the eventual tweens delays, otherwise skips them</param>
+        /// <param name="changeDelayTo">If >= 0 changes the startup delay of all involved tweens to this value, otherwise doesn't touch it</param>
+        public static int Restart(object targetOrId, bool includeDelay = true, float changeDelayTo = -1)
         {
             if (targetOrId == null) return 0;
-            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetOrId, targetOrId, includeDelay, 0);
+            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetOrId, targetOrId, includeDelay, changeDelayTo);
         }
         /// <summary>Restarts all tweens with the given target and the given ID, and returns the number of actual tweens played
         /// (meaning the tweens that were not already playing or complete)</summary>
-        public static int Restart(object target, object id, bool includeDelay = true)
+        /// <param name="includeDelay">If TRUE includes the eventual tweens delays, otherwise skips them</param>
+        /// <param name="changeDelayTo">If >= 0 changes the startup delay of all involved tweens to this value, otherwise doesn't touch it</param>
+        public static int Restart(object target, object id, bool includeDelay = true, float changeDelayTo = -1)
         {
             if (target == null || id == null) return 0;
-            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetAndId, id, includeDelay, 0, target);
+            return TweenManager.FilteredOperation(OperationType.Restart, FilterType.TargetAndId, id, includeDelay, changeDelayTo, target);
         }
 
         /// <summary>Rewinds and pauses all tweens, then returns the number of actual tweens rewinded

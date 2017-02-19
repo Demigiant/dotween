@@ -5,15 +5,23 @@ using DG.Tweening;
 
 public class TempPro : MonoBehaviour
 {
-	public Transform target;
+	public DOTweenPath target;
 
-    void Start ()
-    {
-        target.DOMoveX(3, 1).OnComplete(TempPro.OnCompleteCallback);
-    }
+	IEnumerator Start()
+	{
+		Tween t = this.transform.DOMoveX(2, 2).OnRewind(()=> Debug.Log("Rewind 0"));
+		yield return new WaitForSeconds(1);
+		t.Rewind();
+		// target.GetTween().Rewind();
+	}
 
-    public static void OnCompleteCallback()
+	public void OnComplete()
+	{
+		Debug.Log("COMPLETE");
+	}
+
+    public void OnRewind()
     {
-        Debug.Log("Hello I'm public! And Static! Love me!");
+        Debug.Log("REWIND");
     }
 }
