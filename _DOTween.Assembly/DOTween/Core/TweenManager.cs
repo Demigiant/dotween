@@ -468,12 +468,12 @@ namespace DG.Tweening.Core
                     switch (operationType) {
                     case OperationType.Despawn:
                         totInvolved++;
-                        if (isUpdateLoop) t.active = false; // Just mark it for killing, so the update loop will take care of it
-                        else {
-                            Despawn(t, false);
-                            hasDespawned = true;
-                            _KillList.Add(t);
-                        }
+                        t.active = false; // Mark it as inactive immediately, so eventual kills called inside a kill won't have effect
+//                        if (isUpdateLoop) t.active = false; // Just mark it for killing, so the update loop will take care of it
+                        if (isUpdateLoop) break; // Just mark it for killing, the update loop will take care of the rest
+                        Despawn(t, false);
+                        hasDespawned = true;
+                        _KillList.Add(t);
                         break;
                     case OperationType.Complete:
                         bool hasAutoKill = t.autoKill;
