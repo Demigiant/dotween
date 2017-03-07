@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class TempPro : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class TempPro : MonoBehaviour
 		t.Rewind();
 		// target.GetTween().Rewind();
 	}
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 	public void OnComplete()
 	{

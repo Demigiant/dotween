@@ -11,15 +11,15 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public Transform target;
+    public Transform target;
+	public Ease ease;
 
-    public void BlendableRotateX()
+    // Use this for initialization
+    IEnumerator Start ()
     {
-    	target.DOBlendableRotateBy(new Vector3(10, 0, 0), 1);
-    }
-
-    public void BlendableRotateY()
-    {
-    	target.DOBlendableRotateBy(new Vector3(0, 10, 0), 1);
+        yield return new WaitForSeconds(1);
+        Tween t = target.DOMoveX(60000, 200).SetEase(ease);
+        t.Goto(198, true);
+        // t.OnUpdate(()=> Debug.Log(target.position.x));
     }
 }
