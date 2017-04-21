@@ -11,7 +11,32 @@ using UnityEngine;
 
 namespace DG.DOTweenEditor
 {
-    public class UtilityWindowProcessor : AssetPostprocessor
+    public class UtilityWindowModificationProcessor : AssetModificationProcessor
+    {
+        // Checks if deleted folder contains DOTween Pro and in case removes scripting define symbols
+        static AssetDeleteResult OnWillDeleteAsset(string asset, RemoveAssetOptions options)
+        {
+            // Check if asset is a directory
+            string dir = EditorUtils.ADBPathToFullPath(asset);
+            if (!Directory.Exists(dir)) return AssetDeleteResult.DidNotDelete;
+            // Check if directory contains DOTweenPro.dll
+            string[] files = Directory.GetFiles(dir, "DOTween.dll", SearchOption.AllDirectories);
+            int len = files.Length;
+            bool containsDOTween = false;
+            for (int i = 0; i < len; ++i) {
+                if (!files[i].EndsWith("DOTween.dll")) continue;
+                containsDOTween = true;
+                break;
+            }
+            if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
+            // DOTween found: remove scripting define symbols
+            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TK2D");
+            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TMP");
+            return AssetDeleteResult.DidNotDelete;
+        }
+    }
+
+    public class UtilityWindowPostProcessor : AssetPostprocessor
     {
         static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
 

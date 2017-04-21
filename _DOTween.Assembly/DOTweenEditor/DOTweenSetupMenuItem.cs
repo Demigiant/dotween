@@ -83,6 +83,23 @@ namespace DG.DOTweenEditor
             SetupComplete(addonsDir, proAddonsDir, totImported);
         }
 
+        // Uses reflection to call DOTweenPro's AddGlobalDefine method (because older version of Unity didn't have it)
+        public static void ProEditor_AddGlobalDefine(string id)
+        {
+            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
+
+            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
+            type.GetMethod("AddGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
+        }
+        // Uses reflection to call DOTweenPro's RemoveGlobalDefine method (because older version of Unity didn't have it)
+        public static void ProEditor_RemoveGlobalDefine(string id)
+        {
+            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
+
+            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
+            type.GetMethod("RemoveGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
+        }
+
         static void SetupComplete(string addonsDir, string proAddonsDir, int totImported)
         {
             int totRemoved = 0;
@@ -185,22 +202,6 @@ namespace DG.DOTweenEditor
         {
             if (_proEditorAssembly == null) _proEditorAssembly = Assembly.LoadFile(EditorUtils.dotweenProDir + "Editor" + EditorUtils.pathSlash + "DOTweenProEditor.dll");
             return _proEditorAssembly;
-        }
-        // Uses reflection to call DOTweenPro's AddGlobalDefine method (because older version of Unity didn't have it)
-        static void ProEditor_AddGlobalDefine(string id)
-        {
-            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
-
-            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
-            type.GetMethod("AddGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
-        }
-        // Uses reflection to call DOTweenPro's RemoveGlobalDefine method (because older version of Unity didn't have it)
-        static void ProEditor_RemoveGlobalDefine(string id)
-        {
-            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
-
-            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
-            type.GetMethod("RemoveGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
         }
     }
 }
