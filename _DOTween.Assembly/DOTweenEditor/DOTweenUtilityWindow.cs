@@ -32,6 +32,7 @@ namespace DG.DOTweenEditor
             // DOTween found: remove scripting define symbols
             DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TK2D");
             DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TMP");
+            EditorUtility.DisplayDialog("DOTween Deleted", "DOTween was deleted and any of its scripting define symbols removed.\nThis might show an error depending on your previous setup. If this happens, please close and reopen Unity or reimport DOTween.", "Ok");
             return AssetDeleteResult.DidNotDelete;
         }
     }
