@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
-using UnityEditor;
 using DG.Tweening;
 
 public class AllocationsTests : BrainBase
@@ -62,6 +61,8 @@ public class AllocationsTests : BrainBase
 
 		yield return null;
 		yield return null;
-		EditorApplication.isPaused = true;
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPaused = true;
+#endif
 	}
 }

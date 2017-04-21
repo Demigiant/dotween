@@ -5,9 +5,7 @@ using System.Reflection;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
@@ -15,7 +13,7 @@ public class TempTests : BrainBase
 	public Ease ease;
 
     // Use this for initialization
-    IEnumerator Start ()
+    IEnumerator Start () 
     {
         yield return new WaitForSeconds(1);
         Tween t = target.DOMoveX(60000, 200).SetEase(ease);

@@ -1043,13 +1043,25 @@ namespace DG.Tweening
             return t;
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
-#region Blendables
+        #region Tween
 
-#region Light
+        /// <summary>Tweens a Tween's timeScale to the given value.
+        /// Also stores the Tween as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        public static Tweener DOTimeScale(this Tween target, float endValue, float duration)
+        {
+            return DOTween.To(() => target.timeScale, x => target.timeScale = x, endValue, duration).SetTarget(target);
+        }
+
+        #endregion
+
+        #region Blendables
+
+        #region Light
 
         /// <summary>Tweens a Light's color to the given value,
         /// in a way that allows other DOBlendableColor tweens to work together on the same target,

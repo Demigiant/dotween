@@ -30,6 +30,7 @@ ExternalPluginsTestsAndExamples*
 *HOTools*
 zz builds
 zz UnityTests*
+zzTestBuilds
 *.tmp
 *.pdb
 
