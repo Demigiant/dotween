@@ -448,16 +448,16 @@ namespace DG.Tweening.Core
                     isFilterCompliant = true;
                     break;
                 case FilterType.TargetOrId:
-                    isFilterCompliant = id.Equals(t.id) || id.Equals(t.target);
+                    isFilterCompliant = t.id != null && id.Equals(t.id) || t.target != null && id.Equals(t.target);
                     break;
                 case FilterType.TargetAndId:
-                    isFilterCompliant = id.Equals(t.id) && optionalObj != null && optionalObj.Equals(t.target);
+                    isFilterCompliant = t.id != null && t.target != null && optionalObj != null && id.Equals(t.id) && optionalObj.Equals(t.target);
                     break;
                 case FilterType.AllExceptTargetsOrIds:
                     isFilterCompliant = true;
                     for (int c = 0; c < optionalArrayLen; ++c) {
                         object objId = optionalArray[c];
-                        if (objId.Equals(t.id) || objId.Equals(t.target)) {
+                        if (t.id != null && objId.Equals(t.id) || t.target != null && objId.Equals(t.target)) {
                             isFilterCompliant = false;
                             break;
                         }

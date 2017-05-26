@@ -10,14 +10,31 @@ using UnityEngine;
 public class TempTests : BrainBase
 {
     public Transform target;
-	public Ease ease;
+    Tween myTween;
+    bool aBool;
 
-    // Use this for initialization
-    IEnumerator Start () 
+    void Start()
     {
-        yield return new WaitForSeconds(1);
-        Tween t = target.DOMoveX(60000, 200).SetEase(ease);
-        t.Goto(198, true);
-        // t.OnUpdate(()=> Debug.Log(target.position.x));
+    	DOTween.Init();
+    	this.StartCoroutine(COUpdate());
+    }
+
+    IEnumerator COUpdate()
+    {
+    	yield return null;
+    	yield return null;
+    	target.DOMoveX(2, 7);
+    	yield return null;
+    	// for (int i = 0; i < 1000; ++i) target.DOMoveX(2, 7).OnComplete(ACallback);
+    	// for (int i = 0; i < 1000; ++i) target.DOMoveX(2, 7).OnComplete(()=> aBool = true);
+    	target.DOMoveX(2, 7).OnComplete(()=> aBool = true);
+    	// myTween.Kill();
+    	// myTween = target.DOMoveX(2, 1);
+    	// myTween.OnComplete(ACallback);
+    }
+
+    void ACallback()
+    {
+    	Debug.Log("DO SOMETHING");
     }
 }

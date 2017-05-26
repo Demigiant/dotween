@@ -193,7 +193,7 @@ namespace DG.DOTweenEditor
             if (rootDirs.Length == 0) return false;
             foreach (string rootDir in rootDirs) {
                 if (Directory.GetFiles(rootDir, "TextMeshPro.cs", SearchOption.AllDirectories).Length > 0) return true; // Old payed version
-                if (Directory.GetFiles(rootDir, "TextMeshPro.dll", SearchOption.AllDirectories).Length > 0) return true; // New free version
+                if (Directory.GetFiles(rootDir, "TextMeshPro*.dll", SearchOption.AllDirectories).Length > 0) return true; // New free version
             }
             return false;
         }
