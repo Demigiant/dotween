@@ -9,10 +9,17 @@ using UnityEngine;
 
 public class TempTests : BrainBase
 {
-    public Transform target;
+    public RectTransform target;
 
     void Start()
     {
-        target.DOShakeScale(2, 0.15f, 10, 90f, true);
+        DOTween.Init();
+    }
+
+    public void Shake(float duration)
+    {
+        target.DOShakeScale(duration, 0.15f, 10, 90f, true)
+			.SetEase(Ease.InOutBack)
+			.Play();
     }
 }
