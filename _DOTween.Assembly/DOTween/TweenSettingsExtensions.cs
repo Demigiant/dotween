@@ -206,6 +206,16 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>Adds a callback to the onStart callback for the tween.
+        /// Called the first time the tween is set in a playing state, after any eventual delay</summary>
+        public static T AddOnStart<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onStart += action;
+            return t;
+        }
+
         /// <summary>Sets the onPlay callback for the tween.
         /// Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
@@ -217,7 +227,18 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onPlay callback for the tween.
+        /// <summary>Adds a callback to the onPlay callback for the tween.
+        /// Called when the tween is set in a playing state, after any eventual delay.
+        /// Also called each time the tween resumes playing from a paused state</summary>
+        public static T AddOnPlay<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onPlay += action;
+            return t;
+        }
+
+        /// <summary>Sets the onPause callback for the tween.
         /// Called when the tween state changes from playing to paused.
         /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
         public static T OnPause<T>(this T t, TweenCallback action) where T : Tween
@@ -225,6 +246,17 @@ namespace DG.Tweening
             if (!t.active) return t;
 
             t.onPause = action;
+            return t;
+        }
+
+        /// <summary>Adds a callback to the onPause callback for the tween.
+        /// Called when the tween state changes from playing to paused.
+        /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
+        public static T AddOnPause<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onPause += action;
             return t;
         }
 
@@ -240,6 +272,18 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>Adds a callback to the onRewind callback for the tween.
+        /// Called when the tween is rewinded,
+        /// either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
+        /// Rewinding a tween that is already rewinded will not fire this callback</summary>
+        public static T AddOnRewind<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onRewind += action;
+            return t;
+        }
+
         /// <summary>Sets the onUpdate callback for the tween.
         /// Called each time the tween updates</summary>
         public static T OnUpdate<T>(this T t, TweenCallback action) where T : Tween
@@ -247,6 +291,16 @@ namespace DG.Tweening
             if (!t.active) return t;
 
             t.onUpdate = action;
+            return t;
+        }
+
+        /// <summary>Adds a callback to the onUpdate callback for the tween.
+        /// Called each time the tween updates</summary>
+        public static T AddOnUpdate<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onUpdate += action;
             return t;
         }
 
@@ -260,6 +314,16 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>Adds a callback to the onStepComplete callback for the tween.
+        /// Called the moment the tween completes one loop cycle, even when going backwards</summary>
+        public static T AddOnStepComplete<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onStepComplete += action;
+            return t;
+        }
+
         /// <summary>Sets the onComplete callback for the tween.
         /// Called the moment the tween reaches its final forward position, loops included</summary>
         public static T OnComplete<T>(this T t, TweenCallback action) where T : Tween
@@ -267,6 +331,16 @@ namespace DG.Tweening
             if (!t.active) return t;
 
             t.onComplete = action;
+            return t;
+        }
+
+        /// <summary>Adds a callback to the onComplete callback for the tween.
+        /// Called the moment the tween reaches its final forward position, loops included</summary>
+        public static T AddOnComplete<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onComplete += action;
             return t;
         }
 
@@ -280,6 +354,16 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>Adds a callback to the onKill callback for the tween.
+        /// Called the moment the tween is killed</summary>
+        public static T AddOnKill<T>(this T t, TweenCallback action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onKill += action;
+            return t;
+        }
+
         /// <summary>Sets the onWaypointChange callback for the tween.
         /// Called when a path tween's current waypoint changes</summary>
         public static T OnWaypointChange<T>(this T t, TweenCallback<int> action) where T : Tween
@@ -287,6 +371,16 @@ namespace DG.Tweening
             if (!t.active) return t;
 
             t.onWaypointChange = action;
+            return t;
+        }
+
+        /// <summary>Adds a callback to the onWaypointChange callback for the tween.
+        /// Called when a path tween's current waypoint changes</summary>
+        public static T AddOnWaypointChange<T>(this T t, TweenCallback<int> action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onWaypointChange += action;
             return t;
         }
 
