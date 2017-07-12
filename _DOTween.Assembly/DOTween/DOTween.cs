@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.605";
+        public static readonly string Version = "1.1.610";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////

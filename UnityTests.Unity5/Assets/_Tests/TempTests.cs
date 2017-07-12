@@ -6,20 +6,29 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public RectTransform target;
+    public Transform target;
+    Sequence seq;
 
-    void Start()
+    private void Awake()
     {
-        DOTween.Init();
-    }
+//        DOTween.Init();
+//
+//        seq = DOTween.Sequence()
+//            .OnComplete(()=> Debug.Log("COMPLETE"));
+//        seq.AppendInterval(1);
+//        seq.Append(target.DOMoveX(5, 1).OnComplete(()=> Debug.Log("Tween 0 complete")));
+//        seq.AppendCallback(() => {
+//            Debug.Log("Callback fired");
+//            target.DOMoveX(-5, 1);
+//        });
 
-    public void Shake(float duration)
-    {
-        target.DOShakeScale(duration, 0.15f, 10, 90f, true)
-			.SetEase(Ease.InOutBack)
-			.Play();
+        seq = DOTween.Sequence();
+        seq.AppendInterval(2)
+            .Append(target.DOMoveX(100, 1))
+            .AppendCallback(() => { target.DOMoveX(-50, 2); });
     }
 }

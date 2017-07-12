@@ -351,6 +351,7 @@ namespace DG.Tweening.Core
                 if (!t.isPlaying) continue;
                 t.creationLocked = true; // Lock tween creation methods from now on
                 float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
+                if (tDeltaTime <= 0) continue; // Skip update in case time is 0
                 if (!t.delayComplete) {
                     tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
                     if (tDeltaTime <= -1) {
