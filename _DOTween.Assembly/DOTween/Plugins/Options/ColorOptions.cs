@@ -7,8 +7,13 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct ColorOptions
+    public struct ColorOptions : IPlugOptions
     {
         public bool alphaOnly;
+
+        public void Reset()
+        {
+            alphaOnly = false;
+        }
     }
 }

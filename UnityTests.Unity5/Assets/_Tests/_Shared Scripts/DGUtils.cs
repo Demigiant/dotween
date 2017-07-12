@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class DGUtils
 {
@@ -17,7 +18,7 @@ public static class DGUtils
 		GUILayout.BeginVertical();
 
 		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("RELOAD SCENE")) Application.LoadLevel(Application.loadedLevel);
+		if (GUILayout.Button("RELOAD SCENE")) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		if (GUILayout.Button("VALIDATE TWEENS")) Debug.Log("Invalid tweens found: " + DOTween.Validate());
 		GUILayout.EndHorizontal();
 	}

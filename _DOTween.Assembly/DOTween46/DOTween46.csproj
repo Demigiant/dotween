@@ -34,20 +34,34 @@
     <DocumentationFile>..\bin\DOTween46.xml</DocumentationFile>
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
+    <DocumentationFile>..\bin\DOTween46.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1573</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\_Design\Unity 4.6\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 46\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:\Program Files\_Design\Unity 4.6\Editor\Data\UnityExtensions\Unity\GUISystem\4.6.1\UnityEngine.UI.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 46\Editor\Data\UnityExtensions\Unity\GUISystem\4.6.0\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DOTweenUtils46.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShortcutExtensions.cs" />
+    <Compile Include="ShortcutExtensions46.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DOTween\DOTween.csproj">
@@ -68,7 +82,8 @@ set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween
 set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
 set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween
 set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
-
+set BinDirExtPluginsTests=ExternalPluginsTestsAndExamples.Unity5\Assets\Demigiant\DOTween
+set DestinationDirExtPluginsTests=$(SolutionDir)..\%25BinDirExtPluginsTests%25
 echo %25DestinationDir%25
 
 echo Deleting TMPs...
@@ -76,7 +91,7 @@ DEL $(TargetDir)\*.tmp
 
 CD $(TargetDir)
 echo Converting PDB to MDB and deleting PDB...
-"c:\Program Files\_Design\Unity 4.6\Editor\Data\MonoBleedingEdge\lib\mono\4.0\pdb2mdb.exe" $(TargetFileName)
+"c:\Program Files\pdb2mdb\pdb2mdb.exe" $(TargetFileName)
 DEL $(TargetName).pdb
 
 echo Exporting Assembly to %25DestinationDir%25
@@ -93,7 +108,10 @@ echo Exporting Assembly to %25DestinationDirUnity5Tests%25
 echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirUnity5Tests%25 /Y /I /E
 
 echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
-echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E</PostBuildEvent>
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirExtPluginsTests%25
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirExtPluginsTests%25 /Y /I /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

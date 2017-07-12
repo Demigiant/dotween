@@ -5,6 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using DG.DOTweenEditor.Core;
@@ -18,9 +19,9 @@ namespace DG.DOTweenEditor
     [CustomEditor(typeof(DOTweenComponent))]
     public class DOTweenInspector : Editor
     {
-//        DOTweenComponent _src;
         string _title;
         readonly StringBuilder _strBuilder = new StringBuilder();
+        bool _showPlayingTweensData, _showPausedTweensData;
 
         // ===================================================================================
         // MONOBEHAVIOUR METHODS -------------------------------------------------------------
@@ -55,17 +56,36 @@ namespace DG.DOTweenEditor
             if (GUILayout.Button("Documentation")) Application.OpenURL("http://dotween.demigiant.com/documentation.php");
             if (GUILayout.Button("Check Updates")) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(_showPlayingTweensData ? "Hide Playing Tweens" : "Show Playing Tweens")) _showPlayingTweensData = !_showPlayingTweensData;
+            if (GUILayout.Button(_showPausedTweensData ? "Hide Paused Tweens" : "Show Paused Tweens")) _showPausedTweensData = !_showPausedTweensData;
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Play all")) DOTween.PlayAll();
+            if (GUILayout.Button("Pause all")) DOTween.PauseAll();
+            if (GUILayout.Button("Kill all")) DOTween.KillAll();
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
-            _strBuilder.Remove(0, _strBuilder.Length);
+            _strBuilder.Length = 0;
             _strBuilder.Append("Active tweens: ").Append(totActiveTweens)
                     .Append(" (").Append(TweenManager.totActiveTweeners)
                     .Append("/").Append(TweenManager.totActiveSequences).Append(")")
                 .Append("\nDefault/Late tweens: ").Append(totActiveDefaultTweens)
                     .Append("/").Append(totActiveLateTweens)
-                .Append("\nPlaying tweens: ").Append(totPlayingTweens)
-                .Append("\nPaused tweens: ").Append(totPausedTweens)
-                .Append("\nPooled tweens: ").Append(TweenManager.TotalPooledTweens())
+                    .Append("\nPlaying tweens: ").Append(totPlayingTweens);
+            if (_showPlayingTweensData) {
+                foreach (Tween t in TweenManager._activeTweens) {
+                    if (t != null && t.isPlaying) _strBuilder.Append("\n   - [").Append(t.tweenType).Append("] ").Append(t.target);
+                }
+            }
+            _strBuilder.Append("\nPaused tweens: ").Append(totPausedTweens);
+            if (_showPausedTweensData) {
+                foreach (Tween t in TweenManager._activeTweens) {
+                    if (t != null && !t.isPlaying) _strBuilder.Append("\n   - [").Append(t.tweenType).Append("] ").Append(t.target);
+                }
+            }
+            _strBuilder.Append("\nPooled tweens: ").Append(TweenManager.TotalPooledTweens())
                     .Append(" (").Append(TweenManager.totPooledTweeners)
                     .Append("/").Append(TweenManager.totPooledSequences).Append(")");
             GUILayout.Label(_strBuilder.ToString());

@@ -9,6 +9,7 @@ namespace DG.Tweening.Core.Enums
     internal enum UpdateMode
     {
         Update,
-        Goto // Treats update as a full goto, thus not calling eventual onStepComplete callbacks
+        Goto, // Treats update as a full goto, thus not calling eventual onStepComplete callbacks
+        IgnoreOnUpdate // Ignores OnUpdate callback (used when applying some ChangeValue during an OnUpdate call)
     }
 }

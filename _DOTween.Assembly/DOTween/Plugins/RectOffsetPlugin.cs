@@ -7,6 +7,7 @@
 using System;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -73,7 +74,7 @@ namespace DG.Tweening.Plugins
             return diag / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<RectOffset> getter, DOSetter<RectOffset> setter, float elapsed, RectOffset startValue, RectOffset changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<RectOffset> getter, DOSetter<RectOffset> setter, float elapsed, RectOffset startValue, RectOffset changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             _r.left = startValue.left;
             _r.right = startValue.right;

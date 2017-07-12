@@ -46,8 +46,9 @@ namespace DG.Tweening.Core
         void Update()
         {
             _unscaledDeltaTime = Time.realtimeSinceStartup - _unscaledTime;
+            if (DOTween.useSmoothDeltaTime && _unscaledDeltaTime > DOTween.maxSmoothUnscaledTime) _unscaledDeltaTime = DOTween.maxSmoothUnscaledTime;
             if (TweenManager.hasActiveDefaultTweens) {
-                TweenManager.Update(UpdateType.Normal, Time.deltaTime * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Normal, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
             }
             _unscaledTime = Time.realtimeSinceStartup;
 
@@ -63,24 +64,27 @@ namespace DG.Tweening.Core
         void LateUpdate()
         {
             if (TweenManager.hasActiveLateTweens) {
-                TweenManager.Update(UpdateType.Late, Time.deltaTime * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Late, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, _unscaledDeltaTime * DOTween.timeScale);
             }
         }
 
         void FixedUpdate()
         {
             if (TweenManager.hasActiveFixedTweens && Time.timeScale > 0) {
-                TweenManager.Update(UpdateType.Fixed, Time.deltaTime * DOTween.timeScale, (Time.deltaTime / Time.timeScale) * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Fixed, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, ((DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) / Time.timeScale) * DOTween.timeScale);
             }
         }
 
-        void OnLevelWasLoaded()
-        {
-            if (DOTween.useSafeMode) DOTween.Validate();
-        }
+        // Removed to allow compatibility with Unity 5.4 and later
+//        void OnLevelWasLoaded()
+//        {
+//            if (DOTween.useSafeMode) DOTween.Validate();
+//        }
 
         void OnDrawGizmos()
         {
+            if (!DOTween.drawGizmos || !DOTween.isUnityEditor) return;
+
             int len = DOTween.GizmosDelegates.Count;
             if (len == 0) return;
 

@@ -40,6 +40,8 @@ namespace DG.Tweening
         InBounce,
         OutBounce,
         InOutBounce,
+        // Extra custom eases
+        Flash, InFlash, OutFlash, InOutFlash,
         /// <summary>
         /// Don't assign this! It's assigned automatically when creating 0 duration tweens
         /// </summary>

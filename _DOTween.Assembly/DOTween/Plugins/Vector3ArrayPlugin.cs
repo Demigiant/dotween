@@ -7,6 +7,7 @@
 using System;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace DG.Tweening.Plugins
             return totDuration;
         }
 
-        public override void EvaluateAndApply(Vector3ArrayOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Vector3[] startValue, Vector3[] changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(Vector3ArrayOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Vector3[] startValue, Vector3[] changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             Vector3 incrementValue = Vector3.zero;
             if (t.loopType == LoopType.Incremental) {

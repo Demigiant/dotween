@@ -34,10 +34,25 @@
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <NoWarn>1573</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
+    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1573</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\_Design\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 3\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -53,25 +68,42 @@
     <Compile Include="Core\Easing\Bounce.cs" />
     <Compile Include="Core\Easing\EaseManager.cs" />
     <Compile Include="Core\Easing\EaseCurve.cs" />
+    <Compile Include="Core\Easing\Flash.cs" />
     <Compile Include="Core\Enums\FilterType.cs" />
     <Compile Include="Core\Enums\OperationType.cs" />
     <Compile Include="Core\Enums\SpecialStartupMode.cs" />
+    <Compile Include="Core\Enums\UpdateNotice.cs" />
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
+    <Compile Include="Core\Surrogates\ColorWrapper.cs" />
+    <Compile Include="Core\Surrogates\QuaternionWrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector2Wrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector3Wrapper.cs" />
+    <Compile Include="Core\Surrogates\Vector4Wrapper.cs" />
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\Utils.cs" />
+    <Compile Include="CustomPlugins\PureQuaternionPlugin.cs" />
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />
+    <Compile Include="EaseFactory.cs" />
     <Compile Include="IDOTweenInit.cs" />
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
+    <Compile Include="Plugins\ColorWrapperPlugin.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
+    <Compile Include="Plugins\DoublePlugin.cs" />
+    <Compile Include="Plugins\LongPlugin.cs" />
+    <Compile Include="Plugins\Options\IPlugOptions.cs" />
     <Compile Include="Plugins\Options\PathOptions.cs" />
     <Compile Include="Plugins\Options\QuaternionOptions.cs" />
+    <Compile Include="Plugins\Options\UintOptions.cs" />
     <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
+    <Compile Include="Plugins\QuaternionWrapperPlugin.cs" />
+    <Compile Include="Plugins\UlongPlugin.cs" />
+    <Compile Include="Plugins\Vector2WrapperPlugin.cs" />
     <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
     <Compile Include="Plugins\Core\ITPlugin.cs" />
     <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
@@ -80,7 +112,10 @@
     <Compile Include="Plugins\Core\PathCore\LinearDecoder.cs" />
     <Compile Include="Plugins\Core\PathCore\Path.cs" />
     <Compile Include="Plugins\PathPlugin.cs" />
+    <Compile Include="Plugins\Vector3WrapperPlugin.cs" />
+    <Compile Include="Plugins\Vector4WrapperPlugin.cs" />
     <Compile Include="RotateMode.cs" />
+    <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />
     <Compile Include="LoopType.cs" />
     <Compile Include="Plugins\ColorPlugin.cs" />
@@ -128,6 +163,8 @@ set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween
 set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
 set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween
 set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
+set BinDirExtPluginsTests=ExternalPluginsTestsAndExamples.Unity5\Assets\Demigiant\DOTween
+set DestinationDirExtPluginsTests=$(SolutionDir)..\%25BinDirExtPluginsTests%25
 
 echo %25DestinationDir%25
 
@@ -136,7 +173,7 @@ DEL $(TargetDir)\*.tmp
 
 CD $(TargetDir)
 echo Converting PDB to MDB and deleting PDB...
-"c:\Program Files\_Design\Unity 4.6\Editor\Data\MonoBleedingEdge\lib\mono\4.0\pdb2mdb.exe" $(TargetFileName)
+"c:\Program Files\pdb2mdb\pdb2mdb.exe" $(TargetFileName)
 DEL $(TargetName).pdb
 
 echo Exporting Assembly to %25DestinationDir%25
@@ -153,7 +190,10 @@ echo Exporting Assembly to %25DestinationDirUnity5Tests%25
 echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirUnity5Tests%25 /Y /I /E
 
 echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
-echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E</PostBuildEvent>
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirCompatibilityTests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirExtPluginsTests%25
+echo f | xcopy "$(SolutionDir)\bin" %25DestinationDirExtPluginsTests%25 /Y /I /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

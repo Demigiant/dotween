@@ -6,6 +6,7 @@
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
@@ -53,6 +54,9 @@ namespace DG.Tweening.Plugins
         // then sets the final path version
         public override void SetChangeValue(TweenerCore<Vector3, Path, PathOptions> t)
         {
+            Transform trans = ((Component)t.target).transform;
+            if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
+
             if (t.endValue.isFinalized) {
                 t.changeValue = t.endValue;
                 return;
@@ -84,9 +88,8 @@ namespace DG.Tweening.Plugins
             // Finalize path
             path.FinalizePath(t.plugOptions.isClosedPath, t.plugOptions.lockPositionAxis, currVal);
 
-            Transform trans = (Transform)t.target;
+            t.plugOptions.startupRot = trans.rotation;
             t.plugOptions.startupZRot = trans.eulerAngles.z;
-            if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
 
             // Set changeValue as a reference to endValue
             t.changeValue = t.endValue;
@@ -97,31 +100,50 @@ namespace DG.Tweening.Plugins
             return changeValue.length / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(PathOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Path startValue, Path changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(PathOptions options, Tween t, bool isRelative, DOGetter<Vector3> getter, DOSetter<Vector3> setter, float elapsed, Path startValue, Path changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
+            if (t.loopType == LoopType.Incremental && !options.isClosedPath) {
+                int increment = (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
+                if (increment > 0) changeValue = changeValue.CloneIncremental(increment);
+            }
+
             float pathPerc = EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
             float constantPathPerc = changeValue.ConvertToConstantPathPerc(pathPerc);
             Vector3 newPos = changeValue.GetPoint(constantPathPerc);
             changeValue.targetPosition = newPos; // Used to draw editor gizmos
             setter(newPos);
 
-            if (options.mode != PathMode.Ignore && options.orientType != OrientType.None) SetOrientation(options, t, changeValue, constantPathPerc, newPos);
+            if (options.mode != PathMode.Ignore && options.orientType != OrientType.None) SetOrientation(options, t, changeValue, constantPathPerc, newPos, updateNotice);
 
             // Determine if current waypoint changed and eventually dispatch callback
             bool isForward = !usingInversePosition;
             if (t.isBackwards) isForward = !isForward;
             int newWaypointIndex = changeValue.GetWaypointIndexFromPerc(pathPerc, isForward);
             if (newWaypointIndex != t.miscInt) {
+                int prevWPIndex = t.miscInt;
                 t.miscInt = newWaypointIndex;
-                if (t.onWaypointChange != null) Tween.OnTweenCallback(t.onWaypointChange, newWaypointIndex);
+                if (t.onWaypointChange != null) {
+                    // If more than one waypoint changed, dispatch multiple callbacks
+                    bool isBackwards = newWaypointIndex < prevWPIndex;
+                    if (isBackwards) {
+                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                    } else {
+                        for (int i = prevWPIndex + 1; i < newWaypointIndex + 1; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                    }
+                }
             }
         }
 
         // Public so it can be called by GotoWaypoint
-        public void SetOrientation(PathOptions options, Tween t, Path path, float pathPerc, Vector3 tPos)
+        public void SetOrientation(PathOptions options, Tween t, Path path, float pathPerc, Vector3 tPos, UpdateNotice updateNotice)
         {
-            Transform trans = (Transform)t.target;
+            Transform trans = ((Component)t.target).transform;
             Quaternion newRot = Quaternion.identity;
+
+            if (updateNotice == UpdateNotice.RewindStep) {
+                // Reset orientation before continuing
+                trans.rotation = options.startupRot;
+            }
 
             switch (options.orientType) {
             case OrientType.LookAtPosition:
@@ -141,8 +163,13 @@ namespace DG.Tweening.Plugins
                     lookAtP = tPos + path.wps[path.linearWPIndex] - path.wps[path.linearWPIndex - 1];
                 } else {
                     float lookAheadPerc = pathPerc + options.lookAhead;
-                    if (lookAheadPerc > 1) lookAheadPerc = (options.isClosedPath ? lookAheadPerc - 1 : 1.00001f);
+                    if (lookAheadPerc > 1) lookAheadPerc = (options.isClosedPath ? lookAheadPerc - 1 : path.type == PathType.Linear ? 1 : 1.00001f);
                     lookAtP = path.GetPoint(lookAheadPerc);
+                }
+                if (path.type == PathType.Linear) {
+                    // Check if it's the last waypoint, and keep correct direction
+                    Vector3 lastWp = path.wps[path.wps.Length - 1];
+                    if (lookAtP == lastWp) lookAtP = tPos == lastWp ? lastWp + (lastWp - path.wps[path.wps.Length - 2]) : lastWp;
                 }
                 Vector3 transUp = trans.up;
                 // Apply basic modification for local position movement
@@ -189,7 +216,8 @@ namespace DG.Tweening.Plugins
             }
 
             if (options.hasCustomForwardDirection) newRot *= options.forward;
-            trans.rotation = newRot;
+            if (options.isRigidbody) ((Rigidbody)t.target).rotation = newRot;
+            else trans.rotation = newRot;
         }
     }
 }

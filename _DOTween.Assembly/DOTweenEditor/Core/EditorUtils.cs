@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.IO;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace DG.DOTweenEditor.Core
         public static string proVersion { get { if (!_hasCheckedForPro) CheckForPro(); return _proVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
         public static string editorADBDir { get { if (string.IsNullOrEmpty(_editorADBDir)) StoreEditorADBDir(); return _editorADBDir; } }
+        // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
+        public static string demigiantDir { get { if (string.IsNullOrEmpty(_demigiantDir)) StoreDOTweenDirs(); return _demigiantDir; } }
         // With final slash (system based)
         public static string dotweenDir { get { if (string.IsNullOrEmpty(_dotweenDir)) StoreDOTweenDirs(); return _dotweenDir; } }
         // With final slash (system based)
@@ -30,6 +33,7 @@ namespace DG.DOTweenEditor.Core
         static string _proVersion;
         static bool _hasCheckedForPro;
         static string _editorADBDir;
+        static string _demigiantDir; // with final slash
         static string _dotweenDir; // with final slash
         static string _dotweenProDir; // with final slash
 
@@ -83,6 +87,49 @@ namespace DG.DOTweenEditor.Core
             return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
         }
 
+        // Deletes old DemiLib core if new one (inside Core directory) exists
+        public static void DeleteOldDemiLibCore()
+        {
+            string demiLibDir = EditorUtils.GetAssemblyFilePath(typeof(DOTween).Assembly);
+            string slash = demiLibDir.IndexOf("/") != -1 ? "/" : "\\";
+            demiLibDir = demiLibDir.Substring(0, demiLibDir.LastIndexOf(slash));
+            demiLibDir = demiLibDir.Substring(0, demiLibDir.LastIndexOf(slash)) + slash + "DemiLib";
+            string adbDemiLibDir = FullPathToADBPath(demiLibDir);
+            if (!AssetExists(adbDemiLibDir)) return;
+
+            string demiLibNewCoreDir = adbDemiLibDir + "/Core";
+            if (!AssetExists(demiLibNewCoreDir)) return;
+            
+            // New version present, delete old versions
+            DeleteAssetsIfExist(new[] {
+                adbDemiLibDir + "/DemiLib.dll",
+                adbDemiLibDir + "/DemiLib.xml",
+                adbDemiLibDir + "/DemiLib.dll.mdb",
+                adbDemiLibDir + "/Editor/DemiEditor.dll",
+                adbDemiLibDir + "/Editor/DemiEditor.xml",
+                adbDemiLibDir + "/Editor/DemiEditor.dll.mdb",
+                adbDemiLibDir + "/Editor/Imgs"
+            });
+            // Delete Editor folder if empty
+            if (AssetExists(adbDemiLibDir + "/Editor") && Directory.GetFiles(demiLibDir + slash + "Editor").Length == 0) {
+                AssetDatabase.DeleteAsset(adbDemiLibDir + "/Editor");
+                // Reimport correct Core libraries
+                AssetDatabase.ImportAsset(demiLibNewCoreDir, ImportAssetOptions.ImportRecursive);
+            }
+        }
+        static void DeleteAssetsIfExist(string[] adbFilePaths)
+        {
+            foreach (string f in adbFilePaths) {
+                if (AssetExists(f)) AssetDatabase.DeleteAsset(f);
+            }
+        }
+//        static void ReimportAssets(string[] adbFilePaths)
+//        {
+//            foreach (string f in adbFilePaths) {
+//                if (AssetExists(f)) AssetDatabase.ImportAsset(f, ImportAssetOptions.ForceUpdate);
+//            }
+//        }
+
         /// <summary>
         /// Returns TRUE if the file/directory at the given path exists.
         /// </summary>
@@ -129,13 +176,34 @@ namespace DG.DOTweenEditor.Core
                 if (createIfMissing) CreateScriptableAsset<T>(adbFilePath);
                 else return null;
             }
-            T source = (T)Resources.LoadAssetAtPath(adbFilePath, typeof(T));
+            T source = (T)AssetDatabase.LoadAssetAtPath(adbFilePath, typeof(T));
             if (source == null) {
                 // Source changed (or editor file was moved from outside of Unity): overwrite it
                 CreateScriptableAsset<T>(adbFilePath);
-                source = (T)Resources.LoadAssetAtPath(adbFilePath, typeof(T));
+                source = (T)AssetDatabase.LoadAssetAtPath(adbFilePath, typeof(T));
             }
             return source;
+        }
+
+        /// <summary>
+        /// Full path for the given loaded assembly, assembly file included
+        /// </summary>
+        public static string GetAssemblyFilePath(Assembly assembly)
+        {
+
+            string codeBase = assembly.CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            if (path.Substring(path.Length - 3) == "dll") return path;
+
+//            string codeBase = assembly.CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            string path = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string lastChar = path.Substring(path.Length - 4);
+//            if (lastChar == "dll") return path;
+
+            // Invalid path, use Location
+            return Path.GetFullPath(assembly.Location);
         }
 
         // ===================================================================================
@@ -158,26 +226,33 @@ namespace DG.DOTweenEditor.Core
         // AssetDatabase formatted path to DOTween's Editor folder
         static void StoreEditorADBDir()
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            string fullPath = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string adbPath = fullPath.Substring(Application.dataPath.Length + 1);
             _editorADBDir = adbPath.Replace("\\", "/") + "/";
         }
 
         static void StoreDOTweenDirs()
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            _dotweenDir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+//            UriBuilder uri = new UriBuilder(codeBase);
+//            _dotweenDir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
             _dotweenDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator) + 1);
 
             _dotweenProDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
             _dotweenProDir = _dotweenProDir.Substring(0, _dotweenProDir.LastIndexOf(pathSeparator) + 1) + "DOTweenPro" + pathSeparator;
 
+            _demigiantDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
+            _demigiantDir = _demigiantDir.Substring(0, _demigiantDir.LastIndexOf(pathSeparator) + 1);
+            if (_demigiantDir.Substring(_demigiantDir.Length - 10, 9) != "Demigiant") _demigiantDir = null;
+
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);
+            if (_demigiantDir != null) _demigiantDir = _demigiantDir.Replace(pathSlashToReplace, pathSlash);
         }
 
         static void CreateScriptableAsset<T>(string adbFilePath) where T : ScriptableObject

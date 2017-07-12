@@ -40,6 +40,7 @@ namespace DG.Tweening
         {
             if (t.loops == -1) t.loops = 1;
             float tFullTime = t.delay + (t.duration * t.loops);
+//            float tFullTime = t.duration * t.loops;
             inSequence.duration += tFullTime;
             int len = inSequence._sequencedObjs.Count;
             for (int i = 0; i < len; ++i) {
@@ -79,12 +80,14 @@ namespace DG.Tweening
 
         internal static Sequence DoAppendInterval(Sequence inSequence, float interval)
         {
+            inSequence.lastTweenInsertTime = inSequence.duration;
             inSequence.duration += interval;
             return inSequence;
         }
 
         internal static Sequence DoPrependInterval(Sequence inSequence, float interval)
         {
+            inSequence.lastTweenInsertTime = 0;
             inSequence.duration += interval;
             int len = inSequence._sequencedObjs.Count;
             for (int i = 0; i < len; ++i) {
@@ -98,6 +101,7 @@ namespace DG.Tweening
 
         internal static Sequence DoInsertCallback(Sequence inSequence, TweenCallback callback, float atPosition)
         {
+            inSequence.lastTweenInsertTime = atPosition;
             SequenceCallback c = new SequenceCallback(atPosition, callback);
             c.sequencedPosition = c.sequencedEndPosition = atPosition;
             inSequence._sequencedObjs.Add(c);
@@ -134,7 +138,7 @@ namespace DG.Tweening
             return DoStartup(this);
         }
 
-        internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode)
+        internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode, UpdateNotice updateNotice)
         {
             return DoApplyTween(this, prevPosition, prevCompletedLoops, newCompletedSteps, useInversePosition, updateMode);
         }
@@ -163,6 +167,13 @@ namespace DG.Tweening
             s.fullDuration = s.loops > -1 ? s.duration * s.loops : Mathf.Infinity;
             // Order sequencedObjs by start position
             s._sequencedObjs.Sort(SortSequencedObjs);
+            // Set relative nested tweens
+            if (s.isRelative) {
+                for (int len = s.sequencedTweens.Count, i = 0; i < len; ++i) {
+                    Tween t = s.sequencedTweens[i];
+                    if (!s.isBlendable) s.sequencedTweens[i].isRelative = true;
+                }
+            }
             return true;
         }
 
@@ -188,8 +199,9 @@ namespace DG.Tweening
             if (s.isBackwards) prevPosIsInverse = !prevPosIsInverse;
             // Update multiple loop cycles within the same update
             if (newCompletedSteps > 0) {
+//                Debug.Log(Time.frameCount + " <color=#FFEC03>newCompletedSteps = " + newCompletedSteps + "</color> - completedLoops: " + s.completedLoops + " - updateMode: " + updateMode);
                 // Store expected completedLoops and position, in order to check them after the update cycles.
-                int expectedCompletedLoops = s.completedLoops + newCompletedSteps;
+                int expectedCompletedLoops = s.completedLoops;
                 float expectedPosition = s.position;
                 //
                 int cycles = newCompletedSteps;
@@ -205,6 +217,9 @@ namespace DG.Tweening
                         cyclesDone++;
                         if (s.loopType == LoopType.Yoyo) prevPosIsInverse = !prevPosIsInverse;
                     }
+                    // If completedLoops or position were changed by some callback, exit here
+//                    Debug.Log("     Internal Cycle Ended > expecteCompletedLoops/completedLoops: " + expectedCompletedLoops + "/" + s.completedLoops + " - expectedPosition/position: " + expectedPosition + "/" + s.position);
+                    if (expectedCompletedLoops != s.completedLoops || Math.Abs(expectedPosition - s.position) > Single.Epsilon) return !s.active;
                 } else {
                     // Simply determine correct prevPosition after steps
                     if (s.loopType == LoopType.Yoyo && newCompletedSteps % 2 != 0) {
@@ -213,8 +228,6 @@ namespace DG.Tweening
                     }
                     newCompletedSteps = 0;
                 }
-                // If completedLoops or position were changed by some callback, exit here
-                if (expectedCompletedLoops != s.completedLoops || Math.Abs(expectedPosition - s.position) > Single.Epsilon) return !s.active;
             }
             // Run current cycle
             if (newCompletedSteps == 1 && s.isComplete) return false; // Skip update if complete because multicycle took care of it
@@ -233,7 +246,7 @@ namespace DG.Tweening
         static bool ApplyInternalCycle(Sequence s, float fromPos, float toPos, UpdateMode updateMode, bool useInverse, bool prevPosIsInverse, bool multiCycleStep = false)
         {
             bool isBackwardsUpdate = toPos < fromPos;
-//            Debug.Log(Time.frameCount + " " + s.id + " " + (multiCycleStep ? "<color=#FFEC03>Multicycle</color> > " : "Cycle > ") + s.position + "/" + s.duration + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + " - UpdateMode: " + updateMode + ", isPlaying: " + s.isPlaying);
+//            Debug.Log(Time.frameCount + " " + s.id + " " + (multiCycleStep ? "<color=#FFEC03>Multicycle</color> > " : "Cycle > ") + s.position + "/" + s.duration + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + " - UpdateMode: " + updateMode + ", isPlaying: " + s.isPlaying + ", completedLoops: " + s.completedLoops);
             if (isBackwardsUpdate) {
                 int len = s._sequencedObjs.Count - 1;
                 for (int i = len; i > -1; --i) {
@@ -248,6 +261,7 @@ namespace DG.Tweening
                     } else {
                         // Nested Tweener/Sequence
                         float gotoPos = toPos - sequentiable.sequencedPosition;
+//                        float gotoPos = (float)((decimal)toPos - (decimal)sequentiable.sequencedPosition);
                         if (gotoPos < 0) gotoPos = 0;
                         Tween t = (Tween)sequentiable;
                         if (!t.startupDone) continue; // since we're going backwards and this tween never started just ignore it
@@ -268,7 +282,6 @@ namespace DG.Tweening
                     }
                 }
             } else {
-                // Debug
                 int len = s._sequencedObjs.Count;
                 for (int i = 0; i < len; ++i) {
                     if (!s.active) return true; // Killed by some internal callback
@@ -284,8 +297,15 @@ namespace DG.Tweening
                     } else {
                         // Nested Tweener/Sequence
                         float gotoPos = toPos - sequentiable.sequencedPosition;
+//                        float gotoPos = (float)((decimal)toPos - (decimal)sequentiable.sequencedPosition);
                         if (gotoPos < 0) gotoPos = 0;
                         Tween t = (Tween)sequentiable;
+                        // Fix for final nested tween not calling OnComplete in some cases
+                        if (toPos >= sequentiable.sequencedEndPosition) {
+                            if (!t.startupDone) TweenManager.ForceInit(t, true);
+                            if (gotoPos < t.fullDuration) gotoPos = t.fullDuration;
+                        }
+                        //
                         t.isBackwards = false;
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) return true;
 

@@ -34,14 +34,29 @@
     <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
+    <OutputPath>..\bin\Editor\</OutputPath>
+    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
+    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1591</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\_Design\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 3\Editor\Data\Managed\UnityEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\_Design\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 3\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -74,6 +89,8 @@ set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween\Editor
 set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
 set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween\Editor
 set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
+set BinDirExtPluginsTests=ExternalPluginsTestsAndExamples.Unity5\Assets\Demigiant\DOTween\Editor
+set DestinationDirExtPluginsTests=$(SolutionDir)..\%25BinDirExtPluginsTests%25
 
 echo %25DestinationDir%25
 
@@ -82,7 +99,7 @@ DEL $(TargetDir)\*.tmp
 
 CD $(TargetDir)
 echo Converting PDB to MDB and deleting PDB...
-"c:\Program Files\_Design\Unity 4.6\Editor\Data\MonoBleedingEdge\lib\mono\4.0\pdb2mdb.exe" $(TargetFileName)
+"c:\Program Files\pdb2mdb\pdb2mdb.exe" $(TargetFileName)
 DEL $(TargetName).pdb
 
 echo Exporting Assembly to %25DestinationDir%25
@@ -99,7 +116,10 @@ echo Exporting Assembly to %25DestinationDirUnity5Tests%25
 echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirUnity5Tests%25 /Y /I /E
 
 echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirCompatibilityTests%25 /Y /I /E</PostBuildEvent>
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirCompatibilityTests%25 /Y /I /E
+
+echo Exporting Assembly to %25DestinationDirExtPluginsTests%25
+echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirExtPluginsTests%25 /Y /I /E</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

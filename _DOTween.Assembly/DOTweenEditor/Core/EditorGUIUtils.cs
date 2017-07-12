@@ -24,7 +24,23 @@ namespace DG.DOTweenEditor.Core
                                titleStyle,
                                logoIconStyle;
         public static GUIStyle sideBtStyle,
-                               sideLogoIconBoldLabelStyle;
+                               sideLogoIconBoldLabelStyle,
+                               wordWrapTextArea,
+                               popupButton,
+                               btIconStyle;
+
+        public static Texture2D logo
+        {
+            get
+            {
+                if (_logo == null) {
+                    _logo = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                    EditorUtils.SetEditorTexture(_logo, FilterMode.Bilinear, 128);
+                }
+                return _logo;
+            }
+        }
+        static Texture2D _logo;
 
         // Filtered ease types to show desired eases in Inspector panels
         internal static readonly string[] FilteredEaseTypes = new[] {
@@ -74,6 +90,11 @@ namespace DG.DOTweenEditor.Core
             if (stringEaseId == -1) stringEaseId = 0;
             stringEaseId = EditorGUILayout.Popup("Ease", stringEaseId, FilteredEaseTypes);
             return stringEaseId == FilteredEaseTypes.Length - 1 ? Ease.INTERNAL_Custom : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
+        }
+
+        public static void InspectorLogo()
+        {
+            GUILayout.Box(logo, logoIconStyle);
         }
 
         // A button which works as a toggle
@@ -147,7 +168,7 @@ namespace DG.DOTweenEditor.Core
 
                 logoIconStyle = new GUIStyle(GUI.skin.box);
                 logoIconStyle.active.background = logoIconStyle.normal.background = null;
-                logoIconStyle.margin = new RectOffset(0, 0, 4, 4);
+                logoIconStyle.margin = new RectOffset(0, 0, 0, 0);
                 logoIconStyle.padding = new RectOffset(0, 0, 0, 0);
 
                 //
@@ -158,7 +179,19 @@ namespace DG.DOTweenEditor.Core
 
                 sideLogoIconBoldLabelStyle = new GUIStyle(boldLabelStyle);
                 sideLogoIconBoldLabelStyle.alignment = TextAnchor.MiddleLeft;
-                sideLogoIconBoldLabelStyle.padding.top = 6;
+                sideLogoIconBoldLabelStyle.padding.top = 2;
+
+                wordWrapTextArea = new GUIStyle(GUI.skin.textArea);
+                wordWrapTextArea.wordWrap = true;
+
+                popupButton = new GUIStyle(EditorStyles.popup);
+                popupButton.fixedHeight = 18;
+                popupButton.margin.top += 1;
+
+                btIconStyle = new GUIStyle(GUI.skin.button);
+                btIconStyle.padding.left -= 2;
+                btIconStyle.fixedWidth = 24;
+                btIconStyle.stretchWidth = false;
             }
         }
     }

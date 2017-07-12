@@ -2,6 +2,7 @@
 // Created: 2014/12/24 13:37
 
 using System.IO;
+using System.Reflection;
 using DG.DOTweenEditor.Core;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -10,7 +11,33 @@ using UnityEngine;
 
 namespace DG.DOTweenEditor
 {
-    public class UtilityWindowProcessor : AssetPostprocessor
+    public class UtilityWindowModificationProcessor : AssetModificationProcessor
+    {
+        // Checks if deleted folder contains DOTween Pro and in case removes scripting define symbols
+        static AssetDeleteResult OnWillDeleteAsset(string asset, RemoveAssetOptions options)
+        {
+            // Check if asset is a directory
+            string dir = EditorUtils.ADBPathToFullPath(asset);
+            if (!Directory.Exists(dir)) return AssetDeleteResult.DidNotDelete;
+            // Check if directory contains DOTweenPro.dll
+            string[] files = Directory.GetFiles(dir, "DOTween.dll", SearchOption.AllDirectories);
+            int len = files.Length;
+            bool containsDOTween = false;
+            for (int i = 0; i < len; ++i) {
+                if (!files[i].EndsWith("DOTween.dll")) continue;
+                containsDOTween = true;
+                break;
+            }
+            if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
+            // DOTween found: remove scripting define symbols
+            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TK2D");
+            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine("DOTWEEN_TMP");
+            EditorUtility.DisplayDialog("DOTween Deleted", "DOTween was deleted and any of its scripting define symbols removed.\nThis might show an error depending on your previous setup. If this happens, please close and reopen Unity or reimport DOTween.", "Ok");
+            return AssetDeleteResult.DidNotDelete;
+        }
+    }
+
+    public class UtilityWindowPostProcessor : AssetPostprocessor
     {
         static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
 
@@ -21,6 +48,9 @@ namespace DG.DOTweenEditor
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
             if (dotweenImported) {
+                // Delete old DemiLib configuration
+                EditorUtils.DeleteOldDemiLibCore();
+                //
                 bool openSetupDialog = EditorUtils.DOTweenSetupRequired()
                     && (EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version
                     || EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion);
@@ -41,12 +71,11 @@ namespace DG.DOTweenEditor
 
     class DOTweenUtilityWindow : EditorWindow
     {
-        [MenuItem("Tools/" + _Title)]
+        [MenuItem("Tools/Demigiant/" + _Title)]
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        const string _SrcFile = "DOTweenSettings.asset";
-        static readonly Vector2 _WinSize = new Vector2(300,350);
+        static readonly Vector2 _WinSize = new Vector2(300,421);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -59,6 +88,7 @@ namespace DG.DOTweenEditor
 
         int _selectedTab;
         string[] _tabLabels = new[] { "Setup", "Preferences" };
+        string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources", "Demigiant > Resources"};
 
         // If force is FALSE opens the window only if DOTween's version has changed
         // (set to FALSE by OnPostprocessAllAssets)
@@ -80,16 +110,20 @@ namespace DG.DOTweenEditor
 
         void OnEnable()
         {
+#if COMPATIBLE
+            _innerTitle = "DOTween v" + DOTween.Version + " [Compatibility build]";
+#else
             _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug build]" : " [Release build]");
+#endif
             if (EditorUtils.hasPro) _innerTitle += "\nDOTweenPro v" + EditorUtils.proVersion;
             else _innerTitle += "\nDOTweenPro not installed";
 
             if (_headerImg == null) {
-                _headerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = Resources.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
@@ -166,7 +200,11 @@ namespace DG.DOTweenEditor
                 // Reset to original defaults
                 _src.useSafeMode = true;
                 _src.showUnityEditorReport = false;
+                _src.timeScale = 1;
+                _src.useSmoothDeltaTime = false;
+                _src.maxSmoothUnscaledTime = 0.15f;
                 _src.logBehaviour = LogBehaviour.ErrorsOnly;
+                _src.drawGizmos = true;
                 _src.defaultRecyclable = false;
                 _src.defaultAutoPlay = AutoPlay.All;
                 _src.defaultUpdateType = UpdateType.Normal;
@@ -180,8 +218,23 @@ namespace DG.DOTweenEditor
             }
             GUILayout.Space(8);
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
+            _src.timeScale = EditorGUILayout.FloatField("DOTween's TimeScale", _src.timeScale);
+            _src.useSmoothDeltaTime = EditorGUILayout.Toggle("Smooth DeltaTime", _src.useSmoothDeltaTime);
+            _src.maxSmoothUnscaledTime = EditorGUILayout.Slider("Max SmoothUnscaledTime", _src.maxSmoothUnscaledTime, 0.01f, 1f);
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
+            _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);
+            DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
+            _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
+            if (_src.storeSettingsLocation != prevSettingsLocation) {
+                if (_src.storeSettingsLocation == DOTweenSettings.SettingsLocation.DemigiantDirectory && EditorUtils.demigiantDir == null) {
+                    EditorUtility.DisplayDialog("Change DOTween Settings Location", "Demigiant directory not present (must be the parent of DOTween's directory)", "Ok");
+                    if (prevSettingsLocation == DOTweenSettings.SettingsLocation.DemigiantDirectory) {
+                        _src.storeSettingsLocation = DOTweenSettings.SettingsLocation.AssetsDirectory;
+                        Connect(true);
+                    } else _src.storeSettingsLocation = prevSettingsLocation;
+                } else Connect(true);
+            }
             GUILayout.Space(8);
             GUILayout.Label("DEFAULTS ▼");
             _src.defaultRecyclable = EditorGUILayout.Toggle("Recycle Tweens", _src.defaultRecyclable);
@@ -200,24 +253,77 @@ namespace DG.DOTweenEditor
         // ===================================================================================
         // METHODS ---------------------------------------------------------------------------
 
-        void Connect()
+        void Connect(bool forceReconnect = false)
         {
+            if (_src != null && !forceReconnect) return;
+
+            LocationData assetsLD = new LocationData(EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources");
+            LocationData dotweenLD = new LocationData(EditorUtils.dotweenDir + "Resources");
+            bool hasDemigiantDir = EditorUtils.demigiantDir != null;
+            LocationData demigiantLD = hasDemigiantDir ? new LocationData(EditorUtils.demigiantDir + "Resources") : new LocationData();
+
             if (_src == null) {
-                string srcDir = EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources";
-                if (!Directory.Exists(srcDir)) AssetDatabase.CreateFolder("Assets", "Resources");
-                string adbSrcFilePath = EditorUtils.FullPathToADBPath(srcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset");
+                // Load eventual existing settings
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, false);
+                if (_src == null) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(dotweenLD.adbFilePath, false);
+                if (_src == null && hasDemigiantDir) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(demigiantLD.adbFilePath, false);
+            }
+            if (_src == null) {
+                // Settings don't exist. Create it in external folder
+                if (!Directory.Exists(assetsLD.dir)) AssetDatabase.CreateFolder(assetsLD.adbParentDir, "Resources");
+                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, true);
+            }
 
-                // Legacy: check if there are settings saved in old mode (inside DOTween/Resources folder) and eventually move them
-                string legacySrcDir = EditorUtils.dotweenDir + "Resources";
-                string legacySrcFilePath = legacySrcDir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
-                if (File.Exists(legacySrcFilePath)) {
-                    // Move legacy src file to correct folder
-                    AssetDatabase.MoveAsset(EditorUtils.FullPathToADBPath(legacySrcFilePath), adbSrcFilePath);
-                    // Delete legacy Resources folder
-                    AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(legacySrcDir));
+            // Move eventual settings from previous location and setup everything correctly
+            DOTweenSettings.SettingsLocation settingsLoc = _src.storeSettingsLocation;
+            switch (settingsLoc) {
+            case DOTweenSettings.SettingsLocation.AssetsDirectory:
+                MoveSrc(new[] { dotweenLD, demigiantLD }, assetsLD);
+                break;
+            case DOTweenSettings.SettingsLocation.DOTweenDirectory:
+                MoveSrc(new[] { assetsLD, demigiantLD }, dotweenLD);
+                break;
+            case DOTweenSettings.SettingsLocation.DemigiantDirectory:
+                MoveSrc(new[] { assetsLD, dotweenLD }, demigiantLD);
+                break;
+            }
+        }
+
+        void MoveSrc(LocationData[] from, LocationData to)
+        {
+            if (!Directory.Exists(to.dir)) AssetDatabase.CreateFolder(to.adbParentDir, "Resources");
+            foreach (LocationData ld in from) {
+                if (File.Exists(ld.filePath)) {
+                    // Move external src file to correct folder
+                    AssetDatabase.MoveAsset(ld.adbFilePath, to.adbFilePath);
+                    // Delete external settings
+                    AssetDatabase.DeleteAsset(ld.adbFilePath);
+                    // Check if external Resources folder is empty and in case delete it
+                    if (Directory.GetDirectories(ld.dir).Length == 0 && Directory.GetFiles(ld.dir).Length == 0) {
+                        AssetDatabase.DeleteAsset(EditorUtils.FullPathToADBPath(ld.dir));
+                    }
                 }
+            }
+            _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(to.adbFilePath, true);
+        }
 
-                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(adbSrcFilePath, true);
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // ||| INTERNAL CLASSES ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        struct LocationData
+        {
+            public string dir; // without final slash
+            public string filePath;
+            public string adbFilePath;
+            public string adbParentDir; // without final slash
+
+            public LocationData(string srcDir) : this()
+            {
+                dir = srcDir;
+                filePath = dir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
+                adbFilePath = EditorUtils.FullPathToADBPath(filePath);
+                adbParentDir = EditorUtils.FullPathToADBPath(dir.Substring(0, dir.LastIndexOf(EditorUtils.pathSlash)));
             }
         }
     }

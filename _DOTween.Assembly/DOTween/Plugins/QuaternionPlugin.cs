@@ -1,4 +1,5 @@
-﻿// Author: Daniele Giardini - http://www.demigiant.com
+﻿#if !COMPATIBLE
+// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2014/07/07 20:02
 // 
 // License Copyright (c) Daniele Giardini.
@@ -6,6 +7,7 @@
 
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
+using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -66,7 +68,7 @@ namespace DG.Tweening.Plugins
                 if (abs > 180) changeVal.z = changeVal.z > 0 ? -(360 - abs) : 360 - abs;
                 // - Assign
                 t.changeValue = changeVal;
-            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360) {
+            } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360 || t.isRelative) {
                 t.changeValue = t.endValue - t.startValue;
             } else {
                 t.changeValue = t.endValue;
@@ -78,7 +80,7 @@ namespace DG.Tweening.Plugins
             return changeValue.magnitude / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3 startValue, Vector3 changeValue, float duration, bool usingInversePosition)
+        public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3 startValue, Vector3 changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
             Vector3 endValue = startValue;
 
@@ -109,3 +111,4 @@ namespace DG.Tweening.Plugins
         }
     }
 }
+#endif

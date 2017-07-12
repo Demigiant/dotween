@@ -4,9 +4,13 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if COMPATIBLE
+using DG.Tweening.Core.Surrogates;
+#endif
 using System;
 using DG.Tweening.Core.Enums;
 using DG.Tweening.Plugins.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 #pragma warning disable 1591
@@ -17,7 +21,7 @@ namespace DG.Tweening.Core
     // T1: type of value to tween
     // T2: format in which value is stored while tweening
     // TPlugOptions: options type
-    public class TweenerCore<T1,T2,TPlugOptions> : Tweener where TPlugOptions : struct
+    public class TweenerCore<T1,T2,TPlugOptions> : Tweener where TPlugOptions : struct, IPlugOptions
     {
         // SETUP DATA ////////////////////////////////////////////////
 
@@ -51,6 +55,9 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newStartValue);
+#endif
             Type valT = newStartValue.GetType();
             if (valT != typeofT2) {
                 if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeStartValue: incorrect newStartValue type (is " + valT + ", should be " + typeofT2 + ")");
@@ -69,6 +76,9 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newEndValue);
+#endif
             Type valT = newEndValue.GetType();
             if (valT != typeofT2) {
                 if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeEndValue: incorrect newEndValue type (is " + valT + ", should be " + typeofT2 + ")");
@@ -84,6 +94,10 @@ namespace DG.Tweening.Core
                 if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
                 return this;
             }
+#if COMPATIBLE
+            ConvertToWrapper(ref newStartValue);
+            ConvertToWrapper(ref newEndValue);
+#endif
             Type valT0 = newStartValue.GetType();
             Type valT1 = newEndValue.GetType();
             if (valT0 != typeofT2) {
@@ -112,12 +126,14 @@ namespace DG.Tweening.Core
         }
 
         // _tweenPlugin is not reset since it's useful to keep it as a reference
-        internal override sealed void Reset()
+        internal sealed override void Reset()
         {
             base.Reset();
 
             if (tweenPlugin != null) tweenPlugin.Reset(this);
-            plugOptions = new TPlugOptions();
+//            plugOptions = new TPlugOptions(); // Generates GC because converts to an Activator.CreateInstance
+//            plugOptions = Utils.InstanceCreator<TPlugOptions>.Create(); // Fixes GC allocation using workaround (doesn't work with IL2CPP)
+            plugOptions.Reset(); // Alternate fix that uses IPlugOptions Reset
             getter = null;
             setter = null;
             hasManuallySetStartValue = false;
@@ -154,20 +170,35 @@ namespace DG.Tweening.Core
 
         // Applies the tween set by DoGoto.
         // Returns TRUE if the tween needs to be killed
-        internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode)
+        internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode, UpdateNotice updateNotice)
         {
             float updatePosition = useInversePosition ? duration - position : position;
             if (DOTween.useSafeMode) {
                 try {
-                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition);
+                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
                 } catch {
                     // Target/field doesn't exist anymore: kill tween
                     return true;
                 }
             } else {
-                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition);
+                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
             }
             return false;
         }
+
+#if COMPATIBLE
+
+        // Eventually converts a Unity struct to the correct wrapper
+        static void ConvertToWrapper(ref object value)
+        {
+            Type t = value.GetType();
+            if (t == typeof(Vector3)) value = (Vector3Wrapper)((Vector3)value);
+            else if (t == typeof(Vector2)) value = (Vector2Wrapper)((Vector2)value);
+            else if (t == typeof(Quaternion)) value = (QuaternionWrapper)((Quaternion)value);
+            else if (t == typeof(Color)) value = (ColorWrapper)((Color)value);
+            else if (t == typeof(Vector4)) value = (Vector4Wrapper)((Vector4)value);
+        }
+
+#endif
     }
 }

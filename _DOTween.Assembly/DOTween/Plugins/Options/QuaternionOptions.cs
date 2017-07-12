@@ -9,10 +9,17 @@ using UnityEngine;
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct QuaternionOptions
+    public struct QuaternionOptions : IPlugOptions
     {
         internal RotateMode rotateMode;
         internal AxisConstraint axisConstraint; // Used by SpecialStartupMode SetLookAt
         internal Vector3 up; // Used by SpecialStartupMode SetLookAt
+
+        public void Reset()
+        {
+            rotateMode = RotateMode.Fast;
+            axisConstraint = AxisConstraint.None;
+            up = Vector3.zero;
+        }
     }
 }

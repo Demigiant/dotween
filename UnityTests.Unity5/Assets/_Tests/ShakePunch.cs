@@ -6,6 +6,8 @@ using UnityEngine;
 public class ShakePunch : BrainBase
 {
 	public float duration = 1; // Shake duration
+    public bool fadeOutShakes = true;
+    public Ease shakeEase = Ease.OutQuad;
 	public float shakePosStrength = 2; // Shake position power
 	public Vector3 shakePosStrengthV3 = new Vector3(2,2,2);
 	public float shakeRotStrength = 90; // Shake rotation power
@@ -81,14 +83,17 @@ public class ShakePunch : BrainBase
 
 		shakePositionTween = isCamera
 			? useVectorStrength
-				? Camera.main.DOShakePosition(duration, shakePosStrengthV3, shakeVibrato, shakeRandomness)
-				: Camera.main.DOShakePosition(duration, shakePosStrength, shakeVibrato, shakeRandomness)
+				? Camera.main.DOShakePosition(duration, shakePosStrengthV3, shakeVibrato, shakeRandomness, fadeOutShakes)
+				: Camera.main.DOShakePosition(duration, shakePosStrength, shakeVibrato, shakeRandomness, fadeOutShakes)
 			: useVectorStrength
-				? targets[0].DOShakePosition(duration, shakePosStrengthV3, shakeVibrato, shakeRandomness)
-				: targets[0].DOShakePosition(duration, shakePosStrength, shakeVibrato, shakeRandomness);
+				? targets[0].DOShakePosition(duration, shakePosStrengthV3, shakeVibrato, shakeRandomness, false, fadeOutShakes)
+				: targets[0].DOShakePosition(duration, shakePosStrength, shakeVibrato, shakeRandomness, false, fadeOutShakes);
 		if (isCamera && lookAt != null) {
 			shakePositionTween.OnUpdate(()=> Camera.main.transform.LookAt((Vector3)lookAt));
 		}
+        // Add it inside a Sequence so eases work
+	    Sequence s = DOTween.Sequence().Append(shakePositionTween).SetEase(shakeEase);
+	    shakePositionTween = s;
 	}
 
 	void ShakeRotation(bool isCamera = false)
@@ -97,11 +102,14 @@ public class ShakePunch : BrainBase
 
 		shakeRotationTween = isCamera
 			? useVectorStrength
-				? Camera.main.DOShakeRotation(duration, shakeRotStrengthV3, shakeVibrato, shakeRandomness)
-				: Camera.main.DOShakeRotation(duration, shakeRotStrength, shakeVibrato, shakeRandomness)
+				? Camera.main.DOShakeRotation(duration, shakeRotStrengthV3, shakeVibrato, shakeRandomness, fadeOutShakes)
+				: Camera.main.DOShakeRotation(duration, shakeRotStrength, shakeVibrato, shakeRandomness, fadeOutShakes)
 			: useVectorStrength
-				? targets[0].DOShakeRotation(duration, shakeRotStrengthV3, shakeVibrato, shakeRandomness)
-				: targets[0].DOShakeRotation(duration, shakeRotStrength, shakeVibrato, shakeRandomness);
+				? targets[0].DOShakeRotation(duration, shakeRotStrengthV3, shakeVibrato, shakeRandomness, fadeOutShakes)
+				: targets[0].DOShakeRotation(duration, shakeRotStrength, shakeVibrato, shakeRandomness, fadeOutShakes);
+        // Add it inside a Sequence so eases work
+	    Sequence s = DOTween.Sequence().Append(shakeRotationTween).SetEase(shakeEase);
+	    shakeRotationTween = s;
 	}
 
 	void ShakeScale()
@@ -109,8 +117,11 @@ public class ShakePunch : BrainBase
 		shakeScaleTween.Complete();
 
 		shakeScaleTween = useVectorStrength
-			? targets[0].DOShakeScale(duration, shakeScaleStrengthV3, shakeVibrato, shakeRandomness)
-			: targets[0].DOShakeScale(duration, shakeScaleStrength, shakeVibrato, shakeRandomness);
+			? targets[0].DOShakeScale(duration, shakeScaleStrengthV3, shakeVibrato, shakeRandomness, fadeOutShakes)
+			: targets[0].DOShakeScale(duration, shakeScaleStrength, shakeVibrato, shakeRandomness, fadeOutShakes);
+        // Add it inside a Sequence so eases work
+	    Sequence s = DOTween.Sequence().Append(shakeScaleTween).SetEase(shakeEase);
+	    shakeScaleTween = s;
 	}
 
 	void PunchPosition(bool random = false)

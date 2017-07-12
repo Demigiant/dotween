@@ -4,6 +4,19 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if COMPATIBLE
+using DOVector2 = DG.Tweening.Core.Surrogates.Vector2Wrapper;
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOVector4 = DG.Tweening.Core.Surrogates.Vector4Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+using DOColor = DG.Tweening.Core.Surrogates.ColorWrapper;
+#else
+using DOVector2 = UnityEngine.Vector2;
+using DOVector3 = UnityEngine.Vector3;
+using DOVector4 = UnityEngine.Vector4;
+using DOQuaternion = UnityEngine.Quaternion;
+using DOColor = UnityEngine.Color;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Core.Easing;
 using DG.Tweening.Plugins;
@@ -25,7 +38,7 @@ namespace DG.Tweening
         /// Has no effect if the tween has already started</summary>
         public static T SetAutoKill<T>(this T t) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             t.autoKill = true;
             return t;
@@ -35,7 +48,7 @@ namespace DG.Tweening
         /// <param name="autoKillOnCompletion">If TRUE the tween will be automatically killed when complete</param>
         public static T SetAutoKill<T>(this T t, bool autoKillOnCompletion) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             t.autoKill = autoKillOnCompletion;
             return t;
@@ -45,7 +58,7 @@ namespace DG.Tweening
         /// <param name="id">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
         public static T SetId<T>(this T t, object id) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.id = id;
             return t;
@@ -58,7 +71,7 @@ namespace DG.Tweening
         /// <param name="target">The target to assign to this tween. Can be an int, a string, an object or anything else.</param>
         public static T SetTarget<T>(this T t, object target) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.target = target;
             return t;
@@ -69,7 +82,7 @@ namespace DG.Tweening
         /// <param name="loops">Number of cycles to play (-1 for infinite - will be converted to 1 in case the tween is nested in a Sequence)</param>
         public static T SetLoops<T>(this T t, int loops) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             if (loops < -1) loops = -1;
             else if (loops == 0) loops = 1;
@@ -87,7 +100,7 @@ namespace DG.Tweening
         /// <param name="loopType">Loop behaviour type (default: LoopType.Restart)</param>
         public static T SetLoops<T>(this T t, int loops, LoopType loopType) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             if (loops < -1) loops = -1;
             else if (loops == 0) loops = 1;
@@ -105,33 +118,47 @@ namespace DG.Tweening
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
         public static T SetEase<T>(this T t, Ease ease) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) t.easeOvershootOrAmplitude = (int)t.easeOvershootOrAmplitude;
+            
             t.customEase = null;
             return t;
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
-        /// <param name="overshoot">Eventual overshoot to use with Back ease (default is 1.70158)</param>
+        /// <param name="overshoot">
+        /// Eventual overshoot to use with Back or Flash ease (default is 1.70158 - 1 for Flash).
+        /// <para>In case of Flash ease it must be an intenger and sets the total number of flashes that will happen.
+        /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
+        /// </param>
         public static T SetEase<T>(this T t, Ease ease, float overshoot) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) overshoot = (int)overshoot;
             t.easeOvershootOrAmplitude = overshoot;
             t.customEase = null;
             return t;
         }
         /// <summary>Sets the ease of the tween.
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
-        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType (default is 1.70158)</param>
-        /// <param name="period">Eventual period to use with Elastic easeType (default is 0)</param>
+        /// <param name="amplitude">Eventual amplitude to use with Elastic easeType or overshoot to use with Flash easeType (default is 1.70158 - 1 for Flash).
+        /// <para>In case of Flash ease it must be an integer and sets the total number of flashes that will happen.
+        /// Using an even number will complete the tween on the starting value, while an odd one will complete it on the end value.</para>
+        /// </param>
+        /// <param name="period">Eventual period to use with Elastic or Flash easeType (default is 0).
+        /// <para>In case of Flash ease it indicates the power in time of the ease, and must be between -1 and 1.
+        /// 0 is balanced, 1 weakens the ease with time, -1 starts the ease weakened and gives it power towards the end.</para>
+        /// </param>
         public static T SetEase<T>(this T t, Ease ease, float amplitude, float period) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.easeType = ease;
+            if (EaseManager.IsFlashEase(ease)) amplitude = (int)amplitude;
             t.easeOvershootOrAmplitude = amplitude;
             t.easePeriod = period;
             t.customEase = null;
@@ -141,7 +168,7 @@ namespace DG.Tweening
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
         public static T SetEase<T>(this T t, AnimationCurve animCurve) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.easeType = Ease.INTERNAL_Custom;
             t.customEase = new EaseCurve(animCurve).Evaluate;
@@ -151,7 +178,7 @@ namespace DG.Tweening
         /// <para>If applied to Sequences eases the whole sequence animation</para></summary>
         public static T SetEase<T>(this T t, EaseFunction customEase) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.easeType = Ease.INTERNAL_Custom;
             t.customEase = customEase;
@@ -161,7 +188,7 @@ namespace DG.Tweening
         /// <summary>Allows the tween to be recycled after being killed.</summary>
         public static T SetRecyclable<T>(this T t) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.isRecyclable = true;
             return t;
@@ -170,7 +197,7 @@ namespace DG.Tweening
         /// <param name="recyclable">If TRUE the tween will be recycled after being killed, otherwise it will be destroyed.</param>
         public static T SetRecyclable<T>(this T t, bool recyclable) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.isRecyclable = recyclable;
             return t;
@@ -180,195 +207,120 @@ namespace DG.Tweening
         /// <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         public static T SetUpdate<T>(this T t, bool isIndependentUpdate) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             TweenManager.SetUpdateType(t, DOTween.defaultUpdateType, isIndependentUpdate);
             return t;
         }
-        /// <summary>Sets the type of update (default or independent) for the tween</summary>
+        /// <summary>Sets the type of update for the tween</summary>
         /// <param name="updateType">The type of update (defalt: UpdateType.Normal)</param>
-        /// <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
-        public static T SetUpdate<T>(this T t, UpdateType updateType, bool isIndependentUpdate = false) where T : Tween
+        public static T SetUpdate<T>(this T t, UpdateType updateType) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
+
+            TweenManager.SetUpdateType(t, updateType, DOTween.defaultTimeScaleIndependent);
+            return t;
+        }
+        /// <summary>Sets the type of update for the tween and lets you choose if it should be independent from Unity's Time.timeScale</summary>
+        /// <param name="updateType">The type of update</param>
+        /// <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
+        public static T SetUpdate<T>(this T t, UpdateType updateType, bool isIndependentUpdate) where T : Tween
+        {
+            if (t == null || !t.active) return t;
 
             TweenManager.SetUpdateType(t, updateType, isIndependentUpdate);
             return t;
         }
 
-        /// <summary>Sets the onStart callback for the tween.
+        /// <summary>Sets the <code>onStart</code> callback for the tween, clearing any previous <code>onStart</code> callback that was set.
         /// Called the first time the tween is set in a playing state, after any eventual delay</summary>
         public static T OnStart<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onStart = action;
             return t;
         }
-
-        /// <summary>Adds a callback to the onStart callback for the tween.
-        /// Called the first time the tween is set in a playing state, after any eventual delay</summary>
-        public static T AddOnStart<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onStart += action;
-            return t;
-        }
-
-        /// <summary>Sets the onPlay callback for the tween.
+        
+        /// <summary>Sets the <code>onPlay</code> callback for the tween, clearing any previous <code>onPlay</code> callback that was set.
         /// Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
         public static T OnPlay<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onPlay = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onPlay callback for the tween.
-        /// Called when the tween is set in a playing state, after any eventual delay.
-        /// Also called each time the tween resumes playing from a paused state</summary>
-        public static T AddOnPlay<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onPlay += action;
-            return t;
-        }
-
-        /// <summary>Sets the onPause callback for the tween.
+        /// <summary>Sets the <code>onPause</code> callback for the tween, clearing any previous <code>onPause</code> callback that was set.
         /// Called when the tween state changes from playing to paused.
         /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
         public static T OnPause<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onPause = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onPause callback for the tween.
-        /// Called when the tween state changes from playing to paused.
-        /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
-        public static T AddOnPause<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onPause += action;
-            return t;
-        }
-
-        /// <summary>Sets the onRewind callback for the tween.
+        /// <summary>Sets the <code>onRewind</code> callback for the tween, clearing any previous <code>onRewind</code> callback that was set.
         /// Called when the tween is rewinded,
         /// either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
         /// Rewinding a tween that is already rewinded will not fire this callback</summary>
         public static T OnRewind<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onRewind = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onRewind callback for the tween.
-        /// Called when the tween is rewinded,
-        /// either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
-        /// Rewinding a tween that is already rewinded will not fire this callback</summary>
-        public static T AddOnRewind<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onRewind += action;
-            return t;
-        }
-
-        /// <summary>Sets the onUpdate callback for the tween.
+        /// <summary>Sets the <code>onUpdate</code> callback for the tween, clearing any previous <code>onUpdate</code> callback that was set.
         /// Called each time the tween updates</summary>
         public static T OnUpdate<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onUpdate = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onUpdate callback for the tween.
-        /// Called each time the tween updates</summary>
-        public static T AddOnUpdate<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onUpdate += action;
-            return t;
-        }
-
-        /// <summary>Sets the onStepComplete callback for the tween.
+        /// <summary>Sets the <code>onStepComplete</code> callback for the tween, clearing any previous <code>onStepComplete</code> callback that was set.
         /// Called the moment the tween completes one loop cycle, even when going backwards</summary>
         public static T OnStepComplete<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onStepComplete = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onStepComplete callback for the tween.
-        /// Called the moment the tween completes one loop cycle, even when going backwards</summary>
-        public static T AddOnStepComplete<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onStepComplete += action;
-            return t;
-        }
-
-        /// <summary>Sets the onComplete callback for the tween.
+        /// <summary>Sets the <code>onComplete</code> callback for the tween, clearing any previous <code>onComplete</code> callback that was set.
         /// Called the moment the tween reaches its final forward position, loops included</summary>
         public static T OnComplete<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onComplete = action;
             return t;
         }
-
-        /// <summary>Adds a callback to the onComplete callback for the tween.
-        /// Called the moment the tween reaches its final forward position, loops included</summary>
-        public static T AddOnComplete<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onComplete += action;
-            return t;
-        }
-
-        /// <summary>Sets the onKill callback for the tween.
+        
+        /// <summary>Sets the <code>onKill</code> callback for the tween, clearing any previous <code>onKill</code> callback that was set.
         /// Called the moment the tween is killed</summary>
         public static T OnKill<T>(this T t, TweenCallback action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onKill = action;
             return t;
         }
 
-        /// <summary>Adds a callback to the onKill callback for the tween.
-        /// Called the moment the tween is killed</summary>
-        public static T AddOnKill<T>(this T t, TweenCallback action) where T : Tween
-        {
-            if (!t.active) return t;
-
-            t.onKill += action;
-            return t;
-        }
-
-        /// <summary>Sets the onWaypointChange callback for the tween.
+        /// <summary>Sets the <code>onWaypointChange</code> callback for the tween, clearing any previous <code>onWaypointChange</code> callback that was set.
         /// Called when a path tween's current waypoint changes</summary>
         public static T OnWaypointChange<T>(this T t, TweenCallback<int> action) where T : Tween
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.onWaypointChange = action;
             return t;
@@ -391,7 +343,7 @@ namespace DG.Tweening
         /// <param name="asTween">Tween from which to copy the parameters</param>
         public static T SetAs<T>(this T t, Tween asTween) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
 //            t.isFrom = asTween.isFrom;
 //            t.target = asTween.target;
@@ -435,7 +387,7 @@ namespace DG.Tweening
         /// <param name="tweenParams">TweenParams from which to copy the parameters</param>
         public static T SetAs<T>(this T t, TweenParams tweenParams) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             TweenManager.SetUpdateType(t, tweenParams.updateType, tweenParams.isIndependentUpdate);
             t.id = tweenParams.id;
@@ -482,8 +434,8 @@ namespace DG.Tweening
         /// <param name="t">The tween to append</param>
         public static Sequence Append(this Sequence s, Tween t)
         {
-            if (!s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, s.duration);
             return s;
@@ -493,18 +445,19 @@ namespace DG.Tweening
         /// <param name="t">The tween to prepend</param>
         public static Sequence Prepend(this Sequence s, Tween t)
         {
-            if (!s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoPrepend(s, t);
             return s;
         }
-        /// <summary>Inserts the given tween at the same time position of the last tween added to the Sequence.
+        /// <summary>Inserts the given tween at the same time position of the last tween, callback or intervale added to the Sequence.
+        /// Note that, in case of a Join after an interval, the insertion time will be the time where the interval starts, not where it finishes.
         /// Has no effect if the Sequence has already started</summary>
         public static Sequence Join(this Sequence s, Tween t)
         {
-            if (!s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, s.lastTweenInsertTime);
             return s;
@@ -516,8 +469,8 @@ namespace DG.Tweening
         /// <param name="t">The tween to insert</param>
         public static Sequence Insert(this Sequence s, float atPosition, Tween t)
         {
-            if (!s.active || s.creationLocked) return s;
-            if (t == null || !t.active) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
+            if (t == null || !t.active || t.isSequenced) return s;
 
             Sequence.DoInsert(s, t, atPosition);
             return s;
@@ -528,7 +481,7 @@ namespace DG.Tweening
         /// <param name="interval">The interval duration</param>
         public static Sequence AppendInterval(this Sequence s, float interval)
         {
-            if (!s.active || s.creationLocked) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
 
             Sequence.DoAppendInterval(s, interval);
             return s;
@@ -538,7 +491,7 @@ namespace DG.Tweening
         /// <param name="interval">The interval duration</param>
         public static Sequence PrependInterval(this Sequence s, float interval)
         {
-            if (!s.active || s.creationLocked) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
 
             Sequence.DoPrependInterval(s, interval);
             return s;
@@ -549,7 +502,7 @@ namespace DG.Tweening
         /// <param name="callback">The callback to append</param>
         public static Sequence AppendCallback(this Sequence s, TweenCallback callback)
         {
-            if (!s.active || s.creationLocked) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, s.duration);
@@ -560,7 +513,7 @@ namespace DG.Tweening
         /// <param name="callback">The callback to prepend</param>
         public static Sequence PrependCallback(this Sequence s, TweenCallback callback)
         {
-            if (!s.active || s.creationLocked) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, 0);
@@ -573,7 +526,7 @@ namespace DG.Tweening
         /// <param name="callback">The callback to insert</param>
         public static Sequence InsertCallback(this Sequence s, float atPosition, TweenCallback callback)
         {
-            if (!s.active || s.creationLocked) return s;
+            if (s == null || !s.active || s.creationLocked) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, atPosition);
@@ -587,7 +540,7 @@ namespace DG.Tweening
         /// then immediately sends the target to the previously set endValue.</summary>
         public static T From<T>(this T t) where T : Tweener
         {
-            if (!t.active || t.creationLocked || !t.isFromAllowed) return t;
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
 
             t.isFrom = true;
             t.SetFrom(false);
@@ -598,10 +551,11 @@ namespace DG.Tweening
         /// <param name="isRelative">If TRUE the FROM value will be calculated as relative to the current one</param>
         public static T From<T>(this T t, bool isRelative) where T : Tweener
         {
-            if (!t.active || t.creationLocked || !t.isFromAllowed) return t;
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
 
             t.isFrom = true;
-            t.SetFrom(isRelative);
+            if (!isRelative) t.SetFrom(false);
+            else t.SetFrom(!t.isBlendable);
             return t;
         }
 
@@ -609,10 +563,14 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
         public static T SetDelay<T>(this T t, float delay) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
-            t.delay = delay;
-            t.delayComplete = delay <= 0;
+            if (t.tweenType == TweenType.Sequence) {
+                (t as Sequence).PrependInterval(delay);
+            } else {
+                t.delay = delay;
+                t.delayComplete = delay <= 0;
+            }
             return t;
         }
 
@@ -621,7 +579,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
         public static T SetRelative<T>(this T t) where T : Tween
         {
-            if (!t.active || t.creationLocked || t.isFrom) return t;
+            if (t == null || !t.active || t.creationLocked || t.isFrom || t.isBlendable) return t;
 
             t.isRelative = true;
             return t;
@@ -631,7 +589,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
         public static T SetRelative<T>(this T t, bool isRelative) where T : Tween
         {
-            if (!t.active || t.creationLocked || t.isFrom) return t;
+            if (t == null || !t.active || t.creationLocked || t.isFrom || t.isBlendable) return t;
 
             t.isRelative = isRelative;
             return t;
@@ -642,7 +600,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences, nested tweens, or if the tween has already started</para></summary>
         public static T SetSpeedBased<T>(this T t) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             t.isSpeedBased = true;
             return t;
@@ -652,7 +610,7 @@ namespace DG.Tweening
         /// <para>Has no effect on Sequences, nested tweens, or if the tween has already started</para></summary>
         public static T SetSpeedBased<T>(this T t, bool isSpeedBased) where T : Tween
         {
-            if (!t.active || t.creationLocked) return t;
+            if (t == null || !t.active || t.creationLocked) return t;
 
             t.isSpeedBased = isSpeedBased;
             return t;
@@ -666,7 +624,7 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener SetOptions(this TweenerCore<float, float, FloatOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
@@ -674,9 +632,9 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, bool snapping)
+        public static Tweener SetOptions(this TweenerCore<DOVector2, DOVector2, VectorOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
@@ -684,9 +642,9 @@ namespace DG.Tweening
         /// <summary>Options for Vector2 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector2, Vector2, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+        public static Tweener SetOptions(this TweenerCore<DOVector2, DOVector2, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.snapping = snapping;
@@ -695,9 +653,9 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, bool snapping)
+        public static Tweener SetOptions(this TweenerCore<DOVector3, DOVector3, VectorOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
@@ -705,9 +663,9 @@ namespace DG.Tweening
         /// <summary>Options for Vector3 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector3, Vector3, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+        public static Tweener SetOptions(this TweenerCore<DOVector3, DOVector3, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.snapping = snapping;
@@ -716,9 +674,9 @@ namespace DG.Tweening
 
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, bool snapping)
+        public static Tweener SetOptions(this TweenerCore<DOVector4, DOVector4, VectorOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
@@ -726,9 +684,9 @@ namespace DG.Tweening
         /// <summary>Options for Vector4 tweens</summary>
         /// <param name="axisConstraint">Selecting an axis will tween the vector only on that axis, leaving the others untouched</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener SetOptions(this TweenerCore<Vector4, Vector4, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
+        public static Tweener SetOptions(this TweenerCore<DOVector4, DOVector4, VectorOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.snapping = snapping;
@@ -738,9 +696,9 @@ namespace DG.Tweening
         /// <summary>Options for Quaternion tweens</summary>
         /// <param name="useShortest360Route">If TRUE (default) the rotation will take the shortest route, and will not rotate more than 360°.
         /// If FALSE the rotation will be fully accounted. Is always FALSE if the tween is set as relative</param>
-        public static Tweener SetOptions(this TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool useShortest360Route = true)
+        public static Tweener SetOptions(this TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t, bool useShortest360Route = true)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.rotateMode = useShortest360Route ? RotateMode.Fast : RotateMode.FastBeyond360;
             return t;
@@ -748,9 +706,9 @@ namespace DG.Tweening
 
         /// <summary>Options for Color tweens</summary>
         /// <param name="alphaOnly">If TRUE only the alpha value of the color will be tweened</param>
-        public static Tweener SetOptions(this TweenerCore<Color, Color, ColorOptions> t, bool alphaOnly)
+        public static Tweener SetOptions(this TweenerCore<DOColor, DOColor, ColorOptions> t, bool alphaOnly)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.alphaOnly = alphaOnly;
             return t;
@@ -760,22 +718,25 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener SetOptions(this TweenerCore<Rect, Rect, RectOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
         }
 
         /// <summary>Options for Vector4 tweens</summary>
-        /// <param name="scramble">If TRUE the string will appear from a random animation of characters</param>
+        /// <param name="richTextEnabled">If TRUE, rich text will be interpreted correctly while animated,
+        /// otherwise all tags will be considered as normal text</param>
+        /// <param name="scrambleMode">The type of scramble to use, if any</param>
         /// <param name="scrambleChars">A string containing the characters to use for scrambling.
         /// Use as many characters as possible (minimum 10) because DOTween uses a fast scramble mode which gives better results with more characters.
         /// Leave it to NULL to use default ones</param>
-        public static Tweener SetOptions(this TweenerCore<string, string, StringOptions> t, bool scramble, string scrambleChars = null)
+        public static Tweener SetOptions(this TweenerCore<string, string, StringOptions> t, bool richTextEnabled, ScrambleMode scrambleMode = ScrambleMode.None, string scrambleChars = null)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
-            t.plugOptions.scramble = scramble;
+            t.plugOptions.richTextEnabled = richTextEnabled;
+            t.plugOptions.scrambleMode = scrambleMode;
             if (!string.IsNullOrEmpty(scrambleChars)) {
                 if (scrambleChars.Length <= 1) scrambleChars += scrambleChars;
                 t.plugOptions.scrambledChars = scrambleChars.ToCharArray();
@@ -788,7 +749,7 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener SetOptions(this TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, bool snapping)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.snapping = snapping;
             return t;
@@ -797,7 +758,7 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener SetOptions(this TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, AxisConstraint axisConstraint, bool snapping = false)
         {
-            if (!t.active) return t;
+            if (t == null || !t.active) return t;
 
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.snapping = snapping;
@@ -829,6 +790,8 @@ namespace DG.Tweening
             bool closePath, AxisConstraint lockPosition = AxisConstraint.None, AxisConstraint lockRotation = AxisConstraint.None
         )
         {
+            if (t == null || !t.active) return t;
+
             t.plugOptions.isClosedPath = closePath;
             t.plugOptions.lockPositionAxis = lockPosition;
             t.plugOptions.lockRotationAxis = lockRotation;
@@ -846,6 +809,8 @@ namespace DG.Tweening
             this TweenerCore<Vector3, Path, PathOptions> t, Vector3 lookAtPosition, Vector3? forwardDirection = null, Vector3? up = null
         )
         {
+            if (t == null || !t.active) return t;
+
             t.plugOptions.orientType = OrientType.LookAtPosition;
             t.plugOptions.lookAtPosition = lookAtPosition;
             SetPathForwardDirection(t, forwardDirection, up);
@@ -862,6 +827,8 @@ namespace DG.Tweening
             this TweenerCore<Vector3, Path, PathOptions> t, Transform lookAtTransform, Vector3? forwardDirection = null, Vector3? up = null
         )
         {
+            if (t == null || !t.active) return t;
+
             t.plugOptions.orientType = OrientType.LookAtTransform;
             t.plugOptions.lookAtTransform = lookAtTransform;
             SetPathForwardDirection(t, forwardDirection, up);
@@ -878,6 +845,8 @@ namespace DG.Tweening
             this TweenerCore<Vector3, Path, PathOptions> t, float lookAhead, Vector3? forwardDirection = null, Vector3? up = null
         )
         {
+            if (t == null || !t.active) return t;
+
             t.plugOptions.orientType = OrientType.ToPath;
             if (lookAhead < PathPlugin.MinLookAhead) lookAhead = PathPlugin.MinLookAhead;
             t.plugOptions.lookAhead = lookAhead;
@@ -887,6 +856,8 @@ namespace DG.Tweening
 
         static void SetPathForwardDirection(this TweenerCore<Vector3, Path, PathOptions> t, Vector3? forwardDirection = null, Vector3? up = null)
         {
+            if (t == null || !t.active) return;
+
             t.plugOptions.hasCustomForwardDirection = forwardDirection != null && forwardDirection != Vector3.zero || up != null && up != Vector3.zero;
             if (t.plugOptions.hasCustomForwardDirection) {
                 if (forwardDirection == Vector3.zero) forwardDirection = Vector3.forward;

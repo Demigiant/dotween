@@ -10,6 +10,8 @@ public class EaseCurves : BrainBase
     public AnimationCurve easeCurve;
     public float tweenDuration = 1;
     public int txDistance = 2;
+    public float easeFlashOvershoot = 16;
+    public float easeFlashPeriod = 1;
 
     int txH, txW;
     int txBorder, easeH;
@@ -74,7 +76,12 @@ public class EaseCurves : BrainBase
             } else {
                 img.GetComponentInChildren<Text>().text = easeType.ToString();
                 if (easeType == Ease.INTERNAL_Custom) tween.SetEase(easeCurve);
-                else tween.SetEase(easeType);
+                else{
+                    bool isFlashEase = easeType.ToString().IndexOf("Flash") != -1; 
+                    float overshootOrAmplitude = isFlashEase ? easeFlashOvershoot : DOTween.defaultEaseOvershootOrAmplitude;
+                    float period = isFlashEase ? easeFlashPeriod : DOTween.defaultEasePeriod;
+                    tween.SetEase(easeType, overshootOrAmplitude, period);
+                }
             }
         }
         // Disable original image

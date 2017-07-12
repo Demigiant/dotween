@@ -22,7 +22,7 @@ namespace DG.Tweening.Core
         /// <summary>
         /// Returns the 2D angle between two vectors
         /// </summary>
-        public static float Angle2D(Vector3 from, Vector3 to)
+        internal static float Angle2D(Vector3 from, Vector3 to)
         {
             Vector2 baseDir = Vector2.right;
             to -= from;
@@ -32,5 +32,18 @@ namespace DG.Tweening.Core
             ang *= -1f;
             return ang;
         }
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        // Uses code from BK > http://stackoverflow.com/a/1280832
+        // (scrapped > doesn't work with IL2CPP)
+//        public class InstanceCreator<T> where T : new()
+//        {
+//            static readonly Expression<Func<T>> _TExpression = () => new T();
+//            static readonly Func<T> _TBuilder = _TExpression.Compile();
+//            public static T Create() { return _TBuilder(); }
+//        }
     }
 }

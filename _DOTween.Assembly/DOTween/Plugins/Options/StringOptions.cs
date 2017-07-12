@@ -7,9 +7,21 @@
 #pragma warning disable 1591
 namespace DG.Tweening.Plugins.Options
 {
-    public struct StringOptions
+    public struct StringOptions : IPlugOptions
     {
-        public bool scramble;
+        public bool richTextEnabled;
+        public ScrambleMode scrambleMode;
         public char[] scrambledChars; // If empty uses default scramble characters
+
+        // Stored by StringPlugin
+        internal int startValueStrippedLength, changeValueStrippedLength; // No-tag lengths of start and change value
+
+        public void Reset()
+        {
+            richTextEnabled = false;
+            scrambleMode = ScrambleMode.None;
+            scrambledChars = null;
+            startValueStrippedLength = changeValueStrippedLength = 0;
+        }
     }
 }

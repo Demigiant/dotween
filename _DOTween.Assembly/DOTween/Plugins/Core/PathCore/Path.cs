@@ -18,6 +18,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
         // Static decoders stored to avoid creating new ones each time
         static CatmullRomDecoder _catmullRomDecoder;
         static LinearDecoder _linearDecoder;
+        public float[] wpLengths; // Unit length of each waypoint (public so it can be accessed at runtime by external scripts)
 
         [SerializeField] internal PathType type;
         [SerializeField] internal int subdivisionsXSegment; // Subdivisions x each segment
@@ -25,12 +26,13 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal Vector3[] wps; // Waypoints (modified by PathPlugin when setting relative end value and change value) - also modified by DOTweenPathInspector
         [SerializeField] internal ControlPoint[] controlPoints; // Control points used by non-linear paths
         [SerializeField] internal float length; // Unit length of the path
-        [SerializeField] internal float[] wpLengths; // Unit length of each waypoint
         [SerializeField] internal bool isFinalized; // TRUE when the path has been finalized (either by starting the tween or if the path was created by the Path Editor)
 
         [SerializeField] internal float[] timesTable; // Connected to lengthsTable, used for constant speed calculations
         [SerializeField] internal float[] lengthsTable; // Connected to timesTable, used for constant speed calculations
         internal int linearWPIndex = -1; // Waypoint towards which we're moving (only stored for linear paths, when calling GetPoint)
+        Path _incrementalClone; // Last incremental clone. Stored in case of incremental loops, to avoid recreating a new path every time
+        int _incrementalIndex = 0;
 
         ABSPathDecoder _decoder;
 
@@ -57,6 +59,11 @@ namespace DG.Tweening.Plugins.Core.PathCore
             AssignDecoder(type);
 
             if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(Draw);
+        }
+
+        internal Path()
+        {
+            // Used when cloning it
         }
 
         // Needs to be called once waypoints and decoder are assigned, to setup or refresh path data.
@@ -131,11 +138,29 @@ namespace DG.Tweening.Plugins.Core.PathCore
             float currLen = 0;
             for (int i = 0, count = wpLengths.Length; i < count; i++) {
                 currLen += wpLengths[i];
+                if (i == count - 1) return isMovingForward ? i - 1 : i;
                 if (currLen < totPercLen) continue;
                 if (currLen > totPercLen) return isMovingForward ? i - 1 : i;
                 return i;
             }
             return 0;
+        }
+
+        // USED EXTERNALLY, to output a series of points that can be used to draw the path outside of DOTween
+        // (called by TweenExtensions.PathGetDrawPoints)
+        internal static Vector3[] GetDrawPoints(Path p, int drawSubdivisionsXSegment)
+        {
+            int wpsCount = p.wps.Length;
+            if (p.type == PathType.Linear) return p.wps;
+
+            int gizmosSubdivisions = wpsCount * drawSubdivisionsXSegment;
+            Vector3[] drawPoints = new Vector3[gizmosSubdivisions + 1];
+            for (int i = 0; i <= gizmosSubdivisions; ++i) {
+                float perc = i / (float)gizmosSubdivisions;
+                Vector3 wp = p.GetPoint(perc);
+                drawPoints[i] = wp;
+            }
+            return drawPoints;
         }
 
         // Refreshes the waypoints used to draw non-linear gizmos and the PathInspector scene view.
@@ -162,6 +187,52 @@ namespace DG.Tweening.Plugins.Core.PathCore
             wpLengths = timesTable = lengthsTable = null;
             nonLinearDrawWps = null;
             isFinalized = false;
+        }
+
+        // Clones this path with the given loop increment
+        internal Path CloneIncremental(int loopIncrement)
+        {
+            if (_incrementalClone != null) {
+                if (_incrementalIndex == loopIncrement) return _incrementalClone;
+                _incrementalClone.Destroy();
+            }
+
+            int wpsLen = wps.Length;
+            Vector3 diff = wps[wpsLen - 1] - wps[0];
+            Vector3[] incrWps = new Vector3[wps.Length];
+            for (int i = 0; i < wpsLen; ++i) incrWps[i] = wps[i] + (diff * loopIncrement);
+
+            int cpsLen = controlPoints.Length;
+            ControlPoint[] incrCps = new ControlPoint[cpsLen];
+            for (int i = 0; i < cpsLen; ++i) incrCps[i] = controlPoints[i] + (diff * loopIncrement);
+
+            Vector3[] incrNonLinearDrawWps  = null;
+            if (nonLinearDrawWps != null) {
+                int nldLen = nonLinearDrawWps.Length;
+                incrNonLinearDrawWps = new Vector3[nldLen];
+                for (int i = 0; i < nldLen; ++i) incrNonLinearDrawWps[i] = nonLinearDrawWps[i] + (diff * loopIncrement);
+            }
+            
+            _incrementalClone = new Path();
+            _incrementalIndex = loopIncrement;
+            _incrementalClone.type = type;
+            _incrementalClone.subdivisionsXSegment = subdivisionsXSegment;
+            _incrementalClone.subdivisions = subdivisions;
+            _incrementalClone.wps = incrWps;
+            _incrementalClone.controlPoints = incrCps;
+            if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(_incrementalClone.Draw);
+
+            _incrementalClone.length = length;
+            _incrementalClone.wpLengths = wpLengths;
+            _incrementalClone.timesTable = timesTable;
+            _incrementalClone.lengthsTable = lengthsTable;
+            _incrementalClone._decoder = _decoder;
+            _incrementalClone.nonLinearDrawWps = incrNonLinearDrawWps;
+            _incrementalClone.targetPosition = targetPosition;
+            _incrementalClone.lookAtPosition = lookAtPosition;
+
+            _incrementalClone.isFinalized = true;
+            return _incrementalClone;
         }
 
         #endregion

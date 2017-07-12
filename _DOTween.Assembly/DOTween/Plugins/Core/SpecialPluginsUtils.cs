@@ -4,6 +4,13 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#if COMPATIBLE
+using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
+using DOQuaternion = DG.Tweening.Core.Surrogates.QuaternionWrapper;
+#else
+using DOVector3 = UnityEngine.Vector3;
+using DOQuaternion = UnityEngine.Quaternion;
+#endif
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -14,7 +21,7 @@ namespace DG.Tweening.Plugins.Core
     internal static class SpecialPluginsUtils
     {
         // Returns TRUE if it's successful, FALSE otherwise
-        internal static bool SetLookAt(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+        internal static bool SetLookAt(TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t)
         {
             Transform trans = t.target as Transform;
             Vector3 towards = t.endValue;

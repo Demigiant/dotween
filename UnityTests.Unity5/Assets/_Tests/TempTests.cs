@@ -1,19 +1,34 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using DG.Tweening;
-using DG.Tweening.Plugins;
-using DG.Tweening.Plugins.Core;
+using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using System;
- 
+using UnityEngine;
+using UnityEngine.UI;
+
 public class TempTests : BrainBase
 {
-	public Transform target;
+    public Transform target;
+    Sequence seq;
 
-	void Start()
-	{
-		DOTween.To(()=>new Vector3(0,2,0), x=>target.position = x, new Vector3(2,4,2), 2);
-	}
+    private void Awake()
+    {
+//        DOTween.Init();
+//
+//        seq = DOTween.Sequence()
+//            .OnComplete(()=> Debug.Log("COMPLETE"));
+//        seq.AppendInterval(1);
+//        seq.Append(target.DOMoveX(5, 1).OnComplete(()=> Debug.Log("Tween 0 complete")));
+//        seq.AppendCallback(() => {
+//            Debug.Log("Callback fired");
+//            target.DOMoveX(-5, 1);
+//        });
+
+        seq = DOTween.Sequence();
+        seq.AppendInterval(2)
+            .Append(target.DOMoveX(100, 1))
+            .AppendCallback(() => { target.DOMoveX(-50, 2); });
+    }
 }

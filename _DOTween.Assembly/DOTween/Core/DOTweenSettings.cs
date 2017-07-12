@@ -11,8 +11,12 @@ namespace DG.Tweening.Core
         public const string AssetName = "DOTweenSettings";
 
         public bool useSafeMode = true;
+        public float timeScale = 1;
+        public bool useSmoothDeltaTime;
+        public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
         public bool showUnityEditorReport;
         public LogBehaviour logBehaviour = LogBehaviour.ErrorsOnly;
+        public bool drawGizmos = true;
         public bool defaultRecyclable;
         public AutoPlay defaultAutoPlay = AutoPlay.All;
         public UpdateType defaultUpdateType;
@@ -22,5 +26,14 @@ namespace DG.Tweening.Core
         public float defaultEasePeriod = 0;
         public bool defaultAutoKill = true;
         public LoopType defaultLoopType = LoopType.Restart;
+
+        // Editor-only
+        public enum SettingsLocation
+        {
+            AssetsDirectory,
+            DOTweenDirectory,
+            DemigiantDirectory
+        }
+        public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
     }
 }
