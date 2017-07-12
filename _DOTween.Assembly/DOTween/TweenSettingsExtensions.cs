@@ -241,7 +241,7 @@ namespace DG.Tweening
             t.onStart = action;
             return t;
         }
-
+        
         /// <summary>Sets the <code>onPlay</code> callback for the tween, clearing any previous <code>onPlay</code> callback that was set.
         /// Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
@@ -305,7 +305,7 @@ namespace DG.Tweening
             t.onComplete = action;
             return t;
         }
-
+        
         /// <summary>Sets the <code>onKill</code> callback for the tween, clearing any previous <code>onKill</code> callback that was set.
         /// Called the moment the tween is killed</summary>
         public static T OnKill<T>(this T t, TweenCallback action) where T : Tween
@@ -323,6 +323,16 @@ namespace DG.Tweening
             if (t == null || !t.active) return t;
 
             t.onWaypointChange = action;
+            return t;
+        }
+
+        /// <summary>Adds a callback to the onWaypointChange callback for the tween.
+        /// Called when a path tween's current waypoint changes</summary>
+        public static T AddOnWaypointChange<T>(this T t, TweenCallback<int> action) where T : Tween
+        {
+            if (!t.active) return t;
+
+            t.onWaypointChange += action;
             return t;
         }
 
