@@ -2161,43 +2161,43 @@
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnStart``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onStart callback for the tween.
+            <summary>Sets the <code>onStart</code> callback for the tween, clearing any previous <code>onStart</code> callback that was set.
             Called the first time the tween is set in a playing state, after any eventual delay</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnPlay``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onPlay callback for the tween.
+            <summary>Sets the <code>onPlay</code> callback for the tween, clearing any previous <code>onPlay</code> callback that was set.
             Called when the tween is set in a playing state, after any eventual delay.
             Also called each time the tween resumes playing from a paused state</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnPause``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onPlay callback for the tween.
+            <summary>Sets the <code>onPause</code> callback for the tween, clearing any previous <code>onPause</code> callback that was set.
             Called when the tween state changes from playing to paused.
             If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnRewind``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onRewind callback for the tween.
+            <summary>Sets the <code>onRewind</code> callback for the tween, clearing any previous <code>onRewind</code> callback that was set.
             Called when the tween is rewinded,
             either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
             Rewinding a tween that is already rewinded will not fire this callback</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnUpdate``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onUpdate callback for the tween.
+            <summary>Sets the <code>onUpdate</code> callback for the tween, clearing any previous <code>onUpdate</code> callback that was set.
             Called each time the tween updates</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnStepComplete``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onStepComplete callback for the tween.
+            <summary>Sets the <code>onStepComplete</code> callback for the tween, clearing any previous <code>onStepComplete</code> callback that was set.
             Called the moment the tween completes one loop cycle, even when going backwards</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnComplete``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onComplete callback for the tween.
+            <summary>Sets the <code>onComplete</code> callback for the tween, clearing any previous <code>onComplete</code> callback that was set.
             Called the moment the tween reaches its final forward position, loops included</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnKill``1(``0,DG.Tweening.TweenCallback)">
-            <summary>Sets the onKill callback for the tween.
+            <summary>Sets the <code>onKill</code> callback for the tween, clearing any previous <code>onKill</code> callback that was set.
             Called the moment the tween is killed</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnWaypointChange``1(``0,DG.Tweening.TweenCallback{System.Int32})">
-            <summary>Sets the onWaypointChange callback for the tween.
+            <summary>Sets the <code>onWaypointChange</code> callback for the tween, clearing any previous <code>onWaypointChange</code> callback that was set.
             Called when a path tween's current waypoint changes</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetAs``1(``0,DG.Tweening.Tween)">

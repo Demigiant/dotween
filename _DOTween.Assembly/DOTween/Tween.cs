@@ -33,24 +33,24 @@ namespace DG.Tweening
 //        public TweenCallback onStart; // (in ABSSequentiable) When the tween is set in a PLAY state the first time, AFTER any eventual delay
         /// <summary>Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
-        internal TweenCallback onPlay;
+        public TweenCallback onPlay;
         /// <summary>Called when the tween state changes from playing to paused.
         /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
-        internal TweenCallback onPause;
+        public TweenCallback onPause;
         /// <summary>Called when the tween is rewinded,
         /// either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
         /// Rewinding a tween that is already rewinded will not fire this callback</summary>
-        internal TweenCallback onRewind;
+        public TweenCallback onRewind;
         /// <summary>Called each time the tween updates</summary>
-        internal TweenCallback onUpdate;
+        public TweenCallback onUpdate;
         /// <summary>Called the moment the tween completes one loop cycle</summary>
-        internal TweenCallback onStepComplete;
+        public TweenCallback onStepComplete;
         /// <summary>Called the moment the tween reaches completion (loops included)</summary>
-        internal TweenCallback onComplete;
+        public TweenCallback onComplete;
         /// <summary>Called the moment the tween is killed</summary>
-        internal TweenCallback onKill;
+        public TweenCallback onKill;
         /// <summary>Called when a path tween's current waypoint changes</summary>
-        internal TweenCallback<int> onWaypointChange;
+        public TweenCallback<int> onWaypointChange;
         
         // Fixed after creation
         internal bool isFrom; // Used to prevent settings like isRelative from being applied on From tweens

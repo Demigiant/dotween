@@ -232,7 +232,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onStart callback for the tween.
+        /// <summary>Sets the <code>onStart</code> callback for the tween, clearing any previous <code>onStart</code> callback that was set.
         /// Called the first time the tween is set in a playing state, after any eventual delay</summary>
         public static T OnStart<T>(this T t, TweenCallback action) where T : Tween
         {
@@ -242,7 +242,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onPlay callback for the tween.
+        /// <summary>Sets the <code>onPlay</code> callback for the tween, clearing any previous <code>onPlay</code> callback that was set.
         /// Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
         public static T OnPlay<T>(this T t, TweenCallback action) where T : Tween
@@ -253,7 +253,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onPlay callback for the tween.
+        /// <summary>Sets the <code>onPause</code> callback for the tween, clearing any previous <code>onPause</code> callback that was set.
         /// Called when the tween state changes from playing to paused.
         /// If the tween has autoKill set to FALSE, this is called also when the tween reaches completion.</summary>
         public static T OnPause<T>(this T t, TweenCallback action) where T : Tween
@@ -264,7 +264,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onRewind callback for the tween.
+        /// <summary>Sets the <code>onRewind</code> callback for the tween, clearing any previous <code>onRewind</code> callback that was set.
         /// Called when the tween is rewinded,
         /// either by calling <code>Rewind</code> or by reaching the start position while playing backwards.
         /// Rewinding a tween that is already rewinded will not fire this callback</summary>
@@ -276,7 +276,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onUpdate callback for the tween.
+        /// <summary>Sets the <code>onUpdate</code> callback for the tween, clearing any previous <code>onUpdate</code> callback that was set.
         /// Called each time the tween updates</summary>
         public static T OnUpdate<T>(this T t, TweenCallback action) where T : Tween
         {
@@ -286,7 +286,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onStepComplete callback for the tween.
+        /// <summary>Sets the <code>onStepComplete</code> callback for the tween, clearing any previous <code>onStepComplete</code> callback that was set.
         /// Called the moment the tween completes one loop cycle, even when going backwards</summary>
         public static T OnStepComplete<T>(this T t, TweenCallback action) where T : Tween
         {
@@ -296,7 +296,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onComplete callback for the tween.
+        /// <summary>Sets the <code>onComplete</code> callback for the tween, clearing any previous <code>onComplete</code> callback that was set.
         /// Called the moment the tween reaches its final forward position, loops included</summary>
         public static T OnComplete<T>(this T t, TweenCallback action) where T : Tween
         {
@@ -306,7 +306,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onKill callback for the tween.
+        /// <summary>Sets the <code>onKill</code> callback for the tween, clearing any previous <code>onKill</code> callback that was set.
         /// Called the moment the tween is killed</summary>
         public static T OnKill<T>(this T t, TweenCallback action) where T : Tween
         {
@@ -316,7 +316,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets the onWaypointChange callback for the tween.
+        /// <summary>Sets the <code>onWaypointChange</code> callback for the tween, clearing any previous <code>onWaypointChange</code> callback that was set.
         /// Called when a path tween's current waypoint changes</summary>
         public static T OnWaypointChange<T>(this T t, TweenCallback<int> action) where T : Tween
         {
