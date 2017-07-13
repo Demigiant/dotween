@@ -232,9 +232,11 @@ namespace DG.Tweening
                 && (t.position < t.duration ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0);
 
             // Get values from plugin and set them
-            UpdateNotice updateNotice =
-                !wasRewinded && (t.loopType == LoopType.Restart && t.completedLoops != prevCompletedLoops || t.position <= 0 && t.completedLoops <= 0)
-                ? UpdateNotice.RewindStep : UpdateNotice.None;
+            bool isRewindStep = !wasRewinded && (
+                                    t.loopType == LoopType.Restart && t.completedLoops != prevCompletedLoops && (t.loops == -1 || t.completedLoops < t.loops)
+                                    || t.position <= 0 && t.completedLoops <= 0
+                                );
+            UpdateNotice updateNotice = isRewindStep ? UpdateNotice.RewindStep : UpdateNotice.None;
             if (t.ApplyTween(prevPosition, prevCompletedLoops, newCompletedSteps, useInversePosition, updateMode, updateNotice)) return true;
 
             // Additional callbacks
