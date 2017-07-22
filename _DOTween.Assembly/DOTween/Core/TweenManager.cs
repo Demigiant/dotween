@@ -351,6 +351,7 @@ namespace DG.Tweening.Core
                 if (!t.isPlaying) continue;
                 t.creationLocked = true; // Lock tween creation methods from now on
                 float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
+                if (tDeltaTime <= 0) continue; // Skip update in case time is 0
                 if (!t.delayComplete) {
                     tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
                     if (tDeltaTime <= -1) {
@@ -389,7 +390,7 @@ namespace DG.Tweening.Core
                             toPosition += t.duration;
                             toCompletedLoops--;
                         }
-                        if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
+                        if (toCompletedLoops < 0 || (wasEndPosition && toCompletedLoops < 1)) {
                             // Result is equivalent to a rewind, so set values according to it
                             toPosition = 0;
                             toCompletedLoops = wasEndPosition ? 1 : 0;
@@ -448,20 +449,23 @@ namespace DG.Tweening.Core
                     isFilterCompliant = true;
                     break;
                 case FilterType.TargetOrId:
-                    isFilterCompliant = id.Equals(t.id) || id.Equals(t.target);
+                    isFilterCompliant = t.id != null && id.Equals(t.id) || t.target != null && id.Equals(t.target);
                     break;
                 case FilterType.TargetAndId:
-                    isFilterCompliant = id.Equals(t.id) && optionalObj != null && optionalObj.Equals(t.target);
+                    isFilterCompliant = t.id != null && t.target != null && optionalObj != null && id.Equals(t.id) && optionalObj.Equals(t.target);
                     break;
                 case FilterType.AllExceptTargetsOrIds:
                     isFilterCompliant = true;
                     for (int c = 0; c < optionalArrayLen; ++c) {
                         object objId = optionalArray[c];
-                        if (objId.Equals(t.id) || objId.Equals(t.target)) {
+                        if (t.id != null && objId.Equals(t.id) || t.target != null && objId.Equals(t.target)) {
                             isFilterCompliant = false;
                             break;
                         }
                     }
+                    break;
+                case FilterType.DOGetter:
+                    //TODO: Remember me
                     break;
                 }
                 if (isFilterCompliant) {
