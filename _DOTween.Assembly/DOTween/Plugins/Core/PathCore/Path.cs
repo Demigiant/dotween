@@ -156,9 +156,11 @@ namespace DG.Tweening.Plugins.Core.PathCore
             int gizmosSubdivisions = wpsCount * drawSubdivisionsXSegment;
             Vector3[] drawPoints = new Vector3[gizmosSubdivisions + 1];
             for (int i = 0; i <= gizmosSubdivisions; ++i) {
-                float perc = i / (float)gizmosSubdivisions;
-                Vector3 wp = p.GetPoint(perc);
-                drawPoints[i] = wp;
+                if((float)gizmosSubdivisions != 0) {
+                    float perc = i / (float)gizmosSubdivisions;
+                    Vector3 wp = p.GetPoint(perc);
+                    drawPoints[i] = wp;
+                }
             }
             return drawPoints;
         }
@@ -173,9 +175,11 @@ namespace DG.Tweening.Plugins.Core.PathCore
             if (p.nonLinearDrawWps == null || p.nonLinearDrawWps.Length != gizmosSubdivisions + 1)
                 p.nonLinearDrawWps = new Vector3[gizmosSubdivisions + 1];
             for (int i = 0; i <= gizmosSubdivisions; ++i) {
-                float perc = i / (float)gizmosSubdivisions;
-                Vector3 wp = p.GetPoint(perc);
-                p.nonLinearDrawWps[i] = wp;
+                if ((float) gizmosSubdivisions != 0) {
+                    float perc = i / (float)gizmosSubdivisions;
+                    Vector3 wp = p.GetPoint(perc);
+                    p.nonLinearDrawWps[i] = wp;
+                }
             }
         }
 
