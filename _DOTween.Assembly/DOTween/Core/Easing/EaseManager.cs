@@ -47,6 +47,9 @@ namespace DG.Tweening.Core.Easing
         const float _PiOver2 = Mathf.PI * 0.5f;
         const float _TwoPi = Mathf.PI * 2;
 
+        //TODO: Comparisons should be use 'Epsilon' value. Like : Math.Abs(A - B) < Epsilon
+        //https://stackoverflow.com/questions/1398753/comparing-double-values-in-c-sharp
+
         /// <summary>
         /// Returns a value between 0 and 1 (inclusive) based on the elapsed time and ease selected
         /// </summary>
