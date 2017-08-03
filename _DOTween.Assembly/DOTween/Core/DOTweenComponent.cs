@@ -75,6 +75,12 @@ namespace DG.Tweening.Core
             }
         }
 
+        public void ManuelUpdate(float deltaTime,float unscealedDeltaTime) {
+            if(TweenManager.hasActiveManuelTweens) {
+                TweenManager.Update(UpdateType.Manuel, deltaTime, unscealedDeltaTime);
+            }
+        }
+
         // Removed to allow compatibility with Unity 5.4 and later
 //        void OnLevelWasLoaded()
 //        {
