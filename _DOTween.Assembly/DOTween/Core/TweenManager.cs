@@ -21,8 +21,8 @@ namespace DG.Tweening.Core
         internal static int maxActive = _DefaultMaxTweeners + _DefaultMaxSequences; // Always equal to maxTweeners + maxSequences
         internal static int maxTweeners = _DefaultMaxTweeners; // Always >= maxSequences
         internal static int maxSequences = _DefaultMaxSequences; // Always <= maxTweeners
-        internal static bool hasActiveTweens, hasActiveDefaultTweens, hasActiveLateTweens, hasActiveFixedTweens;
-        internal static int totActiveTweens, totActiveDefaultTweens, totActiveLateTweens, totActiveFixedTweens;
+        internal static bool hasActiveTweens, hasActiveDefaultTweens, hasActiveLateTweens, hasActiveFixedTweens, hasActiveManuelTweens;
+        internal static int totActiveTweens, totActiveDefaultTweens, totActiveLateTweens, totActiveFixedTweens, totActiveManuelTweens;
         internal static int totActiveTweeners, totActiveSequences;
         internal static int totPooledTweeners, totPooledSequences;
         internal static int totTweeners, totSequences; // Both active and pooled
@@ -138,12 +138,15 @@ namespace DG.Tweening.Core
                 return;
             }
             // Remove previous update type
-            if (t.updateType == UpdateType.Normal) {
+            if(t.updateType == UpdateType.Normal) {
                 totActiveDefaultTweens--;
                 hasActiveDefaultTweens = totActiveDefaultTweens > 0;
-            } else if (t.updateType == UpdateType.Fixed) {
+            } else if(t.updateType == UpdateType.Fixed) {
                 totActiveFixedTweens--;
                 hasActiveFixedTweens = totActiveFixedTweens > 0;
+            } else if(t.updateType == UpdateType.Manuel) {
+                totActiveManuelTweens--;
+                hasActiveManuelTweens = totActiveManuelTweens > 0;
             } else {
                 totActiveLateTweens--;
                 hasActiveLateTweens = totActiveLateTweens > 0;
@@ -151,13 +154,20 @@ namespace DG.Tweening.Core
             // Assign new one
             t.updateType = updateType;
             t.isIndependentUpdate = isIndependentUpdate;
-            if (updateType == UpdateType.Normal) {
+            if(updateType == UpdateType.Normal) {
                 totActiveDefaultTweens++;
                 hasActiveDefaultTweens = true;
-            } else if (updateType == UpdateType.Fixed) {
+            }
+            else if(updateType == UpdateType.Fixed) {
                 totActiveFixedTweens++;
                 hasActiveFixedTweens = true;
-            } else {
+            }
+            else if(t.updateType == UpdateType.Manuel) {
+                totActiveManuelTweens++;
+                hasActiveManuelTweens = true;
+
+            }
+            else {
                 totActiveLateTweens++;
                 hasActiveLateTweens = true;
             }
@@ -178,8 +188,8 @@ namespace DG.Tweening.Core
                 if (t != null) Despawn(t, false);
             }
             ClearTweenArray(_activeTweens);
-            hasActiveTweens = hasActiveDefaultTweens = hasActiveLateTweens = hasActiveFixedTweens = false;
-            totActiveTweens = totActiveDefaultTweens = totActiveLateTweens = totActiveFixedTweens = 0;
+            hasActiveTweens = hasActiveDefaultTweens = hasActiveLateTweens = hasActiveFixedTweens = hasActiveManuelTweens = false;
+            totActiveTweens = totActiveDefaultTweens = totActiveLateTweens = totActiveFixedTweens = totActiveManuelTweens = 0;
             totActiveTweeners = totActiveSequences = 0;
             _maxActiveLookupId = _reorganizeFromId = -1;
             _requiresActiveReorganization = false;
@@ -263,8 +273,8 @@ namespace DG.Tweening.Core
             }
 
             ClearTweenArray(_activeTweens);
-            hasActiveTweens = hasActiveDefaultTweens = hasActiveLateTweens = hasActiveFixedTweens = false;
-            totActiveTweens = totActiveDefaultTweens = totActiveLateTweens = totActiveFixedTweens = 0;
+            hasActiveTweens = hasActiveDefaultTweens = hasActiveLateTweens = hasActiveFixedTweens = hasActiveManuelTweens = false;
+            totActiveTweens = totActiveDefaultTweens = totActiveLateTweens = totActiveFixedTweens = totActiveManuelTweens = 0;
             totActiveTweeners = totActiveSequences = 0;
             _maxActiveLookupId = _reorganizeFromId = -1;
             _requiresActiveReorganization = false;
@@ -351,7 +361,6 @@ namespace DG.Tweening.Core
                 if (!t.isPlaying) continue;
                 t.creationLocked = true; // Lock tween creation methods from now on
                 float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
-                if (tDeltaTime <= 0) continue; // Skip update in case time is 0
                 if (!t.delayComplete) {
                     tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
                     if (tDeltaTime <= -1) {
@@ -804,7 +813,12 @@ namespace DG.Tweening.Core
             } else if (t.updateType == UpdateType.Fixed) {
                 totActiveFixedTweens++;
                 hasActiveFixedTweens = true;
-            } else {
+            }
+            else if(t.updateType == UpdateType.Manuel) {
+                totActiveManuelTweens++;
+                hasActiveManuelTweens = true;
+            }
+            else {
                 totActiveLateTweens++;
                 hasActiveLateTweens = true;
             }
@@ -870,14 +884,26 @@ namespace DG.Tweening.Core
                 } else {
                     Debugger.LogRemoveActiveTweenError("totActiveDefaultTweens");
                 }
-            } else if (t.updateType == UpdateType.Fixed) {
-                if (totActiveFixedTweens > 0) {
+            }
+            else if(t.updateType == UpdateType.Fixed) {
+                if(totActiveFixedTweens > 0) {
                     totActiveFixedTweens--;
                     hasActiveFixedTweens = totActiveFixedTweens > 0;
-                } else {
+                }
+                else {
                     Debugger.LogRemoveActiveTweenError("totActiveFixedTweens");
                 }
-            } else {
+            }
+            else if(t.updateType == UpdateType.Manuel) {
+                if(totActiveManuelTweens > 0) {
+                    totActiveManuelTweens--;
+                    hasActiveManuelTweens = totActiveManuelTweens > 0;
+                }
+                else {
+                    Debugger.LogRemoveActiveTweenError("totActiveManuelTweens");
+                }
+            }
+            else {
                 if (totActiveLateTweens > 0) {
                     totActiveLateTweens--;
                     hasActiveLateTweens = totActiveLateTweens > 0;
