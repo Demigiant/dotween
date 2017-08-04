@@ -408,7 +408,7 @@ namespace DG.Tweening.Core
                             toPosition += t.duration;
                             toCompletedLoops--;
                         }
-                        if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
+                        if (toCompletedLoops < 0 || (wasEndPosition && toCompletedLoops < 1)) {
                             // Result is equivalent to a rewind, so set values according to it
                             toPosition = 0;
                             toCompletedLoops = wasEndPosition ? 1 : 0;
@@ -481,6 +481,9 @@ namespace DG.Tweening.Core
                             break;
                         }
                     }
+                    break;
+                case FilterType.DOGetter:
+                    //TODO: Remember me
                     break;
                 }
                 if (isFilterCompliant) {
