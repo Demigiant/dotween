@@ -168,6 +168,12 @@
             Returns the 2D angle between two vectors
             </summary>
         </member>
+        <member name="M:DG.Tweening.Core.Utils.Vector3AreApproximatelyEqual(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            Uses approximate equality on each axis instead of Unity's Vector3 equality,
+            because the latter fails (in some cases) when assigning a Vector3 to a transform.position and then checking it.
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Color2">
             <summary>
             Struct that stores two colors (used for LineRenderer tweens)

@@ -33,6 +33,17 @@ namespace DG.Tweening.Core
             return ang;
         }
 
+        /// <summary>
+        /// Uses approximate equality on each axis instead of Unity's Vector3 equality,
+        /// because the latter fails (in some cases) when assigning a Vector3 to a transform.position and then checking it.
+        /// </summary>
+        internal static bool Vector3AreApproximatelyEqual(Vector3 a, Vector3 b)
+        {
+            return Mathf.Approximately(a.x, b.x)
+                   && Mathf.Approximately(a.y, b.y)
+                   && Mathf.Approximately(a.z, b.z);
+        }
+
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
         // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
