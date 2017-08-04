@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.625";
+        public static readonly string Version = "1.1.640";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -265,6 +265,17 @@ namespace DG.Tweening
         public static int Validate()
         {
             return TweenManager.Validate();
+        }
+
+        /// <summary>
+        /// Updates all tweens that are set to <see cref="UpdateType.Manual"/>.
+        /// </summary>
+        /// <param name="deltaTime">Manual deltaTime</param>
+        /// <param name="unscaledDeltaTime">Unscaled delta time (used with tweens set as timeScaleIndependent)</param>
+        public static void ManualUpdate(float deltaTime, float unscaledDeltaTime)
+        {
+            InitCheck();
+            instance.ManualUpdate(deltaTime, unscaledDeltaTime);
         }
 
         #endregion

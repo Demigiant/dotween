@@ -16,6 +16,8 @@ namespace DG.Tweening
         /// <summary>Updates every frame during LateUpdate calls</summary>
         Late,
         /// <summary>Updates using FixedUpdate calls</summary>
-        Fixed
+        Fixed,
+        /// <summary>Updates using manual update calls</summary>
+        Manual
     }
 }

@@ -372,6 +372,13 @@
             BEWARE: this is a slightly expensive operation so use it with care
             </summary>
         </member>
+        <member name="M:DG.Tweening.DOTween.ManualUpdate(System.Single,System.Single)">
+            <summary>
+            Updates all tweens that are set to <see cref="F:DG.Tweening.UpdateType.Manual"/>.
+            </summary>
+            <param name="deltaTime">Manual deltaTime</param>
+            <param name="unscaledDeltaTime">Unscaled delta time (used with tweens set as timeScaleIndependent)</param>
+        </member>
         <member name="M:DG.Tweening.DOTween.To(DG.Tweening.Core.DOGetter{System.Single},DG.Tweening.Core.DOSetter{System.Single},System.Single,System.Single)">
             <summary>Tweens a property or field to the given value using default plugins</summary>
             <param name="getter">A getter for the field or property to tween.
@@ -2514,6 +2521,9 @@
         </member>
         <member name="F:DG.Tweening.UpdateType.Fixed">
             <summary>Updates using FixedUpdate calls</summary>
+        </member>
+        <member name="F:DG.Tweening.UpdateType.Manual">
+            <summary>Updates using manual update calls</summary>
         </member>
     </members>
 </doc>
