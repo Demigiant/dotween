@@ -54,13 +54,33 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
-        /// <param name="id">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
-        public static T SetId<T>(this T t, object id) where T : Tween
+        /// <summary>Sets an ID for the tween (<see cref="Tween.id"/>), which can then be used as a filter with DOTween's static methods.</summary>
+        /// <param name="objectId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        public static T SetId<T>(this T t, object objectId) where T : Tween
         {
             if (t == null || !t.active) return t;
 
-            t.id = id;
+            t.id = objectId;
+            return t;
+        }
+        /// <summary>Sets a string ID for the tween (<see cref="Tween.stringId"/>), which can then be used as a filter with DOTween's static methods.<para/>
+        /// Filtering via string is 2X faster than using an object as an ID (using the alternate obejct overload)</summary>
+        /// <param name="stringId">The string ID to assign to this tween.</param>
+        public static T SetId<T>(this T t, string stringId) where T : Tween
+        {
+            if (t == null || !t.active) return t;
+
+            t.stringId = stringId;
+            return t;
+        }
+        /// <summary>Sets an int ID for the tween (<see cref="Tween.intId"/>), which can then be used as a filter with DOTween's static methods.<para/>
+        /// Filtering via int is 4X faster than via object, 2X faster than via string (using the alternate object/string overloads)</summary>
+        /// <param name="intId">The int ID to assign to this tween.</param>
+        public static T SetId<T>(this T t, int intId) where T : Tween
+        {
+            if (t == null || !t.active) return t;
+
+            t.intId = intId;
             return t;
         }
 

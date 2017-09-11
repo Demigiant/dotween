@@ -23,8 +23,13 @@ namespace DG.Tweening
         public float timeScale;
         /// <summary>If TRUE the tween wil go backwards</summary>
         public bool isBackwards;
-        /// <summary>Id (usable for filtering with DOTween static methods). Can be an int, a string, an object, or anything else</summary>
+        /// <summary>Object ID (usable for filtering with DOTween static methods). Can be anything except a string or an int
+        /// (use <see cref="stringId"/> or <see cref="intId"/> for those)</summary>
         public object id;
+        /// <summary>String ID (usable for filtering with DOTween static methods). 2X faster than using an object id</summary>
+        public string stringId;
+        /// <summary>String ID (usable for filtering with DOTween static methods). 4X faster than using an object id, 2X faster than using a string id</summary>
+        public int intId;
         /// <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shorcuts</summary>
         public object target; // Automatically set by DO shortcuts using SetTarget extension. Also used during Tweener.DoStartup in some special cases
         // Update type and eventual independence (changed via TweenManager.SetUpdateType)

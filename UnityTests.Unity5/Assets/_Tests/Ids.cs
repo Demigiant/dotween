@@ -36,9 +36,9 @@ public class Ids : BrainBase
 		GUILayout.Space(50);
 
 		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("TogglePause by Id")) DOTween.TogglePause(0);
-		if (GUILayout.Button("TogglePause by StringId")) DOTween.TogglePause("string");
-		if (GUILayout.Button("TogglePause by ObjId")) DOTween.TogglePause(this);
+		if (GUILayout.Button("TogglePause by Int Id")) DOTween.TogglePause(0);
+		if (GUILayout.Button("TogglePause by String Id")) DOTween.TogglePause("string");
+		if (GUILayout.Button("TogglePause by Object Id")) DOTween.TogglePause(this);
 		GUILayout.EndHorizontal();
 
 		GUILayout.BeginHorizontal();

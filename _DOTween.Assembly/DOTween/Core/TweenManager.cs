@@ -457,6 +457,23 @@ namespace DG.Tweening.Core
             int totInvolved = 0;
             bool hasDespawned = false;
             int optionalArrayLen = optionalArray == null ? 0 : optionalArray.Length;
+            // Determine if ID is required, and if it's stringId
+            bool useStringId = false;
+            string stringId = null;
+            bool useIntId = false;
+            int intId = 0;
+            switch (filterType) {
+            case FilterType.TargetOrId:
+            case FilterType.TargetAndId:
+                if (id is string) {
+                    useStringId = true;
+                    stringId = (string)id;
+                } else if (id is int) {
+                    useIntId = true;
+                    intId = (int)id;
+                }
+                break;
+            }
             for (int i = _maxActiveLookupId; i > -1; --i) {
                 Tween t = _activeTweens[i];
                 if (t == null || !t.active) continue;
@@ -467,16 +484,26 @@ namespace DG.Tweening.Core
                     isFilterCompliant = true;
                     break;
                 case FilterType.TargetOrId:
-                    isFilterCompliant = t.id != null && id.Equals(t.id) || t.target != null && id.Equals(t.target);
+                    if (useStringId) isFilterCompliant = t.stringId != null && t.stringId == stringId;
+                    else if (useIntId) isFilterCompliant = t.intId == intId;
+                    else isFilterCompliant = t.id != null && id.Equals(t.id) || t.target != null && id.Equals(t.target);
                     break;
                 case FilterType.TargetAndId:
-                    isFilterCompliant = t.id != null && t.target != null && optionalObj != null && id.Equals(t.id) && optionalObj.Equals(t.target);
+                    if (useStringId) isFilterCompliant = t.target != null && t.stringId == stringId && optionalObj != null && optionalObj.Equals(t.target);
+                    else if (useIntId) isFilterCompliant = t.target != null && t.intId == intId && optionalObj != null && optionalObj.Equals(t.target);
+                    else isFilterCompliant = t.id != null && t.target != null && optionalObj != null && id.Equals(t.id) && optionalObj.Equals(t.target);
                     break;
                 case FilterType.AllExceptTargetsOrIds:
                     isFilterCompliant = true;
                     for (int c = 0; c < optionalArrayLen; ++c) {
                         object objId = optionalArray[c];
-                        if (t.id != null && objId.Equals(t.id) || t.target != null && objId.Equals(t.target)) {
+                        if (useStringId && t.stringId == stringId) {
+                            isFilterCompliant = false;
+                            break;
+                        } else if (useIntId && t.intId == intId) {
+                            isFilterCompliant = false;
+                            break;
+                        } else if (t.id != null && objId.Equals(t.id) || t.target != null && objId.Equals(t.target)) {
                             isFilterCompliant = false;
                             break;
                         }

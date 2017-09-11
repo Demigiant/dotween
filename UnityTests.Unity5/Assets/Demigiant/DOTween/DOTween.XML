@@ -2099,8 +2099,18 @@
             <param name="autoKillOnCompletion">If TRUE the tween will be automatically killed when complete</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetId``1(``0,System.Object)">
-            <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
-            <param name="id">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+            <summary>Sets an ID for the tween (<see cref="F:DG.Tweening.Tween.id"/>), which can then be used as a filter with DOTween's static methods.</summary>
+            <param name="objectId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetId``1(``0,System.String)">
+            <summary>Sets a string ID for the tween (<see cref="F:DG.Tweening.Tween.stringId"/>), which can then be used as a filter with DOTween's static methods.<para/>
+            Filtering via string is 2X faster than using an object as an ID (using the alternate obejct overload)</summary>
+            <param name="stringId">The string ID to assign to this tween.</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetId``1(``0,System.Int32)">
+            <summary>Sets an int ID for the tween (<see cref="F:DG.Tweening.Tween.intId"/>), which can then be used as a filter with DOTween's static methods.<para/>
+            Filtering via int is 4X faster than via object, 2X faster than via string (using the alternate object/string overloads)</summary>
+            <param name="intId">The int ID to assign to this tween.</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetTarget``1(``0,System.Object)">
             <summary>Sets the target for the tween, which can then be used as a filter with DOTween's static methods.
@@ -2436,7 +2446,14 @@
             <summary>If TRUE the tween wil go backwards</summary>
         </member>
         <member name="F:DG.Tweening.Tween.id">
-            <summary>Id (usable for filtering with DOTween static methods). Can be an int, a string, an object, or anything else</summary>
+            <summary>Object ID (usable for filtering with DOTween static methods). Can be anything except a string or an int
+            (use <see cref="F:DG.Tweening.Tween.stringId"/> or <see cref="F:DG.Tweening.Tween.intId"/> for those)</summary>
+        </member>
+        <member name="F:DG.Tweening.Tween.stringId">
+            <summary>String ID (usable for filtering with DOTween static methods). 2X faster than using an object id</summary>
+        </member>
+        <member name="F:DG.Tweening.Tween.intId">
+            <summary>String ID (usable for filtering with DOTween static methods). 4X faster than using an object id, 2X faster than using a string id</summary>
         </member>
         <member name="F:DG.Tweening.Tween.target">
             <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shorcuts</summary>
