@@ -10,13 +10,13 @@ public class IndexOutOfRangeOnKill : BrainBase
         transform.DOScale(Vector3.zero, 1000).OnKill(() => transform.gameObject.SetActive(false));
         yield return new WaitForSeconds(1.5f);
         transform.DOKill();
-        Debug.Log("START COMPLETION");
+        Debug.Log("Start() completed");
     }
 
 
     void OnDisable()
     {
-    	Debug.Log("DISABLE");
+    	Debug.Log("OnDisable()");
         transform.DOKill();
     }
 }
