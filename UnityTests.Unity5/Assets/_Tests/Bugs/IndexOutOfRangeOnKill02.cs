@@ -5,30 +5,31 @@ using UnityEngine;
 
 public class IndexOutOfRangeOnKill02 : MonoBehaviour
 {
-    // Can't replicate the error
-    void Start()
+    public Transform target;
+    public RectTransform targetUI;
+
+    void Update()
     {
-        Debug.Log("Start() ► Disabling safe mode");
-
-        DOTween.Init(false, false);
-
-        Tween t = transform.DOMoveX(2, 2);
-        t.OnComplete(() => {
-            Debug.Log("OnComplete()");
-            TweenKiller();
-            Destroy(gameObject);
-        });
+        if(Input.GetKeyUp(KeyCode.L)) ReproTweenBug();
     }
 
-    void OnDestroy()
+    void ReproTweenBugKiller()
     {
-        Debug.Log("OnDestroy()");
-        TweenKiller();
+        target.DOKill(true);
+        targetUI.DOKill(true);
     }
 
-    void TweenKiller()
+    void ReproTweenBug()
     {
-        Debug.Log("TweenKiller()");
-        transform.DOKill(true);
+        ReproTweenBugKiller();
+
+        var rotation = 2 * 360;
+        var duration = rotation / 360f;
+
+        target.DORotate(new Vector3(0, 0, rotation), duration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic)
+            .OnComplete(() => {
+                targetUI.DOAnchorPos(Vector2.zero, 0.4f).SetEase(Ease.InBack)
+                    .OnComplete(() => targetUI.DOKill(true));
+            });
     }
 }

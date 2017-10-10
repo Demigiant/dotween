@@ -576,7 +576,12 @@ namespace DG.Tweening.Core
             // Special additional operations in case of despawn
             if (hasDespawned) {
                 int count = _KillList.Count - 1;
-                for (int i = count; i > -1; --i) RemoveActiveTween(_KillList[i]);
+                for (int i = count; i > -1; --i) {
+                    Tween t = _KillList[i];
+                    // Ignore tweens with activeId -1, since they were already killed and removed
+                    //  by nested OnComplete callbacks
+                    if (t.activeId != -1) RemoveActiveTween(t);
+                }
                 _KillList.Clear();
             }
 

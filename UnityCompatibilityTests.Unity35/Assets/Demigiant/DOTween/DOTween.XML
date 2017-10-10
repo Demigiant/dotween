@@ -1778,6 +1778,17 @@
             <param name="byValue">The value to tween by</param><param name="duration">The duration of the tween</param>
             <param name="mode">Rotation mode</param>
         </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOBlendablePunchRotation(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Int32,System.Single)">
+            <summary>Punches a Transform's localRotation BY the given value and then back to the starting one
+            as if it was connected to the starting rotation via an elastic. Does it in a way that allows other
+            DOBlendableRotate tweens to work together on the same target</summary>
+            <param name="punch">The punch strength (added to the Transform's current rotation)</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="vibrato">Indicates how much will the punch vibrate</param>
+            <param name="elasticity">Represents how much (0 to 1) the vector will go beyond the starting rotation when bouncing backwards.
+            1 creates a full oscillation between the punch rotation and the opposite rotation,
+            while 0 oscillates only between the punch and the start rotation</param>
+        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOBlendableScaleBy(UnityEngine.Transform,UnityEngine.Vector3,System.Single)">
             <summary>Tweens a Transform's localScale BY the given value (as if you chained a <code>SetRelative</code>),
             in a way that allows other DOBlendableScale tweens to work together on the same target,
