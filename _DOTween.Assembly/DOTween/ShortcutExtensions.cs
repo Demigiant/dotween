@@ -1335,6 +1335,38 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
         }
 
+        /// <summary>Punches a Transform's localRotation BY the given value and then back to the starting one
+        /// as if it was connected to the starting rotation via an elastic. Does it in a way that allows other
+        /// DOBlendableRotate tweens to work together on the same target</summary>
+        /// <param name="punch">The punch strength (added to the Transform's current rotation)</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="vibrato">Indicates how much will the punch vibrate</param>
+        /// <param name="elasticity">Represents how much (0 to 1) the vector will go beyond the starting rotation when bouncing backwards.
+        /// 1 creates a full oscillation between the punch rotation and the opposite rotation,
+        /// while 0 oscillates only between the punch and the start rotation</param>
+        public static Tweener DOBlendablePunchRotation(this Transform target, Vector3 punch, float duration, int vibrato = 10, float elasticity = 1)
+        {
+            if (duration <= 0) {
+                if (Debugger.logPriority > 0) Debug.LogWarning("DOBlendablePunchRotation: duration can't be 0, returning NULL without creating a tween");
+                return null;
+            }
+            Vector3 to = Vector3.zero;
+            TweenerCore<DOVector3, DOVector3[], Vector3ArrayOptions> t = DOTween.Punch(() => to, v => {
+                Quaternion qto = Quaternion.Euler(to.x, to.y, to.z);
+                Quaternion qnew = Quaternion.Euler(v.x, v.y, v.z);
+#if COMPATIBLE
+                Quaternion diff = x.value * Quaternion.Inverse(qto);
+#else
+                Quaternion diff = qnew * Quaternion.Inverse(qto);
+#endif
+                to = v;
+                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+            }, punch, duration, vibrato, elasticity)
+                .Blendable().SetTarget(target);
+            return t;
+
+        }
+
 #endregion
 
 #endregion
