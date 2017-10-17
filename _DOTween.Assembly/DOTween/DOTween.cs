@@ -37,10 +37,18 @@ namespace DG.Tweening
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
 
+
         /// <summary>If TRUE (default) makes tweens slightly slower but safer, automatically taking care of a series of things
         /// (like targets becoming null while a tween is playing).
         /// <para>Default: TRUE</para></summary>
         public static bool useSafeMode = true;
+
+        /// <summary>If TRUE (default) show all exceptions occurred in tweening to log console.
+        /// Showing exception costs a bit.If you care about performance, make showErrorLog=false in production.
+        /// </summary>
+        public static bool showErrorLog = true;
+
+
         /// <summary>If TRUE you will get a DOTween report when exiting play mode (only in the Editor).
         /// Useful to know how many max Tweeners and Sequences you reached and optimize your final project accordingly.
         /// Beware, this will slightly slow down your tweens while inside Unity Editor.
@@ -177,6 +185,7 @@ namespace DG.Tweening
                 if (useSafeMode == null) DOTween.useSafeMode = settings.useSafeMode;
                 if (logBehaviour == null) DOTween.logBehaviour = settings.logBehaviour;
                 if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
+                DOTween.showErrorLog = settings.showErrorLog;
                 DOTween.timeScale = settings.timeScale;
                 DOTween.useSmoothDeltaTime = settings.useSmoothDeltaTime;
                 DOTween.maxSmoothUnscaledTime = settings.maxSmoothUnscaledTime;

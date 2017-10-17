@@ -173,15 +173,35 @@ namespace DG.Tweening.Core
         internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode, UpdateNotice updateNotice)
         {
             float updatePosition = useInversePosition ? duration - position : position;
-            if (DOTween.useSafeMode) {
-                try {
-                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
-                } catch {
-                    // Target/field doesn't exist anymore: kill tween
-                    return true;
+
+            if(DOTween.showErrorLog) {
+                if (DOTween.useSafeMode) {
+                    try {
+                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                    } catch(Exception e) {
+                        Debugger.LogError(e);
+                        // Target/field doesn't exist anymore: kill tween
+                        return true;
+                    }
+                } else {
+                    try {
+                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                    } catch (Exception e) {
+                        Debugger.LogError(e);
+                        throw e;
+                    }
                 }
             } else {
-                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                if (DOTween.useSafeMode) {
+                    try {
+                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                    } catch {
+                        // Target/field doesn't exist anymore: kill tween
+                        return true;
+                    }
+                } else {
+                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                }
             }
             return false;
         }
