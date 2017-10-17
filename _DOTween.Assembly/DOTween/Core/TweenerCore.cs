@@ -179,7 +179,7 @@ namespace DG.Tweening.Core
                     try {
                         tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
                     } catch(Exception e) {
-                        Debugger.LogError(e);
+                        Debugger.LogWarning(e);
                         // Target/field doesn't exist anymore: kill tween
                         return true;
                     }
@@ -187,7 +187,7 @@ namespace DG.Tweening.Core
                     try {
                         tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
                     } catch (Exception e) {
-                        Debugger.LogError(e);
+                        Debugger.LogWarning(e);
                         throw e;
                     }
                 }

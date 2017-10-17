@@ -214,7 +214,7 @@ namespace DG.Tweening
                             try {
                                 t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                             } catch (System.Exception e) {
-                                Debugger.LogError(e);
+                                Debugger.LogWarning(e);
                                 // Target/field doesn't exist: kill tween
                                 TweenManager.Despawn(t);
                                 return null;
@@ -223,7 +223,7 @@ namespace DG.Tweening
                             try {
                                 t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                             } catch (System.Exception e) {
-                                Debugger.LogError(e);
+                                Debugger.LogWarning(e);
                                 throw e;
                             }
                         }
