@@ -779,52 +779,52 @@ namespace DG.Tweening.Core
         }
 
         // If playing is FALSE returns active paused tweens, otherwise active playing tweens
-        internal static List<Tween> GetActiveTweens(bool playing)
+        internal static List<Tween> GetActiveTweens(bool playing, List<Tween> fillableList = null)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
             if (totActiveTweens <= 0) return null;
             int len = totActiveTweens;
-            List<Tween> ts = new List<Tween>(len);
+            if (fillableList == null) fillableList = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t.isPlaying == playing) ts.Add(t);
+                if (t.isPlaying == playing) fillableList.Add(t);
             }
-            if (ts.Count > 0) return ts;
+            if (fillableList.Count > 0) return fillableList;
             return null;
         }
 
         // Returns all active tweens with the given id
-        internal static List<Tween> GetTweensById(object id, bool playingOnly)
+        internal static List<Tween> GetTweensById(object id, bool playingOnly, List<Tween> fillableList = null)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
             if (totActiveTweens <= 0) return null;
             int len = totActiveTweens;
-            List<Tween> ts = new List<Tween>(len);
+            if (fillableList == null) fillableList = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
                 if (t == null || !Equals(id, t.id)) continue;
-                if (!playingOnly || t.isPlaying) ts.Add(t);
+                if (!playingOnly || t.isPlaying) fillableList.Add(t);
             }
-            if (ts.Count > 0) return ts;
+            if (fillableList.Count > 0) return fillableList;
             return null;
         }
 
         // Returns all active tweens with the given target
-        internal static List<Tween> GetTweensByTarget(object target, bool playingOnly)
+        internal static List<Tween> GetTweensByTarget(object target, bool playingOnly, List<Tween> fillableList = null)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
             if (totActiveTweens <= 0) return null;
             int len = totActiveTweens;
-            List<Tween> ts = new List<Tween>(len);
+            if (fillableList == null) fillableList = new List<Tween>(len);
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
                 if (t.target != target) continue;
-                if (!playingOnly || t.isPlaying) ts.Add(t);
+                if (!playingOnly || t.isPlaying) fillableList.Add(t);
             }
-            if (ts.Count > 0) return ts;
+            if (fillableList.Count > 0) return fillableList;
             return null;
         }
 
