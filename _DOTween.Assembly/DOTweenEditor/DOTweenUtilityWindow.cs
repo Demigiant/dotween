@@ -6,6 +6,7 @@ using System.Reflection;
 using DG.DOTweenEditor.Core;
 using DG.Tweening;
 using DG.Tweening.Core;
+using DG.Tweening.Core.Enums;
 using UnityEditor;
 using UnityEngine;
 
@@ -75,7 +76,7 @@ namespace DG.DOTweenEditor
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(300,421);
+        static readonly Vector2 _WinSize = new Vector2(370,490);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -203,6 +204,7 @@ namespace DG.DOTweenEditor
                 _src.timeScale = 1;
                 _src.useSmoothDeltaTime = false;
                 _src.maxSmoothUnscaledTime = 0.15f;
+                _src.rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
                 _src.logBehaviour = LogBehaviour.ErrorsOnly;
                 _src.drawGizmos = true;
                 _src.defaultRecyclable = false;
@@ -221,6 +223,19 @@ namespace DG.DOTweenEditor
             _src.timeScale = EditorGUILayout.FloatField("DOTween's TimeScale", _src.timeScale);
             _src.useSmoothDeltaTime = EditorGUILayout.Toggle("Smooth DeltaTime", _src.useSmoothDeltaTime);
             _src.maxSmoothUnscaledTime = EditorGUILayout.Slider("Max SmoothUnscaledTime", _src.maxSmoothUnscaledTime, 0.01f, 1f);
+            _src.rewindCallbackMode = (RewindCallbackMode)EditorGUILayout.EnumPopup("OnRewind Callback Mode", _src.rewindCallbackMode);
+            GUILayout.Space(-5);
+            GUILayout.BeginHorizontal();
+                GUILayout.Space(154);
+                EditorGUILayout.HelpBox(
+                    _src.rewindCallbackMode == RewindCallbackMode.FireIfPositionChanged
+                        ? "When calling Rewind or PlayBackwards/SmoothRewind, OnRewind callbacks will be fired only if the tween isn't already rewinded"
+                        : _src.rewindCallbackMode == RewindCallbackMode.FireAlwaysWithRewind
+                            ? "When calling Rewind, OnRewind callbacks will always be fired, even if the tween is already rewinded."
+                            : "When calling Rewind or PlayBackwards/SmoothRewind, OnRewind callbacks will always be fired, even if the tween is already rewinded",
+                    MessageType.None
+                );
+            GUILayout.EndHorizontal();
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
             _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);

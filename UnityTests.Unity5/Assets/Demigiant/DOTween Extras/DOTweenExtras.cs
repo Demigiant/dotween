@@ -15,12 +15,6 @@ namespace DG.Tweening
 
         #region Public Methods
 
-        #region Commands
-
-        
-
-        #endregion
-
         #region Info Getters
 
         /// <summary>

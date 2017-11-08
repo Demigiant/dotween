@@ -153,6 +153,27 @@
             Lets the plugin know that we restarted or rewinded
             </summary>
         </member>
+        <member name="T:DG.Tweening.Core.Enums.RewindCallbackMode">
+            <summary>
+            OnRewind callback behaviour (can only be set via DOTween's Utility Panel)
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.RewindCallbackMode.FireIfPositionChanged">
+            <summary>
+            When calling Rewind or PlayBackwards/SmoothRewind, OnRewind callbacks will be fired only if the tween isn't already rewinded
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.RewindCallbackMode.FireAlwaysWithRewind">
+            <summary>
+            When calling Rewind, OnRewind callbacks will always be fired, even if the tween is already rewinded.
+            When calling PlayBackwards/SmoothRewind instead, OnRewind callbacks will be fired only if the tween isn't already rewinded
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.RewindCallbackMode.FireAlways">
+            <summary>
+            When calling Rewind or PlayBackwards/SmoothRewind, OnRewind callbacks will always be fired, even if the tween is already rewinded
+            </summary>
+        </member>
         <member name="T:DG.Tweening.Core.Extensions">
             <summary>
             Public only so custom shortcuts can access some of these methods

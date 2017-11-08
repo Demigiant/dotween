@@ -114,6 +114,7 @@
     <Compile Include="Plugins\PathPlugin.cs" />
     <Compile Include="Plugins\Vector3WrapperPlugin.cs" />
     <Compile Include="Plugins\Vector4WrapperPlugin.cs" />
+    <Compile Include="Core\Enums\RewindCallbackMode.cs" />
     <Compile Include="RotateMode.cs" />
     <Compile Include="ScrambleMode.cs" />
     <Compile Include="TweenExtensions.cs" />

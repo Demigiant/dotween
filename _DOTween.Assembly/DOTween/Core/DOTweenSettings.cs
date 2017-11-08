@@ -1,6 +1,7 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2015/02/05 10:28
 
+using DG.Tweening.Core.Enums;
 using UnityEngine;
 
 #pragma warning disable 1591
@@ -14,6 +15,7 @@ namespace DG.Tweening.Core
         public float timeScale = 1;
         public bool useSmoothDeltaTime;
         public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
+        public RewindCallbackMode rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
         public bool showUnityEditorReport;
         public LogBehaviour logBehaviour = LogBehaviour.ErrorsOnly;
         public bool drawGizmos = true;

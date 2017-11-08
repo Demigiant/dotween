@@ -674,6 +674,10 @@ namespace DG.Tweening.Core
 
         internal static bool PlayBackwards(Tween t)
         {
+            if (t.completedLoops == 0 && t.position <= 0) {
+                // Already rewinded, manage OnRewind callback
+                ManageOnRewindCallbackWhenAlreadyRewinded(t, true);
+            }
             if (!t.isBackwards) {
                 t.isBackwards = true;
                 Play(t);
@@ -726,6 +730,9 @@ namespace DG.Tweening.Core
                 rewinded = true;
                 bool needsKilling = Tween.DoGoto(t, 0, 0, UpdateMode.Goto);
                 if (!needsKilling && wasPlaying && t.onPause != null) Tween.OnTweenCallback(t.onPause);
+            } else {
+                // Alread rewinded
+                ManageOnRewindCallbackWhenAlreadyRewinded(t, false);
             }
             return rewinded;
         }
@@ -745,7 +752,11 @@ namespace DG.Tweening.Core
                     t.Goto(t.ElapsedDirectionalPercentage() * t.duration);
                     t.PlayBackwards();
                 }
-            } else t.isPlaying = false;
+            } else {
+                // Already rewinded
+                t.isPlaying = false;
+                ManageOnRewindCallbackWhenAlreadyRewinded(t, true);
+            }
             return rewinded;
         }
 
@@ -1010,6 +1021,23 @@ namespace DG.Tweening.Core
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;
         }
+
+        #region Helpers
+
+        // If isPlayBackwardsOrSmoothRewind is FALSE, it means this was a Rewind command
+        static void ManageOnRewindCallbackWhenAlreadyRewinded(Tween t, bool isPlayBackwardsOrSmoothRewind)
+        {
+            if (t.onRewind == null) return;
+            if (isPlayBackwardsOrSmoothRewind) {
+                // PlayBackwards or SmoothRewind
+                if (DOTween.rewindCallbackMode == RewindCallbackMode.FireAlways) t.onRewind();
+            } else {
+                // Rewind
+                if (DOTween.rewindCallbackMode != RewindCallbackMode.FireIfPositionChanged) t.onRewind();
+            }
+        }
+
+        #endregion
 
         #endregion
 
