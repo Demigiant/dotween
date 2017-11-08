@@ -740,7 +740,7 @@
             Returns NULL if there are no active playing tweens.
             <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
             </summary>
-            <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+            <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         </member>
         <member name="M:DG.Tweening.DOTween.PausedTweens(System.Collections.Generic.List{DG.Tweening.Tween})">
             <summary>
@@ -748,7 +748,7 @@
             Returns NULL if there are no active paused tweens.
             <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
             </summary>
-            <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+            <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         </member>
         <member name="M:DG.Tweening.DOTween.TweensById(System.Object,System.Boolean,System.Collections.Generic.List{DG.Tweening.Tween})">
             <summary>
@@ -757,7 +757,7 @@
             <para>Beware: each time you call this method a new list is generated</para>
             </summary>
             <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
-            <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+            <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         </member>
         <member name="M:DG.Tweening.DOTween.TweensByTarget(System.Object,System.Boolean,System.Collections.Generic.List{DG.Tweening.Tween})">
             <summary>
@@ -765,7 +765,7 @@
             Returns NULL if there are no active tweens with the given target.
             <para>Beware: each time you call this method a new list is generated</para>
             <param name="playingOnly">If TRUE returns only the tweens with the given target that are currently playing</param>
-            <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+            <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
             </summary>
         </member>
         <member name="T:DG.Tweening.DOVirtual">

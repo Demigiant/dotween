@@ -11,12 +11,13 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Rigidbody target;
-    public float duration = 1f;
+    public Transform target;
 
-    void Start()
+    IEnumerator Start()
     {
-        target.transform.DOJump(new Vector3(2.5f, 1.5f, -4.5f), 2, 1, duration).SetDelay(1)
-            .OnComplete(()=> Debug.Log(target.position));
+        yield return new WaitForSeconds(0.8f);
+
+        Tween t = target.DOShakeRotation(5f, new Vector3(0f, 20f, 20f), 4, 10f, true);
+//        Tween t = target.DOPunchRotation(new Vector3(0f, 0f, 20f), 5, 10);
     }
 }

@@ -15,6 +15,14 @@ namespace DG.Tweening
 
         #region Public Methods
 
+        #region Commands
+
+        
+
+        #endregion
+
+        #region Info Getters
+
         /// <summary>
         /// Returns TRUE if there are tweens with the given id, and they're all currently playing forward
         /// </summary>
@@ -65,6 +73,8 @@ namespace DG.Tweening
             List<Tween> tweens = DOTween.TweensByTarget(target, false, _RecyclableList);
             return AreAllPaused(tweens);
         }
+
+        #endregion
 
         #endregion
 

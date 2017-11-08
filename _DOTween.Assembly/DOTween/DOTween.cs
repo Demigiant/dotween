@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.1.665";
+        public static readonly string Version = "1.1.670";
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -924,9 +924,10 @@ namespace DG.Tweening
         /// Returns NULL if there are no active playing tweens.
         /// <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
         /// </summary>
-        /// <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+        /// <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         public static List<Tween> PlayingTweens(List<Tween> fillableList = null)
         {
+            if (fillableList != null) fillableList.Clear();
             return TweenManager.GetActiveTweens(true, fillableList);
         }
 
@@ -935,9 +936,10 @@ namespace DG.Tweening
         /// Returns NULL if there are no active paused tweens.
         /// <para>Beware: each time you call this method a new list is generated, so use it for debug only</para>
         /// </summary>
-        /// <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+        /// <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         public static List<Tween> PausedTweens(List<Tween> fillableList = null)
         {
+            if (fillableList != null) fillableList.Clear();
             return TweenManager.GetActiveTweens(false, fillableList);
         }
 
@@ -947,11 +949,12 @@ namespace DG.Tweening
         /// <para>Beware: each time you call this method a new list is generated</para>
         /// </summary>
         /// <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
-        /// <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+        /// <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         public static List<Tween> TweensById(object id, bool playingOnly = false, List<Tween> fillableList = null)
         {
             if (id == null) return null;
 
+            if (fillableList != null) fillableList.Clear();
             return TweenManager.GetTweensById(id, playingOnly, fillableList);
         }
 
@@ -960,10 +963,11 @@ namespace DG.Tweening
         /// Returns NULL if there are no active tweens with the given target.
         /// <para>Beware: each time you call this method a new list is generated</para>
         /// <param name="playingOnly">If TRUE returns only the tweens with the given target that are currently playing</param>
-        /// <param name="fillableList">If NULL creates a new list, otherwise fills this one (and thus saves allocations)</param>
+        /// <param name="fillableList">If NULL creates a new list, otherwise clears and fills this one (and thus saves allocations)</param>
         /// </summary>
         public static List<Tween> TweensByTarget(object target, bool playingOnly = false, List<Tween> fillableList = null)
         {
+            if (fillableList != null) fillableList.Clear();
             return TweenManager.GetTweensByTarget(target, playingOnly, fillableList);
         }
 
