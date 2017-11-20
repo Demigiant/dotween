@@ -126,33 +126,22 @@ namespace DG.Tweening
             }
 
             if (!t.hasManuallySetStartValue) {
-                if (DOTween.showErrorLog) {
-                    // Take start value from current target value
-                    if (DOTween.useSafeMode) {
-                        try {
-                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                        } catch(System.Exception e) {
-                            Debugger.LogError(e);
-                            return false; // Target/field doesn't exist: kill tween
-                        }
-                    } else {
-                        try {
-                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                        } catch(System.Exception e) {
-                            Debugger.LogError(e);
-                            throw e;
-                        }
+
+                // Take start value from current target value
+                if (DOTween.useSafeMode) {
+                    try {
+                        t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                    } catch (System.Exception e) {
+                        if(DOTween.showErrorLog) Debugger.LogError(e);
+                        return false; // Target/field doesn't exist: kill tween
                     }
                 } else {
-                    // Take start value from current target value
-                    if (DOTween.useSafeMode) {
-                        try {
-                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                        } catch {
-                            return false; // Target/field doesn't exist: kill tween
-                        }
-                    } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-
+                    try {
+                        t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                    } catch (System.Exception e) {
+                        if(DOTween.showErrorLog) Debugger.LogError(e);
+                        throw e;
+                    }
                 }
             }
 
@@ -208,37 +197,23 @@ namespace DG.Tweening
                     if (!DOStartupSpecials(t)) return null;
                 }
                 if (snapStartValue) {
-                    if (DOTween.showErrorLog) {
-                        // Reassign startValue with current target's value
-                        if (DOTween.useSafeMode) {
-                            try {
-                                t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                            } catch (System.Exception e) {
-                                Debugger.LogWarning(e);
-                                // Target/field doesn't exist: kill tween
-                                TweenManager.Despawn(t);
-                                return null;
-                            }
-                        } else {
-                            try {
-                                t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                            } catch (System.Exception e) {
-                                Debugger.LogWarning(e);
-                                throw e;
-                            }
+                    // Reassign startValue with current target's value
+                    if (DOTween.useSafeMode) {
+                        try {
+                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                        } catch (System.Exception e) {
+                            if (DOTween.showErrorLog) Debugger.LogWarning(e);
+                            // Target/field doesn't exist: kill tween
+                            TweenManager.Despawn(t);
+                            return null;
                         }
-                        
                     } else {
-                        // Reassign startValue with current target's value
-                        if (DOTween.useSafeMode) {
-                            try {
-                                t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                            } catch {
-                                // Target/field doesn't exist: kill tween
-                                TweenManager.Despawn(t);
-                                return null;
-                            }
-                        } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                        try {
+                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                        } catch (System.Exception e) {
+                            if(DOTween.showErrorLog) Debugger.LogWarning(e);
+                            throw e;
+                        }
                     }
                 }
                 t.tweenPlugin.SetChangeValue(t);

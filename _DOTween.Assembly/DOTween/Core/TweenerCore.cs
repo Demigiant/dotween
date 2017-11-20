@@ -174,33 +174,20 @@ namespace DG.Tweening.Core
         {
             float updatePosition = useInversePosition ? duration - position : position;
 
-            if(DOTween.showErrorLog) {
-                if (DOTween.useSafeMode) {
-                    try {
-                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
-                    } catch(Exception e) {
-                        Debugger.LogWarning(e);
-                        // Target/field doesn't exist anymore: kill tween
-                        return true;
-                    }
-                } else {
-                    try {
-                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
-                    } catch (Exception e) {
-                        Debugger.LogWarning(e);
-                        throw e;
-                    }
+            if (DOTween.useSafeMode) {
+                try {
+                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                } catch (Exception e) {
+                    if(DOTween.showErrorLog) Debugger.LogWarning(e);
+                    // Target/field doesn't exist anymore: kill tween
+                    return true;
                 }
             } else {
-                if (DOTween.useSafeMode) {
-                    try {
-                        tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
-                    } catch {
-                        // Target/field doesn't exist anymore: kill tween
-                        return true;
-                    }
-                } else {
+                try {
                     tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                } catch (Exception e) {
+                    if(DOTween.showErrorLog) Debugger.LogWarning(e);
+                    throw e;
                 }
             }
             return false;
