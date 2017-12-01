@@ -17,7 +17,7 @@ namespace DG.Tweening.Core
         public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
         public RewindCallbackMode rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
         public bool showUnityEditorReport;
-        public LogBehaviour logBehaviour = LogBehaviour.ErrorsOnly;
+        public LogBehaviour logBehaviour = LogBehaviour.Default;
         public bool drawGizmos = true;
         public bool defaultRecyclable;
         public AutoPlay defaultAutoPlay = AutoPlay.All;
