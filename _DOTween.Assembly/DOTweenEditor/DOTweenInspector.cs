@@ -19,15 +19,17 @@ namespace DG.DOTweenEditor
     [CustomEditor(typeof(DOTweenComponent))]
     public class DOTweenInspector : Editor
     {
+        DOTweenSettings _settings;
         string _title;
         readonly StringBuilder _strBuilder = new StringBuilder();
-        bool _showPlayingTweensData, _showPausedTweensData;
 
         // ===================================================================================
         // MONOBEHAVIOUR METHODS -------------------------------------------------------------
 
         void OnEnable()
         {
+            if (_settings == null) _settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
+
             _strBuilder.Remove(0, _strBuilder.Length);
             _strBuilder.Append("DOTween v").Append(DOTween.Version);
             if (DOTween.isDebugBuild) _strBuilder.Append(" [Debug build]");
@@ -57,8 +59,14 @@ namespace DG.DOTweenEditor
             if (GUILayout.Button("Check Updates")) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button(_showPlayingTweensData ? "Hide Playing Tweens" : "Show Playing Tweens")) _showPlayingTweensData = !_showPlayingTweensData;
-            if (GUILayout.Button(_showPausedTweensData ? "Hide Paused Tweens" : "Show Paused Tweens")) _showPausedTweensData = !_showPausedTweensData;
+            if (GUILayout.Button(_settings.showPlayingTweens ? "Hide Playing Tweens" : "Show Playing Tweens")) {
+                _settings.showPlayingTweens = !_settings.showPlayingTweens;
+                EditorUtility.SetDirty(_settings);
+            }
+            if (GUILayout.Button(_settings.showPausedTweens ? "Hide Paused Tweens" : "Show Paused Tweens")) {
+                _settings.showPausedTweens = !_settings.showPausedTweens;
+                EditorUtility.SetDirty(_settings);
+            }
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Play all")) DOTween.PlayAll();
@@ -74,13 +82,13 @@ namespace DG.DOTweenEditor
                 .Append("\nDefault/Late tweens: ").Append(totActiveDefaultTweens)
                     .Append("/").Append(totActiveLateTweens)
                     .Append("\nPlaying tweens: ").Append(totPlayingTweens);
-            if (_showPlayingTweensData) {
+            if (_settings.showPlayingTweens) {
                 foreach (Tween t in TweenManager._activeTweens) {
                     if (t != null && t.isPlaying) _strBuilder.Append("\n   - [").Append(t.tweenType).Append("] ").Append(t.target);
                 }
             }
             _strBuilder.Append("\nPaused tweens: ").Append(totPausedTweens);
-            if (_showPausedTweensData) {
+            if (_settings.showPausedTweens) {
                 foreach (Tween t in TweenManager._activeTweens) {
                     if (t != null && !t.isPlaying) _strBuilder.Append("\n   - [").Append(t.tweenType).Append("] ").Append(t.target);
                 }
