@@ -17,7 +17,11 @@ public class TempTests : BrainBase
     {
         yield return new WaitForSeconds(0.8f);
 
-        Tween t = target.DOShakeRotation(5f, new Vector3(0f, 20f, 20f), 4, 10f, true);
-//        Tween t = target.DOPunchRotation(new Vector3(0f, 0f, 20f), 5, 10);
+        Tween t = target.DOMoveX(2, 2);
+//        t.OnUpdate(t.Complete);
+        t.OnComplete(()=> Debug.Log("COMPLETE"));
+        yield return new WaitForSeconds(0.4f);
+
+        t.Complete();
     }
 }

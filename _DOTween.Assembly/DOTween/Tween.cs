@@ -254,7 +254,7 @@ namespace DG.Tweening
             if (newCompletedSteps > 0 && updateMode == UpdateMode.Update && t.onStepComplete != null) {
                 for (int i = 0; i < newCompletedSteps; ++i) OnTweenCallback(t.onStepComplete);
             }
-            if (t.isComplete && !wasComplete && t.onComplete != null) {
+            if (t.isComplete && !wasComplete && updateMode != UpdateMode.IgnoreOnComplete && t.onComplete != null) {
                 OnTweenCallback(t.onComplete);
             }
             if (!t.isPlaying && wasPlaying && (!t.isComplete || !t.autoKill) && t.onPause != null) {

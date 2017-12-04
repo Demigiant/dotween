@@ -55,7 +55,10 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
-            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
+//            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
+            UpdateMode updateMode = TweenManager.isUpdateLoop ? UpdateMode.IgnoreOnComplete
+                : withCallbacks ? UpdateMode.Update : UpdateMode.Goto;
+            TweenManager.Complete(t, true, updateMode);
         }
 
         /// <summary>Flips the direction of this tween (backwards if it was going forward or viceversa)</summary>
