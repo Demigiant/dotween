@@ -6,18 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class TempPro : MonoBehaviour
 {
-    public Transform target;
+    public GameObject target;
 
-    void Start()
+    IEnumerator Start()
     {
-//        target.DOScale(2, 0.1f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).Pause();
-    }
+        GameObject newPath = Instantiate(target);
+        newPath.transform.SetParent(this.transform.parent, false);
+        yield return new WaitForSeconds(1);
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Debug.Log(DOTween.TweensByTarget(target).Count);
-            target.DOPlay();
-        } else if (Input.GetKeyDown(KeyCode.E)) target.GetComponent<DOTweenAnimation>().DOPlay();
+        newPath = Instantiate(target);
+        newPath.transform.SetParent(this.transform.parent, false);
+        yield return new WaitForSeconds(2);
     }
 }

@@ -1283,6 +1283,7 @@ namespace DG.Tweening
             return t;
         }
 
+#if !COMPATIBLE
         // Added by Steve Streeting > https://github.com/sinbad
         /// <summary>Punches a Transform's localRotation BY the given value and then back to the starting one
         /// as if it was connected to the starting rotation via an elastic. Does it in a way that allows other
@@ -1314,6 +1315,7 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
             return t;
         }
+#endif
 
         /// <summary>Tweens a Transform's localScale BY the given value (as if you chained a <code>SetRelative</code>),
         /// in a way that allows other DOBlendableScale tweens to work together on the same target,
