@@ -115,6 +115,7 @@ namespace DG.Tweening
             timeScale = 1;
             isBackwards = false;
             id = null;
+            intId = -999;
             isIndependentUpdate = false;
             onStart = onPlay = onRewind = onUpdate = onComplete = onStepComplete = onKill = null;
             onWaypointChange = null;
