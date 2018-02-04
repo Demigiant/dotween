@@ -470,15 +470,6 @@ namespace DG.Tweening
             s.Append(DOTween.To(() => target.position, target.MovePosition, new Vector3(endValue.x, 0, 0), duration)
 #endif
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
-                    .OnUpdate(() => {
-                        if (!offsetYSet) {
-                            offsetYSet = true;
-                            offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
-                        }
-                        Vector3 pos = target.position;
-                        pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-                        target.MovePosition(pos);
-                    })
 #if COMPATIBLE
                 ).Join(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, 0, endValue.z), duration)
 #else
@@ -492,7 +483,16 @@ namespace DG.Tweening
 #endif
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
                     .SetLoops(numJumps * 2, LoopType.Yoyo).SetRelative()
-                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
+                ).SetTarget(target).SetEase(DOTween.defaultEaseType)
+                .OnUpdate(() => {
+                    if (!offsetYSet) {
+                        offsetYSet = true;
+                        offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
+                    }
+                    Vector3 pos = target.position;
+                    pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                    target.MovePosition(pos);
+                });
             return s;
         }
 
@@ -974,25 +974,24 @@ namespace DG.Tweening
             float offsetY = -1;
             bool offsetYSet = false;
 
-
             Sequence s = DOTween.Sequence();
             s.Append(DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue.x, 0, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
-                    .OnUpdate(() => {
-                        if (!offsetYSet) {
-                            offsetYSet = true;
-                            offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
-                        }
-                        Vector3 pos = target.position;
-                        pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-                        target.position = pos;
-                    })
                 ).Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue.z), duration)
                     .SetOptions(AxisConstraint.Z, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
                     .SetLoops(numJumps * 2, LoopType.Yoyo)
-                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
+                ).SetTarget(target).SetEase(DOTween.defaultEaseType)
+                .OnUpdate(() => {
+                    if (!offsetYSet) {
+                        offsetYSet = true;
+                        offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
+                    }
+                    Vector3 pos = target.position;
+                    pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                    target.position = pos;
+                });
             return s;
         }
         /// <summary>Tweens a Transform's localPosition to the given value, while also applying a jump effect along the Y axis.
@@ -1012,21 +1011,21 @@ namespace DG.Tweening
             Sequence s = DOTween.Sequence();
             s.Append(DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(endValue.x, 0, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
-                    .OnUpdate(() => {
-                        if (!offsetYSet) {
-                            offsetYSet = false;
-                            offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
-                        }
-                        Vector3 pos = target.localPosition;
-                        pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-                        target.localPosition = pos;
-                    })
                 ).Join(DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, 0, endValue.z), duration)
                     .SetOptions(AxisConstraint.Z, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                     .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
                     .SetLoops(numJumps * 2, LoopType.Yoyo)
-                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
+                ).SetTarget(target).SetEase(DOTween.defaultEaseType)
+                .OnUpdate(() => {
+                    if (!offsetYSet) {
+                        offsetYSet = false;
+                        offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
+                    }
+                    Vector3 pos = target.localPosition;
+                    pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
+                    target.localPosition = pos;
+                });
             return s;
         }
 
