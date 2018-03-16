@@ -286,7 +286,14 @@ namespace DG.Tweening
                 for (int i = 0; i < len; ++i) {
                     if (!s.active) return true; // Killed by some internal callback
                     ABSSequentiable sequentiable = s._sequencedObjs[i];
-                    if (sequentiable.sequencedPosition > toPos || sequentiable.sequencedEndPosition < fromPos) continue;
+//                    if (sequentiable.sequencedPosition > toPos || sequentiable.sequencedEndPosition < fromPos) continue;
+                    // Fix rare case with high FPS when a tween/callback might happen in same exact time as it's set
+                    // This fixes it but should check for backwards tweens and loops
+                    if (
+                        sequentiable.sequencedPosition > toPos
+                        || sequentiable.sequencedPosition > 0 && sequentiable.sequencedEndPosition <= fromPos
+                        || sequentiable.sequencedPosition <= 0 && sequentiable.sequencedEndPosition < fromPos
+                    ) continue;
                     if (sequentiable.tweenType == TweenType.Callback) {
                         if (updateMode == UpdateMode.Update) {
 //                            Debug.Log("<color=#FFEC03>FORWARD Callback > " + s.id + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + "</color>");
