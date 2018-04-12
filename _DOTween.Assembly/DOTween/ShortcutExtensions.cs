@@ -168,6 +168,16 @@ namespace DG.Tweening
             return DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
         }
 
+        /// <summary>Tweens a Material's named color property to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The name ID of the material property to tween (like _Tint or _SpecColor)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOColor(this Material target, Color endValue, int propertyID, float duration)
+        {
+            return DOTween.To(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration).SetTarget(target);
+        }
+
         /// <summary>Tweens a Material's alpha color to the given value
         /// (will have no effect unless your material supports transparency).
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -188,6 +198,16 @@ namespace DG.Tweening
             return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
         }
 
+        /// <summary>Tweens a Material's named float property to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The name ID of the material property to tween</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOFloat(this Material target, float endValue, int propertyID, float duration)
+        {
+            return DOTween.To(() => target.GetFloat(propertyID), x => target.SetFloat(propertyID, x), endValue, duration).SetTarget(target);
+        }
+
         /// <summary>Tweens a Material's named Vector property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
@@ -196,6 +216,16 @@ namespace DG.Tweening
         public static Tweener DOVector(this Material target, Vector4 endValue, string property, float duration)
         {
             return DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Material's named Vector property to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The name ID of the material property to tween</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOVector(this Material target, Vector4 endValue, int propertyID, float duration)
+        {
+            return DOTween.To(() => target.GetVector(propertyID), x => target.SetVector(propertyID, x), endValue, duration).SetTarget(target);
         }
 
         #endregion
