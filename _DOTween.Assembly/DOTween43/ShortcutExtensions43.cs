@@ -110,6 +110,7 @@ namespace DG.Tweening
 
         #endregion
 
+#if RIGIDBODY
         #region Rigidbody2D Shortcuts
 
         /// <summary>Tweens a Rigidbody2D's position to the given value.
@@ -210,6 +211,7 @@ namespace DG.Tweening
         #endregion
 
         #endregion
+#endif
 
         #region Blendables
 

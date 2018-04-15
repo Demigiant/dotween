@@ -18,6 +18,9 @@ namespace DG.DOTweenEditor
     /// </summary>
     class DOTweenSetupMenuItem
     {
+        public const string GlobalDefine_TK2D = "DOTWEEN_TK2D";
+        public const string GlobalDefine_TextMeshPro = "DOTWEEN_TMP";
+        public const string GlobalDefine_NoRigidbody = "DOTWEEN_NORBODY";
         const string _Title = "DOTween Setup";
         static Assembly _proEditorAssembly;
 
@@ -71,13 +74,20 @@ namespace DG.DOTweenEditor
                 // PRO > 2DToolkit shortcuts
                 if (Has2DToolkit()) {
                     totImported += ImportAddons("Tk2d", proAddonsDir);
-                    ProEditor_AddGlobalDefine("DOTWEEN_TK2D");
-                } else ProEditor_RemoveGlobalDefine("DOTWEEN_TK2D");
+                    ProEditor_AddGlobalDefine(GlobalDefine_TK2D);
+                } else ProEditor_RemoveGlobalDefine(GlobalDefine_TK2D);
                 // PRO > TextMeshPro shortcuts
                 if (HasTextMeshPro()) {
                     totImported += ImportAddons("TextMeshPro", proAddonsDir);
-                    ProEditor_AddGlobalDefine("DOTWEEN_TMP");
-                } else ProEditor_RemoveGlobalDefine("DOTWEEN_TMP");
+                    ProEditor_AddGlobalDefine(GlobalDefine_TextMeshPro);
+                } else ProEditor_RemoveGlobalDefine(GlobalDefine_TextMeshPro);
+                // PRO > Rigidbody inclusion
+#if RIGIDBODY
+                ProEditor_RemoveGlobalDefine(GlobalDefine_NoRigidbody);
+#else
+                totImported += ImportAddons("TextMeshPro", proAddonsDir);
+                ProEditor_AddGlobalDefine(GlobalDefine_NoRigidbody);
+#endif
             }
 
             SetupComplete(addonsDir, proAddonsDir, totImported);

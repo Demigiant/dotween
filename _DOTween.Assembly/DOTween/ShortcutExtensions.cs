@@ -355,6 +355,7 @@ namespace DG.Tweening
 
         #endregion
 
+#if RIGIDBODY
         #region Rigidbody Shortcuts
 
         /// <summary>Tweens a Rigidbody's position to the given value.
@@ -574,11 +575,12 @@ namespace DG.Tweening
             return t;
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
+#endif
 
-#region TrailRenderer Shortcuts
+        #region TrailRenderer Shortcuts
 
         /// <summary>Tweens a TrailRenderer's startWidth/endWidth to the given value.
         /// Also stores the TrailRenderer as the tween's target so it can be used for filtered operations</summary>
@@ -607,9 +609,9 @@ namespace DG.Tweening
                 .SetTarget(target);
         }
 
-#endregion
+        #endregion
 
-#region Transform Shortcuts
+        #region Transform Shortcuts
 
         /// <summary>Tweens a Transform's position to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
@@ -957,7 +959,7 @@ namespace DG.Tweening
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
 
-#region Special
+        #region Special
 
         /// <summary>Tweens a Transform's position to the given value, while also applying a jump effect along the Y axis.
         /// Returns a Sequence instead of a Tweener.
@@ -1136,9 +1138,9 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
         }
 
-#endregion
+        #endregion
 
-#region Material
+        #region Material
 
         /// <summary>Tweens a Material's color to the given value,
         /// in a way that allows other DOBlendableColor tweens to work together on the same target,
@@ -1188,9 +1190,9 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
         }
 
-#endregion
+        #endregion
 
-#region Transform
+        #region Transform
 
         /// <summary>Tweens a Transform's position BY the given value (as if you chained a <code>SetRelative</code>),
         /// in a way that allows other DOBlendableMove tweens to work together on the same target,
@@ -1336,14 +1338,14 @@ namespace DG.Tweening
                 .Blendable().SetTarget(target);
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
         // ===================================================================================
         // OPERATION SHORTCUTS ---------------------------------------------------------------
 
-#region Operation Shortcuts
+        #region Operation Shortcuts
 
         /// <summary>
         /// Completes all tweens that have this target as a reference
@@ -1589,6 +1591,6 @@ namespace DG.Tweening
             return DOTween.TogglePause(target);
         }
 
-#endregion
+        #endregion
     }
 }
