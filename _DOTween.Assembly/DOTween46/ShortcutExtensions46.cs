@@ -238,6 +238,33 @@ namespace DG.Tweening
             return DOTween.To(() => target.anchoredPosition3D, x => target.anchoredPosition3D = x, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
+        /// <summary>Tweens a RectTransform's anchoredPosition3D X to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOAnchorPos3DX(this RectTransform target, float endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.anchoredPosition3D, x => target.anchoredPosition3D = x, new Vector3(endValue, 0, 0), duration)
+                .SetOptions(AxisConstraint.X, snapping).SetTarget(target);
+        }
+        /// <summary>Tweens a RectTransform's anchoredPosition3D Y to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOAnchorPos3DY(this RectTransform target, float endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.anchoredPosition3D, x => target.anchoredPosition3D = x, new Vector3(0, endValue, 0), duration)
+                .SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
+        }
+        /// <summary>Tweens a RectTransform's anchoredPosition3D Z to the given value.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener DOAnchorPos3DZ(this RectTransform target, float endValue, float duration, bool snapping = false)
+        {
+            return DOTween.To(() => target.anchoredPosition3D, x => target.anchoredPosition3D = x, new Vector3(0, 0, endValue), duration)
+                .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
+        }
 
         /// <summary>Tweens a RectTransform's anchorMax to the given value.
         /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
