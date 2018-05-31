@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
     <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE;COMPATIBLE</DefineConstants>
+    <DefineConstants>TRACE;COMPATIBLE,RIGIDBODY</DefineConstants>
     <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>1573</NoWarn>
