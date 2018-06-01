@@ -67,8 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomYieldInstructions\WaitForCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShortcutExtensions50.cs" />
+    <Compile Include="TweenExtensions53.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DOTween\DOTween.csproj">
@@ -77,6 +79,7 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set BinDir=bin.Global\DOTween

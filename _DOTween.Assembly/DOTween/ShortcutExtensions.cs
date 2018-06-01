@@ -461,19 +461,21 @@ namespace DG.Tweening
         public static Sequence DOJump(this Rigidbody target, Vector3 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            float startPosY = target.position.y;
+            float startPosY = 0;
             float offsetY = -1;
             bool offsetYSet = false;
             Sequence s = DOTween.Sequence();
 #if COMPATIBLE
             Tween yTween = DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                 .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
-                .SetLoops(numJumps * 2, LoopType.Yoyo);
+                .SetLoops(numJumps * 2, LoopType.Yoyo)
+                .OnStart(()=> startPosY = target.position.y);
             s.Append(DOTween.To(() => target.position, x => target.MovePosition(x.value), new Vector3(endValue.x, 0, 0), duration)
 #else
             Tween yTween = DOTween.To(() => target.position, target.MovePosition, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                 .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
-                .SetLoops(numJumps * 2, LoopType.Yoyo);
+                .SetLoops(numJumps * 2, LoopType.Yoyo)
+                .OnStart(() => startPosY = target.position.y);
             s.Append(DOTween.To(() => target.position, target.MovePosition, new Vector3(endValue.x, 0, 0), duration)
 #endif
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
@@ -972,7 +974,7 @@ namespace DG.Tweening
         public static Sequence DOJump(this Transform target, Vector3 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            float startPosY = target.position.y;
+            float startPosY = 0;
             float offsetY = -1;
             bool offsetYSet = false;
 
@@ -981,7 +983,8 @@ namespace DG.Tweening
             Sequence s = DOTween.Sequence();
             Tween yTween = DOTween.To(() => target.position, x => target.position = x, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                 .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
-                .SetLoops(numJumps * 2, LoopType.Yoyo);
+                .SetLoops(numJumps * 2, LoopType.Yoyo)
+                .OnStart(()=> startPosY = target.position.y);
             s.Append(DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue.x, 0, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue.z), duration)

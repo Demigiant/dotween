@@ -108,5 +108,18 @@
             and returns the total number of tweens involved.
             </summary>
         </member>
+        <member name="T:DG.Tweening.TweenExtensions53">
+            <summary>
+            Methods that extend Tween objects and allow to control or get data from them.
+            These require at least Unity 5.3
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.TweenExtensions53.WaitForCompletionCY(DG.Tweening.Tween)">
+            <summary>
+            Returns a <see cref="T:UnityEngine.CustomYieldInstruction"/> that waits until the tween is killed or complete.
+            It can be used inside a coroutine as a yield.
+            <para>Example usage:</para><code>yield return myTween.WaitForCompletionCY();</code>
+            </summary>
+        </member>
     </members>
 </doc>
