@@ -13,7 +13,7 @@ public class CustomYieldInstructions : BrainBase
         yield return new WaitForSeconds(1);
 
         Debug.Log("01");
-        yield return target.DOMoveX(2, 1).WaitForCompletionCY();
+        yield return target.DOMoveX(2, 1).WaitForCompletion(true);
         Debug.Log("02");
     }
 }

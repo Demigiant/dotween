@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomYieldInstructions\WaitForCompletion.cs" />
+    <Compile Include="CustomYieldInstructions\DOTweenCYInstruction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShortcutExtensions50.cs" />
     <Compile Include="TweenExtensions53.cs" />
