@@ -460,6 +460,7 @@ namespace DG.Tweening
             }
 
             if (includeLoops) {
+                if (t.fullDuration <= 0) return 0;
                 int loopsToCount = t.position >= t.duration ? t.completedLoops - 1 : t.completedLoops;
                 return ((loopsToCount * t.duration) + t.position) / t.fullDuration;
             }

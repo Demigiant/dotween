@@ -15,14 +15,11 @@ public class TempTests : BrainBase
 
     IEnumerator Start()
     {
+        Tween t = target.DOMoveX(2, 4).Pause();
         yield return new WaitForSeconds(1);
 
-        Sequence s = DOTween.Sequence()
-            .OnStart(() => Debug.Log("START"))
-            .Append(target.DOMoveX(2, 1).OnStart(() => Debug.Log("Append X")))
-            .SetDelay(1)
-            .Join(target.DOMoveY(2, 1).OnStart(() => Debug.Log("Join y")))
-            .SetDelay(2)
-            .OnComplete(()=> Debug.Log("COMPLETE"));
+        Debug.Log(t.Duration());
+        Debug.Log(t.ElapsedPercentage());
+
     }
 }
