@@ -1,26 +1,19 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
-// Created: 2014/09/29 11:53
-// 
-// License Copyright (c) Daniele Giardini.
-// This work is subject to the terms at http://dotween.demigiant.com/license.php
+// Created: 2018/07/13
 
-using DG.Tweening.Core;
-using DG.Tweening.Core.Enums;
+#if DOTUI && (UNITY_4_6 || UNITY_5 || UNITY_2017_0_OR_NEWER)
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-#if COMPATIBLE
-using DG.Tweening.Core.Surrogates;
-#endif
+using DG.Tweening.Core;
+using DG.Tweening.Core.Enums;
 
+#pragma warning disable 1591
 namespace DG.Tweening
 {
-    /// <summary>
-    /// Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
-    /// These, as all DOTween46 methods, require Unity 4.6 or later.
-    /// </summary>
-    public static class ShortcutExtensions46
+	public static class DOTweenModuleUI
     {
-        #region Unity UI
+        #region Shortcuts
 
         #region CanvasGroup
 
@@ -120,13 +113,8 @@ namespace DG.Tweening
         public static Tweener DOFlexibleSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.flexibleWidth, target.flexibleHeight), x => {
-#if COMPATIBLE
-                    target.flexibleWidth = x.value.x;
-                    target.flexibleHeight = x.value.y;
-#else
                     target.flexibleWidth = x.x;
                     target.flexibleHeight = x.y;
-#endif
                 }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -138,13 +126,8 @@ namespace DG.Tweening
         public static Tweener DOMinSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.minWidth, target.minHeight), x => {
-#if COMPATIBLE
-                target.minWidth = x.value.x;
-                target.minHeight = x.value.y;
-#else
                 target.minWidth = x.x;
                 target.minHeight = x.y;
-#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -156,13 +139,8 @@ namespace DG.Tweening
         public static Tweener DOPreferredSize(this LayoutElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             return DOTween.To(() => new Vector2(target.preferredWidth, target.preferredHeight), x => {
-#if COMPATIBLE
-                target.preferredWidth = x.value.x;
-                target.preferredHeight = x.value.y;
-#else
                 target.preferredWidth = x.x;
                 target.preferredHeight = x.y;
-#endif
             }, endValue, duration)
                 .SetOptions(snapping).SetTarget(target);
         }
@@ -404,28 +382,6 @@ namespace DG.Tweening
                 target.anchoredPosition = pos;
             });
             return s;
-
-//            if (numJumps < 1) numJumps = 1;
-//            float startPosY = target.anchoredPosition.y;
-//            float offsetY = -1;
-//            bool offsetYSet = false;
-//            Sequence s = DOTween.Sequence()
-//                .Append(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(endValue.x, 0), duration)
-//                    .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
-//                ).Join(DOTween.To(() => target.anchoredPosition, x => target.anchoredPosition = x, new Vector2(0, jumpPower), duration / (numJumps * 2))
-//                    .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad)
-//                    .SetLoops(numJumps * 2, LoopType.Yoyo).SetRelative()
-//                ).SetTarget(target).SetEase(DOTween.defaultEaseType);
-//            s.OnUpdate(() => {
-//                if (!offsetYSet) {
-//                    offsetYSet = true;
-//                    offsetY = s.isRelative ? endValue.y : endValue.y - startPosY;
-//                }
-//                Vector2 pos = target.anchoredPosition;
-//                pos.y += DOVirtual.EasedValue(0, offsetY, s.ElapsedDirectionalPercentage(), Ease.OutQuad);
-//                target.anchoredPosition = pos;
-//            });
-//            return s;
         }
 
         #endregion
@@ -440,19 +396,11 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static Tweener DONormalizedPos(this ScrollRect target, Vector2 endValue, float duration, bool snapping = false)
         {
-#if COMPATIBLE
-            return DOTween.To(() => new Vector2Wrapper(target.horizontalNormalizedPosition, target.verticalNormalizedPosition),
-                x => {
-                    target.horizontalNormalizedPosition = x.value.x;
-                    target.verticalNormalizedPosition = x.value.y;
-                }, endValue, duration)
-#else
             return DOTween.To(() => new Vector2(target.horizontalNormalizedPosition, target.verticalNormalizedPosition),
                 x => {
                     target.horizontalNormalizedPosition = x.x;
                     target.verticalNormalizedPosition = x.y;
                 }, endValue, duration)
-#endif
                 .SetOptions(snapping).SetTarget(target);
         }
         /// <summary>Tweens a ScrollRect's horizontalNormalizedPosition to the given value.
@@ -527,8 +475,6 @@ namespace DG.Tweening
 
         #endregion
 
-        #endregion
-
         #region Blendables
 
         #region Graphic
@@ -543,11 +489,7 @@ namespace DG.Tweening
             endValue = endValue - target.color;
             Color to = new Color(0, 0, 0, 0);
             return DOTween.To(() => to, x => {
-#if COMPATIBLE
-                Color diff = x.value - to;
-#else
                 Color diff = x - to;
-#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -568,11 +510,7 @@ namespace DG.Tweening
             endValue = endValue - target.color;
             Color to = new Color(0, 0, 0, 0);
             return DOTween.To(() => to, x => {
-#if COMPATIBLE
-                Color diff = x.value - to;
-#else
                 Color diff = x - to;
-#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -593,11 +531,7 @@ namespace DG.Tweening
             endValue = endValue - target.color;
             Color to = new Color(0, 0, 0, 0);
             return DOTween.To(() => to, x => {
-#if COMPATIBLE
-                Color diff = x.value - to;
-#else
                 Color diff = x - to;
-#endif
                 to = x;
                 target.color += diff;
             }, endValue, duration)
@@ -607,5 +541,30 @@ namespace DG.Tweening
         #endregion
 
         #endregion
-    }
+
+        #endregion
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        public static class Utils
+        {
+            /// <summary>
+            /// Converts the anchoredPosition of the first RectTransform to the second RectTransform,
+            /// taking into consideration offset, anchors and pivot, and returns the new anchoredPosition
+            /// </summary>
+            public static Vector2 SwitchToRectTransform(RectTransform from, RectTransform to)
+            {
+                Vector2 localPoint;
+                Vector2 fromPivotDerivedOffset = new Vector2(from.rect.width * 0.5f + from.rect.xMin, from.rect.height * 0.5f + from.rect.yMin);
+                Vector2 screenP = RectTransformUtility.WorldToScreenPoint(null, from.position);
+                screenP += fromPivotDerivedOffset;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(to, screenP, null, out localPoint);
+                Vector2 pivotDerivedOffset = new Vector2(to.rect.width * 0.5f + to.rect.xMin, to.rect.height * 0.5f + to.rect.yMin);
+                return to.anchoredPosition + localPoint - pivotDerivedOffset;
+            }
+        }
+	}
 }
+#endif

@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.IO;
+using System.Text;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace DG.DOTweenEditor.Core
         public static string pathSlash { get; private set; } // for full paths
         public static string pathSlashToReplace { get; private set; } // for full paths
 
+        static readonly StringBuilder _Strb = new StringBuilder();
         static bool _hasPro;
         static string _proVersion;
         static bool _hasCheckedForPro;
@@ -87,6 +89,37 @@ namespace DG.DOTweenEditor.Core
             return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
         }
 
+        // Deletes the files used in older versions of DOTween where Modules still didn't exist
+        public static void DeleteLegacyNoModulesDOTweenFiles()
+        {
+            string adbDOTweenDir = FullPathToADBPath(dotweenDir);
+            AssetDatabase.StartAssetEditing();
+            DeleteAssetsIfExist(new[] {
+                adbDOTweenDir + "/DOTween43.dll",
+                adbDOTweenDir + "/DOTween43.xml",
+                adbDOTweenDir + "/DOTween43.dll.mdb",
+                adbDOTweenDir + "/DOTween43.dll.addon",
+                adbDOTweenDir + "/DOTween43.xml.addon",
+                adbDOTweenDir + "/DOTween43.dll.mdb.addon",
+                adbDOTweenDir + "/DOTween46.dll",
+                adbDOTweenDir + "/DOTween46.xml",
+                adbDOTweenDir + "/DOTween46.dll.mdb",
+                adbDOTweenDir + "/DOTween46.dll.addon",
+                adbDOTweenDir + "/DOTween46.xml.addon",
+                adbDOTweenDir + "/DOTween46.dll.mdb.addon",
+                adbDOTweenDir + "/DOTween50.dll",
+                adbDOTweenDir + "/DOTween50.xml",
+                adbDOTweenDir + "/DOTween50.dll.mdb",
+                adbDOTweenDir + "/DOTween50.dll.addon",
+                adbDOTweenDir + "/DOTween50.xml.addon",
+                adbDOTweenDir + "/DOTween50.dll.mdb.addon",
+                //
+                adbDOTweenDir + "/DOTweenTextMeshPro.cs.addon",
+                adbDOTweenDir + "/DOTweenTk2d.cs.addon",
+            });
+            AssetDatabase.StopAssetEditing();
+        }
+
         // Deletes old DemiLib core if new one (inside Core directory) exists
         public static void DeleteOldDemiLibCore()
         {
@@ -117,6 +150,7 @@ namespace DG.DOTweenEditor.Core
                 AssetDatabase.ImportAsset(demiLibNewCoreDir, ImportAssetOptions.ImportRecursive);
             }
         }
+
         static void DeleteAssetsIfExist(string[] adbFilePaths)
         {
             foreach (string f in adbFilePaths) {
@@ -204,6 +238,70 @@ namespace DG.DOTweenEditor.Core
 
             // Invalid path, use Location
             return Path.GetFullPath(assembly.Location);
+        }
+
+        /// <summary>
+        /// Adds the given global define if it's not already present
+        /// </summary>
+        public static void AddGlobalDefine(string id)
+        {
+            bool added = false;
+            BuildTargetGroup[] targetGroups = (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup));
+            foreach(BuildTargetGroup btg in targetGroups) {
+                if (btg == BuildTargetGroup.Unknown) continue;
+                string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
+                string[] singleDefs = defs.Split(';');
+                if (Array.IndexOf(singleDefs, id) != -1) continue; // Already present
+                added = true;
+                defs += defs.Length > 0 ? ";" + id : id;
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, defs);
+            }
+            if (added) Debug.Log("DOTween : added global define " + id);
+        }
+
+        /// <summary>
+        /// Removes the given global define if it's present
+        /// </summary>
+        public static void RemoveGlobalDefine(string id)
+        {
+            bool removed = false;
+            BuildTargetGroup[] targetGroups = (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup));
+            foreach(BuildTargetGroup btg in targetGroups) {
+                if (btg == BuildTargetGroup.Unknown) continue;
+                string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
+                string[] singleDefs = defs.Split(';');
+                if (Array.IndexOf(singleDefs, id) == -1) continue; // Not present
+                removed = true;
+                _Strb.Length = 0;
+                for (int i = 0; i < singleDefs.Length; ++i) {
+                    if (singleDefs[i] == id) continue;
+                    if (_Strb.Length > 0) _Strb.Append(';');
+                    _Strb.Append(singleDefs[i]);
+                }
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, _Strb.ToString());
+            }
+            _Strb.Length = 0;
+            if (removed) Debug.Log("DOTween : removed global define " + id);
+        }
+
+        /// <summary>
+        /// Returns TRUE if the given global define is present in all the <see cref="BuildTargetGroup"/>
+        /// or only in the given <see cref="BuildTargetGroup"/>, depending on passed parameters.<para/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="buildTargetGroup"><see cref="BuildTargetGroup"/>to use. Leave NULL to check in all of them.</param>
+        public static bool HasGlobalDefine(string id, BuildTargetGroup? buildTargetGroup = null)
+        {
+            BuildTargetGroup[] targetGroups = buildTargetGroup == null
+                ? (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))
+                : new[] {(BuildTargetGroup)buildTargetGroup};
+            foreach(BuildTargetGroup btg in targetGroups) {
+                if (btg == BuildTargetGroup.Unknown) continue;
+                string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
+                string[] singleDefs = defs.Split(';');
+                if (Array.IndexOf(singleDefs, id) != -1) return true;
+            }
+            return false;
         }
 
         // ===================================================================================

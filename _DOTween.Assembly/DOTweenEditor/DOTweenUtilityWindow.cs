@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace DG.DOTweenEditor
 {
-    public class UtilityWindowModificationProcessor : AssetModificationProcessor
+    public class UtilityWindowModificationProcessor : UnityEditor.AssetModificationProcessor
     {
         // Checks if deleted folder contains DOTween Pro and in case removes scripting define symbols
         static AssetDeleteResult OnWillDeleteAsset(string asset, RemoveAssetOptions options)
@@ -20,7 +20,7 @@ namespace DG.DOTweenEditor
             // Check if asset is a directory
             string dir = EditorUtils.ADBPathToFullPath(asset);
             if (!Directory.Exists(dir)) return AssetDeleteResult.DidNotDelete;
-            // Check if directory contains DOTweenPro.dll
+            // Check if directory contains DOTween.dll
             string[] files = Directory.GetFiles(dir, "DOTween.dll", SearchOption.AllDirectories);
             int len = files.Length;
             bool containsDOTween = false;
@@ -31,10 +31,19 @@ namespace DG.DOTweenEditor
             }
             if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
             // DOTween found: remove scripting define symbols
-            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TK2D);
-            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TextMeshPro);
-            DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_NoRigidbody);
-            EditorUtility.DisplayDialog("DOTween Deleted", "DOTween was deleted and any of its scripting define symbols removed.\nThis might show an error depending on your previous setup. If this happens, please close and reopen Unity or reimport DOTween.", "Ok");
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_AudioModule);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_PhysicsModule);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Physics2DModule);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_SpriteModule);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_UIModule);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TK2D);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TextMeshPro);
+            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Legacy_NoRigidbody);
+            // Remove EditorPrefs
+            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
+            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
+            //
+            EditorUtility.DisplayDialog("DOTween Deleted", "DOTween was deleted and all of its scripting define symbols removed.\nThis might show an error depending on your previous setup. If this happens, please close and reopen Unity or reimport DOTween.", "Ok");
             return AssetDeleteResult.DidNotDelete;
         }
     }
@@ -50,24 +59,22 @@ namespace DG.DOTweenEditor
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
             if (dotweenImported) {
+                // Delete old DOTween files
+                EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                 // Delete old DemiLib configuration
                 EditorUtils.DeleteOldDemiLibCore();
-                // Setup rigidbody/no rigidbody version
-#if RIGIDBODY
-                DOTweenSetupMenuItem.ProEditor_RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_NoRigidbody);
-#else
-                DOTweenSetupMenuItem.ProEditor_AddGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_NoRigidbody);
-
-#endif
+                // Remove old NoRigidbody define
+                EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Legacy_NoRigidbody);
                 //
-                bool openSetupDialog = EditorUtils.DOTweenSetupRequired()
-                    && (EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version
-                    || EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion);
+                bool openSetupDialog = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version
+                                       || EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
                 if (openSetupDialog) {
+                    Debug.Log("Should open setup dialogue");
                     _setupDialogRequested = true;
                     EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
                     EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-                    EditorUtility.DisplayDialog("DOTween", "DOTween needs to be setup.\n\nSelect \"Tools > DOTween Utility Panel\" and press \"Setup DOTween...\" in the panel that opens.", "Ok");
+                    EditorUtility.DisplayDialog("DOTween", "New version of DOTween imported.\n\nSelect \"Tools > Demigiant > DOTween Utility Panel\" and press \"Setup DOTween...\" in the window that opens to set it up.", "Ok");
+//                    EditorUtility.DisplayDialog("DOTween", "New version of DOTween imported.\n\nUse the Setup Panel to add/remove its Modules.", "Ok");
                     // Opening window after a postProcess doesn't work on Unity 3 so check that
                     string[] vs = Application.unityVersion.Split("."[0]);
                     int majorVersion = System.Convert.ToInt32(vs[0]);
@@ -96,6 +103,7 @@ namespace DG.DOTweenEditor
         bool _setupRequired;
 
         int _selectedTab;
+        bool _isModulesMode;
         string[] _tabLabels = new[] { "Setup", "Preferences" };
         string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources", "Demigiant > Resources"};
 
@@ -141,6 +149,11 @@ namespace DG.DOTweenEditor
             _setupRequired = EditorUtils.DOTweenSetupRequired();
         }
 
+        void OnDisable()
+        {
+            _isModulesMode = false;
+        }
+
         void OnGUI()
         {
             Connect();
@@ -154,16 +167,20 @@ namespace DG.DOTweenEditor
                 GUILayout.Space(40);
                 GUILayout.EndHorizontal();
             } else {
-                Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
-                _selectedTab = GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
+                if (_isModulesMode) {
+                    if (DOTweenModulesSetupGUI.Draw()) _isModulesMode = false;
+                } else {
+                    Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
+                    _selectedTab = GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
 
-                switch (_selectedTab) {
-                case 1:
-                    DrawPreferencesGUI();
-                    break;
-                default:
-                    DrawSetupGUI();
-                    break;
+                    switch (_selectedTab) {
+                    case 1:
+                        DrawPreferencesGUI();
+                        break;
+                    default:
+                        DrawSetupGUI();
+                        break;
+                    }
                 }
             }
         }
@@ -185,19 +202,17 @@ namespace DG.DOTweenEditor
                 GUILayout.EndVertical();
                 GUI.backgroundColor = Color.white;
             } else GUILayout.Space(8);
-#if RIGIDBODY
             if (GUILayout.Button("Setup DOTween...", EditorGUIUtils.btStyle)) {
-#else
-            if (GUILayout.Button("Setup DOTween (No Rigidbody Version)...", EditorGUIUtils.btStyle)) {
-#endif
-                DOTweenSetupMenuItem.Setup();
-                _setupRequired = EditorUtils.DOTweenSetupRequired();
+//                DOTweenSetupMenuItem.Setup();
+//                _setupRequired = EditorUtils.DOTweenSetupRequired();
+                DOTweenModulesSetupGUI.Refresh();
+                _isModulesMode = true;
             }
 
-            EditorGUILayout.HelpBox(
-                "NOTE: if you get \"Requested build target group (N) doesn't exist\" or [CS0618] errors during the setup don't worry: it's ok and allows the setup to work on all possible Unity versions",
-                MessageType.Info
-            );
+//            EditorGUILayout.HelpBox(
+//                "NOTE: if you get \"Requested build target group (N) doesn't exist\" or [CS0618] errors during the setup don't worry: it's ok and allows the setup to work on all possible Unity versions",
+//                MessageType.Info
+//            );
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Documentation", EditorGUIUtils.btStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/documentation.php");

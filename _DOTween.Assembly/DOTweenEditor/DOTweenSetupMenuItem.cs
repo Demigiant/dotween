@@ -6,7 +6,6 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using DG.DOTweenEditor.Core;
 using UnityEditor;
 using UnityEngine;
@@ -16,13 +15,22 @@ namespace DG.DOTweenEditor
     /// <summary>
     /// Not used as menu item anymore, but as a utiity function
     /// </summary>
-    class DOTweenSetupMenuItem
+    static class DOTweenSetupMenuItem
     {
+        // TODO Remove old defines and add new ones
+        // Modules
+        public const string GlobalDefine_AudioModule = "DOTAUDIO";
+        public const string GlobalDefine_PhysicsModule = "DOTPHYSICS";
+        public const string GlobalDefine_Physics2DModule = "DOTPHYSICS2D";
+        public const string GlobalDefine_SpriteModule = "DOTSPRITE";
+        public const string GlobalDefine_UIModule = "DOTUI";
+        // External assets defines
         public const string GlobalDefine_TK2D = "DOTWEEN_TK2D";
         public const string GlobalDefine_TextMeshPro = "DOTWEEN_TMP";
-        public const string GlobalDefine_NoRigidbody = "DOTWEEN_NORBODY";
+        // Legacy (in versions older than 1.2.000)
+        public const string GlobalDefine_Legacy_NoRigidbody = "DOTWEEN_NORBODY";
+
         const string _Title = "DOTween Setup";
-        static Assembly _proEditorAssembly;
 
         /// <summary>
         /// Setups DOTween
@@ -74,40 +82,16 @@ namespace DG.DOTweenEditor
                 // PRO > 2DToolkit shortcuts
                 if (Has2DToolkit()) {
                     totImported += ImportAddons("Tk2d", proAddonsDir);
-                    ProEditor_AddGlobalDefine(GlobalDefine_TK2D);
-                } else ProEditor_RemoveGlobalDefine(GlobalDefine_TK2D);
+                    EditorUtils.AddGlobalDefine(GlobalDefine_TK2D);
+                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_TK2D);
                 // PRO > TextMeshPro shortcuts
                 if (HasTextMeshPro()) {
                     totImported += ImportAddons("TextMeshPro", proAddonsDir);
-                    ProEditor_AddGlobalDefine(GlobalDefine_TextMeshPro);
-                } else ProEditor_RemoveGlobalDefine(GlobalDefine_TextMeshPro);
-                // PRO > Rigidbody inclusion
-#if RIGIDBODY
-                ProEditor_RemoveGlobalDefine(GlobalDefine_NoRigidbody);
-#else
-                totImported += ImportAddons("TextMeshPro", proAddonsDir);
-                ProEditor_AddGlobalDefine(GlobalDefine_NoRigidbody);
-#endif
+                    EditorUtils.AddGlobalDefine(GlobalDefine_TextMeshPro);
+                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_TextMeshPro);
             }
 
             SetupComplete(addonsDir, proAddonsDir, totImported);
-        }
-
-        // Uses reflection to call DOTweenPro's AddGlobalDefine method (because older version of Unity didn't have it)
-        public static void ProEditor_AddGlobalDefine(string id)
-        {
-            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
-
-            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
-            type.GetMethod("AddGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
-        }
-        // Uses reflection to call DOTweenPro's RemoveGlobalDefine method (because older version of Unity didn't have it)
-        public static void ProEditor_RemoveGlobalDefine(string id)
-        {
-            if (!EditorUtils.hasPro || ProEditorAssembly() == null) return;
-
-            Type type = _proEditorAssembly.GetType("DG.DOTweenEditor.Core.ProEditorUtils");
-            type.GetMethod("RemoveGlobalDefine", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { id });
         }
 
         static void SetupComplete(string addonsDir, string proAddonsDir, int totImported)
@@ -206,12 +190,6 @@ namespace DG.DOTweenEditor
                 if (Directory.GetFiles(rootDir, "TextMeshPro*.dll", SearchOption.AllDirectories).Length > 0) return true; // New free version
             }
             return false;
-        }
-
-        static Assembly ProEditorAssembly()
-        {
-            if (_proEditorAssembly == null) _proEditorAssembly = Assembly.LoadFile(EditorUtils.dotweenProDir + "Editor" + EditorUtils.pathSlash + "DOTweenProEditor.dll");
-            return _proEditorAssembly;
         }
     }
 }

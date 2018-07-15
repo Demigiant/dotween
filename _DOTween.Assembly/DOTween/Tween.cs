@@ -69,7 +69,8 @@ namespace DG.Tweening
         internal LoopType loopType;
         // Tweeners-only (shared by Sequences only for compatibility reasons, otherwise not used)
         internal float delay;
-        internal bool isRelative;
+        /// <summary>Tweeners-only (ignored by Sequences), returns TRUE if the tween was set as relative</summary>
+        public bool isRelative { get; internal set; } // Required by Modules
         internal Ease easeType;
         internal EaseFunction customEase; // Used both for AnimationCurve and custom eases
 #pragma warning disable 1591
@@ -82,7 +83,8 @@ namespace DG.Tweening
         internal Type typeofT1; // Only used by Tweeners
         internal Type typeofT2; // Only used by Tweeners
         internal Type typeofTPlugOptions; // Only used by Tweeners
-        internal bool active; // FALSE when tween is (or should be) despawned - set only by TweenManager
+        /// <summary>FALSE when tween is (or should be) despawned - set only by TweenManager</summary>
+        public bool active { get; internal set; } // Required by Modules
         internal bool isSequenced; // Set by Sequence when adding a Tween to it
         internal Sequence sequenceParent;  // Set by Sequence when adding a Tween to it
         internal int activeId = -1; // Index inside its active list (touched only by TweenManager)
@@ -95,8 +97,10 @@ namespace DG.Tweening
 
         internal bool creationLocked; // TRUE after the tween was updated the first time (even if it was delayed), or when added to a Sequence
         internal bool startupDone; // TRUE the first time the actual tween starts, AFTER any delay has elapsed (unless it's a FROM tween)
-        internal bool playedOnce; // TRUE after the tween was set in a play state at least once, AFTER any delay is elapsed
-        internal float position; // Time position within a single loop cycle
+        /// <summary>TRUE after the tween was set in a play state at least once, AFTER any delay is elapsed</summary>
+        public bool playedOnce { get; private set; } // Required by Modules
+        /// <summary>Time position within a single loop cycle</summary>
+        public float position { get; internal set; } // Required by Modules
         internal float fullDuration; // Total duration loops included
         internal int completedLoops;
         internal bool isPlaying; // Set by TweenManager when getting a new tween
