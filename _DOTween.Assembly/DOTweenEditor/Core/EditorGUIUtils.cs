@@ -14,7 +14,8 @@ namespace DG.DOTweenEditor.Core
         public static GUIStyle boldLabelStyle,
                                setupLabelStyle,
                                redLabelStyle,
-                               btStyle,
+                               btBigStyle,
+                               btSetup,
                                btImgStyle,
                                wrapCenterLabelStyle;
         public static GUIStyle handlelabelStyle,
@@ -141,8 +142,13 @@ namespace DG.DOTweenEditor.Core
                 wrapCenterLabelStyle.wordWrap = true;
                 wrapCenterLabelStyle.alignment = TextAnchor.MiddleCenter;
 
-                btStyle = new GUIStyle(GUI.skin.button);
-                btStyle.padding = new RectOffset(0, 0, 10, 10);
+                btBigStyle = new GUIStyle(GUI.skin.button);
+                btBigStyle.padding = new RectOffset(0, 0, 10, 10);
+
+                btSetup = new GUIStyle(btBigStyle);
+                btSetup.padding = new RectOffset(36, 36, 6, 6);
+                btSetup.wordWrap = true;
+                btSetup.richText = true;
 
                 //
 

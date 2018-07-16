@@ -81,12 +81,14 @@ namespace DG.DOTweenEditor.Core
         }
 
         /// <summary>
-        /// Returns TRUE if addons setup is required.
+        /// Returns TRUE if addons setup is required (legacy: now it always returns TRUE).
         /// </summary>
         public static bool DOTweenSetupRequired()
         {
-            if (!Directory.Exists(dotweenDir)) return false; // Can happen if we were deleting DOTween
-            return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
+            return false;
+            // Legacy method
+//            if (!Directory.Exists(dotweenDir)) return false; // Can happen if we were deleting DOTween
+//            return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
         }
 
         // Deletes the files used in older versions of DOTween where Modules still didn't exist
@@ -246,17 +248,19 @@ namespace DG.DOTweenEditor.Core
         public static void AddGlobalDefine(string id)
         {
             bool added = false;
+            int totGroupsModified = 0;
             BuildTargetGroup[] targetGroups = (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup));
             foreach(BuildTargetGroup btg in targetGroups) {
-                if (btg == BuildTargetGroup.Unknown) continue;
+                if (!IsValidBuildTargetGroup(btg)) continue;
                 string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
                 string[] singleDefs = defs.Split(';');
                 if (Array.IndexOf(singleDefs, id) != -1) continue; // Already present
                 added = true;
+                totGroupsModified++;
                 defs += defs.Length > 0 ? ";" + id : id;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, defs);
             }
-            if (added) Debug.Log("DOTween : added global define " + id);
+            if (added) Debug.Log(string.Format("DOTween : added global define \"{0}\" to {1} BuildTargetGroups", id, totGroupsModified));
         }
 
         /// <summary>
@@ -265,13 +269,15 @@ namespace DG.DOTweenEditor.Core
         public static void RemoveGlobalDefine(string id)
         {
             bool removed = false;
+            int totGroupsModified = 0;
             BuildTargetGroup[] targetGroups = (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup));
             foreach(BuildTargetGroup btg in targetGroups) {
-                if (btg == BuildTargetGroup.Unknown) continue;
+                if (!IsValidBuildTargetGroup(btg)) continue;
                 string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
                 string[] singleDefs = defs.Split(';');
                 if (Array.IndexOf(singleDefs, id) == -1) continue; // Not present
                 removed = true;
+                totGroupsModified++;
                 _Strb.Length = 0;
                 for (int i = 0; i < singleDefs.Length; ++i) {
                     if (singleDefs[i] == id) continue;
@@ -281,7 +287,7 @@ namespace DG.DOTweenEditor.Core
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, _Strb.ToString());
             }
             _Strb.Length = 0;
-            if (removed) Debug.Log("DOTween : removed global define " + id);
+            if (removed) Debug.Log(string.Format("DOTween : removed global define \"{0}\" from {1} BuildTargetGroups", id, totGroupsModified));
         }
 
         /// <summary>
@@ -296,7 +302,7 @@ namespace DG.DOTweenEditor.Core
                 ? (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))
                 : new[] {(BuildTargetGroup)buildTargetGroup};
             foreach(BuildTargetGroup btg in targetGroups) {
-                if (btg == BuildTargetGroup.Unknown) continue;
+                if (!IsValidBuildTargetGroup(btg)) continue;
                 string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
                 string[] singleDefs = defs.Split(';');
                 if (Array.IndexOf(singleDefs, id) != -1) return true;
@@ -357,6 +363,29 @@ namespace DG.DOTweenEditor.Core
         {
             T data = ScriptableObject.CreateInstance<T>();
             AssetDatabase.CreateAsset(data, adbFilePath);
+        }
+
+        static bool IsValidBuildTargetGroup(BuildTargetGroup group)
+        {
+            if (group == BuildTargetGroup.Unknown) return false;
+            Type moduleManager = Type.GetType("UnityEditor.Modules.ModuleManager, UnityEditor.dll");
+//            MethodInfo miIsPlatformSupportLoaded = moduleManager.GetMethod("IsPlatformSupportLoaded", BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo miGetTargetStringFromBuildTargetGroup = moduleManager.GetMethod(
+                "GetTargetStringFromBuildTargetGroup", BindingFlags.Static | BindingFlags.NonPublic
+            );
+            MethodInfo miGetPlatformName = typeof(PlayerSettings).GetMethod(
+                "GetPlatformName", BindingFlags.Static | BindingFlags.NonPublic
+            );
+            string targetString = (string)miGetTargetStringFromBuildTargetGroup.Invoke(null, new object[] {group});
+            string platformName = (string)miGetPlatformName.Invoke(null, new object[] {group});
+
+            // Group is valid if at least one betweeen targetString and platformName is not empty.
+            // This seems to me the safest and more reliant way to check,
+            // since ModuleManager.IsPlatformSupportLoaded dosn't work well with BuildTargetGroup (only BuildTarget)
+            bool isValid = !string.IsNullOrEmpty(targetString) || !string.IsNullOrEmpty(platformName);
+
+//            Debug.Log((isValid ? "<color=#00ff00>" : "<color=#ff0000>") + group + " > " + targetString + " / " + platformName + " > "  + isValid + "/" + miIsPlatformSupportLoaded.Invoke(null, new object[] {group.ToString()}) + "</color>");
+            return isValid;
         }
     }
 }

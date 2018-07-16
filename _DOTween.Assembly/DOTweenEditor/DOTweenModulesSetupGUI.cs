@@ -23,14 +23,14 @@ namespace DG.DOTweenEditor
 
         public static void Refresh()
         {
-            _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_AudioModule);
-            _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_PhysicsModule);
-            _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Physics2DModule);
-            _hasSpriteModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_SpriteModule);
-            _hasUIModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_UIModule);
+            _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_AudioModule);
+            _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_PhysicsModule);
+            _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_Physics2DModule);
+            _hasSpriteModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_SpriteModule);
+            _hasUIModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_UIModule);
 
-            _hasTextMeshProModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TextMeshPro);
-            _hasTk2DModule = EditorUtils.HasGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TK2D);
+            _hasTextMeshProModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_TextMeshPro);
+            _hasTk2DModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_TK2D);
         }
 
         // Returns TRUE if it should be closed
@@ -56,29 +56,32 @@ namespace DG.DOTweenEditor
 
             GUILayout.Space(2);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Apply")) Apply();
+            if (GUILayout.Button("Apply")) {
+                Apply();
+                return true;
+            }
             if (GUILayout.Button("Cancel")) return true;
             GUILayout.EndHorizontal();
 
-            EditorGUILayout.HelpBox(
-                "NOTE: if you get \"PlayerSettings Validation\" or [CS0618] errors when you press apply don't worry:" +
-                " it's ok and it allows the setup to work on all possible Unity versions",
-                MessageType.Warning
-            );
+//            EditorGUILayout.HelpBox(
+//                "NOTE: if you get \"PlayerSettings Validation\" or [CS0618] errors when you press apply don't worry:" +
+//                " it's ok and it allows the setup to work on all possible Unity versions",
+//                MessageType.Warning
+//            );
             return false;
         }
 
         static void Apply()
         {
-            ModifyDefineIfChanged(_hasAudioModule, DOTweenSetupMenuItem.GlobalDefine_AudioModule);
-            ModifyDefineIfChanged(_hasPhysicsModule, DOTweenSetupMenuItem.GlobalDefine_PhysicsModule);
-            ModifyDefineIfChanged(_hasPhysics2DModule, DOTweenSetupMenuItem.GlobalDefine_Physics2DModule);
-            ModifyDefineIfChanged(_hasSpriteModule, DOTweenSetupMenuItem.GlobalDefine_SpriteModule);
-            ModifyDefineIfChanged(_hasUIModule, DOTweenSetupMenuItem.GlobalDefine_UIModule);
+            ModifyDefineIfChanged(_hasAudioModule, DOTweenSetup.GlobalDefine_AudioModule);
+            ModifyDefineIfChanged(_hasPhysicsModule, DOTweenSetup.GlobalDefine_PhysicsModule);
+            ModifyDefineIfChanged(_hasPhysics2DModule, DOTweenSetup.GlobalDefine_Physics2DModule);
+            ModifyDefineIfChanged(_hasSpriteModule, DOTweenSetup.GlobalDefine_SpriteModule);
+            ModifyDefineIfChanged(_hasUIModule, DOTweenSetup.GlobalDefine_UIModule);
 
             if (EditorUtils.hasPro) {
-                ModifyDefineIfChanged(_hasTextMeshProModule, DOTweenSetupMenuItem.GlobalDefine_TextMeshPro);
-                ModifyDefineIfChanged(_hasTk2DModule, DOTweenSetupMenuItem.GlobalDefine_TK2D);
+                ModifyDefineIfChanged(_hasTextMeshProModule, DOTweenSetup.GlobalDefine_TextMeshPro);
+                ModifyDefineIfChanged(_hasTk2DModule, DOTweenSetup.GlobalDefine_TK2D);
             }
         }
 

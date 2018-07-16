@@ -35,7 +35,7 @@ namespace DG.Tweening
 
         #endregion
 
-#if UNITY_5 || UNITY_2017_0_OR_NEWER
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
         #region AudioMixer (Unity 5 or Newer)
 
         /// <summary>Tweens an AudioMixer's exposed float to the given value.

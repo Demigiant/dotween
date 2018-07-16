@@ -79,7 +79,7 @@
     <Compile Include="DOTweenInspector.cs" />
     <Compile Include="DOTweenModulesSetupGUI.cs" />
     <Compile Include="DOTweenSettingsInspector.cs" />
-    <Compile Include="DOTweenSetupMenuItem.cs" />
+    <Compile Include="DOTweenSetup.cs" />
     <Compile Include="DOTweenUtilityWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

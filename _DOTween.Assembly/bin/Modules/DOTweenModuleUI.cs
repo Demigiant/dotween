@@ -1,7 +1,7 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2018/07/13
 
-#if DOTUI && (UNITY_4_6 || UNITY_5 || UNITY_2017_0_OR_NEWER)
+#if DOTUI && (UNITY_4_6 || UNITY_5 || UNITY_2017_1_OR_NEWER)
 using System;
 using UnityEngine;
 using UnityEngine.UI;

@@ -30,20 +30,19 @@ namespace DG.DOTweenEditor
                 break;
             }
             if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
-            // DOTween found: remove scripting define symbols
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_AudioModule);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_PhysicsModule);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Physics2DModule);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_SpriteModule);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_UIModule);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TK2D);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_TextMeshPro);
-            EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Legacy_NoRigidbody);
+            // DOTween is being deleted: deal with it
             // Remove EditorPrefs
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
+            // Remove scripting define symbols
+            DOTweenSetup.RemoveAllDefines();
             //
-            EditorUtility.DisplayDialog("DOTween Deleted", "DOTween was deleted and all of its scripting define symbols removed.\nThis might show an error depending on your previous setup. If this happens, please close and reopen Unity or reimport DOTween.", "Ok");
+            EditorUtility.DisplayDialog("DOTween Deleted",
+                "DOTween was deleted and all of its scripting define symbols removed." +
+                "\n\nThis might show an error depending on your previous setup." +
+                " If this happens, please close and reopen Unity or reimport DOTween.",
+                "Ok"
+            );
             return AssetDeleteResult.DidNotDelete;
         }
     }
@@ -64,22 +63,30 @@ namespace DG.DOTweenEditor
                 // Delete old DemiLib configuration
                 EditorUtils.DeleteOldDemiLibCore();
                 // Remove old NoRigidbody define
-                EditorUtils.RemoveGlobalDefine(DOTweenSetupMenuItem.GlobalDefine_Legacy_NoRigidbody);
+                EditorUtils.RemoveGlobalDefine(DOTweenSetup.GlobalDefine_Legacy_NoRigidbody);
                 //
-                bool openSetupDialog = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version
-                                       || EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
-                if (openSetupDialog) {
-                    Debug.Log("Should open setup dialogue");
+                bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
+                bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
+                bool setupRequired = differentCoreVersion || differentProVersion;
+                if (setupRequired) {
                     _setupDialogRequested = true;
                     EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
-                    EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-                    EditorUtility.DisplayDialog("DOTween", "New version of DOTween imported.\n\nSelect \"Tools > Demigiant > DOTween Utility Panel\" and press \"Setup DOTween...\" in the window that opens to set it up.", "Ok");
-//                    EditorUtility.DisplayDialog("DOTween", "New version of DOTween imported.\n\nUse the Setup Panel to add/remove its Modules.", "Ok");
+                    if (EditorUtils.hasPro) EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
+//                    DOTweenSetup.AddAllUnityDefines();
+                    EditorUtility.DisplayDialog("DOTween",
+                        differentCoreVersion
+                        ? "New version of DOTween imported." +
+                          "\n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove Modules."
+                        : "New version of DOTween Pro imported." +
+                          " \n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove external Modules (TextMesh Pro/2DToolkit/etc).",
+                        "Ok"
+                    );
+                    DOTweenUtilityWindow.Open();
                     // Opening window after a postProcess doesn't work on Unity 3 so check that
-                    string[] vs = Application.unityVersion.Split("."[0]);
-                    int majorVersion = System.Convert.ToInt32(vs[0]);
-                    if (majorVersion >= 4) EditorUtils.DelayedCall(0.5f, DOTweenUtilityWindow.Open);
-                    EditorUtils.DelayedCall(8, ()=> _setupDialogRequested = false);
+//                    string[] vs = Application.unityVersion.Split("."[0]);
+//                    int majorVersion = System.Convert.ToInt32(vs[0]);
+//                    if (majorVersion >= 4) EditorUtils.DelayedCall(0.5f, DOTweenUtilityWindow.Open);
+//                    EditorUtils.DelayedCall(8, ()=> _setupDialogRequested = false);
                 }
             }
         }
@@ -96,6 +103,7 @@ namespace DG.DOTweenEditor
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
 
+        bool _initialized;
         DOTweenSettings _src;
         Texture2D _headerImg, _footerImg;
         Vector2 _headerSize, _footerSize;
@@ -119,6 +127,26 @@ namespace DG.DOTweenEditor
             EditorPrefs.SetString(IdPro, EditorUtils.proVersion);
         }
 
+        // Returns TRUE if DOTween is initialized
+        bool Init()
+        {
+            if (_initialized) return true;
+
+            if (_headerImg == null) {
+                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                if (_headerImg == null) return false; // DOTween imported for the first time and images not yet imported
+                EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
+                _headerSize.x = _WinSize.x;
+                _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
+                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
+                _footerSize.x = _WinSize.x;
+                _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
+            }
+            _initialized = true;
+            return true;
+        }
+
         // ===================================================================================
         // UNITY METHODS ---------------------------------------------------------------------
 
@@ -135,16 +163,7 @@ namespace DG.DOTweenEditor
             if (EditorUtils.hasPro) _innerTitle += "\nDOTweenPro v" + EditorUtils.proVersion;
             else _innerTitle += "\nDOTweenPro not installed";
 
-            if (_headerImg == null) {
-                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
-                EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
-                _headerSize.x = _WinSize.x;
-                _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
-                EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
-                _footerSize.x = _WinSize.x;
-                _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
-            }
+            Init();
 
             _setupRequired = EditorUtils.DOTweenSetupRequired();
         }
@@ -156,6 +175,11 @@ namespace DG.DOTweenEditor
 
         void OnGUI()
         {
+            if (!Init()) {
+                GUILayout.Space(8);
+                GUILayout.Label("Completing import process...");
+                return;
+            }
             Connect();
             EditorGUIUtils.SetGUIStyles(_footerSize);
 
@@ -202,12 +226,19 @@ namespace DG.DOTweenEditor
                 GUILayout.EndVertical();
                 GUI.backgroundColor = Color.white;
             } else GUILayout.Space(8);
-            if (GUILayout.Button("Setup DOTween...", EditorGUIUtils.btStyle)) {
-//                DOTweenSetupMenuItem.Setup();
+            GUI.color = Color.green;
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
+//                DOTweenSetup.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
                 DOTweenModulesSetupGUI.Refresh();
                 _isModulesMode = true;
             }
+            GUILayout.FlexibleSpace();
+            GUI.color = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Space(8);
 
 //            EditorGUILayout.HelpBox(
 //                "NOTE: if you get \"Requested build target group (N) doesn't exist\" or [CS0618] errors during the setup don't worry: it's ok and allows the setup to work on all possible Unity versions",
@@ -215,12 +246,16 @@ namespace DG.DOTweenEditor
 //            );
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Documentation", EditorGUIUtils.btStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/documentation.php");
-            if (GUILayout.Button("Support", EditorGUIUtils.btStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/support.php");
+            if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");
+            if (GUILayout.Button("Get Started", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/getstarted.php");
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Changelog", EditorGUIUtils.btStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php");
-            if (GUILayout.Button("Check Updates", EditorGUIUtils.btStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
+            if (GUILayout.Button("Documentation", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/documentation.php");
+            if (GUILayout.Button("Support", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/support.php");
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Changelog", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php");
+            if (GUILayout.Button("Check Updates", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
             GUILayout.EndHorizontal();
             GUILayout.Space(14);
             if (GUILayout.Button(_footerImg, EditorGUIUtils.btImgStyle)) Application.OpenURL("http://www.demigiant.com/");
@@ -229,7 +264,7 @@ namespace DG.DOTweenEditor
         void DrawPreferencesGUI()
         {
             GUILayout.Space(40);
-            if (GUILayout.Button("Reset", EditorGUIUtils.btStyle)) {
+            if (GUILayout.Button("Reset", EditorGUIUtils.btBigStyle)) {
                 // Reset to original defaults
                 _src.useSafeMode = true;
                 _src.showUnityEditorReport = false;

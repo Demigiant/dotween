@@ -14,7 +14,7 @@ namespace DG.Tweening
     /// </summary>
 	public static class DOTweenModuleUnityVersion
     {
-#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_0_OR_NEWER
+#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1_OR_NEWER
         #region Unity 4.3 or Newer
 
         #region Material
@@ -71,7 +71,7 @@ namespace DG.Tweening
         #endregion
 #endif
 
-#if UNITY_5_3_OR_NEWER || UNITY_2017_0_OR_NEWER
+#if UNITY_5_3_OR_NEWER || UNITY_2017_1_OR_NEWER
         #region CustomYieldInstructions (Unity 5.3 or Newer)
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace DG.Tweening
     // ███ CLASSES █████████████████████████████████████████████████████████████████████████████████████████████████████████
     // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-#if UNITY_5_3_OR_NEWER || UNITY_2017_0_OR_NEWER
+#if UNITY_5_3_OR_NEWER || UNITY_2017_1_OR_NEWER
     public static class DOTweenCYInstruction
     {
         public class WaitForCompletion : CustomYieldInstruction

@@ -4,12 +4,19 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace DG.Tweening.Core
 {
     internal static class Utils
     {
+        static Assembly[] _loadedAssemblies;
+        static readonly string[] _defAssembliesToQuery = new[] { // First assemblies to look into before checking all of them
+            "Assembly-CSharp", "Assembly-CSharp-firstpass"
+        };
+
         /// <summary>
         /// Returns a Vector3 with z = 0
         /// </summary>
@@ -42,6 +49,27 @@ namespace DG.Tweening.Core
             return Mathf.Approximately(a.x, b.x)
                    && Mathf.Approximately(a.y, b.y)
                    && Mathf.Approximately(a.z, b.z);
+        }
+
+        /// <summary>
+        /// Looks for the type withing all possible project assembly names
+        /// </summary>
+        internal static Type GetLooseScriptType(string typeName)
+        {
+            // Check in default assemblies (Unity 2017 and later)
+            for (int i = 0; i < _defAssembliesToQuery.Length; ++i) {
+                Type result = Type.GetType(string.Format("{0}, {1}", typeName, _defAssembliesToQuery[i]));
+                if (result == null) continue;
+                return result;
+            }
+            // Check in all assemblies
+            if (_loadedAssemblies == null) _loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            for (int i = 0; i < _loadedAssemblies.Length; ++i) {
+                Type result = Type.GetType(string.Format("{0}, {1}", typeName, _loadedAssemblies[i].GetName()));
+                if (result == null) continue;
+                return result;
+            }
+            return null;
         }
 
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
