@@ -47,7 +47,10 @@ set CopyToDirModulesTest=%1..\ModulesTest.Unity2018\Assets\Demigiant\%5%SubDir%
 :: Modules test project
 echo ::: Exporting from %CopyFromDir% to %CopyToDirModulesTest%
 echo f | xcopy %CopyFromDir% %CopyToDirModulesTest% /Y /I /E
-:: exit /B
+:: UnityTests.Unity5
+echo ::: Exporting from %CopyFromDir% to %CopyToDirUnity5Tests%
+echo f | xcopy %CopyFromDir% %CopyToDirUnity5Tests% /Y /I /E
+exit /B
 :: bin.Global
 echo ::: Exporting from %CopyFromDir% to %CopyToDir%
 echo f | xcopy %CopyFromDir% %CopyToDir% /Y /I /E
@@ -57,9 +60,6 @@ echo f | xcopy %CopyFromDir% %CopyToDirNoMeta% /Y /I /E
 :: UnityTests.Unity4
 echo ::: Exporting from %CopyFromDir% to %CopyToDirUnityTests%
 echo f | xcopy %CopyFromDir% %CopyToDirUnityTests% /Y /I /E
-:: UnityTests.Unity5
-echo ::: Exporting from %CopyFromDir% to %CopyToDirUnity5Tests%
-echo f | xcopy %CopyFromDir% %CopyToDirUnity5Tests% /Y /I /E
 :: UnityCompatibilityTests.Unity35
 echo ::: Exporting from %CopyFromDir% to %CopyToDirCompatibilityTests%
 echo f | xcopy %CopyFromDir% %CopyToDirCompatibilityTests% /Y /I /E

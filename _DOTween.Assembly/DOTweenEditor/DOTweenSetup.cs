@@ -44,6 +44,12 @@ namespace DG.DOTweenEditor
             EditorUtils.RemoveGlobalDefine(GlobalDefine_TextMeshPro);
         }
 
+        // Removes all legacy defines
+        public static void RemoveAllLegacyDefines()
+        {
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_NoRigidbody);
+        }
+
         // Adds all Unity Modules defines but not the ones for external assets
         public static void AddAllUnityDefines()
         {

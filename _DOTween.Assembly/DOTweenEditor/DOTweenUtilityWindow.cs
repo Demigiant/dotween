@@ -30,6 +30,7 @@ namespace DG.DOTweenEditor
                 break;
             }
             if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
+            Debug.Log("::: DOTween deleted");
             // DOTween is being deleted: deal with it
             // Remove EditorPrefs
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
@@ -53,21 +54,24 @@ namespace DG.DOTweenEditor
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
+            Debug.Log("::::::::::::::::::::: OnPostprocessAllAssets :::::::::::::::::::::::::::::");
             if (_setupDialogRequested) return;
 
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
+            Debug.Log("::: DOTween imported: " + dotweenImported);
             if (dotweenImported) {
                 // Delete old DOTween files
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                 // Delete old DemiLib configuration
                 EditorUtils.DeleteOldDemiLibCore();
-                // Remove old NoRigidbody define
-                EditorUtils.RemoveGlobalDefine(DOTweenSetup.GlobalDefine_Legacy_NoRigidbody);
+                // Remove old legacy defines
+                DOTweenSetup.RemoveAllLegacyDefines();
                 //
                 bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
                 bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
                 bool setupRequired = differentCoreVersion || differentProVersion;
+                Debug.Log("::: Setup required: " + setupRequired + " - " + differentCoreVersion + "/" + differentProVersion);
                 if (setupRequired) {
                     _setupDialogRequested = true;
                     EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
