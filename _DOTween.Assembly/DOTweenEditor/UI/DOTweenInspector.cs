@@ -4,17 +4,13 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
-using DG.DOTweenEditor.Core;
 using DG.Tweening;
 using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace DG.DOTweenEditor
+namespace DG.DOTweenEditor.UI
 {
     [CustomEditor(typeof(DOTweenComponent))]
     public class DOTweenInspector : Editor

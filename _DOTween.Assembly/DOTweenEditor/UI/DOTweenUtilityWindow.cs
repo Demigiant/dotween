@@ -2,100 +2,14 @@
 // Created: 2014/12/24 13:37
 
 using System.IO;
-using System.Reflection;
-using DG.DOTweenEditor.Core;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
 using UnityEditor;
 using UnityEngine;
 
-namespace DG.DOTweenEditor
+namespace DG.DOTweenEditor.UI
 {
-    public class UtilityWindowModificationProcessor : UnityEditor.AssetModificationProcessor
-    {
-        // Checks if deleted folder contains DOTween Pro and in case removes scripting define symbols
-        static AssetDeleteResult OnWillDeleteAsset(string asset, RemoveAssetOptions options)
-        {
-            // Check if asset is a directory
-            string dir = EditorUtils.ADBPathToFullPath(asset);
-            if (!Directory.Exists(dir)) return AssetDeleteResult.DidNotDelete;
-            // Check if directory contains DOTween.dll
-            string[] files = Directory.GetFiles(dir, "DOTween.dll", SearchOption.AllDirectories);
-            int len = files.Length;
-            bool containsDOTween = false;
-            for (int i = 0; i < len; ++i) {
-                if (!files[i].EndsWith("DOTween.dll")) continue;
-                containsDOTween = true;
-                break;
-            }
-            if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
-            Debug.Log("::: DOTween deleted");
-            // DOTween is being deleted: deal with it
-            // Remove EditorPrefs
-            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
-            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
-            // Remove scripting define symbols
-            DOTweenSetup.RemoveAllDefines();
-            //
-            EditorUtility.DisplayDialog("DOTween Deleted",
-                "DOTween was deleted and all of its scripting define symbols removed." +
-                "\n\nThis might show an error depending on your previous setup." +
-                " If this happens, please close and reopen Unity or reimport DOTween.",
-                "Ok"
-            );
-            return AssetDeleteResult.DidNotDelete;
-        }
-    }
-
-    public class UtilityWindowPostProcessor : AssetPostprocessor
-    {
-        static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
-
-        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
-        {
-            Debug.Log("::::::::::::::::::::: OnPostprocessAllAssets :::::::::::::::::::::::::::::");
-            if (_setupDialogRequested) return;
-
-            string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
-            bool dotweenImported = dotweenEntries.Length > 0;
-            Debug.Log("::: DOTween imported: " + dotweenImported);
-            if (dotweenImported) {
-                // Delete old DOTween files
-                EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
-                // Delete old DemiLib configuration
-                EditorUtils.DeleteOldDemiLibCore();
-                // Remove old legacy defines
-                DOTweenSetup.RemoveAllLegacyDefines();
-                //
-                bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
-                bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
-                bool setupRequired = differentCoreVersion || differentProVersion;
-                Debug.Log("::: Setup required: " + setupRequired + " - " + differentCoreVersion + "/" + differentProVersion);
-                if (setupRequired) {
-                    _setupDialogRequested = true;
-                    EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
-                    if (EditorUtils.hasPro) EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-//                    DOTweenSetup.AddAllUnityDefines();
-                    EditorUtility.DisplayDialog("DOTween",
-                        differentCoreVersion
-                        ? "New version of DOTween imported." +
-                          "\n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove Modules."
-                        : "New version of DOTween Pro imported." +
-                          " \n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove external Modules (TextMesh Pro/2DToolkit/etc).",
-                        "Ok"
-                    );
-                    DOTweenUtilityWindow.Open();
-                    // Opening window after a postProcess doesn't work on Unity 3 so check that
-//                    string[] vs = Application.unityVersion.Split("."[0]);
-//                    int majorVersion = System.Convert.ToInt32(vs[0]);
-//                    if (majorVersion >= 4) EditorUtils.DelayedCall(0.5f, DOTweenUtilityWindow.Open);
-//                    EditorUtils.DelayedCall(8, ()=> _setupDialogRequested = false);
-                }
-            }
-        }
-    }
-
     class DOTweenUtilityWindow : EditorWindow
     {
         [MenuItem("Tools/Demigiant/" + _Title)]
@@ -196,10 +110,10 @@ namespace DG.DOTweenEditor
                 GUILayout.EndHorizontal();
             } else {
                 if (_isModulesMode) {
-                    if (DOTweenModulesSetupGUI.Draw()) _isModulesMode = false;
+                    if (DOTweenUtilityWindowModules.Draw()) _isModulesMode = false;
                 } else {
                     Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
-                    _selectedTab = GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
+                    _selectedTab = UnityEngine.GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
 
                     switch (_selectedTab) {
                     case 1:
@@ -219,28 +133,30 @@ namespace DG.DOTweenEditor
         void DrawSetupGUI()
         {
             Rect areaRect = new Rect(0, 30, _headerSize.x, _headerSize.y);
-            GUI.DrawTexture(areaRect, _headerImg, ScaleMode.StretchToFill, false);
+            UnityEngine.GUI.DrawTexture(areaRect, _headerImg, ScaleMode.StretchToFill, false);
             GUILayout.Space(areaRect.y + _headerSize.y + 2);
             GUILayout.Label(_innerTitle, DOTween.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
 
             if (_setupRequired) {
-                GUI.backgroundColor = Color.red;
-                GUILayout.BeginVertical(GUI.skin.box);
+                UnityEngine.GUI.backgroundColor = Color.red;
+                GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
                 GUILayout.Label("DOTWEEN SETUP REQUIRED", EditorGUIUtils.setupLabelStyle);
                 GUILayout.EndVertical();
-                GUI.backgroundColor = Color.white;
+                UnityEngine.GUI.backgroundColor = Color.white;
             } else GUILayout.Space(8);
-            GUI.color = Color.green;
+            UnityEngine.GUI.color = Color.green;
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
-//                DOTweenSetup.Setup();
+//                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
-                DOTweenModulesSetupGUI.Refresh();
+                DOTweenUtilityWindowModules.Refresh();
                 _isModulesMode = true;
+                EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
+                return;
             }
             GUILayout.FlexibleSpace();
-            GUI.color = Color.white;
+            UnityEngine.GUI.color = Color.white;
             GUILayout.EndHorizontal();
             GUILayout.Space(8);
 
@@ -333,7 +249,7 @@ namespace DG.DOTweenEditor
             _src.defaultAutoKill = EditorGUILayout.Toggle("AutoKill", _src.defaultAutoKill);
             _src.defaultLoopType = (LoopType)EditorGUILayout.EnumPopup("Loop Type", _src.defaultLoopType);
 
-            if (GUI.changed) EditorUtility.SetDirty(_src);
+            if (UnityEngine.GUI.changed) EditorUtility.SetDirty(_src);
         }
 
         // ===================================================================================

@@ -6,7 +6,6 @@
 
 using System;
 using System.IO;
-using DG.DOTweenEditor.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace DG.DOTweenEditor
     /// <summary>
     /// Not used as menu item anymore, but as a utiity function
     /// </summary>
-    static class DOTweenSetup
+    static class DOTweenDefines
     {
         // Modules
         public const string GlobalDefine_AudioModule = "DOTAUDIO";

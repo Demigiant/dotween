@@ -3,9 +3,8 @@
 
 using DG.Tweening.Core;
 using UnityEditor;
-using UnityEngine;
 
-namespace DG.DOTweenEditor
+namespace DG.DOTweenEditor.UI
 {
     [CustomEditor(typeof(DOTweenSettings))]
     public class DOTweenSettingsInspector : Editor
@@ -22,11 +21,11 @@ namespace DG.DOTweenEditor
 
         override public void OnInspectorGUI()
         {
-            GUI.enabled = false;
+            UnityEngine.GUI.enabled = false;
 
             DrawDefaultInspector();
 
-            GUI.enabled = true;
+            UnityEngine.GUI.enabled = true;
         }
     }
 }

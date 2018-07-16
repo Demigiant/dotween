@@ -3,14 +3,12 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-using DG.DOTweenEditor.Core;
 using UnityEditor;
 using UnityEngine;
-using EditorUtils = DG.DOTweenEditor.Core.EditorUtils;
 
-namespace DG.DOTweenEditor
+namespace DG.DOTweenEditor.UI
 {
-    public static class DOTweenModulesSetupGUI
+    public static class DOTweenUtilityWindowModules
     {
         static bool _hasAudioModule;
         static bool _hasPhysicsModule;
@@ -23,14 +21,14 @@ namespace DG.DOTweenEditor
 
         public static void Refresh()
         {
-            _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_AudioModule);
-            _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_PhysicsModule);
-            _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_Physics2DModule);
-            _hasSpriteModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_SpriteModule);
-            _hasUIModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_UIModule);
+            _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_AudioModule);
+            _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_PhysicsModule);
+            _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_Physics2DModule);
+            _hasSpriteModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_SpriteModule);
+            _hasUIModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_UIModule);
 
-            _hasTextMeshProModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_TextMeshPro);
-            _hasTk2DModule = EditorUtils.HasGlobalDefine(DOTweenSetup.GlobalDefine_TK2D);
+            _hasTextMeshProModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_TextMeshPro);
+            _hasTk2DModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_TK2D);
         }
 
         // Returns TRUE if it should be closed
@@ -38,7 +36,7 @@ namespace DG.DOTweenEditor
         {
             GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
 
-            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
             GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
             _hasAudioModule = EditorGUILayout.Toggle("Audio", _hasAudioModule);
             _hasPhysicsModule = EditorGUILayout.Toggle("Physics", _hasPhysicsModule);
@@ -47,7 +45,7 @@ namespace DG.DOTweenEditor
             _hasUIModule = EditorGUILayout.Toggle("UI", _hasUIModule);
             EditorGUILayout.EndVertical();
             if (EditorUtils.hasPro) {
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
                 GUILayout.Label("External Assets (Pro)", EditorGUIUtils.boldLabelStyle);
                 _hasTk2DModule = EditorGUILayout.Toggle("2D Toolkit", _hasTk2DModule);
                 _hasTextMeshProModule = EditorGUILayout.Toggle("TextMesh Pro", _hasTextMeshProModule);
@@ -73,15 +71,15 @@ namespace DG.DOTweenEditor
 
         static void Apply()
         {
-            ModifyDefineIfChanged(_hasAudioModule, DOTweenSetup.GlobalDefine_AudioModule);
-            ModifyDefineIfChanged(_hasPhysicsModule, DOTweenSetup.GlobalDefine_PhysicsModule);
-            ModifyDefineIfChanged(_hasPhysics2DModule, DOTweenSetup.GlobalDefine_Physics2DModule);
-            ModifyDefineIfChanged(_hasSpriteModule, DOTweenSetup.GlobalDefine_SpriteModule);
-            ModifyDefineIfChanged(_hasUIModule, DOTweenSetup.GlobalDefine_UIModule);
+            ModifyDefineIfChanged(_hasAudioModule, DOTweenDefines.GlobalDefine_AudioModule);
+            ModifyDefineIfChanged(_hasPhysicsModule, DOTweenDefines.GlobalDefine_PhysicsModule);
+            ModifyDefineIfChanged(_hasPhysics2DModule, DOTweenDefines.GlobalDefine_Physics2DModule);
+            ModifyDefineIfChanged(_hasSpriteModule, DOTweenDefines.GlobalDefine_SpriteModule);
+            ModifyDefineIfChanged(_hasUIModule, DOTweenDefines.GlobalDefine_UIModule);
 
             if (EditorUtils.hasPro) {
-                ModifyDefineIfChanged(_hasTextMeshProModule, DOTweenSetup.GlobalDefine_TextMeshPro);
-                ModifyDefineIfChanged(_hasTk2DModule, DOTweenSetup.GlobalDefine_TK2D);
+                ModifyDefineIfChanged(_hasTextMeshProModule, DOTweenDefines.GlobalDefine_TextMeshPro);
+                ModifyDefineIfChanged(_hasTk2DModule, DOTweenDefines.GlobalDefine_TK2D);
             }
         }
 

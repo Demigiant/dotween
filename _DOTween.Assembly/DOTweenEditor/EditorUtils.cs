@@ -2,15 +2,14 @@
 // Created: 2014/12/24 13:50
 
 using System;
-using System.Collections;
-using System.Reflection;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
-namespace DG.DOTweenEditor.Core
+namespace DG.DOTweenEditor
 {
     public static class EditorUtils
     {
@@ -96,28 +95,29 @@ namespace DG.DOTweenEditor.Core
         {
             string adbDOTweenDir = FullPathToADBPath(dotweenDir);
             AssetDatabase.StartAssetEditing();
+            Debug.Log(adbDOTweenDir + "DOTween43.dll");
             DeleteAssetsIfExist(new[] {
-                adbDOTweenDir + "/DOTween43.dll",
-                adbDOTweenDir + "/DOTween43.xml",
-                adbDOTweenDir + "/DOTween43.dll.mdb",
-                adbDOTweenDir + "/DOTween43.dll.addon",
-                adbDOTweenDir + "/DOTween43.xml.addon",
-                adbDOTweenDir + "/DOTween43.dll.mdb.addon",
-                adbDOTweenDir + "/DOTween46.dll",
-                adbDOTweenDir + "/DOTween46.xml",
-                adbDOTweenDir + "/DOTween46.dll.mdb",
-                adbDOTweenDir + "/DOTween46.dll.addon",
-                adbDOTweenDir + "/DOTween46.xml.addon",
-                adbDOTweenDir + "/DOTween46.dll.mdb.addon",
-                adbDOTweenDir + "/DOTween50.dll",
-                adbDOTweenDir + "/DOTween50.xml",
-                adbDOTweenDir + "/DOTween50.dll.mdb",
-                adbDOTweenDir + "/DOTween50.dll.addon",
-                adbDOTweenDir + "/DOTween50.xml.addon",
-                adbDOTweenDir + "/DOTween50.dll.mdb.addon",
+                adbDOTweenDir + "DOTween43.dll",
+                adbDOTweenDir + "DOTween43.xml",
+                adbDOTweenDir + "DOTween43.dll.mdb",
+                adbDOTweenDir + "DOTween43.dll.addon",
+                adbDOTweenDir + "DOTween43.xml.addon",
+                adbDOTweenDir + "DOTween43.dll.mdb.addon",
+                adbDOTweenDir + "DOTween46.dll",
+                adbDOTweenDir + "DOTween46.xml",
+                adbDOTweenDir + "DOTween46.dll.mdb",
+                adbDOTweenDir + "DOTween46.dll.addon",
+                adbDOTweenDir + "DOTween46.xml.addon",
+                adbDOTweenDir + "DOTween46.dll.mdb.addon",
+                adbDOTweenDir + "DOTween50.dll",
+                adbDOTweenDir + "DOTween50.xml",
+                adbDOTweenDir + "DOTween50.dll.mdb",
+                adbDOTweenDir + "DOTween50.dll.addon",
+                adbDOTweenDir + "DOTween50.xml.addon",
+                adbDOTweenDir + "DOTween50.dll.mdb.addon",
                 //
-                adbDOTweenDir + "/DOTweenTextMeshPro.cs.addon",
-                adbDOTweenDir + "/DOTweenTk2d.cs.addon",
+                adbDOTweenDir + "DOTweenTextMeshPro.cs.addon",
+                adbDOTweenDir + "DOTweenTk2d.cs.addon",
             });
             AssetDatabase.StopAssetEditing();
         }

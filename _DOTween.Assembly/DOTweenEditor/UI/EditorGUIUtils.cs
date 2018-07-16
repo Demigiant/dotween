@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
-namespace DG.DOTweenEditor.Core
+namespace DG.DOTweenEditor.UI
 {
     public static class EditorGUIUtils
     {
@@ -101,16 +101,16 @@ namespace DG.DOTweenEditor.Core
         // A button which works as a toggle
         public static bool ToggleButton(bool toggled, GUIContent content, GUIStyle guiStyle = null, params GUILayoutOption[] options)
         {
-            Color orColor = GUI.backgroundColor;
-            GUI.backgroundColor = toggled ? Color.green : Color.white;
+            Color orColor = UnityEngine.GUI.backgroundColor;
+            UnityEngine.GUI.backgroundColor = toggled ? Color.green : Color.white;
             bool clicked = guiStyle == null
                 ? GUILayout.Button(content, options)
                 : GUILayout.Button(content, guiStyle, options);
             if (clicked) {
                 toggled = !toggled;
-                GUI.changed = true;
+                UnityEngine.GUI.changed = true;
             }
-            GUI.backgroundColor = orColor;
+            UnityEngine.GUI.backgroundColor = orColor;
             return toggled;
         }
 
@@ -120,7 +120,7 @@ namespace DG.DOTweenEditor.Core
                 _additionalStylesSet = true;
 
                 Vector2 footerSizeV = (Vector2)footerSize;
-                btImgStyle = new GUIStyle(GUI.skin.button);
+                btImgStyle = new GUIStyle(UnityEngine.GUI.skin.button);
                 btImgStyle.normal.background = null;
                 btImgStyle.imagePosition = ImagePosition.ImageOnly;
                 btImgStyle.padding = new RectOffset(0, 0, 0, 0);
@@ -131,18 +131,18 @@ namespace DG.DOTweenEditor.Core
             if (!_stylesSet) {
                 _stylesSet = true;
 
-                boldLabelStyle = new GUIStyle(GUI.skin.label);
+                boldLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
                 boldLabelStyle.fontStyle = FontStyle.Bold;
-                redLabelStyle = new GUIStyle(GUI.skin.label);
+                redLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
                 redLabelStyle.normal.textColor = Color.red;
                 setupLabelStyle = new GUIStyle(boldLabelStyle);
                 setupLabelStyle.alignment = TextAnchor.MiddleCenter;
 
-                wrapCenterLabelStyle = new GUIStyle(GUI.skin.label);
+                wrapCenterLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
                 wrapCenterLabelStyle.wordWrap = true;
                 wrapCenterLabelStyle.alignment = TextAnchor.MiddleCenter;
 
-                btBigStyle = new GUIStyle(GUI.skin.button);
+                btBigStyle = new GUIStyle(UnityEngine.GUI.skin.button);
                 btBigStyle.padding = new RectOffset(0, 0, 10, 10);
 
                 btSetup = new GUIStyle(btBigStyle);
@@ -152,12 +152,12 @@ namespace DG.DOTweenEditor.Core
 
                 //
 
-                titleStyle = new GUIStyle(GUI.skin.label) {
+                titleStyle = new GUIStyle(UnityEngine.GUI.skin.label) {
                     fontSize = 12,
                     fontStyle = FontStyle.Bold
                 };
 
-                handlelabelStyle = new GUIStyle(GUI.skin.label) {
+                handlelabelStyle = new GUIStyle(UnityEngine.GUI.skin.label) {
                     normal = { textColor = Color.white },
                     alignment = TextAnchor.MiddleLeft
                 };
@@ -166,20 +166,20 @@ namespace DG.DOTweenEditor.Core
                     fontStyle = FontStyle.Bold
                 };
 
-                wordWrapLabelStyle = new GUIStyle(GUI.skin.label);
+                wordWrapLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
                 wordWrapLabelStyle.wordWrap = true;
 
                 wordWrapItalicLabelStyle = new GUIStyle(wordWrapLabelStyle);
                 wordWrapItalicLabelStyle.fontStyle = FontStyle.Italic;
 
-                logoIconStyle = new GUIStyle(GUI.skin.box);
+                logoIconStyle = new GUIStyle(UnityEngine.GUI.skin.box);
                 logoIconStyle.active.background = logoIconStyle.normal.background = null;
                 logoIconStyle.margin = new RectOffset(0, 0, 0, 0);
                 logoIconStyle.padding = new RectOffset(0, 0, 0, 0);
 
                 //
 
-                sideBtStyle = new GUIStyle(GUI.skin.button);
+                sideBtStyle = new GUIStyle(UnityEngine.GUI.skin.button);
                 sideBtStyle.margin.top = 1;
                 sideBtStyle.padding = new RectOffset(0, 0, 2, 2);
 
@@ -187,14 +187,14 @@ namespace DG.DOTweenEditor.Core
                 sideLogoIconBoldLabelStyle.alignment = TextAnchor.MiddleLeft;
                 sideLogoIconBoldLabelStyle.padding.top = 2;
 
-                wordWrapTextArea = new GUIStyle(GUI.skin.textArea);
+                wordWrapTextArea = new GUIStyle(UnityEngine.GUI.skin.textArea);
                 wordWrapTextArea.wordWrap = true;
 
                 popupButton = new GUIStyle(EditorStyles.popup);
                 popupButton.fixedHeight = 18;
                 popupButton.margin.top += 1;
 
-                btIconStyle = new GUIStyle(GUI.skin.button);
+                btIconStyle = new GUIStyle(UnityEngine.GUI.skin.button);
                 btIconStyle.padding.left -= 2;
                 btIconStyle.fixedWidth = 24;
                 btIconStyle.stretchWidth = false;

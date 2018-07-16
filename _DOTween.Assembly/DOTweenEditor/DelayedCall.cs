@@ -5,7 +5,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace DG.DOTweenEditor.Core
+namespace DG.DOTweenEditor
 {
     public class DelayedCall
     {
