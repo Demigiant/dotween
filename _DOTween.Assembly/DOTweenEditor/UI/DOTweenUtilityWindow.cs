@@ -110,7 +110,10 @@ namespace DG.DOTweenEditor.UI
                 GUILayout.EndHorizontal();
             } else {
                 if (_isModulesMode) {
-                    if (DOTweenUtilityWindowModules.Draw()) _isModulesMode = false;
+                    if (DOTweenUtilityWindowModules.Draw()) {
+                        _setupRequired = EditorUtils.DOTweenSetupRequired();
+                        _isModulesMode = false;
+                    }
                 } else {
                     Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
                     _selectedTab = UnityEngine.GUI.Toolbar(areaRect, _selectedTab, _tabLabels);

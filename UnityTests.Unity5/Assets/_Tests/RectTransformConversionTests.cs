@@ -33,7 +33,7 @@ public class RectTransformConversionTests : BrainBase
         Vector2 bPivotDerivedOffset = new Vector2(b.rect.width * 0.5f + b.rect.xMin, b.rect.height * 0.5f + b.rect.yMin);
         Debug.Log(bPivotDerivedOffset);
         b.anchoredPosition = b.anchoredPosition + localPoint - bPivotDerivedOffset;
-        Debug.Log(b.anchoredPosition + " - " + DOTweenUtils46.SwitchToRectTransform(a, b));
+//        Debug.Log(b.anchoredPosition + " - " + DOTweenUtils46.SwitchToRectTransform(a, b));
     }
 
     string ArrayToString(IList list)
