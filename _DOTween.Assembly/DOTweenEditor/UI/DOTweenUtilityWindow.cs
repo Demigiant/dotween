@@ -153,6 +153,7 @@ namespace DG.DOTweenEditor.UI
                 DOTweenUtilityWindowModules.Refresh();
                 _isModulesMode = true;
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
+                EditorUtils.DeleteDOTweenUpgradeManagerFiles();
                 return;
             }
             GUILayout.FlexibleSpace();

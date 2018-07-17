@@ -53,7 +53,6 @@ namespace DG.DOTweenEditor
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
-            Debug.Log("OnPostprocessAllAssets");
             if (_setupDialogRequested) return;
 
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
@@ -73,14 +72,14 @@ namespace DG.DOTweenEditor
                     _setupDialogRequested = true;
                     EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
                     if (EditorUtils.hasPro) EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-                    EditorUtility.DisplayDialog("DOTween",
-                        differentCoreVersion
-                        ? "New version of DOTween imported." +
-                          "\n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove Modules."
-                        : "New version of DOTween Pro imported." +
-                          " \n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove external Modules (TextMesh Pro/2DToolkit/etc).",
-                        "Ok"
-                    );
+//                    EditorUtility.DisplayDialog("DOTween",
+//                        differentCoreVersion
+//                        ? "New version of DOTween imported." +
+//                          "\n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove Modules."
+//                        : "New version of DOTween Pro imported." +
+//                          " \n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove external Modules (TextMesh Pro/2DToolkit/etc).",
+//                        "Ok"
+//                    );
                     DOTweenUtilityWindow.Open();
                     // Opening window after a postProcess doesn't work on Unity 3 so check that
 //                    string[] vs = Application.unityVersion.Split("."[0]);

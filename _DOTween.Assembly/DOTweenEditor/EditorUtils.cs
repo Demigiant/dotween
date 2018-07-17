@@ -80,14 +80,29 @@ namespace DG.DOTweenEditor
         }
 
         /// <summary>
-        /// Returns TRUE if addons setup is required (legacy: now it always returns TRUE).
+        /// Returns TRUE if setup is required
         /// </summary>
         public static bool DOTweenSetupRequired()
         {
-            return false;
-            // Legacy method
+            if (!Directory.Exists(dotweenDir)) return false;
+            return Directory.GetFiles(dotweenDir + "Editor", "DOTweenUpgradeManager.*").Length > 0;
+
+            // Legacy methods
 //            if (!Directory.Exists(dotweenDir)) return false; // Can happen if we were deleting DOTween
 //            return Directory.GetFiles(dotweenDir, "*.addon").Length > 0 || hasPro && Directory.GetFiles(dotweenProDir, "*.addon").Length > 0;
+        }
+
+        // Deletes DOTweenUpgradeManager files
+        public static void DeleteDOTweenUpgradeManagerFiles()
+        {
+            string adbDOTweenDir = FullPathToADBPath(dotweenDir);
+            AssetDatabase.StartAssetEditing();
+            DeleteAssetsIfExist(new[] {
+                adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll",
+                adbDOTweenDir + "Editor/DOTweenUpgradeManager.xml",
+                adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll.mdb"
+            });
+            AssetDatabase.StopAssetEditing();
         }
 
         // Deletes the files used in older versions of DOTween where Modules still didn't exist
@@ -95,7 +110,6 @@ namespace DG.DOTweenEditor
         {
             string adbDOTweenDir = FullPathToADBPath(dotweenDir);
             AssetDatabase.StartAssetEditing();
-            Debug.Log(adbDOTweenDir + "DOTween43.dll");
             DeleteAssetsIfExist(new[] {
                 adbDOTweenDir + "DOTween43.dll",
                 adbDOTweenDir + "DOTween43.xml",

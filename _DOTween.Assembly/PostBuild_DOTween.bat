@@ -28,7 +28,7 @@ CD %2
 echo ::: Deleting PDB files: %4.pdb
 DEL %4.pdb
 echo ::: PDB files deleted, PAUSE for 0.5 second
-waitfor pdbsToBeDeletedHopefully /t 0.5 2>NUL || type nul>nul
+waitfor pdbFilesToBeDeletedIHope /t 0.5 2>NUL || type nul>nul
 
 echo :::::: Starting export...
 
