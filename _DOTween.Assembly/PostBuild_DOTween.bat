@@ -53,10 +53,10 @@ echo f | xcopy %CopyFromDir% %CopyToDirModulesTest% /Y /I /E
 :: bin.Global_no_meta
 echo ::: Exporting from %CopyFromDir% to %CopyToDirNoMeta%
 echo f | xcopy %CopyFromDir% %CopyToDirNoMeta% /Y /I /E
-exit /B
 :: UnityTests.Unity5
 echo ::: Exporting from %CopyFromDir% to %CopyToDirUnity5Tests%
 echo f | xcopy %CopyFromDir% %CopyToDirUnity5Tests% /Y /I /E
+exit /B
 :: UnityTests.Unity4
 echo ::: Exporting from %CopyFromDir% to %CopyToDirUnityTests%
 echo f | xcopy %CopyFromDir% %CopyToDirUnityTests% /Y /I /E
