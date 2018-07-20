@@ -126,14 +126,23 @@ namespace DG.Tweening
             }
 
             if (!t.hasManuallySetStartValue) {
+
                 // Take start value from current target value
                 if (DOTween.useSafeMode) {
                     try {
                         t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                    } catch {
+                    } catch (System.Exception e) {
+                        if(DOTween.showErrorLog) Debugger.LogError(e);
                         return false; // Target/field doesn't exist: kill tween
                     }
-                } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                } else {
+                    try {
+                        t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                    } catch (System.Exception e) {
+                        if(DOTween.showErrorLog) Debugger.LogError(e);
+                        throw e;
+                    }
+                }
             }
 
             if (t.isRelative) t.tweenPlugin.SetRelativeEndValue(t);
@@ -192,12 +201,20 @@ namespace DG.Tweening
                     if (DOTween.useSafeMode) {
                         try {
                             t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                        } catch {
+                        } catch (System.Exception e) {
+                            if (DOTween.showErrorLog) Debugger.LogWarning(e);
                             // Target/field doesn't exist: kill tween
                             TweenManager.Despawn(t);
                             return null;
                         }
-                    } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                    } else {
+                        try {
+                            t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                        } catch (System.Exception e) {
+                            if(DOTween.showErrorLog) Debugger.LogWarning(e);
+                            throw e;
+                        }
+                    }
                 }
                 t.tweenPlugin.SetChangeValue(t);
             }

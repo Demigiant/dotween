@@ -173,15 +173,22 @@ namespace DG.Tweening.Core
         internal override bool ApplyTween(float prevPosition, int prevCompletedLoops, int newCompletedSteps, bool useInversePosition, UpdateMode updateMode, UpdateNotice updateNotice)
         {
             float updatePosition = useInversePosition ? duration - position : position;
+
             if (DOTween.useSafeMode) {
                 try {
                     tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
-                } catch {
+                } catch (Exception e) {
+                    if(DOTween.showErrorLog) Debugger.LogWarning(e);
                     // Target/field doesn't exist anymore: kill tween
                     return true;
                 }
             } else {
-                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                try {
+                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                } catch (Exception e) {
+                    if(DOTween.showErrorLog) Debugger.LogWarning(e);
+                    throw e;
+                }
             }
             return false;
         }
