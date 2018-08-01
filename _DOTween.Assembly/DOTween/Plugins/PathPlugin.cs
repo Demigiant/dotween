@@ -217,12 +217,13 @@ namespace DG.Tweening.Plugins
             }
 
             if (options.hasCustomForwardDirection) newRot *= options.forward;
-#if RIGIDBODY
-            if (options.isRigidbody) ((Rigidbody)t.target).rotation = newRot;
-            else trans.rotation = newRot;
-#else
-            trans.rotation = newRot;
-#endif
+            DOTweenExternalCommand.Dispatch_SetOrientationOnPath(options, t, newRot, trans);
+//#if RIGIDBODY
+//            if (options.isRigidbody) ((Rigidbody)t.target).rotation = newRot;
+//            else trans.rotation = newRot;
+//#else
+//            trans.rotation = newRot;
+//#endif
         }
     }
 }

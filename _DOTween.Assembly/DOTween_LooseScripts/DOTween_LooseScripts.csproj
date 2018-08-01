@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B529A90-0B97-4840-BEB6-4A6700B46655}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DG.Tweening</RootNamespace>
+    <AssemblyName>DOTween_LooseScripts</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;DOTAUDIO;DOTPHYSICS;DOTPHYSICS2D;DOTSPRITE;DOTUI;UNITY_4_3;UNITY_4_6;UNITY_5;UNITY_2017_0_OR_NEWER</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1573</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DemiEditor">
+      <HintPath>..\..\..\bin.Global_no_meta\DemiLib\Core\Editor\DemiEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DemiLib">
+      <HintPath>..\..\..\bin.Global_no_meta\DemiLib\Core\DemiLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEditor">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\bin\*.cs">
+      <Link>bin\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin\*.txt">
+      <Link>bin\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin\Modules\*.cs">
+      <Link>bin\Modules\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin\Modules\*.txt">
+      <Link>bin\Modules\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin_pro\*.cs">
+      <Link>bin_pro\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin_pro\*.txt">
+      <Link>bin_pro\%(FileName)</Link>
+    </Compile>
+    <Compile Include="..\bin_pro\Editor\*.cs">
+      <Link>bin_pro\Editor\%(FileName)</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DOTweenEditor\DOTweenEditor.csproj">
+      <Project>{421acc19-8922-4e98-8921-b52240ce172a}</Project>
+      <Name>DOTweenEditor</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DOTweenProEditor\DOTweenProEditor.csproj">
+      <Project>{279545ae-d268-42f0-a4c6-aa5ba15fb9be}</Project>
+      <Name>DOTweenProEditor</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DOTweenPro\DOTweenPro.csproj">
+      <Project>{20d2e542-d14f-4678-9c38-f3c0ecf6a2f6}</Project>
+      <Name>DOTweenPro</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DOTween\DOTween.csproj">
+      <Project>{de17c145-3e8d-45d6-bbb6-d06bd7d80a55}</Project>
+      <Name>DOTween</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

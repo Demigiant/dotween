@@ -179,6 +179,26 @@
             Public only so custom shortcuts can access some of these methods
             </summary>
         </member>
+        <member name="M:DG.Tweening.Core.Extensions.SetSpecialStartupMode``1(``0,DG.Tweening.Core.Enums.SpecialStartupMode)">
+            <summary>
+            INTERNAL: used by DO shortcuts and Modules to set special startup mode
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.Core.Extensions.Blendable``3(DG.Tweening.Core.TweenerCore{``0,``1,``2})">
+            <summary>
+            INTERNAL: used by DO shortcuts and Modules to set the tween as blendable
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.Core.Extensions.NoFrom``3(DG.Tweening.Core.TweenerCore{``0,``1,``2})">
+            <summary>
+            INTERNAL: used by DO shortcuts and Modules to prevent a tween from using a From setup even if passed
+            </summary>
+        </member>
+        <member name="T:DG.Tweening.Core.DOTweenExternalCommand">
+            <summary>
+            Used to dispatch commands that need to be captured externally, usually by Modules
+            </summary>
+        </member>
         <member name="M:DG.Tweening.Core.Utils.Vector3FromAngle(System.Single,System.Single)">
             <summary>
             Returns a Vector3 with z = 0
@@ -193,6 +213,11 @@
             <summary>
             Uses approximate equality on each axis instead of Unity's Vector3 equality,
             because the latter fails (in some cases) when assigning a Vector3 to a transform.position and then checking it.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.Core.Utils.GetLooseScriptType(System.String)">
+            <summary>
+            Looks for the type withing all possible project assembly names
             </summary>
         </member>
         <member name="T:DG.Tweening.Color2">
@@ -1239,16 +1264,6 @@
             Methods that extend known Unity objects and allow to directly create and control tweens from their instances
             </summary>
         </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOFade(UnityEngine.AudioSource,System.Single,System.Single)">
-            <summary>Tweens an AudioSource's volume to the given value.
-            Also stores the AudioSource as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach (0 to 1)</param><param name="duration">The duration of the tween</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOPitch(UnityEngine.AudioSource,System.Single,System.Single)">
-            <summary>Tweens an AudioSource's pitch to the given value.
-            Also stores the AudioSource as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOAspect(UnityEngine.Camera,System.Single,System.Single)">
             <summary>Tweens a Camera's <code>aspect</code> to the given value.
             Also stores the camera as the tween's target so it can be used for filtered operations</summary>
@@ -1417,81 +1432,6 @@
             <param name="endValue">The end value to reach</param>
             <param name="property">The name of the material property to tween</param>
             <param name="duration">The duration of the tween</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOMove(UnityEngine.Rigidbody,UnityEngine.Vector3,System.Single,System.Boolean)">
-            <summary>Tweens a Rigidbody's position to the given value.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOMoveX(UnityEngine.Rigidbody,System.Single,System.Single,System.Boolean)">
-            <summary>Tweens a Rigidbody's X position to the given value.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOMoveY(UnityEngine.Rigidbody,System.Single,System.Single,System.Boolean)">
-            <summary>Tweens a Rigidbody's Y position to the given value.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOMoveZ(UnityEngine.Rigidbody,System.Single,System.Single,System.Boolean)">
-            <summary>Tweens a Rigidbody's Z position to the given value.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DORotate(UnityEngine.Rigidbody,UnityEngine.Vector3,System.Single,DG.Tweening.RotateMode)">
-            <summary>Tweens a Rigidbody's rotation to the given value.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-            <param name="mode">Rotation mode</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOLookAt(UnityEngine.Rigidbody,UnityEngine.Vector3,System.Single,DG.Tweening.AxisConstraint,System.Nullable{UnityEngine.Vector3})">
-            <summary>Tweens a Rigidbody's rotation so that it will look towards the given position.
-            Also stores the rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
-            <param name="axisConstraint">Eventual axis constraint for the rotation</param>
-            <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOJump(UnityEngine.Rigidbody,UnityEngine.Vector3,System.Single,System.Int32,System.Single,System.Boolean)">
-            <summary>Tweens a Rigidbody's position to the given value, while also applying a jump effect along the Y axis.
-            Returns a Sequence instead of a Tweener.
-            Also stores the Rigidbody as the tween's target so it can be used for filtered operations</summary>
-            <param name="endValue">The end value to reach</param>
-            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
-            <param name="numJumps">Total number of jumps</param>
-            <param name="duration">The duration of the tween</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOPath(UnityEngine.Rigidbody,UnityEngine.Vector3[],System.Single,DG.Tweening.PathType,DG.Tweening.PathMode,System.Int32,System.Nullable{UnityEngine.Color})">
-            <summary>Tweens a Rigidbody's position through the given path waypoints, using the chosen path algorithm.
-            Also stores the Rigidbody as the tween's target so it can be used for filtered operations.
-            <para>NOTE: to tween a rigidbody correctly it should be set to kinematic at least while being tweened.</para>
-            <para>BEWARE: doesn't work on Windows Phone store (waiting for Unity to fix their own bug).
-            If you plan to publish there you should use a regular transform.DOPath.</para></summary>
-            <param name="path">The waypoints to go through</param>
-            <param name="duration">The duration of the tween</param>
-            <param name="pathType">The type of path: Linear (straight path) or CatmullRom (curved CatmullRom path)</param>
-            <param name="pathMode">The path mode: 3D, side-scroller 2D, top-down 2D</param>
-            <param name="resolution">The resolution of the path (useless in case of Linear paths): higher resolutions make for more detailed curved paths but are more expensive.
-            Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
-            <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
-        </member>
-        <member name="M:DG.Tweening.ShortcutExtensions.DOLocalPath(UnityEngine.Rigidbody,UnityEngine.Vector3[],System.Single,DG.Tweening.PathType,DG.Tweening.PathMode,System.Int32,System.Nullable{UnityEngine.Color})">
-            <summary>Tweens a Rigidbody's localPosition through the given path waypoints, using the chosen path algorithm.
-            Also stores the Rigidbody as the tween's target so it can be used for filtered operations
-            <para>NOTE: to tween a rigidbody correctly it should be set to kinematic at least while being tweened.</para>
-            <para>BEWARE: doesn't work on Windows Phone store (waiting for Unity to fix their own bug).
-            If you plan to publish there you should use a regular transform.DOLocalPath.</para></summary>
-            <param name="path">The waypoint to go through</param>
-            <param name="duration">The duration of the tween</param>
-            <param name="pathType">The type of path: Linear (straight path) or CatmullRom (curved CatmullRom path)</param>
-            <param name="pathMode">The path mode: 3D, side-scroller 2D, top-down 2D</param>
-            <param name="resolution">The resolution of the path: higher resolutions make for more detailed curved paths but are more expensive.
-            Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
-            <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOResize(UnityEngine.TrailRenderer,System.Single,System.Single,System.Single)">
             <summary>Tweens a TrailRenderer's startWidth/endWidth to the given value.
@@ -1742,6 +1682,22 @@
             <param name="resolution">The resolution of the path: higher resolutions make for more detailed curved paths but are more expensive.
             Defaults to 10, but a value of 5 is usually enough if you don't have dramatic long curves between waypoints</param>
             <param name="gizmoColor">The color of the path (shown when gizmos are active in the Play panel and the tween is running)</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOPath(UnityEngine.Transform,DG.Tweening.Plugins.Core.PathCore.Path,System.Single,DG.Tweening.PathMode)">
+            <summary>IMPORTANT: Unless you really know what you're doing, you should use the overload that accepts a Vector3 array instead.<para/>
+            Tweens a Transform's position via the given path.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="path">The path to use</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="pathMode">The path mode: 3D, side-scroller 2D, top-down 2D</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOLocalPath(UnityEngine.Transform,DG.Tweening.Plugins.Core.PathCore.Path,System.Single,DG.Tweening.PathMode)">
+            <summary>IMPORTANT: Unless you really know what you're doing, you should use the overload that accepts a Vector3 array instead.<para/>
+            Tweens a Transform's localPosition via the given path.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="path">The path to use</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="pathMode">The path mode: 3D, side-scroller 2D, top-down 2D</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOTimeScale(DG.Tweening.Tween,System.Single,System.Single)">
             <summary>Tweens a Tween's timeScale to the given value.
@@ -2523,8 +2479,20 @@
         <member name="F:DG.Tweening.Tween.onWaypointChange">
             <summary>Called when a path tween's current waypoint changes</summary>
         </member>
+        <member name="P:DG.Tweening.Tween.isRelative">
+            <summary>Tweeners-only (ignored by Sequences), returns TRUE if the tween was set as relative</summary>
+        </member>
+        <member name="P:DG.Tweening.Tween.active">
+            <summary>FALSE when tween is (or should be) despawned - set only by TweenManager</summary>
+        </member>
         <member name="P:DG.Tweening.Tween.fullPosition">
             <summary>Gets and sets the time position (loops included, delays excluded) of the tween</summary>
+        </member>
+        <member name="P:DG.Tweening.Tween.playedOnce">
+            <summary>TRUE after the tween was set in a play state at least once, AFTER any delay is elapsed</summary>
+        </member>
+        <member name="P:DG.Tweening.Tween.position">
+            <summary>Time position within a single loop cycle</summary>
         </member>
         <member name="T:DG.Tweening.Tweener">
             <summary>

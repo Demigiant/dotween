@@ -64,22 +64,24 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files (x86)\Unity 3\Editor\Data\Managed\UnityEditor.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 46\Editor\Data\Managed\UnityEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files (x86)\Unity 3\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Unity 46\Editor\Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\DelayedCall.cs" />
-    <Compile Include="Core\EditorGUIUtils.cs" />
-    <Compile Include="Core\EditorUtils.cs" />
-    <Compile Include="DOTweenInspector.cs" />
-    <Compile Include="DOTweenSettingsInspector.cs" />
-    <Compile Include="DOTweenSetupMenuItem.cs" />
-    <Compile Include="DOTweenUtilityWindow.cs" />
+    <Compile Include="DelayedCall.cs" />
+    <Compile Include="UI\EditorGUIUtils.cs" />
+    <Compile Include="EditorUtils.cs" />
+    <Compile Include="UI\DOTweenInspector.cs" />
+    <Compile Include="UI\DOTweenUtilityWindowModules.cs" />
+    <Compile Include="DOTweenProcessors.cs" />
+    <Compile Include="UI\DOTweenSettingsInspector.cs" />
+    <Compile Include="DOTweenDefines.cs" />
+    <Compile Include="UI\DOTweenUtilityWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,47 +93,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set BinDir=bin.Global\DOTween\Editor
-set DestinationDir=$(SolutionDir)..\..\%25BinDir%25
-set BinDirNoMeta=bin.Global_no_meta\DOTween\Editor
-set DestinationDirNoMeta=$(SolutionDir)..\..\%25BinDirNoMeta%25
-set BinDirUnityTests=UnityTests.Unity4\Assets\Demigiant\DOTween\Editor
-set DestinationDirUnityTests=$(SolutionDir)..\%25BinDirUnityTests%25
-set BinDirUnity5Tests=UnityTests.Unity5\Assets\Demigiant\DOTween\Editor
-set DestinationDirUnity5Tests=$(SolutionDir)..\%25BinDirUnity5Tests%25
-set BinDirCompatibilityTests=UnityCompatibilityTests.Unity35\Assets\Demigiant\DOTween\Editor
-set DestinationDirCompatibilityTests=$(SolutionDir)..\%25BinDirCompatibilityTests%25
-set BinDirExtPluginsTests=ExternalPluginsTestsAndExamples.Unity5\Assets\Demigiant\DOTween\Editor
-set DestinationDirExtPluginsTests=$(SolutionDir)..\%25BinDirExtPluginsTests%25
-
-echo %25DestinationDir%25
-
-echo Deleting TMPs...
-DEL $(TargetDir)\*.tmp
-
-CD $(TargetDir)
-echo Converting PDB to MDB and deleting PDB...
-"c:\Program Files\pdb2mdb\pdb2mdb.exe" $(TargetFileName)
-DEL $(TargetName).pdb
-
-echo Exporting Assembly to %25DestinationDir%25
-echo Copying files to Destination...
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDir%25 /Y /I /E
-
-echo Exporting Assembly to %25DestinationDirNoMeta%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirNoMeta%25 /Y /I /E
-
-echo Exporting Assembly to %25DestinationDirUnityTests%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirUnityTests%25 /Y /I /E
-
-echo Exporting Assembly to %25DestinationDirUnity5Tests%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirUnity5Tests%25 /Y /I /E
-
-echo Exporting Assembly to %25DestinationDirCompatibilityTests%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirCompatibilityTests%25 /Y /I /E
-
-echo Exporting Assembly to %25DestinationDirExtPluginsTests%25
-echo f | xcopy "$(SolutionDir)\bin\Editor" %25DestinationDirExtPluginsTests%25 /Y /I /E</PostBuildEvent>
+    <PostBuildEvent>call $(SolutionDir)PostBuild_DOTween.bat $(SolutionDir) $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin Editor</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -11,9 +11,9 @@ namespace DG.Tweening.Plugins.Options
 {
     public struct QuaternionOptions : IPlugOptions
     {
-        internal RotateMode rotateMode;
-        internal AxisConstraint axisConstraint; // Used by SpecialStartupMode SetLookAt
-        internal Vector3 up; // Used by SpecialStartupMode SetLookAt
+        public RotateMode rotateMode; // Accessed by shortcuts and Modules
+        public AxisConstraint axisConstraint; // Used by SpecialStartupMode SetLookAt, accessed by shortcuts and Modules
+        public Vector3 up; // Used by SpecialStartupMode SetLookAt, accessed by shortcuts and Modules
 
         public void Reset()
         {

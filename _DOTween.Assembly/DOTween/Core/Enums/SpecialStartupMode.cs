@@ -4,9 +4,10 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+#pragma warning disable 1591
 namespace DG.Tweening.Core.Enums
 {
-    internal enum SpecialStartupMode
+    public enum SpecialStartupMode
     {
         None,
         SetLookAt,

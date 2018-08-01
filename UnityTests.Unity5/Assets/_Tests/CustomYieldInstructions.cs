@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using DG.Tweening.CustomYieldInstructions;
 using UnityEngine;
 
 public class CustomYieldInstructions : BrainBase

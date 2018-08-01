@@ -34,6 +34,10 @@ zz UnityTests*
 zzTestBuilds
 *.tmp
 *.pdb
+*.DotSettings
 
 UnityTests.Unity5BETA
+UnityTests.Unity5 - LastVersionBeforeModules
+ModulesTest.Unity2018
 biz
+zzTemp
