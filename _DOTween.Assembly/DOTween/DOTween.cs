@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.004"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.010"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -104,24 +104,10 @@ namespace DG.Tweening
         public static float defaultEasePeriod = 0;
 
         internal static DOTweenComponent instance; // Assigned/removed by DOTweenComponent.Create/DestroyInstance
-        internal static bool isUnityEditor;
-        internal static bool isDebugBuild;
         internal static int maxActiveTweenersReached, maxActiveSequencesReached; // Controlled by DOTweenInspector if showUnityEditorReport is active
         internal static readonly List<TweenCallback> GizmosDelegates = new List<TweenCallback>(); // Can be used by other classes to call internal gizmo draw methods
         internal static bool initialized; // Can be set to false by DOTweenComponent OnDestroy
         internal static bool isQuitting; // Set by DOTweenComponent when the application is quitting
-
-        #region Static Constructor
-
-        static DOTween()
-        {
-            isUnityEditor = Application.isEditor;
-#if DEBUG
-            isDebugBuild = true;
-#endif
-        }
-
-        #endregion
 
         #region Public Methods
 

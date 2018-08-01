@@ -18,6 +18,8 @@ namespace DG.Tweening.Core
         const int _DefaultMaxSequences = 50;
         const string _MaxTweensReached = "Max Tweens reached: capacity has automatically been increased from #0 to #1. Use DOTween.SetTweensCapacity to set it manually at startup";
 
+        internal static bool isUnityEditor;
+        internal static bool isDebugBuild;
         internal static int maxActive = _DefaultMaxTweeners + _DefaultMaxSequences; // Always equal to maxTweeners + maxSequences
         internal static int maxTweeners = _DefaultMaxTweeners; // Always >= maxSequences
         internal static int maxSequences = _DefaultMaxSequences; // Always <= maxTweeners
@@ -45,8 +47,20 @@ namespace DG.Tweening.Core
         static bool _despawnAllCalledFromUpdateLoopCallback;
 
 #if DEBUG
-        static public int updateLoopCount;
+        public static int updateLoopCount;
 #endif
+
+        #region Static Constructor
+
+        static TweenManager()
+        {
+            isUnityEditor = Application.isEditor;
+#if DEBUG
+            isDebugBuild = true;
+#endif
+        }
+
+        #endregion
 
         #region Main
 

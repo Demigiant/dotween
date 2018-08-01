@@ -76,7 +76,7 @@ namespace DG.DOTweenEditor.UI
 #if COMPATIBLE
             _innerTitle = "DOTween v" + DOTween.Version + " [Compatibility build]";
 #else
-            _innerTitle = "DOTween v" + DOTween.Version + (DOTween.isDebugBuild ? " [Debug build]" : " [Release build]");
+            _innerTitle = "DOTween v" + DOTween.Version + (TweenManager.isDebugBuild ? " [Debug build]" : " [Release build]");
 #endif
             if (EditorUtils.hasPro) _innerTitle += "\nDOTweenPro v" + EditorUtils.proVersion;
             else _innerTitle += "\nDOTweenPro not installed";
@@ -138,7 +138,7 @@ namespace DG.DOTweenEditor.UI
             Rect areaRect = new Rect(0, 30, _headerSize.x, _headerSize.y);
             UnityEngine.GUI.DrawTexture(areaRect, _headerImg, ScaleMode.StretchToFill, false);
             GUILayout.Space(areaRect.y + _headerSize.y + 2);
-            GUILayout.Label(_innerTitle, DOTween.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
+            GUILayout.Label(_innerTitle, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
 
             if (_setupRequired) {
                 UnityEngine.GUI.backgroundColor = Color.red;

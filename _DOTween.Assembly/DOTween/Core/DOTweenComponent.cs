@@ -63,7 +63,7 @@ namespace DG.Tweening.Core
             }
             _unscaledTime = Time.realtimeSinceStartup;
 
-            if (DOTween.isUnityEditor) {
+            if (TweenManager.isUnityEditor) {
                 inspectorUpdater++;
                 if (DOTween.showUnityEditorReport && TweenManager.hasActiveTweens) {
                     if (TweenManager.totActiveTweeners > DOTween.maxActiveTweenersReached) DOTween.maxActiveTweenersReached = TweenManager.totActiveTweeners;
@@ -101,7 +101,7 @@ namespace DG.Tweening.Core
 
         void OnDrawGizmos()
         {
-            if (!DOTween.drawGizmos || !DOTween.isUnityEditor) return;
+            if (!DOTween.drawGizmos || !TweenManager.isUnityEditor) return;
 
             int len = DOTween.GizmosDelegates.Count;
             if (len == 0) return;

@@ -5,6 +5,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using System.Collections.Generic;
+using DG.Tweening.Core;
 using UnityEngine;
 
 #pragma warning disable 1591
@@ -58,7 +59,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             AssignWaypoints(waypoints, true);
             AssignDecoder(type);
 
-            if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(Draw);
+            if (TweenManager.isUnityEditor) DOTween.GizmosDelegates.Add(Draw);
         }
 
         internal Path()
@@ -182,7 +183,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
         // Stops drawing the path gizmo
         internal void Destroy()
         {
-            if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Remove(Draw);
+            if (TweenManager.isUnityEditor) DOTween.GizmosDelegates.Remove(Draw);
             wps = null;
             wpLengths = timesTable = lengthsTable = null;
             nonLinearDrawWps = null;
@@ -220,7 +221,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             _incrementalClone.subdivisions = subdivisions;
             _incrementalClone.wps = incrWps;
             _incrementalClone.controlPoints = incrCps;
-            if (DOTween.isUnityEditor) DOTween.GizmosDelegates.Add(_incrementalClone.Draw);
+            if (TweenManager.isUnityEditor) DOTween.GizmosDelegates.Add(_incrementalClone.Draw);
 
             _incrementalClone.length = length;
             _incrementalClone.wpLengths = wpLengths;

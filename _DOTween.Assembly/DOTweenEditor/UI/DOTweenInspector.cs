@@ -28,7 +28,7 @@ namespace DG.DOTweenEditor.UI
 
             _strBuilder.Remove(0, _strBuilder.Length);
             _strBuilder.Append("DOTween v").Append(DOTween.Version);
-            if (DOTween.isDebugBuild) _strBuilder.Append(" [Debug build]");
+            if (TweenManager.isDebugBuild) _strBuilder.Append(" [Debug build]");
             else _strBuilder.Append(" [Release build]");
 
             if (EditorUtils.hasPro) _strBuilder.Append("\nDOTweenPro v").Append(EditorUtils.proVersion);
@@ -47,7 +47,7 @@ namespace DG.DOTweenEditor.UI
             int totActiveLateTweens = TweenManager.totActiveLateTweens;
 
             GUILayout.Space(4);
-            GUILayout.Label(_title, DOTween.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
+            GUILayout.Label(_title, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
 
             GUILayout.Space(6);
             GUILayout.BeginHorizontal();
