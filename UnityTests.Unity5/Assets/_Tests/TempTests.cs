@@ -11,25 +11,17 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Image target;
+    public Transform target0;
+    public Transform target1;
 
     IEnumerator Start()
     {
-        Sequence _passenger_arrow_out = DOTween.Sequence();
-        _passenger_arrow_out.Insert(0, target.GetComponent<RectTransform>().DOAnchorPos(new Vector2(300f, 26f), 1f));
-        _passenger_arrow_out.Insert(0, target.DOFade(0f, 0.8f));
-        _passenger_arrow_out.SetAutoKill(false);
-        _passenger_arrow_out.Pause();
-
-        Sequence _passenger_arrow_in = DOTween.Sequence();
-        _passenger_arrow_in.Insert(0, target.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-200f, 26f), 1f));
-        _passenger_arrow_in.Insert(0, target.DOFade(1f, 0.8f));
-        _passenger_arrow_in.SetAutoKill(false);
-        _passenger_arrow_in.Pause();
+        Tween t0 = target0.DOBlendableLocalMoveBy(new Vector3(1, 2, 1), 2f);
+        Tween t1 = target1.DOBlendableLocalMoveBy(new Vector3(1, -2, 1), 2f);
 
         yield return new WaitForSeconds(1);
 
-        _passenger_arrow_out.Rewind();
-        _passenger_arrow_out.PlayForward();
+        t0.Kill();
+        t1.Goto(1.5f);
     }
 }
