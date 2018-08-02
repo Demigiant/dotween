@@ -34,7 +34,8 @@ namespace DG.DOTweenEditor.UI
         string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources", "Demigiant > Resources"};
 
         // If force is FALSE opens the window only if DOTween's version has changed
-        // (set to FALSE by OnPostprocessAllAssets)
+        // (set to FALSE by OnPostprocessAllAssets).<para/>
+        // NOTE: this is also called via Reflection by UpgradeWindow
         public static void Open()
         {
             EditorWindow window = EditorWindow.GetWindow<DOTweenUtilityWindow>(true, _Title, true);

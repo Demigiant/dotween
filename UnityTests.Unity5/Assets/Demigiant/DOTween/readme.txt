@@ -2,6 +2,7 @@ DOTween and DOTween Pro are copyright (c) 2014 Daniele Giardini - Demigiant
 
 // IMPORTANT!!! /////////////////////////////////////////////
 // Upgrading DOTween from versions older than 1.2.000 ///////
+// (or DOTween Pro older than 1.0.000) //////////////////////
 -------------------------------------------------------------
 If you're upgrading your project from a version of DOTween older than 1.2.000 (or DOTween Pro older than 1.0.000) please follow these instructions carefully.
 1) Import the new version in the same folder as the previous one, overwriting old files. A lot of errors will appear but don't worry
