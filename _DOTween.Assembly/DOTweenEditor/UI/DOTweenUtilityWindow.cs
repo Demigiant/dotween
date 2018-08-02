@@ -29,7 +29,6 @@ namespace DG.DOTweenEditor.UI
         bool _setupRequired;
 
         int _selectedTab;
-        bool _isModulesMode;
         string[] _tabLabels = new[] { "Setup", "Preferences" };
         string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources", "Demigiant > Resources"};
 
@@ -87,9 +86,12 @@ namespace DG.DOTweenEditor.UI
             _setupRequired = EditorUtils.DOTweenSetupRequired();
         }
 
-        void OnDisable()
+        void OnDestroy()
         {
-            _isModulesMode = false;
+            if (_src != null) {
+                _src.showModulesPanel = false;
+                EditorUtility.SetDirty(_src);
+            }
         }
 
         void OnGUI()
@@ -110,10 +112,11 @@ namespace DG.DOTweenEditor.UI
                 GUILayout.Space(40);
                 GUILayout.EndHorizontal();
             } else {
-                if (_isModulesMode) {
-                    if (DOTweenUtilityWindowModules.Draw()) {
+                if (_src.showModulesPanel) {
+                    if (DOTweenUtilityWindowModules.Draw(this)) {
                         _setupRequired = EditorUtils.DOTweenSetupRequired();
-                        _isModulesMode = false;
+                        _src.showModulesPanel = false;
+                        EditorUtility.SetDirty(_src);
                     }
                 } else {
                     Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
@@ -129,6 +132,8 @@ namespace DG.DOTweenEditor.UI
                     }
                 }
             }
+
+            if (GUI.changed) EditorUtility.SetDirty(_src);
         }
 
         // ===================================================================================
@@ -155,7 +160,8 @@ namespace DG.DOTweenEditor.UI
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
                 DOTweenUtilityWindowModules.Refresh();
-                _isModulesMode = true;
+                _src.showModulesPanel = true;
+                EditorUtility.SetDirty(_src);
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                 EditorUtils.DeleteDOTweenUpgradeManagerFiles();
                 return;
@@ -253,8 +259,6 @@ namespace DG.DOTweenEditor.UI
             _src.defaultEasePeriod = EditorGUILayout.FloatField("Ease Period", _src.defaultEasePeriod);
             _src.defaultAutoKill = EditorGUILayout.Toggle("AutoKill", _src.defaultAutoKill);
             _src.defaultLoopType = (LoopType)EditorGUILayout.EnumPopup("Loop Type", _src.defaultLoopType);
-
-            if (UnityEngine.GUI.changed) EditorUtility.SetDirty(_src);
         }
 
         // ===================================================================================

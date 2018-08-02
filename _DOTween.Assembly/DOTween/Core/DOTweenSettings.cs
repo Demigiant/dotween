@@ -37,6 +37,7 @@ namespace DG.Tweening.Core
             DemigiantDirectory
         }
         public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
+        public bool showModulesPanel;
 
         // Editor-Only ► DOTween Inspector
         public bool showPlayingTweens, showPausedTweens;

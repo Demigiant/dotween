@@ -3,6 +3,7 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace DG.DOTweenEditor.UI
 {
     public static class DOTweenUtilityWindowModules
     {
+        static bool _refreshed;
         static bool _hasAudioModule;
         static bool _hasPhysicsModule;
         static bool _hasPhysics2DModule;
@@ -19,8 +21,13 @@ namespace DG.DOTweenEditor.UI
         static bool _hasTextMeshProModule;
         static bool _hasTk2DModule;
 
+        static EditorWindow _editor;
+        static bool _isWaitingForCompilation;
+
         public static void Refresh()
         {
+            _refreshed = true;
+
             _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_AudioModule);
             _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_PhysicsModule);
             _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_Physics2DModule);
@@ -32,10 +39,16 @@ namespace DG.DOTweenEditor.UI
         }
 
         // Returns TRUE if it should be closed
-        public static bool Draw()
+        public static bool Draw(EditorWindow editor)
         {
+            _editor = editor;
+            if (!_refreshed) Refresh();
+
             GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
 
+            if (EditorApplication.isCompiling) WaitForCompilation();
+
+            EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
             GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
             GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
             _hasAudioModule = EditorGUILayout.Toggle("Audio", _hasAudioModule);
@@ -58,14 +71,12 @@ namespace DG.DOTweenEditor.UI
                 Apply();
                 return true;
             }
-            if (GUILayout.Button("Cancel")) return true;
+            if (GUILayout.Button("Cancel")) {
+                return true;
+            }
             GUILayout.EndHorizontal();
+            EditorGUI.EndDisabledGroup();
 
-//            EditorGUILayout.HelpBox(
-//                "NOTE: if you get \"PlayerSettings Validation\" or [CS0618] errors when you press apply don't worry:" +
-//                " it's ok and it allows the setup to work on all possible Unity versions",
-//                MessageType.Warning
-//            );
             return false;
         }
 
@@ -90,6 +101,27 @@ namespace DG.DOTweenEditor.UI
                 if (wantsToBeSet) EditorUtils.AddGlobalDefine(defineId);
                 else EditorUtils.RemoveGlobalDefine(defineId);
             }
+        }
+
+        static void WaitForCompilation()
+        {
+            if (!_isWaitingForCompilation) {
+                _isWaitingForCompilation = true;
+                EditorApplication.update += WaitForCompilation_Update;
+                WaitForCompilation_Update();
+            }
+
+            EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
+        }
+
+        static void WaitForCompilation_Update()
+        {
+            if (!EditorApplication.isCompiling) {
+                EditorApplication.update -= WaitForCompilation_Update;
+                _isWaitingForCompilation = false;
+                Refresh();
+            }
+            _editor.Repaint();
         }
     }
 }
