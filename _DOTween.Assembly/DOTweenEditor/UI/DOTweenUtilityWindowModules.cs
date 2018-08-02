@@ -46,8 +46,7 @@ namespace DG.DOTweenEditor.UI
 
             GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
 
-            if (EditorApplication.isCompiling) WaitForCompilation();
-
+            GUILayout.BeginVertical();
             EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
             GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
             GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
@@ -76,6 +75,9 @@ namespace DG.DOTweenEditor.UI
             }
             GUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
+            GUILayout.EndVertical();
+
+            if (EditorApplication.isCompiling) WaitForCompilation();
 
             return false;
         }
@@ -111,6 +113,8 @@ namespace DG.DOTweenEditor.UI
                 WaitForCompilation_Update();
             }
 
+//            Rect r = GUILayoutUtility.GetLastRect();
+//            EditorGUI.HelpBox(r, "Waiting for Unity to finish the compilation process...", MessageType.Info);
             EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
         }
 
