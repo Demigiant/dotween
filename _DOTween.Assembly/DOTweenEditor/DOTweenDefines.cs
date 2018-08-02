@@ -16,47 +16,38 @@ namespace DG.DOTweenEditor
     /// </summary>
     static class DOTweenDefines
     {
+        // Legacy (in versions older than 1.2.050)
         // Modules
-        public const string GlobalDefine_AudioModule = "DOTAUDIO";
-        public const string GlobalDefine_PhysicsModule = "DOTPHYSICS";
-        public const string GlobalDefine_Physics2DModule = "DOTPHYSICS2D";
-        public const string GlobalDefine_SpriteModule = "DOTSPRITE";
-        public const string GlobalDefine_UIModule = "DOTUI";
+        public const string GlobalDefine_Legacy_AudioModule = "DOTAUDIO";
+        public const string GlobalDefine_Legacy_PhysicsModule = "DOTPHYSICS";
+        public const string GlobalDefine_Legacy_Physics2DModule = "DOTPHYSICS2D";
+        public const string GlobalDefine_Legacy_SpriteModule = "DOTSPRITE";
+        public const string GlobalDefine_Legacy_UIModule = "DOTUI";
         // External assets defines
-        public const string GlobalDefine_TK2D = "DOTWEEN_TK2D";
-        public const string GlobalDefine_TextMeshPro = "DOTWEEN_TMP";
+        public const string GlobalDefine_Legacy_TK2D = "DOTWEEN_TK2D";
+        public const string GlobalDefine_Legacy_TextMeshPro = "DOTWEEN_TMP";
         // Legacy (in versions older than 1.2.000)
         public const string GlobalDefine_Legacy_NoRigidbody = "DOTWEEN_NORBODY";
 
         // Removes all DOTween defines including the ones for external assets
         public static void RemoveAllDefines()
         {
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_AudioModule);
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_PhysicsModule);
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_Physics2DModule);
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_SpriteModule);
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_UIModule);
-
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_NoRigidbody);
-
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_TK2D);
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_TextMeshPro);
+            // No defines currently in use
         }
 
         // Removes all legacy defines
         public static void RemoveAllLegacyDefines()
         {
-            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_NoRigidbody);
-        }
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_AudioModule);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_PhysicsModule);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_Physics2DModule);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_SpriteModule);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_UIModule);
 
-        // Adds all Unity Modules defines but not the ones for external assets
-        public static void AddAllUnityDefines()
-        {
-            EditorUtils.AddGlobalDefine(GlobalDefine_AudioModule);
-            EditorUtils.AddGlobalDefine(GlobalDefine_PhysicsModule);
-            EditorUtils.AddGlobalDefine(GlobalDefine_Physics2DModule);
-            EditorUtils.AddGlobalDefine(GlobalDefine_SpriteModule);
-            EditorUtils.AddGlobalDefine(GlobalDefine_UIModule);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_NoRigidbody);
+
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_TK2D);
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_TextMeshPro);
         }
 
 
@@ -116,13 +107,13 @@ namespace DG.DOTweenEditor
 //                // PRO > 2DToolkit shortcuts
 //                if (Has2DToolkit()) {
 //                    totImported += ImportAddons("Tk2d", proAddonsDir);
-//                    EditorUtils.AddGlobalDefine(GlobalDefine_TK2D);
-//                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_TK2D);
+//                    EditorUtils.AddGlobalDefine(GlobalDefine_Legacy_TK2D);
+//                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_TK2D);
 //                // PRO > TextMeshPro shortcuts
 //                if (HasTextMeshPro()) {
 //                    totImported += ImportAddons("TextMeshPro", proAddonsDir);
-//                    EditorUtils.AddGlobalDefine(GlobalDefine_TextMeshPro);
-//                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_TextMeshPro);
+//                    EditorUtils.AddGlobalDefine(GlobalDefine_Legacy_TextMeshPro);
+//                } else EditorUtils.RemoveGlobalDefine(GlobalDefine_Legacy_TextMeshPro);
 //            }
 //
 //            SetupComplete(addonsDir, proAddonsDir, totImported);

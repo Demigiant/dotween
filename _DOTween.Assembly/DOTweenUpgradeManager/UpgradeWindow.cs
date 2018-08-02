@@ -62,8 +62,12 @@ namespace DG.DOTweenUpgradeManager
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Open DOTween Utility Panel", GUILayout.Height(30))) {
                 Type doeditorT = Type.GetType("DG.DOTweenEditor.UI.DOTweenUtilityWindow, DOTweenEditor");
-                MethodInfo miOpen = doeditorT.GetMethod("Open", BindingFlags.Static | BindingFlags.Public);
-                miOpen.Invoke(null, null);
+                if (doeditorT != null) {
+                    MethodInfo miOpen = doeditorT.GetMethod("Open", BindingFlags.Static | BindingFlags.Public);
+                    if (miOpen != null) {
+                        miOpen.Invoke(null, null);
+                    }
+                }
                 EditorApplication.update -= Autorun.OnUpdate;
                 this.Close();
             }

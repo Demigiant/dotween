@@ -131,6 +131,7 @@ namespace DG.DOTweenEditor
                 adbDOTweenDir + "DOTween50.dll.mdb.addon",
                 //
                 adbDOTweenDir + "DOTweenTextMeshPro.cs.addon",
+                adbDOTweenDir + "DOTweenTextMeshPro_mod.cs",
                 adbDOTweenDir + "DOTweenTk2d.cs.addon",
             });
             AssetDatabase.StopAssetEditing();
