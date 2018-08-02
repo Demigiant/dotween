@@ -3,6 +3,7 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using System.IO;
 using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
@@ -11,32 +12,35 @@ namespace DG.DOTweenEditor.UI
 {
     public static class DOTweenUtilityWindowModules
     {
-        static bool _refreshed;
-        static bool _hasAudioModule;
-        static bool _hasPhysicsModule;
-        static bool _hasPhysics2DModule;
-        static bool _hasSpriteModule;
-        static bool _hasUIModule;
+        const string ModuleMarkerId = "MODULE_MARKER";
 
-        static bool _hasTextMeshProModule;
-        static bool _hasTk2DModule;
+        static readonly ModuleInfo _audioModule = new ModuleInfo("Modules/DOTweenModuleAudio.cs", "AUDIO");
+        static readonly ModuleInfo _physicsModule = new ModuleInfo("Modules/DOTweenModulePhysics.cs", "PHYSICS");
+        static readonly ModuleInfo _physics2DModule = new ModuleInfo("Modules/DOTweenModulePhysics2D.cs", "PHYSICS2D");
+        static readonly ModuleInfo _spriteModule = new ModuleInfo("Modules/DOTweenModuleSprite.cs", "SPRITE");
+        static readonly ModuleInfo _uiModule = new ModuleInfo("Modules/DOTweenModuleUI.cs", "UI");
+        static readonly ModuleInfo _textMeshProModule = new ModuleInfo("DOTweenTextMeshPro.cs", "TEXTMESHPRO");
+        static readonly ModuleInfo _tk2DModule = new ModuleInfo("DOTweenTk2D.cs", "TK2D");
+
+        static readonly string _ModuleUtilsPath = "Modules/DOTweenModuleUtils.cs";
 
         static EditorWindow _editor;
+        static bool _refreshed;
         static bool _isWaitingForCompilation;
 
-        public static void Refresh()
+        static DOTweenUtilityWindowModules()
         {
-            _refreshed = true;
-
-            _hasAudioModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_AudioModule);
-            _hasPhysicsModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_PhysicsModule);
-            _hasPhysics2DModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_Physics2DModule);
-            _hasSpriteModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_SpriteModule);
-            _hasUIModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_UIModule);
-
-            _hasTextMeshProModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_TextMeshPro);
-            _hasTk2DModule = EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_TK2D);
+            _ModuleUtilsPath = EditorUtils.dotweenDir + _ModuleUtilsPath;
+            _audioModule.filePath = EditorUtils.dotweenDir + _audioModule.filePath;
+            _physicsModule.filePath = EditorUtils.dotweenDir + _physicsModule.filePath;
+            _physics2DModule.filePath = EditorUtils.dotweenDir + _physics2DModule.filePath;
+            _spriteModule.filePath = EditorUtils.dotweenDir + _spriteModule.filePath;
+            _uiModule.filePath = EditorUtils.dotweenDir + _uiModule.filePath;
+            _textMeshProModule.filePath = EditorUtils.dotweenProDir + _textMeshProModule.filePath;
+            _tk2DModule.filePath = EditorUtils.dotweenProDir + _tk2DModule.filePath;
         }
+
+        #region GUI
 
         // Returns TRUE if it should be closed
         public static bool Draw(EditorWindow editor)
@@ -50,17 +54,17 @@ namespace DG.DOTweenEditor.UI
             EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
             GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
             GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
-            _hasAudioModule = EditorGUILayout.Toggle("Audio", _hasAudioModule);
-            _hasPhysicsModule = EditorGUILayout.Toggle("Physics", _hasPhysicsModule);
-            _hasPhysics2DModule = EditorGUILayout.Toggle("Physics2D", _hasPhysics2DModule);
-            _hasSpriteModule = EditorGUILayout.Toggle("Sprites", _hasSpriteModule);
-            _hasUIModule = EditorGUILayout.Toggle("UI", _hasUIModule);
+            _audioModule.enabled = EditorGUILayout.Toggle("Audio", _audioModule.enabled);
+            _physicsModule.enabled = EditorGUILayout.Toggle("Physics", _physicsModule.enabled);
+            _physics2DModule.enabled = EditorGUILayout.Toggle("Physics2D", _physics2DModule.enabled);
+            _spriteModule.enabled = EditorGUILayout.Toggle("Sprites", _spriteModule.enabled);
+            _uiModule.enabled = EditorGUILayout.Toggle("UI", _uiModule.enabled);
             EditorGUILayout.EndVertical();
             if (EditorUtils.hasPro) {
                 GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
                 GUILayout.Label("External Assets (Pro)", EditorGUIUtils.boldLabelStyle);
-                _hasTk2DModule = EditorGUILayout.Toggle("2D Toolkit", _hasTk2DModule);
-                _hasTextMeshProModule = EditorGUILayout.Toggle("TextMesh Pro", _hasTextMeshProModule);
+                _textMeshProModule.enabled = EditorGUILayout.Toggle("TextMesh Pro", _textMeshProModule.enabled);
+                _tk2DModule.enabled = EditorGUILayout.Toggle("2D Toolkit", _tk2DModule.enabled);
                 EditorGUILayout.EndVertical();
             }
 
@@ -82,29 +86,6 @@ namespace DG.DOTweenEditor.UI
             return false;
         }
 
-        static void Apply()
-        {
-            ModifyDefineIfChanged(_hasAudioModule, DOTweenDefines.GlobalDefine_AudioModule);
-            ModifyDefineIfChanged(_hasPhysicsModule, DOTweenDefines.GlobalDefine_PhysicsModule);
-            ModifyDefineIfChanged(_hasPhysics2DModule, DOTweenDefines.GlobalDefine_Physics2DModule);
-            ModifyDefineIfChanged(_hasSpriteModule, DOTweenDefines.GlobalDefine_SpriteModule);
-            ModifyDefineIfChanged(_hasUIModule, DOTweenDefines.GlobalDefine_UIModule);
-
-            if (EditorUtils.hasPro) {
-                ModifyDefineIfChanged(_hasTextMeshProModule, DOTweenDefines.GlobalDefine_TextMeshPro);
-                ModifyDefineIfChanged(_hasTk2DModule, DOTweenDefines.GlobalDefine_TK2D);
-            }
-        }
-
-        static void ModifyDefineIfChanged(bool wantsToBeSet, string defineId)
-        {
-            bool hasDefine = EditorUtils.HasGlobalDefine(defineId);
-            if (wantsToBeSet != hasDefine) {
-                if (wantsToBeSet) EditorUtils.AddGlobalDefine(defineId);
-                else EditorUtils.RemoveGlobalDefine(defineId);
-            }
-        }
-
         static void WaitForCompilation()
         {
             if (!_isWaitingForCompilation) {
@@ -112,9 +93,6 @@ namespace DG.DOTweenEditor.UI
                 EditorApplication.update += WaitForCompilation_Update;
                 WaitForCompilation_Update();
             }
-
-//            Rect r = GUILayoutUtility.GetLastRect();
-//            EditorGUI.HelpBox(r, "Waiting for Unity to finish the compilation process...", MessageType.Info);
             EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
         }
 
@@ -126,6 +104,106 @@ namespace DG.DOTweenEditor.UI
                 Refresh();
             }
             _editor.Repaint();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public static void Refresh()
+        {
+            _refreshed = true;
+
+            _audioModule.enabled = ModuleIsEnabled(_audioModule);
+            _physicsModule.enabled = ModuleIsEnabled(_physicsModule);
+            _physics2DModule.enabled = ModuleIsEnabled(_physics2DModule);
+            _spriteModule.enabled = ModuleIsEnabled(_spriteModule);
+            _uiModule.enabled = ModuleIsEnabled(_uiModule);
+
+            _textMeshProModule.enabled = ModuleIsEnabled(_textMeshProModule);
+            _tk2DModule.enabled = ModuleIsEnabled(_tk2DModule);
+        }
+
+        static void Apply()
+        {
+            AssetDatabase.StartAssetEditing();
+            ToggleModule(_audioModule);
+            ToggleModule(_physicsModule);
+            ToggleModule(_physics2DModule);
+            ToggleModule(_spriteModule);
+            ToggleModule(_uiModule);
+
+            if (EditorUtils.hasPro) {
+                ToggleModule(_textMeshProModule);
+                ToggleModule(_tk2DModule);
+            }
+            AssetDatabase.StopAssetEditing();
+        }
+
+        static bool ModuleIsEnabled(ModuleInfo m)
+        {
+            if (!File.Exists(m.filePath)) return false;
+
+            using (StreamReader sr = new StreamReader(m.filePath)) {
+                string line = sr.ReadLine();
+                while (line != null) {
+                    if (line.EndsWith(ModuleMarkerId) && line.TrimStart().StartsWith("#if")) return line.Contains("#if true");
+                    line = sr.ReadLine();
+                }
+            }
+            return true;
+        }
+
+        static void ToggleModule(ModuleInfo m)
+        {
+            if (!File.Exists(m.filePath)) return;
+            if (ModuleIsEnabled(m) == m.enabled) return; // Already set
+
+            string[] lines = File.ReadAllLines(m.filePath);
+            using (StreamWriter sw = new StreamWriter(m.filePath)) {
+                for (int i = 0; i < lines.Length; ++i) {
+                    string s = lines[i];
+                    if (s.EndsWith(ModuleMarkerId) && s.TrimStart().StartsWith("#if")) {
+                        s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                    }
+                    sw.WriteLine(s);
+                }
+            }
+            AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(m.filePath), ImportAssetOptions.Default);
+
+            // Enable/disable conditions inside DOTweenModuleUtils.cs
+            if (!File.Exists(_ModuleUtilsPath)) return;
+            string marker = m.id + "_MARKER";
+            lines = File.ReadAllLines(_ModuleUtilsPath);
+            using (StreamWriter sw = new StreamWriter(_ModuleUtilsPath)) {
+                for (int i = 0; i < lines.Length; ++i) {
+                    string s = lines[i];
+                    if (s.EndsWith(marker) && s.TrimStart().StartsWith("#if")) {
+                        s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                    }
+                    sw.WriteLine(s);
+                }
+            }
+            AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(_ModuleUtilsPath), ImportAssetOptions.Default);
+        }
+
+        #endregion
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        class ModuleInfo
+        {
+            public bool enabled;
+            public string filePath;
+            public readonly string id; // ID is used exclusively with DOTweenModuleUtils, to determine if the line is related to this module
+
+            public ModuleInfo(string filePath, string id)
+            {
+                this.filePath = filePath;
+                this.id = id;
+            }
         }
     }
 }

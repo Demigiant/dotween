@@ -163,6 +163,7 @@ namespace DG.DOTweenEditor.UI
                 _src.showModulesPanel = true;
                 EditorUtility.SetDirty(_src);
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
+                DOTweenDefines.RemoveAllLegacyDefines();
                 EditorUtils.DeleteDOTweenUpgradeManagerFiles();
                 return;
             }
