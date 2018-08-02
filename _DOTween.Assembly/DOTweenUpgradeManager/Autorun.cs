@@ -4,6 +4,7 @@
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
 using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -25,12 +26,26 @@ namespace DG.DOTweenUpgradeManager
 
         public static void OnUpdate()
         {
-            if (!UpgradeWindowIsOpen()) UpgradeWindow.Open();
+            if (!UpgradeWindowIsOpen()) {
+                ApplyModulesSettings();
+                UpgradeWindow.Open();
+            }
         }
 
         static bool UpgradeWindowIsOpen()
         {
             return Resources.FindObjectsOfTypeAll<UpgradeWindow>().Length > 0;
+        }
+
+        static void ApplyModulesSettings()
+        {
+            Type doeditorT = Type.GetType("DG.DOTweenEditor.UI.DOTweenUtilityWindowModules, DOTweenEditor");
+            if (doeditorT != null) {
+                MethodInfo miOpen = doeditorT.GetMethod("ApplyModulesSettings", BindingFlags.Static | BindingFlags.Public);
+                if (miOpen != null) {
+                    miOpen.Invoke(null, null);
+                }
+            }
         }
     }
 }

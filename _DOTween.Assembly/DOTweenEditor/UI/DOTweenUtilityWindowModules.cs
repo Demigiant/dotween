@@ -113,6 +113,17 @@ namespace DG.DOTweenEditor.UI
 
         #endregion
 
+        #region Public Methods
+
+        // Also called via Reflection by Autorun
+        public static void ApplyModulesSettings()
+        {
+            DOTweenSettings src = DOTweenUtilityWindow.GetDOTweenSettings();
+            if (src != null) Refresh(src, true);
+        }
+
+        #endregion
+
         #region Methods
 
         public static void Refresh(DOTweenSettings src, bool applySrcSettings = false)

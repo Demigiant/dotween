@@ -45,6 +45,8 @@ namespace DG.DOTweenEditor
             );
             return AssetDeleteResult.DidNotDelete;
         }
+
+
     }
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
@@ -64,6 +66,8 @@ namespace DG.DOTweenEditor
                 EditorUtils.DeleteOldDemiLibCore();
                 // Remove old legacy defines
                 DOTweenDefines.RemoveAllLegacyDefines();
+                // Reapply modules
+                DOTweenUtilityWindowModules.ApplyModulesSettings();
                 //
                 bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
                 bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;

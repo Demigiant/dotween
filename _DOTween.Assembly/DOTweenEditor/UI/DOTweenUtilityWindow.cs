@@ -37,7 +37,7 @@ namespace DG.DOTweenEditor.UI
         // NOTE: this is also called via Reflection by UpgradeWindow
         public static void Open()
         {
-            EditorWindow window = EditorWindow.GetWindow<DOTweenUtilityWindow>(true, _Title, true);
+            DOTweenUtilityWindow window = EditorWindow.GetWindow<DOTweenUtilityWindow>(true, _Title, true);
             window.minSize = _WinSize;
             window.maxSize = _WinSize;
             window.ShowUtility();
@@ -159,7 +159,7 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
-                DOTweenUtilityWindowModules.Refresh(_src, true);
+                DOTweenUtilityWindowModules.ApplyModulesSettings();
                 _src.modules.showPanel = true;
                 EditorUtility.SetDirty(_src);
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
@@ -265,43 +265,91 @@ namespace DG.DOTweenEditor.UI
         // ===================================================================================
         // METHODS ---------------------------------------------------------------------------
 
-        void Connect(bool forceReconnect = false)
+        public static DOTweenSettings GetDOTweenSettings()
         {
-            if (_src != null && !forceReconnect) return;
+            return ConnectToSource(null, false, false);
+        }
 
+        static DOTweenSettings ConnectToSource(DOTweenSettings src, bool createIfMissing, bool fullSetup)
+        {
             LocationData assetsLD = new LocationData(EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources");
             LocationData dotweenLD = new LocationData(EditorUtils.dotweenDir + "Resources");
             bool hasDemigiantDir = EditorUtils.demigiantDir != null;
             LocationData demigiantLD = hasDemigiantDir ? new LocationData(EditorUtils.demigiantDir + "Resources") : new LocationData();
 
-            if (_src == null) {
+            if (src == null) {
                 // Load eventual existing settings
-                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, false);
-                if (_src == null) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(dotweenLD.adbFilePath, false);
-                if (_src == null && hasDemigiantDir) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(demigiantLD.adbFilePath, false);
+                src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, false);
+                if (src == null) src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(dotweenLD.adbFilePath, false);
+                if (src == null && hasDemigiantDir) src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(demigiantLD.adbFilePath, false);
             }
-            if (_src == null) {
-                // Settings don't exist. Create it in external folder
+            if (src == null) {
+                // Settings don't exist.
+                if (!createIfMissing) return null; // Stop here
+                // Create it in external folder
                 if (!Directory.Exists(assetsLD.dir)) AssetDatabase.CreateFolder(assetsLD.adbParentDir, "Resources");
-                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, true);
+                src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, true);
             }
 
-            // Move eventual settings from previous location and setup everything correctly
-            DOTweenSettings.SettingsLocation settingsLoc = _src.storeSettingsLocation;
-            switch (settingsLoc) {
-            case DOTweenSettings.SettingsLocation.AssetsDirectory:
-                MoveSrc(new[] { dotweenLD, demigiantLD }, assetsLD);
-                break;
-            case DOTweenSettings.SettingsLocation.DOTweenDirectory:
-                MoveSrc(new[] { assetsLD, demigiantLD }, dotweenLD);
-                break;
-            case DOTweenSettings.SettingsLocation.DemigiantDirectory:
-                MoveSrc(new[] { assetsLD, dotweenLD }, demigiantLD);
-                break;
+            if (fullSetup) {
+                // Move eventual settings from previous location and setup everything correctly
+                DOTweenSettings.SettingsLocation settingsLoc = src.storeSettingsLocation;
+                switch (settingsLoc) {
+                case DOTweenSettings.SettingsLocation.AssetsDirectory:
+                    src = MoveSrc(new[] { dotweenLD, demigiantLD }, assetsLD);
+                    break;
+                case DOTweenSettings.SettingsLocation.DOTweenDirectory:
+                    src = MoveSrc(new[] { assetsLD, demigiantLD }, dotweenLD);
+                    break;
+                case DOTweenSettings.SettingsLocation.DemigiantDirectory:
+                    src = MoveSrc(new[] { assetsLD, dotweenLD }, demigiantLD);
+                    break;
+                }
             }
+
+            return src;
         }
 
-        void MoveSrc(LocationData[] from, LocationData to)
+        void Connect(bool forceReconnect = false)
+        {
+            if (_src != null && !forceReconnect) return;
+            _src = ConnectToSource(_src, true, true);
+
+//            LocationData assetsLD = new LocationData(EditorUtils.assetsPath + EditorUtils.pathSlash + "Resources");
+//            LocationData dotweenLD = new LocationData(EditorUtils.dotweenDir + "Resources");
+//            bool hasDemigiantDir = EditorUtils.demigiantDir != null;
+//            LocationData demigiantLD = hasDemigiantDir ? new LocationData(EditorUtils.demigiantDir + "Resources") : new LocationData();
+//
+//            if (_src == null) {
+//                // Load eventual existing settings
+//                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, false);
+//                if (_src == null) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(dotweenLD.adbFilePath, false);
+//                if (_src == null && hasDemigiantDir) _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(demigiantLD.adbFilePath, false);
+//            }
+//            if (_src == null) {
+//                // Settings don't exist.
+//                if (!createSrcIfMissing) return; // Stop here
+//                // Create it in external folder
+//                if (!Directory.Exists(assetsLD.dir)) AssetDatabase.CreateFolder(assetsLD.adbParentDir, "Resources");
+//                _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(assetsLD.adbFilePath, true);
+//            }
+//
+//            // Move eventual settings from previous location and setup everything correctly
+//            DOTweenSettings.SettingsLocation settingsLoc = _src.storeSettingsLocation;
+//            switch (settingsLoc) {
+//            case DOTweenSettings.SettingsLocation.AssetsDirectory:
+//                MoveSrc(new[] { dotweenLD, demigiantLD }, assetsLD);
+//                break;
+//            case DOTweenSettings.SettingsLocation.DOTweenDirectory:
+//                MoveSrc(new[] { assetsLD, demigiantLD }, dotweenLD);
+//                break;
+//            case DOTweenSettings.SettingsLocation.DemigiantDirectory:
+//                MoveSrc(new[] { assetsLD, dotweenLD }, demigiantLD);
+//                break;
+//            }
+        }
+
+        static DOTweenSettings MoveSrc(LocationData[] from, LocationData to)
         {
             if (!Directory.Exists(to.dir)) AssetDatabase.CreateFolder(to.adbParentDir, "Resources");
             foreach (LocationData ld in from) {
@@ -316,7 +364,7 @@ namespace DG.DOTweenEditor.UI
                     }
                 }
             }
-            _src = EditorUtils.ConnectToSourceAsset<DOTweenSettings>(to.adbFilePath, true);
+            return EditorUtils.ConnectToSourceAsset<DOTweenSettings>(to.adbFilePath, true);
         }
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
