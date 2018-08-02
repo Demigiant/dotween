@@ -3,6 +3,7 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using System.Collections.Generic;
 using System.IO;
 using DG.Tweening.Core;
 using UnityEditor;
@@ -25,8 +26,10 @@ namespace DG.DOTweenEditor.UI
         static readonly string _ModuleUtilsPath = "Modules/DOTweenModuleUtils.cs";
 
         static EditorWindow _editor;
+        static DOTweenSettings _src;
         static bool _refreshed;
         static bool _isWaitingForCompilation;
+        static readonly List<int> _LinesToChange = new List<int>();
 
         static DOTweenUtilityWindowModules()
         {
@@ -43,10 +46,11 @@ namespace DG.DOTweenEditor.UI
         #region GUI
 
         // Returns TRUE if it should be closed
-        public static bool Draw(EditorWindow editor)
+        public static bool Draw(EditorWindow editor, DOTweenSettings src)
         {
             _editor = editor;
-            if (!_refreshed) Refresh();
+            _src = src;
+            if (!_refreshed) Refresh(_src);
 
             GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
 
@@ -72,6 +76,7 @@ namespace DG.DOTweenEditor.UI
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Apply")) {
                 Apply();
+                Refresh(_src);
                 return true;
             }
             if (GUILayout.Button("Cancel")) {
@@ -101,7 +106,7 @@ namespace DG.DOTweenEditor.UI
             if (!EditorApplication.isCompiling) {
                 EditorApplication.update -= WaitForCompilation_Update;
                 _isWaitingForCompilation = false;
-                Refresh();
+                Refresh(_src);
             }
             _editor.Repaint();
         }
@@ -110,18 +115,32 @@ namespace DG.DOTweenEditor.UI
 
         #region Methods
 
-        public static void Refresh()
+        public static void Refresh(DOTweenSettings src, bool applySrcSettings = false)
         {
+            _src = src;
             _refreshed = true;
 
+            AssetDatabase.StartAssetEditing();
             _audioModule.enabled = ModuleIsEnabled(_audioModule);
             _physicsModule.enabled = ModuleIsEnabled(_physicsModule);
             _physics2DModule.enabled = ModuleIsEnabled(_physics2DModule);
             _spriteModule.enabled = ModuleIsEnabled(_spriteModule);
             _uiModule.enabled = ModuleIsEnabled(_uiModule);
-
+            //
             _textMeshProModule.enabled = ModuleIsEnabled(_textMeshProModule);
             _tk2DModule.enabled = ModuleIsEnabled(_tk2DModule);
+
+            CheckAutoModuleSettings(applySrcSettings, _audioModule, ref src.modules.audioEnabled);
+            CheckAutoModuleSettings(applySrcSettings, _physicsModule, ref src.modules.physicsEnabled);
+            CheckAutoModuleSettings(applySrcSettings, _physics2DModule, ref src.modules.physics2DEnabled);
+            CheckAutoModuleSettings(applySrcSettings, _spriteModule, ref src.modules.spriteEnabled);
+            CheckAutoModuleSettings(applySrcSettings, _uiModule, ref src.modules.uiEnabled);
+            //
+            CheckAutoModuleSettings(applySrcSettings, _textMeshProModule, ref src.modules.textMeshProEnabled);
+            CheckAutoModuleSettings(applySrcSettings, _tk2DModule, ref src.modules.tk2DEnabled);
+            AssetDatabase.StopAssetEditing();
+
+            EditorUtility.SetDirty(_src);
         }
 
         static void Apply()
@@ -147,11 +166,24 @@ namespace DG.DOTweenEditor.UI
             using (StreamReader sr = new StreamReader(m.filePath)) {
                 string line = sr.ReadLine();
                 while (line != null) {
-                    if (line.EndsWith(ModuleMarkerId) && line.TrimStart().StartsWith("#if")) return line.Contains("#if true");
+                    if (line.EndsWith(ModuleMarkerId) && line.StartsWith("#if")) return line.StartsWith("#if true");
                     line = sr.ReadLine();
                 }
             }
             return true;
+        }
+
+        static void CheckAutoModuleSettings(bool applySettings, ModuleInfo m, ref bool srcModuleEnabled)
+        {
+            if (m.enabled != srcModuleEnabled) {
+                if (applySettings) {
+                    m.enabled = srcModuleEnabled;
+                    ToggleModule(m);
+                } else {
+                    srcModuleEnabled = m.enabled;
+                    EditorUtility.SetDirty(_src);
+                }
+            }
         }
 
         static void ToggleModule(ModuleInfo m)
@@ -159,32 +191,52 @@ namespace DG.DOTweenEditor.UI
             if (!File.Exists(m.filePath)) return;
             if (ModuleIsEnabled(m) == m.enabled) return; // Already set
 
+            _LinesToChange.Clear();
             string[] lines = File.ReadAllLines(m.filePath);
-            using (StreamWriter sw = new StreamWriter(m.filePath)) {
-                for (int i = 0; i < lines.Length; ++i) {
-                    string s = lines[i];
-                    if (s.EndsWith(ModuleMarkerId) && s.TrimStart().StartsWith("#if")) {
-                        s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
-                    }
-                    sw.WriteLine(s);
+            for (int i = 0; i < lines.Length; ++i) {
+                string s = lines[i];
+                if (s.EndsWith(ModuleMarkerId) && (m.enabled && s.StartsWith("#if false") || !m.enabled && s.StartsWith("#if true"))) {
+                    _LinesToChange.Add(i);
                 }
             }
-            AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(m.filePath), ImportAssetOptions.Default);
+            if (_LinesToChange.Count > 0) {
+                using (StreamWriter sw = new StreamWriter(m.filePath)) {
+                    for (int i = 0; i < lines.Length; ++i) {
+                        string s = lines[i];
+                        if (_LinesToChange.Contains(i)) {
+                            s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                        }
+                        sw.WriteLine(s);
+                    }
+                }
+                AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(m.filePath), ImportAssetOptions.Default);
+            }
 
             // Enable/disable conditions inside DOTweenModuleUtils.cs
             if (!File.Exists(_ModuleUtilsPath)) return;
             string marker = m.id + "_MARKER";
             lines = File.ReadAllLines(_ModuleUtilsPath);
-            using (StreamWriter sw = new StreamWriter(_ModuleUtilsPath)) {
-                for (int i = 0; i < lines.Length; ++i) {
-                    string s = lines[i];
-                    if (s.EndsWith(marker) && s.TrimStart().StartsWith("#if")) {
-                        s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
-                    }
-                    sw.WriteLine(s);
+            _LinesToChange.Clear();
+            for (int i = 0; i < lines.Length; ++i) {
+                string s = lines[i];
+                if (s.EndsWith(marker) && (m.enabled && s.StartsWith("#if false") || !m.enabled && s.StartsWith("#if true"))) {
+                    _LinesToChange.Add(i);
                 }
             }
-            AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(_ModuleUtilsPath), ImportAssetOptions.Default);
+            if (_LinesToChange.Count > 0) {
+                using (StreamWriter sw = new StreamWriter(_ModuleUtilsPath)) {
+                    for (int i = 0; i < lines.Length; ++i) {
+                        string s = lines[i];
+                        if (_LinesToChange.Contains(i)) {
+                            s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                        }
+                        sw.WriteLine(s);
+                    }
+                }
+                AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(_ModuleUtilsPath), ImportAssetOptions.Default);
+            }
+
+            _LinesToChange.Clear();
         }
 
         #endregion

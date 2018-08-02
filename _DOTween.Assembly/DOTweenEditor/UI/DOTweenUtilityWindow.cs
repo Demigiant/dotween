@@ -89,7 +89,7 @@ namespace DG.DOTweenEditor.UI
         void OnDestroy()
         {
             if (_src != null) {
-                _src.showModulesPanel = false;
+                _src.modules.showPanel = false;
                 EditorUtility.SetDirty(_src);
             }
         }
@@ -112,10 +112,10 @@ namespace DG.DOTweenEditor.UI
                 GUILayout.Space(40);
                 GUILayout.EndHorizontal();
             } else {
-                if (_src.showModulesPanel) {
-                    if (DOTweenUtilityWindowModules.Draw(this)) {
+                if (_src.modules.showPanel) {
+                    if (DOTweenUtilityWindowModules.Draw(this, _src)) {
                         _setupRequired = EditorUtils.DOTweenSetupRequired();
-                        _src.showModulesPanel = false;
+                        _src.modules.showPanel = false;
                         EditorUtility.SetDirty(_src);
                     }
                 } else {
@@ -159,8 +159,8 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
-                DOTweenUtilityWindowModules.Refresh();
-                _src.showModulesPanel = true;
+                DOTweenUtilityWindowModules.Refresh(_src, true);
+                _src.modules.showPanel = true;
                 EditorUtility.SetDirty(_src);
                 EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                 DOTweenDefines.RemoveAllLegacyDefines();

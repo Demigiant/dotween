@@ -1,6 +1,7 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2015/02/05 10:28
 
+using System;
 using DG.Tweening.Core.Enums;
 using UnityEngine;
 
@@ -37,9 +38,27 @@ namespace DG.Tweening.Core
             DemigiantDirectory
         }
         public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
-        public bool showModulesPanel;
+        public ModulesSetup modules = new ModulesSetup();
 
         // Editor-Only ► DOTween Inspector
         public bool showPlayingTweens, showPausedTweens;
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        [Serializable]
+        public class ModulesSetup // Editor-only
+        {
+            public bool showPanel;
+
+            public bool audioEnabled = true;
+            public bool physicsEnabled = true;
+            public bool physics2DEnabled = true;
+            public bool spriteEnabled = true;
+            public bool uiEnabled = true;
+            public bool textMeshProEnabled;
+            public bool tk2DEnabled;
+        }
     }
 }
