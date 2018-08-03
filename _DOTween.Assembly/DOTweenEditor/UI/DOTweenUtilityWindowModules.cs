@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +24,13 @@ namespace DG.DOTweenEditor.UI
         static readonly ModuleInfo _textMeshProModule = new ModuleInfo("DOTweenTextMeshPro.cs", "TEXTMESHPRO");
         static readonly ModuleInfo _tk2DModule = new ModuleInfo("DOTweenTk2D.cs", "TK2D");
 
-        static readonly string _ModuleUtilsPath = "Modules/DOTweenModuleUtils.cs";
+        // Files that contain multiple module dependencies and which have specific define markers to change
+        static readonly string[] _ModuleDependentFiles = new[] {
+            "DOTWEENDIR/Modules/DOTweenModuleUtils.cs",
+            "DOTWEENPRODIR/DOTweenAnimation.cs",
+            "DOTWEENPRODIR/DOTweenProShortcuts.cs",
+            "DOTWEENPRODIR/Editor/DOTweenAnimationInspector.cs",
+        };
 
         static EditorWindow _editor;
         static DOTweenSettings _src;
@@ -33,7 +40,11 @@ namespace DG.DOTweenEditor.UI
 
         static DOTweenUtilityWindowModules()
         {
-            _ModuleUtilsPath = EditorUtils.dotweenDir + _ModuleUtilsPath;
+            for (int i = 0; i < _ModuleDependentFiles.Length; ++i) {
+                _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace("DOTWEENDIR/", EditorUtils.dotweenDir);
+                _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace("DOTWEENPRODIR/", EditorUtils.dotweenProDir);
+            }
+
             _audioModule.filePath = EditorUtils.dotweenDir + _audioModule.filePath;
             _physicsModule.filePath = EditorUtils.dotweenDir + _physicsModule.filePath;
             _physics2DModule.filePath = EditorUtils.dotweenDir + _physics2DModule.filePath;
@@ -157,17 +168,42 @@ namespace DG.DOTweenEditor.UI
         static void Apply()
         {
             AssetDatabase.StartAssetEditing();
-            ToggleModule(_audioModule);
-            ToggleModule(_physicsModule);
-            ToggleModule(_physics2DModule);
-            ToggleModule(_spriteModule);
-            ToggleModule(_uiModule);
+            bool audioToggled = ToggleModule(_audioModule, ref _src.modules.audioEnabled);
+            bool physicsToggled = ToggleModule(_physicsModule, ref _src.modules.physicsEnabled);
+            bool physics2DToggled = ToggleModule(_physics2DModule, ref _src.modules.physics2DEnabled);
+            bool spriteToggled = ToggleModule(_spriteModule, ref _src.modules.spriteEnabled);
+            bool uiToggled = ToggleModule(_uiModule, ref _src.modules.uiEnabled);
 
+            bool textMeshProToggled = false;
+            bool tk2DToggled = false;
             if (EditorUtils.hasPro) {
-                ToggleModule(_textMeshProModule);
-                ToggleModule(_tk2DModule);
+                textMeshProToggled = ToggleModule(_textMeshProModule, ref _src.modules.textMeshProEnabled);
+                tk2DToggled = ToggleModule(_tk2DModule, ref _src.modules.tk2DEnabled);
             }
             AssetDatabase.StopAssetEditing();
+            EditorUtility.SetDirty(_src);
+
+            bool anyToggled = audioToggled || physicsToggled || physics2DToggled || spriteToggled || uiToggled
+                              || textMeshProToggled || tk2DToggled;
+            if (anyToggled) {
+                StringBuilder strb = new StringBuilder();
+                strb.Append("<b>DOTween module files modified ► </b>");
+                if (audioToggled) Apply_AppendLog(strb, _src.modules.audioEnabled, "Audio");
+                if (physicsToggled) Apply_AppendLog(strb, _src.modules.physicsEnabled, "Physics");
+                if (physics2DToggled) Apply_AppendLog(strb, _src.modules.physics2DEnabled, "Physics2D");
+                if (spriteToggled) Apply_AppendLog(strb, _src.modules.spriteEnabled, "Sprites");
+                if (uiToggled) Apply_AppendLog(strb, _src.modules.uiEnabled, "UI");
+                if (textMeshProToggled) Apply_AppendLog(strb, _src.modules.textMeshProEnabled, "TextMesh Pro");
+                if (tk2DToggled) Apply_AppendLog(strb, _src.modules.tk2DEnabled, "2D Toolkit");
+                // Remove last divider
+                strb.Remove(strb.Length - 3, 3);
+                Debug.Log(strb.ToString());
+            }
+        }
+
+        static void Apply_AppendLog(StringBuilder strb, bool enabled, string id)
+        {
+            strb.Append("<color=#").Append(enabled ? "00ff00" : "ff0000").Append('>').Append(id).Append("</color>").Append(" - ");
         }
 
         static bool ModuleIsEnabled(ModuleInfo m)
@@ -177,7 +213,7 @@ namespace DG.DOTweenEditor.UI
             using (StreamReader sr = new StreamReader(m.filePath)) {
                 string line = sr.ReadLine();
                 while (line != null) {
-                    if (line.EndsWith(ModuleMarkerId) && line.StartsWith("#if")) return line.StartsWith("#if true");
+                    if (line.EndsWith(ModuleMarkerId) && line.StartsWith("#if")) return line.Contains("true");
                     line = sr.ReadLine();
                 }
             }
@@ -189,7 +225,7 @@ namespace DG.DOTweenEditor.UI
             if (m.enabled != srcModuleEnabled) {
                 if (applySettings) {
                     m.enabled = srcModuleEnabled;
-                    ToggleModule(m);
+                    ToggleModule(m, ref srcModuleEnabled);
                 } else {
                     srcModuleEnabled = m.enabled;
                     EditorUtility.SetDirty(_src);
@@ -197,25 +233,30 @@ namespace DG.DOTweenEditor.UI
             }
         }
 
-        static void ToggleModule(ModuleInfo m)
+        // Returns TRUE if files were actually modified
+        static bool ToggleModule(ModuleInfo m, ref bool srcSetting)
         {
-            if (!File.Exists(m.filePath)) return;
-            if (ModuleIsEnabled(m) == m.enabled) return; // Already set
+            if (!File.Exists(m.filePath)) return false;
+//            if (ModuleIsEnabled(m) == m.enabled) return; // Already set
+
+            srcSetting = m.enabled;
+            bool modifiedFiles = false;
 
             _LinesToChange.Clear();
             string[] lines = File.ReadAllLines(m.filePath);
             for (int i = 0; i < lines.Length; ++i) {
                 string s = lines[i];
-                if (s.EndsWith(ModuleMarkerId) && (m.enabled && s.StartsWith("#if false") || !m.enabled && s.StartsWith("#if true"))) {
+                if (s.EndsWith(ModuleMarkerId) && s.StartsWith("#if") && (m.enabled && s.Contains("false") || !m.enabled && s.Contains("true"))) {
                     _LinesToChange.Add(i);
                 }
             }
             if (_LinesToChange.Count > 0) {
+                modifiedFiles = true;
                 using (StreamWriter sw = new StreamWriter(m.filePath)) {
                     for (int i = 0; i < lines.Length; ++i) {
                         string s = lines[i];
                         if (_LinesToChange.Contains(i)) {
-                            s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                            s = m.enabled ? s.Replace("false", "true") : s.Replace("true", "false");
                         }
                         sw.WriteLine(s);
                     }
@@ -223,31 +264,45 @@ namespace DG.DOTweenEditor.UI
                 AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(m.filePath), ImportAssetOptions.Default);
             }
 
-            // Enable/disable conditions inside DOTweenModuleUtils.cs
-            if (!File.Exists(_ModuleUtilsPath)) return;
+            // Enable/disable conditions inside dependent files
             string marker = m.id + "_MARKER";
-            lines = File.ReadAllLines(_ModuleUtilsPath);
+            for (int i = 0; i < _ModuleDependentFiles.Length; ++i) {
+                bool mod = ToggleModuleInDependentFile(_ModuleDependentFiles[i], m.enabled, marker);
+                if (mod) modifiedFiles = true;
+            }
+
             _LinesToChange.Clear();
+            return modifiedFiles;
+        }
+
+        // Returns TRUE if files were actually modified
+        static bool ToggleModuleInDependentFile(string filePath, bool enable, string marker)
+        {
+            if (!File.Exists(filePath)) return false;
+
+            bool modifiedFiles = false;
+            _LinesToChange.Clear();
+            string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; ++i) {
                 string s = lines[i];
-                if (s.EndsWith(marker) && (m.enabled && s.StartsWith("#if false") || !m.enabled && s.StartsWith("#if true"))) {
+                if (s.EndsWith(marker) && s.StartsWith("#if") && (enable && s.Contains("false") || !enable && s.Contains("true"))) {
                     _LinesToChange.Add(i);
                 }
             }
             if (_LinesToChange.Count > 0) {
-                using (StreamWriter sw = new StreamWriter(_ModuleUtilsPath)) {
+                modifiedFiles = true;
+                using (StreamWriter sw = new StreamWriter(filePath)) {
                     for (int i = 0; i < lines.Length; ++i) {
                         string s = lines[i];
                         if (_LinesToChange.Contains(i)) {
-                            s = m.enabled ? s.Replace("#if false", "#if true") : s.Replace("#if true", "#if false");
+                            s = enable ? s.Replace("false", "true") : s.Replace("true", "false");
                         }
                         sw.WriteLine(s);
                     }
                 }
-                AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(_ModuleUtilsPath), ImportAssetOptions.Default);
+                AssetDatabase.ImportAsset(EditorUtils.FullPathToADBPath(filePath), ImportAssetOptions.Default);
             }
-
-            _LinesToChange.Clear();
+            return modifiedFiles;
         }
 
         #endregion
