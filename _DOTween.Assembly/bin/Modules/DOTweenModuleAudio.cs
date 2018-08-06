@@ -4,7 +4,9 @@
 #if true // MODULE_MARKER
 using System;
 using UnityEngine;
-using UnityEngine.Audio;
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
+using UnityEngine.Audio; // Required for AudioMixer
+#endif
 
 #pragma warning disable 1591
 namespace DG.Tweening

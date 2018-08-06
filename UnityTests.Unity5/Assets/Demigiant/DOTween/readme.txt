@@ -1,4 +1,4 @@
-DOTween and DOTween Pro are copyright (c) 2014 Daniele Giardini - Demigiant
+DOTween and DOTween Pro are copyright (c) 2014-2018 Daniele Giardini - Demigiant
 
 // IMPORTANT!!! /////////////////////////////////////////////
 // Upgrading DOTween from versions older than 1.2.000 ///////
@@ -8,7 +8,7 @@ If you're upgrading your project from a version of DOTween older than 1.2.000 (o
 1) Import the new version in the same folder as the previous one, overwriting old files. A lot of errors will appear but don't worry
 2) Close and reopen Unity (and your project). This is fundamental: skipping this step will cause a bloodbath
 3) Open DOTween's Utility Panel (Tools > Demigiant > DOTween Utility Panel) if it doesn't open automatically, then press "Setup DOTween...": this will run the upgrade setup
-4) From the Add/Remove Modules panel that opens, activate all Modules for the tweens you were using (all of them, probably)
+4) From the Add/Remove Modules panel that opens, activate/deactivate Modules for Unity systems and for external assets (Pro version only)
 
 // GET STARTED //////////////////////////////////////////////
 
