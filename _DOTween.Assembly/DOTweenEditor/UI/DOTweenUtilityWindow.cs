@@ -120,7 +120,7 @@ namespace DG.DOTweenEditor.UI
                     }
                 } else {
                     Rect areaRect = new Rect(0, 0, _headerSize.x, 30);
-                    _selectedTab = UnityEngine.GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
+                    _selectedTab = GUI.Toolbar(areaRect, _selectedTab, _tabLabels);
 
                     switch (_selectedTab) {
                     case 1:
@@ -142,18 +142,18 @@ namespace DG.DOTweenEditor.UI
         void DrawSetupGUI()
         {
             Rect areaRect = new Rect(0, 30, _headerSize.x, _headerSize.y);
-            UnityEngine.GUI.DrawTexture(areaRect, _headerImg, ScaleMode.StretchToFill, false);
+            GUI.DrawTexture(areaRect, _headerImg, ScaleMode.StretchToFill, false);
             GUILayout.Space(areaRect.y + _headerSize.y + 2);
             GUILayout.Label(_innerTitle, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
 
             if (_setupRequired) {
-                UnityEngine.GUI.backgroundColor = Color.red;
-                GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
+                GUI.backgroundColor = Color.red;
+                GUILayout.BeginVertical(GUI.skin.box);
                 GUILayout.Label("DOTWEEN SETUP REQUIRED", EditorGUIUtils.setupLabelStyle);
                 GUILayout.EndVertical();
-                UnityEngine.GUI.backgroundColor = Color.white;
+                GUI.backgroundColor = Color.white;
             } else GUILayout.Space(8);
-            UnityEngine.GUI.color = Color.green;
+            GUI.color = Color.green;
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
@@ -168,7 +168,7 @@ namespace DG.DOTweenEditor.UI
                 return;
             }
             GUILayout.FlexibleSpace();
-            UnityEngine.GUI.color = Color.white;
+            GUI.color = Color.white;
             GUILayout.EndHorizontal();
             GUILayout.Space(8);
 

@@ -31,13 +31,20 @@ namespace DG.Tweening.Core
 
         void Awake()
         {
+            if (DOTween.instance == null) DOTween.instance = this;
+            else {
+                Debugger.LogWarning("Duplicate DOTweenComponent instance found in scene: destroying it");
+                Destroy(this.gameObject);
+                return;
+            }
+
             inspectorUpdater = 0;
             _unscaledTime = Time.realtimeSinceStartup;
 
             // Initialize DOTweenModuleUtils via Reflection
             Type modules = Utils.GetLooseScriptType("DG.Tweening.DOTweenModuleUtils");
             if (modules == null) {
-                Debug.LogError("DOTween ► Couldn't load Modules system");
+                Debugger.LogError("Couldn't load Modules system");
                 return;
             }
             MethodInfo mi = modules.GetMethod("Init", BindingFlags.Static | BindingFlags.Public);

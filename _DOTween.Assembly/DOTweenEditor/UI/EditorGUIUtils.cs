@@ -29,6 +29,7 @@ namespace DG.DOTweenEditor.UI
                                wordWrapTextArea,
                                popupButton,
                                btIconStyle;
+        public static GUIStyle infoboxStyle;
 
         public static Texture2D logo
         {
@@ -198,6 +199,16 @@ namespace DG.DOTweenEditor.UI
                 btIconStyle.padding.left -= 2;
                 btIconStyle.fixedWidth = 24;
                 btIconStyle.stretchWidth = false;
+
+                //
+
+                infoboxStyle = new GUIStyle(GUI.skin.box) {
+                    alignment = TextAnchor.UpperLeft,
+                    richText = true,
+                    wordWrap = true,
+                    padding = new RectOffset(5, 5, 5, 6),
+                    normal = { textColor = Color.white, background = Texture2D.whiteTexture }
+                };
             }
         }
     }

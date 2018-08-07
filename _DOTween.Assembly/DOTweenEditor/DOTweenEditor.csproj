@@ -74,9 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelayedCall.cs" />
+    <Compile Include="MenuItems.cs" />
     <Compile Include="UI\EditorGUIUtils.cs" />
     <Compile Include="EditorUtils.cs" />
-    <Compile Include="UI\DOTweenInspector.cs" />
+    <Compile Include="UI\DOTweenComponentInspector.cs" />
     <Compile Include="UI\DOTweenUtilityWindowModules.cs" />
     <Compile Include="DOTweenProcessors.cs" />
     <Compile Include="UI\DOTweenSettingsInspector.cs" />
