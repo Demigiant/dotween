@@ -166,7 +166,8 @@ namespace DG.Tweening
             s.startupDone = true;
             s.fullDuration = s.loops > -1 ? s.duration * s.loops : Mathf.Infinity;
             // Order sequencedObjs by start position
-            s._sequencedObjs.Sort(SortSequencedObjs);
+            StableSortSequencedObjs(s._sequencedObjs);
+//            s._sequencedObjs.Sort(SortSequencedObjs); // Quicker old method that didn't implement stable sort
             // Set relative nested tweens
             if (s.isRelative) {
                 for (int len = s.sequencedTweens.Count, i = 0; i < len; ++i) {
@@ -347,11 +348,26 @@ namespace DG.Tweening
             return false;
         }
 
-        static int SortSequencedObjs(ABSSequentiable a, ABSSequentiable b)
+        static void StableSortSequencedObjs(List<ABSSequentiable> list)
         {
-            if (a.sequencedPosition > b.sequencedPosition) return 1;
-            if (a.sequencedPosition < b.sequencedPosition) return -1;
-            return 0;
+            int len = list.Count;
+            for (int i = 1; i < len; i++) {
+                int j = i;
+                ABSSequentiable temp = list[i];
+                while (j > 0 && list[j - 1].sequencedPosition > temp.sequencedPosition) {
+                    list[j] = list[j - 1];
+                    j = j - 1;
+                }
+                list[j] = temp;
+            }
         }
+
+//        // Quicker but doesn't implement stable sort
+//        static int SortSequencedObjs(ABSSequentiable a, ABSSequentiable b)
+//        {
+//            if (a.sequencedPosition > b.sequencedPosition) return 1;
+//            if (a.sequencedPosition < b.sequencedPosition) return -1;
+//            return 0;
+//        }
     }
 }

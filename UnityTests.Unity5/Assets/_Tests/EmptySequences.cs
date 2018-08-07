@@ -25,8 +25,10 @@ public class EmptySequences : BrainBase
         if (createSequenceA) {
             a = DOTween.Sequence()
                 .AppendCallback(() => Debug.Log("A callback 1/2"))
-//                .AppendInterval(1f)
+                .AppendInterval(1f)
                 .AppendCallback(() => Debug.Log("A callback 2/2 (1 sec delay)"))
+                .InsertCallback(0, () => Debug.Log("A callback 0 A"))
+                .InsertCallback(0, () => Debug.Log("A callback 0 B"))
                 .OnStart(() => Debug.Log("A OnStart"))
                 .OnStepComplete(() => Debug.Log("A OnStepComplete"))
                 .OnComplete(() => Debug.Log("A OnComplete"))
