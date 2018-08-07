@@ -17,22 +17,24 @@ namespace DG.Tweening.Core
         // 0: errors only - 1: default - 2: verbose
         public static int logPriority;
 
+        const string _LogPrefix = "<color=#0099bc><b>DOTWEEN ► </b></color>";
+
         public static void Log(object message)
         {
-            Debug.Log("DOTWEEN :: " + message);
+            Debug.Log(_LogPrefix + message);
         }
         public static void LogWarning(object message)
         {
-            Debug.LogWarning("DOTWEEN :: " + message);
+            Debug.LogWarning(_LogPrefix + message);
         }
         public static void LogError(object message)
         {
-            Debug.LogError("DOTWEEN :: " + message);
+            Debug.LogError(_LogPrefix + message);
         }
 
         public static void LogReport(object message)
         {
-            Debug.Log("<color=#00B500FF>DOTWEEN :: " + message + "</color>");
+            Debug.Log(string.Format("<color=#00B500FF>{0} REPORT ► {1}</color>", _LogPrefix, message));
         }
 
         public static void LogInvalidTween(Tween t)

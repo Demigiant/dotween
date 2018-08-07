@@ -114,7 +114,7 @@ namespace DG.Tweening.Core
             if (_duplicateToDestroy) return;
 
             if (DOTween.showUnityEditorReport) {
-                string s = "REPORT > Max overall simultaneous active Tweeners/Sequences: " + DOTween.maxActiveTweenersReached + "/" + DOTween.maxActiveSequencesReached;
+                string s = "Max overall simultaneous active Tweeners/Sequences: " + DOTween.maxActiveTweenersReached + "/" + DOTween.maxActiveSequencesReached;
                 Debugger.LogReport(s);
             }
 //            DOTween.initialized = false;

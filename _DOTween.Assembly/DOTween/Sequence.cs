@@ -266,7 +266,14 @@ namespace DG.Tweening
                         Tween t = (Tween)sequentiable;
                         if (!t.startupDone) continue; // since we're going backwards and this tween never started just ignore it
                         t.isBackwards = true;
-                        if (TweenManager.Goto(t, gotoPos, false, updateMode)) return true;
+                        if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
+                            // Nested tween failed. Remove it from Sequence and continue
+                            // (instead of just returning TRUE, which would kill the whole Sequence as before v1.2.060)
+                            TweenManager.Despawn(t, false);
+                            s._sequencedObjs.RemoveAt(i);
+                            --i; --len;
+                            continue;
+                        }
 
                         // Fixes nested callbacks not being called correctly if main sequence has loops and nested ones don't
                         if (multiCycleStep && t.tweenType == TweenType.Sequence) {
@@ -314,7 +321,14 @@ namespace DG.Tweening
                         }
                         //
                         t.isBackwards = false;
-                        if (TweenManager.Goto(t, gotoPos, false, updateMode)) return true;
+                        if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
+                            // Nested tween failed. Remove it from Sequence and continue
+                            // (instead of just returning TRUE, which would kill the whole Sequence as before v1.2.060)
+                            TweenManager.Despawn(t, false);
+                            s._sequencedObjs.RemoveAt(i);
+                            --i; --len;
+                            continue;
+                        }
 
                         // Fixes nested callbacks not being called correctly if main sequence has loops and nested ones don't
                         if (multiCycleStep && t.tweenType == TweenType.Sequence) {
