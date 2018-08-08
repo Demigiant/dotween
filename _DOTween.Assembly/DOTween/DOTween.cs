@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.075"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.080"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -264,7 +264,10 @@ namespace DG.Tweening
         public static void ManualUpdate(float deltaTime, float unscaledDeltaTime)
         {
             InitCheck();
-            instance.ManualUpdate(deltaTime, unscaledDeltaTime);
+//            instance.ManualUpdate(deltaTime, unscaledDeltaTime);
+            if (TweenManager.hasActiveManualTweens) {
+                TweenManager.Update(UpdateType.Manual, deltaTime * DOTween.timeScale, unscaledDeltaTime * DOTween.timeScale);
+            }
         }
 
         #endregion
