@@ -93,12 +93,13 @@ namespace DG.Tweening.Core
             }
         }
 
-        internal void ManualUpdate(float deltaTime, float unscaledDeltaTime)
-        {
-            if (TweenManager.hasActiveManualTweens) {
-                TweenManager.Update(UpdateType.Manual, deltaTime * DOTween.timeScale, unscaledDeltaTime * DOTween.timeScale);
-            }
-        }
+        // Now activated directly by DOTween so it can be used to run tweens in editor mode
+//        internal void ManualUpdate(float deltaTime, float unscaledDeltaTime)
+//        {
+//            if (TweenManager.hasActiveManualTweens) {
+//                TweenManager.Update(UpdateType.Manual, deltaTime * DOTween.timeScale, unscaledDeltaTime * DOTween.timeScale);
+//            }
+//        }
 
         // Removed to allow compatibility with Unity 5.4 and later
 //        void OnLevelWasLoaded()
