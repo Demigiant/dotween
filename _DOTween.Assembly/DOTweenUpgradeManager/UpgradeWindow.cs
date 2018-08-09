@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace DG.DOTweenUpgradeManager
 {
-    class UpgradeWindow : EditorWindow
+    internal class UpgradeWindow : EditorWindow
     {
         const string _Title = "New Version of DOTween Imported";
         static readonly Vector2 _WinSize = new Vector2(400,280);
