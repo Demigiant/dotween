@@ -34,15 +34,17 @@ namespace DG.DOTweenEditor
             // Remove EditorPrefs
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
-            // Remove scripting define symbols
-            DOTweenDefines.RemoveAllDefines();
-            //
-            EditorUtility.DisplayDialog("DOTween Deleted",
-                "DOTween was deleted and all of its scripting define symbols removed." +
-                "\n\nThis might show an error depending on your previous setup." +
-                " If this happens, please close and reopen Unity or reimport DOTween.",
-                "Ok"
-            );
+
+//            // The following is not necessary anymore since the Modules update
+//            // Remove scripting define symbols
+//            DOTweenDefines.RemoveAllDefines();
+//            //
+//            EditorUtility.DisplayDialog("DOTween Deleted",
+//                "DOTween was deleted and all of its scripting define symbols removed." +
+//                "\n\nThis might show an error depending on your previous setup." +
+//                " If this happens, please close and reopen Unity or reimport DOTween.",
+//                "Ok"
+//            );
             return AssetDeleteResult.DidNotDelete;
         }
 
@@ -59,39 +61,31 @@ namespace DG.DOTweenEditor
 
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
-            if (dotweenImported) {
-                // Delete old DOTween files
-                EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
-                // Delete old DemiLib configuration
-                EditorUtils.DeleteOldDemiLibCore();
-                // Remove old legacy defines
-                DOTweenDefines.RemoveAllLegacyDefines();
-                // Reapply modules
-                DOTweenUtilityWindowModules.ApplyModulesSettings();
-                //
-                bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
-                bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
-                bool setupRequired = differentCoreVersion || differentProVersion;
-                if (setupRequired) {
-                    _setupDialogRequested = true;
-                    EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
-                    if (EditorUtils.hasPro) EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-//                    EditorUtility.DisplayDialog("DOTween",
-//                        differentCoreVersion
-//                        ? "New version of DOTween imported." +
-//                          "\n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove Modules."
-//                        : "New version of DOTween Pro imported." +
-//                          " \n\nSelect \"Setup DOTween...\" in DOTween's Utility Panel to add/remove external Modules (TextMesh Pro/2DToolkit/etc).",
-//                        "Ok"
-//                    );
-                    DOTweenUtilityWindow.Open();
-                    // Opening window after a postProcess doesn't work on Unity 3 so check that
-//                    string[] vs = Application.unityVersion.Split("."[0]);
-//                    int majorVersion = System.Convert.ToInt32(vs[0]);
-//                    if (majorVersion >= 4) EditorUtils.DelayedCall(0.5f, DOTweenUtilityWindow.Open);
-//                    EditorUtils.DelayedCall(8, ()=> _setupDialogRequested = false);
-                }
-            }
+            if (!dotweenImported) return;
+
+            // Reapply modules
+            DOTweenUtilityWindowModules.ApplyModulesSettings();
+
+//            // Delete old DOTween files
+//            EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
+//            // Delete old DemiLib configuration
+//            EditorUtils.DeleteOldDemiLibCore();
+//            // Remove old legacy defines
+//            DOTweenDefines.RemoveAllLegacyDefines();
+//            // Reapply modules
+//            DOTweenUtilityWindowModules.ApplyModulesSettings();
+//            //
+//            bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
+//            bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
+//            bool setupRequired = differentCoreVersion || differentProVersion;
+//            if (!setupRequired) return;
+//
+//            _setupDialogRequested = true;
+//            EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
+//            if (EditorUtils.hasPro) {
+//                EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
+//            }
+//            DOTweenUtilityWindow.Open();
         }
     }
 }
