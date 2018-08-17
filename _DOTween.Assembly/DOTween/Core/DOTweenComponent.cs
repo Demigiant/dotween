@@ -25,6 +25,8 @@ namespace DG.Tweening.Core
         float _unscaledTime;
         float _unscaledDeltaTime;
 
+        float _pausedTime; // Marks the time when Unity was paused
+
         bool _duplicateToDestroy;
 
         #region Unity Methods
@@ -130,10 +132,26 @@ namespace DG.Tweening.Core
             if (DOTween.instance == this) DOTween.instance = null;
         }
 
+        // Detract/reapply pause time from/to unscaled time
+        public void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus) {
+                _pausedTime = Time.realtimeSinceStartup;
+            } else {
+                _unscaledTime += Time.realtimeSinceStartup - _pausedTime;
+            }
+        }
+
         void OnApplicationQuit()
         {
             DOTween.isQuitting = true;
         }
+
+        #endregion
+
+        #region Editor
+
+        
 
         #endregion
 

@@ -35,7 +35,20 @@ namespace DG.Tweening
 
             _initialized = true;
             DOTweenExternalCommand.SetOrientationOnPath += Physics.SetOrientationOnPath;
+
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.playmodeStateChanged += PlaymodeStateChanged;
+#endif
         }
+
+#if UNITY_EDITOR
+        // Fires OnApplicationPause in DOTweenComponent even when Editor is paused (otherwise it's only fired at runtime)
+        static void PlaymodeStateChanged()
+        {
+            if (DOTween.instance == null) return;
+            DOTween.instance.OnApplicationPause(UnityEditor.EditorApplication.isPaused);
+        }
+#endif
 
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
         // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████

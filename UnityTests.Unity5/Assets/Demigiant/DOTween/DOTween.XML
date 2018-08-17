@@ -356,6 +356,9 @@
             <summary>Default period used for eases
             <para>Default: 0</para></summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.instance">
+            <summary>Used internally. Assigned/removed by DOTweenComponent.Create/DestroyInstance</summary>
+        </member>
         <member name="M:DG.Tweening.DOTween.Init(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{DG.Tweening.LogBehaviour})">
             <summary>
             Must be called once, before the first ever DOTween call/reference,
