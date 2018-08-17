@@ -55,7 +55,7 @@ namespace DG.Tweening
             for (int i = 0; i < len; ++i) {
                 GradientColorKey c = colors[i];
                 if (i == 0 && c.time <= 0) {
-                    target.color = c.color;
+                    target.SetColor(property, c.color);
                     continue;
                 }
                 float colorDuration = i == len - 1
