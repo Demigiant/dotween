@@ -4,6 +4,26 @@
         <name>DOTweenEditor</name>
     </assembly>
     <members>
+        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Start(System.Action)">
+            <summary>
+            Starts the update loop of tween in the editor. Has no effect during playMode.
+            </summary>
+            <param name="onPreviewUpdated">Eventual callback to call after every update</param>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop">
+            <summary>
+            Stops the update loop and clears any callback.
+            </summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(DG.Tweening.Tween,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Readies the tween for editor preview by setting its UpdateType to Manual plus eventual extra settings.
+            </summary>
+            <param name="t">The tween to ready</param>
+            <param name="clearCallbacks">If TRUE (recommended) removes all callbacks (OnComplete/Rewind/etc)</param>
+            <param name="preventAutoKill">If TRUE prevents the tween from being auto-killed at completion</param>
+            <param name="andPlay">If TRUE starts playing the tween immediately</param>
+        </member>
         <member name="M:DG.DOTweenEditor.EditorUtils.SetEditorTexture(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
             <summary>
             Checks that the given editor texture use the correct import settings,

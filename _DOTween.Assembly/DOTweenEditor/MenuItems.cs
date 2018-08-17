@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace DG.DOTweenEditor
 {
-    public static class MenuItems
+    static class MenuItems
     {
         [MenuItem("GameObject/Demigiant/DOTween Manager", false, 20)]
         static void CreateDOTweenComponent(MenuCommand menuCommand)
