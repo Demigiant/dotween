@@ -11,22 +11,11 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Transform target0;
-    public Transform target1;
+    float initNum = 0;
 
-    void OnEnable()
+    IEnumerator Start()
     {
-        this.StartCoroutine(CreateTweens());
-    }
-
-    IEnumerator CreateTweens()
-    {
-        Tween t0 = target0.DOBlendableLocalMoveBy(new Vector3(1, 2, 1), 2f);
-        Tween t1 = target1.DOBlendableLocalMoveBy(new Vector3(1, -2, 1), 2f);
-
         yield return new WaitForSeconds(1);
-
-        t0.Kill();
-        t1.Goto(1.5f);
+        DOTween.To(()=>initNum,(x)=>initNum=x,400000000,3f).OnUpdate( ()=> Debug.Log(initNum));
     }
 }

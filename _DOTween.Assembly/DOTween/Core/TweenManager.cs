@@ -511,6 +511,13 @@ namespace DG.Tweening.Core
                     isFilterCompliant = true;
                     for (int c = 0; c < optionalArrayLen; ++c) {
                         object objId = optionalArray[c];
+                        if (objId is string) {
+                            useStringId = true;
+                            stringId = (string)objId;
+                        } else if (objId is int) {
+                            useIntId = true;
+                            intId = (int)objId;
+                        }
                         if (useStringId && t.stringId == stringId) {
                             isFilterCompliant = false;
                             break;
