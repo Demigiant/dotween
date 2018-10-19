@@ -17,6 +17,9 @@ using DOVector4 = UnityEngine.Vector4;
 using DOQuaternion = UnityEngine.Quaternion;
 using DOColor = UnityEngine.Color;
 #endif
+#if UNITY_EDITOR
+using System.Diagnostics;
+#endif
 using System.Collections.Generic;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
@@ -46,6 +49,11 @@ namespace DG.Tweening
         /// Beware, this will slightly slow down your tweens while inside Unity Editor.
         /// <para>Default: FALSE</para></summary>
         public static bool showUnityEditorReport = false;
+        /// <summary>If TRUE sequences will be assigned a default ID (only in the Editor).
+        /// Useful to know which sequence runs without having to give them IDs manually.
+        /// Beware, this will slow down your sequence instanciations Unity Editor.
+        /// <para>Default: FALSE</para></summary>
+        public static bool editorAutoSequenceId = false;
         /// <summary>Global DOTween timeScale.
         /// <para>Default: 1</para></summary>
         public static float timeScale = 1;
@@ -173,6 +181,7 @@ namespace DG.Tweening
                 DOTween.rewindCallbackMode = settings.rewindCallbackMode;
                 DOTween.defaultRecyclable = recycleAllByDefault == null ? settings.defaultRecyclable : (bool)recycleAllByDefault;
                 DOTween.showUnityEditorReport = settings.showUnityEditorReport;
+                DOTween.editorAutoSequenceId = settings.editorAutoSequenceId;
                 DOTween.drawGizmos = settings.drawGizmos;
                 DOTween.defaultAutoPlay = settings.defaultAutoPlay;
                 DOTween.defaultUpdateType = settings.defaultUpdateType;
@@ -221,6 +230,7 @@ namespace DG.Tweening
             initialized = false;
             useSafeMode = false;
             showUnityEditorReport = false;
+            editorAutoSequenceId = false;
             drawGizmos = true;
             timeScale = 1;
             useSmoothDeltaTime = false;
@@ -638,8 +648,18 @@ namespace DG.Tweening
         public static Sequence Sequence()
         {
             InitCheck();
+
             Sequence sequence = TweenManager.GetSequence();
             Tweening.Sequence.Setup(sequence);
+            
+            #if UNITY_EDITOR
+            if (editorAutoSequenceId) {
+                StackTrace trace = new StackTrace();
+                StackFrame frame = trace.GetFrame(1);
+                sequence.id = string.Format("{0}:{1}", frame.GetFileName(), frame.GetFileLineNumber());
+            }
+            #endif
+
             return sequence;
         }
         #endregion

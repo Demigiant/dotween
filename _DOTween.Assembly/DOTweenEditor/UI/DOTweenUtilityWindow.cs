@@ -236,6 +236,7 @@ namespace DG.DOTweenEditor.UI
                 );
             GUILayout.EndHorizontal();
             _src.showUnityEditorReport = EditorGUILayout.Toggle("Editor Report", _src.showUnityEditorReport);
+            _src.editorAutoSequenceId = EditorGUILayout.Toggle("Auto Sequence Id (Editor Only)", _src.editorAutoSequenceId);
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
             _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);
             DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
