@@ -11,11 +11,14 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    float initNum = 0;
+    public Transform target0, target1;
 
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(1);
-        DOTween.To(()=>initNum,(x)=>initNum=x,400000000,3f).OnUpdate( ()=> Debug.Log(initNum));
+        while (true) {
+            yield return null;
+            target0.DOMoveX(1, 0.1f);
+//            target1.DOMoveX(1, 0.1f);
+        }
     }
 }
