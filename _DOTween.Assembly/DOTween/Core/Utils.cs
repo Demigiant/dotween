@@ -14,7 +14,7 @@ namespace DG.Tweening.Core
     {
         static Assembly[] _loadedAssemblies;
         static readonly string[] _defAssembliesToQuery = new[] { // First assemblies to look into before checking all of them
-            "Assembly-CSharp", "Assembly-CSharp-firstpass"
+            "Assembly-CSharp", "Assembly-CSharp-firstpass", "DOTween.Modules"
         };
 
         /// <summary>
