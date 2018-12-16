@@ -12,9 +12,9 @@
         </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop(System.Boolean)">
             <summary>
-            Stops the update loop and clears any callback.
+            Stops the update loop and clears the onPreviewUpdated callback.
             </summary>
-            <param name="reset">If TRUE also resets the tweened objects to their original state</param>
+            <param name="resetTweenTargets">If TRUE also resets the tweened objects to their original state</param>
         </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(DG.Tweening.Tween,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
