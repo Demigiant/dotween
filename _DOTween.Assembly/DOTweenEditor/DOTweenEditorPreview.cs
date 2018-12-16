@@ -18,6 +18,7 @@ namespace DG.DOTweenEditor
         static double _previewTime;
         static Action _onPreviewUpdated;
         static GameObject _previewObj; // Used so it can be set dirty (otherwise canvas-only tweens won't refresh the view)
+        static readonly List<Tween> _tweens = new List<Tween>();
 
         static DOTweenEditorPreview()
         {
@@ -44,11 +45,24 @@ namespace DG.DOTweenEditor
         /// <summary>
         /// Stops the update loop and clears any callback.
         /// </summary>
-        public static void Stop()
+        /// <param name="reset">If TRUE also resets the tweened objects to their original state</param>
+        public static void Stop(bool reset = false)
         {
             _isPreviewing = false;
             EditorApplication.update -= PreviewUpdate;
             _onPreviewUpdated = null;
+            if (reset) {
+                foreach (Tween t in _tweens) {
+                    if (t != null && t.active) {
+                        try {
+                            if (t.isFrom) t.Complete();
+                            else t.Rewind();
+                        } catch {
+                            // Just skip
+                        }
+                    }
+                }
+            }
             Clear();
         }
 
@@ -61,6 +75,7 @@ namespace DG.DOTweenEditor
         /// <param name="andPlay">If TRUE starts playing the tween immediately</param>
         public static void PrepareTweenForPreview(Tween t, bool clearCallbacks = true, bool preventAutoKill = true, bool andPlay = true)
         {
+            _tweens.Add(t);
             t.SetUpdate(UpdateType.Manual);
             if (preventAutoKill) t.SetAutoKill(false);
             if (clearCallbacks) {
@@ -78,6 +93,7 @@ namespace DG.DOTweenEditor
         static void Clear()
         {
             _previewObj = null;
+            _tweens.Clear();
             // Find and destroy any existing preview objects
             PreviewComponent[] objs = Object.FindObjectsOfType<PreviewComponent>();
             for (int i = 0; i < objs.Length; ++i) Object.DestroyImmediate(objs[i].gameObject);

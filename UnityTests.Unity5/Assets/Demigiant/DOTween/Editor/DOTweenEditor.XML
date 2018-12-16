@@ -10,10 +10,11 @@
             </summary>
             <param name="onPreviewUpdated">Eventual callback to call after every update</param>
         </member>
-        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop">
+        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop(System.Boolean)">
             <summary>
             Stops the update loop and clears any callback.
             </summary>
+            <param name="reset">If TRUE also resets the tweened objects to their original state</param>
         </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(DG.Tweening.Tween,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
