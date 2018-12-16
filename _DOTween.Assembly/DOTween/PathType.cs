@@ -14,6 +14,8 @@ namespace DG.Tweening
         /// <summary>Linear, composed of straight segments between each waypoint</summary>
         Linear,
         /// <summary>Curved path (which uses Catmull-Rom curves)</summary>
-        CatmullRom
+        CatmullRom,
+//        /// <summary>Curved path (which uses Cubic Bezier curves, where each point requires two extra control points)</summary>
+//        CubicBezier // Under development
     }
 }

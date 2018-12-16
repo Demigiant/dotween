@@ -106,6 +106,7 @@
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
     <Compile Include="Plugins\ColorWrapperPlugin.cs" />
+    <Compile Include="Plugins\Core\PathCore\CubicBezierDecoder.cs" />
     <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
     <Compile Include="Plugins\DoublePlugin.cs" />
     <Compile Include="Plugins\LongPlugin.cs" />
