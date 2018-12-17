@@ -21,6 +21,7 @@ namespace DG.DOTweenEditor.UI
         public static GUIStyle handlelabelStyle,
                                handleSelectedLabelStyle,
                                wordWrapLabelStyle,
+                               wordWrapRichTextLabelStyle,
                                wordWrapItalicLabelStyle,
                                titleStyle,
                                logoIconStyle;
@@ -169,6 +170,10 @@ namespace DG.DOTweenEditor.UI
 
                 wordWrapLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
                 wordWrapLabelStyle.wordWrap = true;
+
+                wordWrapRichTextLabelStyle = new GUIStyle(UnityEngine.GUI.skin.label);
+                wordWrapRichTextLabelStyle.wordWrap = true;
+                wordWrapRichTextLabelStyle.richText = true;
 
                 wordWrapItalicLabelStyle = new GUIStyle(wordWrapLabelStyle);
                 wordWrapItalicLabelStyle.fontStyle = FontStyle.Italic;

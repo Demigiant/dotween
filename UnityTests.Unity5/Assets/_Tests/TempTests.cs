@@ -11,14 +11,15 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Transform target0, target1;
+    public Transform target;
 
-    IEnumerator Start()
+    void Start()
     {
-        while (true) {
-            yield return null;
-            target0.DOMoveX(1, 0.1f);
-//            target1.DOMoveX(1, 0.1f);
+        int tot = 10;
+        while (tot > 0) {
+            target.DOMoveX(1, 5f).SetId("TW" + tot).SetLoops(-1, LoopType.Yoyo);
+            DOTween.Sequence().Append(target.DOMoveY(2, 3f).SetId("INN" + tot)).SetLoops(-1, LoopType.Yoyo).SetId("SEQ" + tot);
+            tot--;
         }
     }
 }
