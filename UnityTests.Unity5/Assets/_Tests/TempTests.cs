@@ -13,13 +13,10 @@ public class TempTests : BrainBase
 {
     public Transform target;
 
-    void Start()
+    IEnumerator Start()
     {
-        int tot = 10;
-        while (tot > 0) {
-            target.DOMoveX(1, 5f).SetId("TW" + tot).SetLoops(-1, LoopType.Yoyo);
-            DOTween.Sequence().Append(target.DOMoveY(2, 3f).SetId("INN" + tot)).SetLoops(-1, LoopType.Yoyo).SetId("SEQ" + tot);
-            tot--;
-        }
+        target.DOMoveX(4, 10);
+        yield return new WaitForSeconds(2);
+        DOTween.timeScale = -1;
     }
 }

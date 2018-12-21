@@ -17,6 +17,7 @@ namespace DG.Tweening.Core
         const int _DefaultMaxTweeners = 200;
         const int _DefaultMaxSequences = 50;
         const string _MaxTweensReached = "Max Tweens reached: capacity has automatically been increased from #0 to #1. Use DOTween.SetTweensCapacity to set it manually at startup";
+        const float _EpsilonVsTimeCheck = 0.000001f;
 
         internal static bool isUnityEditor;
         internal static bool isDebugBuild;
@@ -383,7 +384,8 @@ namespace DG.Tweening.Core
                 if (!t.isPlaying) continue;
                 t.creationLocked = true; // Lock tween creation methods from now on
                 float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
-                if (tDeltaTime <= 0) continue; // Skip update in case time is 0
+//                if (tDeltaTime <= 0) continue; // Skip update in case time is 0 (commented in favor of next line because this prevents negative timeScales)
+                if (tDeltaTime < _EpsilonVsTimeCheck && tDeltaTime > -_EpsilonVsTimeCheck) continue; // Skip update in case time is approximately 0
                 if (!t.delayComplete) {
                     tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
                     if (tDeltaTime <= -1) {
