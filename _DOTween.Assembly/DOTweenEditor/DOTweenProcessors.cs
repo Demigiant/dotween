@@ -64,7 +64,8 @@ namespace DG.DOTweenEditor
             if (!dotweenImported) return;
 
             // Reapply modules
-            DOTweenUtilityWindowModules.ApplyModulesSettings();
+            EditorUtils.DelayedCall(1f, DOTweenUtilityWindowModules.ApplyModulesSettings);
+//            DOTweenUtilityWindowModules.ApplyModulesSettings();
 
 //            // Delete old DOTween files
 //            EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
