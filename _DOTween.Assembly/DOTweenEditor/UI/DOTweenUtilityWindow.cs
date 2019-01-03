@@ -381,7 +381,7 @@ namespace DG.DOTweenEditor.UI
             public LocationData(string srcDir) : this()
             {
                 dir = srcDir;
-                filePath = dir + EditorUtils.pathSlash + DOTweenSettings.AssetName + ".asset";
+                filePath = dir + EditorUtils.pathSlash + DOTweenSettings.AssetFullFilename;
                 adbFilePath = EditorUtils.FullPathToADBPath(filePath);
                 adbParentDir = EditorUtils.FullPathToADBPath(dir.Substring(0, dir.LastIndexOf(EditorUtils.pathSlash)));
             }

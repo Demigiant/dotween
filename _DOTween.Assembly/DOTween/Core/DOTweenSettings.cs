@@ -11,6 +11,7 @@ namespace DG.Tweening.Core
     public class DOTweenSettings : ScriptableObject
     {
         public const string AssetName = "DOTweenSettings";
+        public const string AssetFullFilename = AssetName + ".asset";
 
         public bool useSafeMode = true;
         public float timeScale = 1;

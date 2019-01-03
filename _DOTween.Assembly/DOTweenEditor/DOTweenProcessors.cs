@@ -6,6 +6,7 @@
 using System.IO;
 using DG.DOTweenEditor.UI;
 using DG.Tweening;
+using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -64,8 +65,13 @@ namespace DG.DOTweenEditor
             if (!dotweenImported) return;
 
             // Reapply modules
-            EditorUtils.DelayedCall(1f, DOTweenUtilityWindowModules.ApplyModulesSettings);
+            EditorUtils.DelayedCall(0.1f, ()=> {
+//                Debug.Log("Apply Modules Settings after reimport");
+                DOTweenUtilityWindowModules.ApplyModulesSettings();
+            });
 //            DOTweenUtilityWindowModules.ApplyModulesSettings();
+
+
 
 //            // Delete old DOTween files
 //            EditorUtils.DeleteLegacyNoModulesDOTweenFiles();

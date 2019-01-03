@@ -100,6 +100,7 @@ namespace DG.DOTweenEditor
             DeleteAssetsIfExist(new[] {
                 adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll",
                 adbDOTweenDir + "Editor/DOTweenUpgradeManager.xml",
+                adbDOTweenDir + "Editor/DOTweenUpgradeManager.pdb",
                 adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll.mdb"
             });
             AssetDatabase.StopAssetEditing();
