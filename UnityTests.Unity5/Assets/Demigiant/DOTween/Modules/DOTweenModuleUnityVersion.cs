@@ -72,7 +72,9 @@ namespace DG.Tweening
 #endif
 
 #if UNITY_5_3_OR_NEWER || UNITY_2017_1_OR_NEWER
-        #region CustomYieldInstructions (Unity 5.3 or Newer)
+        #region Unity 5.3 or Newer
+
+        #region CustomYieldInstructions
 
         /// <summary>
         /// Returns a <see cref="CustomYieldInstruction"/> that waits until the tween is killed or complete.
@@ -160,6 +162,46 @@ namespace DG.Tweening
             }
             return new DOTweenCYInstruction.WaitForStart(t);
         }
+
+        #endregion
+
+        #endregion
+#endif
+
+#if UNITY_2018_1_OR_NEWER
+        #region Unity 2018.1 or Newer
+
+        #region Material
+
+        /// <summary>Tweens a Material's named texture offset property with the given ID to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOOffset(this Material target, Vector2 endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.To(() => target.GetTextureOffset(propertyID), x => target.SetTextureOffset(propertyID, x), endValue, duration).SetTarget(target);
+        }
+
+        /// <summary>Tweens a Material's named texture scale property with the given ID to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOTiling(this Material target, Vector2 endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.To(() => target.GetTextureScale(propertyID), x => target.SetTextureScale(propertyID, x), endValue, duration).SetTarget(target);
+        }
+
+        #endregion
 
         #endregion
 #endif

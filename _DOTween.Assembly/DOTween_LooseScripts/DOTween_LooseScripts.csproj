@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE;UNITY_EDITOR;UNITY_4_3;UNITY_4_6;UNITY_5;UNITY_2017_1_OR_NEWER</DefineConstants>
+    <DefineConstants>TRACE;UNITY_EDITOR;UNITY_4_3;UNITY_4_6;UNITY_5;UNITY_2017_1_OR_NEWER;UNITY_2018_1_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>

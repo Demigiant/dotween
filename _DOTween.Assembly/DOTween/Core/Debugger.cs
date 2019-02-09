@@ -66,6 +66,10 @@ namespace DG.Tweening.Core
         {
             LogWarning(string.Format("This material doesn't have a {0} property", propertyName));
         }
+        public static void LogMissingMaterialProperty(int propertyId)
+        {
+            LogWarning(string.Format("This material doesn't have a {0} property ID", propertyId));
+        }
 
         public static void LogRemoveActiveTweenError(string errorInfo)
         {

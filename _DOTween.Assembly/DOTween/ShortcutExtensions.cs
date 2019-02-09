@@ -234,6 +234,19 @@ namespace DG.Tweening
             }
             return DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
         }
+        /// <summary>Tweens a Material's named color property with the given ID to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOColor(this Material target, Color endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.To(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration).SetTarget(target);
+        }
 
         /// <summary>Tweens a Material's alpha color to the given value
         /// (will have no effect unless your material supports transparency).
@@ -258,6 +271,20 @@ namespace DG.Tweening
             }
             return DOTween.ToAlpha(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
         }
+        /// <summary>Tweens a Material's alpha color with the given ID to the given value
+        /// (will have no effect unless your material supports transparency).
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOFade(this Material target, float endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.ToAlpha(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration).SetTarget(target);
+        }
 
         /// <summary>Tweens a Material's named float property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -271,6 +298,19 @@ namespace DG.Tweening
                 return null;
             }
             return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
+        }
+        /// <summary>Tweens a Material's named float property with the given ID to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOFloat(this Material target, float endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.To(() => target.GetFloat(propertyID), x => target.SetFloat(propertyID, x), endValue, duration).SetTarget(target);
         }
 
         /// <summary>Tweens a Material's texture offset to the given value.
@@ -329,6 +369,19 @@ namespace DG.Tweening
                 return null;
             }
             return DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration).SetTarget(target);
+        }
+        /// <summary>Tweens a Material's named Vector property with the given ID to the given value.
+        /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOVector(this Material target, Vector4 endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+            return DOTween.To(() => target.GetVector(propertyID), x => target.SetVector(propertyID, x), endValue, duration).SetTarget(target);
         }
 
         #endregion
@@ -978,6 +1031,33 @@ namespace DG.Tweening
                 to = x;
                 target.SetColor(property, target.GetColor(property) + diff);
             }, endValue, duration)
+                .Blendable().SetTarget(target);
+        }
+        /// <summary>Tweens a Material's named color property with the given ID to the given value,
+        /// in a way that allows other DOBlendableColor tweens to work together on the same target,
+        /// instead than fight each other as multiple DOColor would do.
+        /// Also stores the Material as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="endValue">The value to tween to</param>
+        /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
+        /// <param name="duration">The duration of the tween</param>
+        public static Tweener DOBlendableColor(this Material target, Color endValue, int propertyID, float duration)
+        {
+            if (!target.HasProperty(propertyID)) {
+                if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
+                return null;
+            }
+
+            endValue = endValue - target.GetColor(propertyID);
+            Color to = new Color(0, 0, 0, 0);
+            return DOTween.To(() => to, x => {
+#if COMPATIBLE
+                Color diff = x.value - to;
+#else
+                    Color diff = x - to;
+#endif
+                    to = x;
+                    target.SetColor(propertyID, target.GetColor(propertyID) + diff);
+                }, endValue, duration)
                 .Blendable().SetTarget(target);
         }
 
