@@ -31,7 +31,7 @@ namespace DG.Tweening
         /// <summary>Int ID (usable for filtering with DOTween static methods). 4X faster than using an object id, 2X faster than using a string id.
         /// Default is -999 so avoid using an ID like that or it will capture all unset intIds</summary>
         public int intId = -999;
-        /// <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shorcuts</summary>
+        /// <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shortcuts</summary>
         public object target; // Automatically set by DO shortcuts using SetTarget extension. Also used during Tweener.DoStartup in some special cases
         // Update type and eventual independence (changed via TweenManager.SetUpdateType)
         internal UpdateType updateType;
@@ -280,9 +280,11 @@ namespace DG.Tweening
                 try {
                     callback();
                 } catch (Exception e) {
-                    Debugger.LogWarning(string.Format(
-                        "An error inside a tween callback was silently taken care of ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
-                    ));
+                    if (Debugger.logPriority >= 1) {
+                        Debugger.LogWarning(string.Format(
+                            "An error inside a tween callback was silently taken care of ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
+                        ));
+                    }
                     return false; // Callback error
                 }
             } else callback();
@@ -294,9 +296,11 @@ namespace DG.Tweening
                 try {
                     callback(param);
                 } catch (Exception e) {
-                    Debugger.LogWarning(string.Format(
-                        "An error inside a tween callback was silently taken care of ({0}) ► {1}", e.TargetSite, e.Message
-                    ));
+                    if (Debugger.logPriority >= 1) {
+                        Debugger.LogWarning(string.Format(
+                            "An error inside a tween callback was silently taken care of ({0}) ► {1}", e.TargetSite, e.Message
+                        ));
+                    }
                     return false; // Callback error
                 }
             } else callback(param);

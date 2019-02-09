@@ -2452,7 +2452,7 @@
             Default is -999 so avoid using an ID like that or it will capture all unset intIds</summary>
         </member>
         <member name="F:DG.Tweening.Tween.target">
-            <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shorcuts</summary>
+            <summary>Tween target (usable for filtering with DOTween static methods). Automatically set by tween creation shortcuts</summary>
         </member>
         <member name="F:DG.Tweening.Tween.onPlay">
             <summary>Called when the tween is set in a playing state, after any eventual delay.

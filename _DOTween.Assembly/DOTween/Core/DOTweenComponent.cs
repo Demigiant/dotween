@@ -35,7 +35,9 @@ namespace DG.Tweening.Core
         {
             if (DOTween.instance == null) DOTween.instance = this;
             else {
-                Debugger.LogWarning("Duplicate DOTweenComponent instance found in scene: destroying it");
+                if (Debugger.logPriority >= 1) {
+                    Debugger.LogWarning("Duplicate DOTweenComponent instance found in scene: destroying it");
+                }
                 Destroy(this.gameObject);
                 return;
             }

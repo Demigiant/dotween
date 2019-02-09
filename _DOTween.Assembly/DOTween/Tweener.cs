@@ -134,9 +134,11 @@ namespace DG.Tweening
                     try {
                         t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                     } catch (Exception e) {
-                        Debugger.LogWarning(string.Format(
-                            "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
-                        ));
+                        if (Debugger.logPriority >= 1) {
+                            Debugger.LogWarning(string.Format(
+                                "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
+                            ));
+                        }
                         return false; // Target/field doesn't exist: kill tween
                     }
                 } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
