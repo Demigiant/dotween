@@ -836,9 +836,27 @@ namespace DG.Tweening.Core
             if (totActiveTweens <= 0) return null;
             int len = totActiveTweens;
             if (fillableList == null) fillableList = new List<Tween>(len);
+            // Determine ID to use
+            bool useStringId = false;
+            string stringId = null;
+            bool useIntId = false;
+            int intId = 0;
+            if (id is string) {
+                useStringId = true;
+                stringId = (string)id;
+            } else if (id is int) {
+                useIntId = true;
+                intId = (int)id;
+            }
+            //
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
-                if (t == null || !Equals(id, t.id)) continue;
+                if (t == null) continue;
+                if (useStringId) {
+                    if (t.stringId == null || t.stringId != stringId) continue;
+                } else if (useIntId) {
+                    if (t.intId != intId) continue;
+                } else if (t.id == null || !Equals(id, t.id)) continue;
                 if (!playingOnly || t.isPlaying) fillableList.Add(t);
             }
             if (fillableList.Count > 0) return fillableList;

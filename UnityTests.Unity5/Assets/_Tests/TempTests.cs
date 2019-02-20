@@ -11,12 +11,19 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Transform target;
+    public Transform[] targets;
 
     IEnumerator Start()
     {
-        target.DOMoveX(4, 10);
-        yield return new WaitForSeconds(2);
-        DOTween.timeScale = -1;
+        yield return new WaitForSeconds(1);
+        for (int i = 0; i < targets.Length; ++i) {
+            targets[i].DOMove(new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(-2f, 2f), 0), 20)
+                .SetId(i % 2 == 0 ? "a" : "b");
+        }
+        yield return new WaitForSeconds(1);
+        List<Tween> ts = DOTween.TweensById("a");
+        foreach (Tween t in ts) {
+            t.Pause();
+        }
     }
 }
