@@ -158,10 +158,7 @@ namespace DG.Tweening
         // Returns TRUE in case of success
         internal static bool DoStartup(Sequence s)
         {
-            if (s.sequencedTweens.Count == 0 && s._sequencedObjs.Count == 0
-                && s.onComplete == null && s.onKill == null && s.onPause == null && s.onPlay == null && s.onRewind == null
-                && s.onStart == null && s.onStepComplete == null && s.onUpdate == null
-            ) return false; // Empty Sequence without any callback set
+            if (s.sequencedTweens.Count == 0 && s._sequencedObjs.Count == 0 && !IsAnyCallbackSet(s)) return false; // Empty Sequence without any callback set
 
             s.startupDone = true;
             s.fullDuration = s.loops > -1 ? s.duration * s.loops : Mathf.Infinity;
@@ -268,10 +265,13 @@ namespace DG.Tweening
                         if (!t.startupDone) continue; // since we're going backwards and this tween never started just ignore it
                         t.isBackwards = true;
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
+                            if (s.sequencedTweens.Count == 1 && s._sequencedObjs.Count == 1 && !IsAnyCallbackSet(s)) return true;
+
                             // Nested tween failed. Remove it from Sequence and continue
                             // (instead of just returning TRUE, which would kill the whole Sequence as before v1.2.060)
                             TweenManager.Despawn(t, false);
                             s._sequencedObjs.RemoveAt(i);
+                            s.sequencedTweens.Remove(t);
                             --i; --len;
                             continue;
                         }
@@ -323,10 +323,13 @@ namespace DG.Tweening
                         //
                         t.isBackwards = false;
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
+                            if (s.sequencedTweens.Count == 1 && s._sequencedObjs.Count == 1 && !IsAnyCallbackSet(s)) return true;
+
                             // Nested tween failed. Remove it from Sequence and continue
                             // (instead of just returning TRUE, which would kill the whole Sequence as before v1.2.060)
                             TweenManager.Despawn(t, false);
                             s._sequencedObjs.RemoveAt(i);
+                            s.sequencedTweens.Remove(t);
                             --i; --len;
                             continue;
                         }
@@ -360,6 +363,15 @@ namespace DG.Tweening
                 }
                 list[j] = temp;
             }
+        }
+
+        private static bool IsAnyCallbackSet(Sequence s)
+        {
+            if (s.onComplete == null && s.onKill == null && s.onPause == null && s.onPlay == null && s.onRewind == null
+                && s.onStart == null && s.onStepComplete == null && s.onUpdate == null
+            ) return false;
+
+            return true;
         }
 
 //        // Quicker but doesn't implement stable sort
