@@ -273,7 +273,7 @@ namespace DG.Tweening
                             // ...otherwise remove failed tween from Sequence and continue
                             TweenManager.Despawn(t, false);
                             s._sequencedObjs.RemoveAt(i);
-                            s.sequencedTweens.RemoveAt(i);
+                            s.sequencedTweens.Remove(t);
                             --i; --len;
                             continue;
                         }
@@ -331,7 +331,7 @@ namespace DG.Tweening
                             // ...otherwise remove failed tween from Sequence and continue
                             TweenManager.Despawn(t, false);
                             s._sequencedObjs.RemoveAt(i);
-                            s.sequencedTweens.RemoveAt(i);
+                            s.sequencedTweens.Remove(t);
                             --i; --len;
                             continue;
                         }
