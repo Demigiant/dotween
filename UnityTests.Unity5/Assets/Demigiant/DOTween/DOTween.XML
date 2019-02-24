@@ -927,6 +927,32 @@
             <param name="sequencesCapacity">Max Sequences capacity.
             Default: 50</param>
         </member>
+        <member name="T:DG.Tweening.LinkBehaviour">
+            <summary>
+            Behaviour that can be assigned when chaining a SetLink to a tween
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.PauseOnDisable">
+            <summary>Pauses the tween when the link target is disabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.PauseOnDisablePlayOnEnable">
+            <summary>Pauses the tween when the link target is disabled, plays it when it's enabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.PauseOnDisableRestartOnEnable">
+            <summary>Pauses the tween when the link target is disabled, restarts it when it's enabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.PlayOnEnable">
+            <summary>Plays the tween when the link target is enabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.RestartOnEnable">
+            <summary>Restarts the tween when the link target is enabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.KillOnDisable">
+            <summary>Kills the tween when the link target is disabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.KillOnDestroy">
+            <summary>Kills the tween when the link target is destroyed (becomes NULL). This is always active even if another behaviour is chosen</summary>
+        </member>
         <member name="T:DG.Tweening.PathMode">
             <summary>
             Path mode (used to determine correct LookAt orientation)
@@ -2123,12 +2149,12 @@
             </summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetAutoKill``1(``0)">
-            <summary>Sets the autoKill behaviour of the tween. 
-            Has no effect if the tween has already started</summary>
+            <summary>Sets the autoKill behaviour of the tween to TRUE. 
+            <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetAutoKill``1(``0,System.Boolean)">
             <summary>Sets the autoKill behaviour of the tween. 
-            Has no effect if the tween has already started</summary>
+            <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
             <param name="autoKillOnCompletion">If TRUE the tween will be automatically killed when complete</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetId``1(``0,System.Object)">
@@ -2144,6 +2170,19 @@
             <summary>Sets an int ID for the tween (<see cref="F:DG.Tweening.Tween.intId"/>), which can then be used as a filter with DOTween's static methods.<para/>
             Filtering via int is 4X faster than via object, 2X faster than via string (using the alternate object/string overloads)</summary>
             <param name="intId">The int ID to assign to this tween.</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetLink``1(``0,UnityEngine.GameObject)">
+            <summary>Allows to link this tween to a GameObject
+            so that it will be automatically killed when the GameObject is destroyed.
+            <code>Has no effect</code> if the tween is added to a Sequence</summary>
+            <param name="gameObject">The link target (unrelated to the target set via <code>SetTarget</code>)</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetLink``1(``0,UnityEngine.GameObject,DG.Tweening.LinkBehaviour)">
+            <summary>Allows to link this tween to a GameObject and assign a behaviour depending on it.
+            This will also automatically kill the tween when the GameObject is destroyed.
+            <code>Has no effect</code> if the tween is added to a Sequence</summary>
+            <param name="gameObject">The link target (unrelated to the target set via <code>SetTarget</code>)</param>
+            <param name="behaviour">The behaviour to use (<see cref="F:DG.Tweening.LinkBehaviour.KillOnDestroy"/> is always evaluated even if you choose another one)</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetTarget``1(``0,System.Object)">
             <summary>Sets the target for the tween, which can then be used as a filter with DOTween's static methods.

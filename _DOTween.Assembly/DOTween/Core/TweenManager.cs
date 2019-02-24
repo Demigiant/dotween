@@ -38,6 +38,8 @@ namespace DG.Tweening.Core
         static readonly Stack<Tween> _PooledSequences = new Stack<Tween>();
 
         static readonly List<Tween> _KillList = new List<Tween>(_DefaultMaxTweeners + _DefaultMaxSequences);
+        static readonly Dictionary<Tween,TweenLink> _TweenLinks = new Dictionary<Tween, TweenLink>(_DefaultMaxTweeners + _DefaultMaxSequences);
+        static int _totTweenLinks; // Used for quicker skip in case no TweenLinks were set
         static int _maxActiveLookupId = -1; // Highest full ID in _activeTweens
         static bool _requiresActiveReorganization; // True when _activeTweens need to be reorganized to fill empty spaces
         static int _reorganizeFromId = -1; // First null ID from which to reorganize
@@ -216,6 +218,8 @@ namespace DG.Tweening.Core
             totActiveTweeners = totActiveSequences = 0;
             _maxActiveLookupId = _reorganizeFromId = -1;
             _requiresActiveReorganization = false;
+            _TweenLinks.Clear();
+            _totTweenLinks = 0;
 
             if (isUpdateLoop) _despawnAllCalledFromUpdateLoopCallback = true;
 
@@ -317,6 +321,39 @@ namespace DG.Tweening.Core
             _minPooledTweenerId = _maxPooledTweenerId = -1;
         }
 
+        internal static void AddTweenLink(Tween t, TweenLink tweenLink)
+        {
+            _totTweenLinks++;
+            if (_TweenLinks.ContainsKey(t)) _TweenLinks[t] = tweenLink;
+            else _TweenLinks.Add(t, tweenLink);
+            // Pause or play tween immediately depending on target's state
+            if (tweenLink.lastSeenActive) {
+                switch (tweenLink.behaviour) {
+                case LinkBehaviour.PauseOnDisablePlayOnEnable:
+                case LinkBehaviour.PauseOnDisableRestartOnEnable:
+                case LinkBehaviour.PlayOnEnable:
+                case LinkBehaviour.RestartOnEnable:
+                    Play(t);
+                    break;
+                }
+            } else {
+                switch (tweenLink.behaviour) {
+                case LinkBehaviour.PauseOnDisable:
+                case LinkBehaviour.PauseOnDisablePlayOnEnable:
+                case LinkBehaviour.PauseOnDisableRestartOnEnable:
+                    Pause(t);
+                    break;
+                }
+            }
+        }
+
+        static void RemoveTweenLink(Tween t)
+        {
+            if (!_TweenLinks.ContainsKey(t)) return;
+            _TweenLinks.Remove(t);
+            _totTweenLinks--;
+        }
+
         internal static void ResetCapacities()
         {
             SetCapacities(_DefaultMaxTweeners, _DefaultMaxSequences);
@@ -375,6 +412,7 @@ namespace DG.Tweening.Core
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
                 if (t == null || t.updateType != updateType) continue; // Wrong updateType or was added to a Sequence (thus removed from active list) while inside current updateLoop
+                if (_totTweenLinks > 0) EvaluateTweenLink(t); // TweenLinks
                 if (!t.active) {
                     // Manually killed by another tween's callback
                     willKill = true;
@@ -890,6 +928,45 @@ namespace DG.Tweening.Core
             _KillList.Add(t);
         }
 
+        // Called by Update method
+        static void EvaluateTweenLink(Tween t)
+        {
+            // Check tween links
+            TweenLink tLink;
+            if (!_TweenLinks.TryGetValue(t, out tLink)) return;
+
+            if (tLink.target == null) {
+                t.active = false;
+            } else {
+                bool goActive = tLink.target.activeInHierarchy;
+                bool justEnabled = !tLink.lastSeenActive && goActive;
+                bool justDisabled = tLink.lastSeenActive && !goActive;
+                tLink.lastSeenActive = goActive;
+                switch (tLink.behaviour) {
+                case LinkBehaviour.KillOnDisable:
+                    if (!goActive) t.active = false; // Will be killed by rest of Update loop
+                    break;
+                case LinkBehaviour.PauseOnDisable:
+                    if (justDisabled && t.isPlaying) Pause(t);
+                    break;
+                case LinkBehaviour.PauseOnDisablePlayOnEnable:
+                    if (justDisabled) Pause(t);
+                    else if (justEnabled) Play(t);
+                    break;
+                case LinkBehaviour.PauseOnDisableRestartOnEnable:
+                    if (justDisabled) Pause(t);
+                    else if (justEnabled) Restart(t);
+                    break;
+                case LinkBehaviour.PlayOnEnable:
+                    if (justEnabled) Play(t);
+                    break;
+                case LinkBehaviour.RestartOnEnable:
+                    if (justEnabled) Restart(t);
+                    break;
+                }
+            }
+        }
+
         // Adds the given tween to the active tweens list (updateType is always Normal, but can be changed by SetUpdateType)
         static void AddActiveTween(Tween t)
         {
@@ -973,11 +1050,13 @@ namespace DG.Tweening.Core
             for (int i = count; i > -1; --i) Despawn(tweens[i]);
         }
 
-        // Removes a tween from the active list, reorganizes said list
-        // and decreases the given total
+        // Removes a tween from the active list, then reorganizes said list and decreases the given total.
+        // Also removes any TweenLinks associated to this tween.
         static void RemoveActiveTween(Tween t)
         {
             int index = t.activeId;
+
+            if (_totTweenLinks > 0) RemoveTweenLink(t);
 
             t.activeId = -1;
             _requiresActiveReorganization = true;
@@ -1068,7 +1147,7 @@ namespace DG.Tweening.Core
                 maxSequences += increaseSequencesBy;
                 break;
             default:
-                killAdd += increaseTweenersBy;
+                killAdd += increaseTweenersBy + increaseSequencesBy;
                 maxTweeners += increaseTweenersBy;
                 maxSequences += increaseSequencesBy;
                 Array.Resize(ref _pooledTweeners, maxTweeners);

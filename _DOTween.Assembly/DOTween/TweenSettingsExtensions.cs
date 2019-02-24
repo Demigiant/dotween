@@ -34,8 +34,8 @@ namespace DG.Tweening
     {
         #region Tweeners + Sequences
 
-        /// <summary>Sets the autoKill behaviour of the tween. 
-        /// Has no effect if the tween has already started</summary>
+        /// <summary>Sets the autoKill behaviour of the tween to TRUE. 
+        /// <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
         public static T SetAutoKill<T>(this T t) where T : Tween
         {
             if (t == null || !t.active || t.creationLocked) return t;
@@ -44,7 +44,7 @@ namespace DG.Tweening
             return t;
         }
         /// <summary>Sets the autoKill behaviour of the tween. 
-        /// Has no effect if the tween has already started</summary>
+        /// <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
         /// <param name="autoKillOnCompletion">If TRUE the tween will be automatically killed when complete</param>
         public static T SetAutoKill<T>(this T t, bool autoKillOnCompletion) where T : Tween
         {
@@ -81,6 +81,30 @@ namespace DG.Tweening
             if (t == null || !t.active) return t;
 
             t.intId = intId;
+            return t;
+        }
+
+        /// <summary>Allows to link this tween to a GameObject
+        /// so that it will be automatically killed when the GameObject is destroyed.
+        /// <code>Has no effect</code> if the tween is added to a Sequence</summary>
+        /// <param name="gameObject">The link target (unrelated to the target set via <code>SetTarget</code>)</param>
+        public static T SetLink<T>(this T t, GameObject gameObject) where T : Tween
+        {
+            if (t == null || !t.active || t.isSequenced || gameObject == null) return t;
+
+            TweenManager.AddTweenLink(t, new TweenLink(gameObject, LinkBehaviour.KillOnDestroy));
+            return t;
+        }
+        /// <summary>Allows to link this tween to a GameObject and assign a behaviour depending on it.
+        /// This will also automatically kill the tween when the GameObject is destroyed.
+        /// <code>Has no effect</code> if the tween is added to a Sequence</summary>
+        /// <param name="gameObject">The link target (unrelated to the target set via <code>SetTarget</code>)</param>
+        /// <param name="behaviour">The behaviour to use (<see cref="LinkBehaviour.KillOnDestroy"/> is always evaluated even if you choose another one)</param>
+        public static T SetLink<T>(this T t, GameObject gameObject, LinkBehaviour behaviour) where T : Tween
+        {
+            if (t == null || !t.active || t.isSequenced || gameObject == null) return t;
+
+            TweenManager.AddTweenLink(t, new TweenLink(gameObject, behaviour));
             return t;
         }
 

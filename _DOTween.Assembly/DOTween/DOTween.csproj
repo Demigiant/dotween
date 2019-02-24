@@ -94,6 +94,7 @@
     <Compile Include="Core\Surrogates\Vector2Wrapper.cs" />
     <Compile Include="Core\Surrogates\Vector3Wrapper.cs" />
     <Compile Include="Core\Surrogates\Vector4Wrapper.cs" />
+    <Compile Include="Core\TweenLink.cs" />
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\Utils.cs" />
     <Compile Include="CustomPlugins\PureQuaternionPlugin.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Ease.cs" />
     <Compile Include="EaseFactory.cs" />
     <Compile Include="IDOTweenInit.cs" />
+    <Compile Include="LinkBehaviour.cs" />
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
