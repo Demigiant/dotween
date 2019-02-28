@@ -15,7 +15,7 @@ namespace DG.Tweening
         Linear,
         /// <summary>Curved path (which uses Catmull-Rom curves)</summary>
         CatmullRom,
-//        /// <summary>Curved path (which uses Cubic Bezier curves, where each point requires two extra control points)</summary>
-//        CubicBezier // Under development
+        /// <summary><code>EXPERIMENTAL: </code>Curved path (which uses Cubic Bezier curves, where each point requires two extra control points)</summary>
+        CubicBezier
     }
 }

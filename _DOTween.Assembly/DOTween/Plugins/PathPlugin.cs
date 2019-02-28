@@ -68,15 +68,25 @@ namespace DG.Tweening.Plugins
             int additionalWps = 0;
             bool hasAdditionalStartingP = false, hasAdditionalEndingP = false;
             
-            // Create final wps and add eventual starting/ending waypoints
-//            if (path.wps[0] != currVal) {
+            // Create final wps and add eventual starting/ending waypoints.
             if (!Utils.Vector3AreApproximatelyEqual(path.wps[0], currVal)) {
                 hasAdditionalStartingP = true;
                 additionalWps += 1;
             }
-            if (t.plugOptions.isClosedPath && path.wps[unmodifiedWpsLen - 1] != currVal) {
-                hasAdditionalEndingP = true;
-                additionalWps += 1;
+            if (t.plugOptions.isClosedPath) {
+                Vector3 endWp = path.wps[unmodifiedWpsLen - 1];
+                if (path.type == PathType.CubicBezier) {
+                    if (unmodifiedWpsLen < 3) {
+                        Debug.LogError(
+                            "CubicBezier paths must contain waypoints in multiple of 3 excluding the starting point added automatically by DOTween" +
+                            " (1: waypoint, 2: IN control point, 3: OUT control point — the minimum amount of waypoints for a single curve is 3)"
+                        );
+                    } else endWp = path.wps[unmodifiedWpsLen - 3];
+                }
+                if (endWp != currVal) {
+                    hasAdditionalEndingP = true;
+                    additionalWps += 1;
+                }
             }
             int wpsLen = unmodifiedWpsLen + additionalWps;
             Vector3[] wps = new Vector3[wpsLen];
@@ -87,6 +97,8 @@ namespace DG.Tweening.Plugins
             path.wps = wps;
 
             // Finalize path
+            path.addedExtraStartWp = hasAdditionalStartingP;
+            path.addedExtraEndWp = hasAdditionalEndingP;
             path.FinalizePath(t.plugOptions.isClosedPath, t.plugOptions.lockPositionAxis, currVal);
 
             t.plugOptions.startupRot = trans.rotation;

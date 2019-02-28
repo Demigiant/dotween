@@ -27,5 +27,10 @@ namespace DG.Tweening.Plugins.Core.PathCore
         {
             return new ControlPoint(cp.a + v, cp.b + v);
         }
+
+        public override string ToString()
+        {
+            return "[" + a.ToString() + " | " + b.ToString() + "]";
+        }
     }
 }

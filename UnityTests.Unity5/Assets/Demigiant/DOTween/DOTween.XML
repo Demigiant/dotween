@@ -996,6 +996,9 @@
         <member name="F:DG.Tweening.PathType.CatmullRom">
             <summary>Curved path (which uses Catmull-Rom curves)</summary>
         </member>
+        <member name="F:DG.Tweening.PathType.CubicBezier">
+            <summary><code>EXPERIMENTAL: </code>Curved path (which uses Cubic Bezier curves, where each point requires two extra control points)</summary>
+        </member>
         <member name="T:DG.Tweening.Plugins.Core.PathCore.ControlPoint">
             <summary>
             Path control point

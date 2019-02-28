@@ -19,12 +19,13 @@ namespace DG.Tweening.Plugins.Core.PathCore
         // Static decoders stored to avoid creating new ones each time
         static CatmullRomDecoder _catmullRomDecoder;
         static LinearDecoder _linearDecoder;
+        static CubicBezierDecoder _cubicBezierDecoder;
         public float[] wpLengths; // Unit length of each waypoint (public so it can be accessed at runtime by external scripts)
 
         [SerializeField] internal PathType type;
         [SerializeField] internal int subdivisionsXSegment; // Subdivisions x each segment
         [SerializeField] internal int subdivisions; // Stored by PathPlugin > total subdivisions for whole path (derived automatically from subdivisionsXSegment)
-        [SerializeField] internal Vector3[] wps; // Waypoints (modified by PathPlugin when setting relative end value and change value) - also modified by DOTweenPathInspector
+        [SerializeField] internal Vector3[] wps; // Waypoints (modified by PathPlugin when setting relative end/change value or by CubicBezierDecoder) - also modified by DOTweenPathInspector
         [SerializeField] internal ControlPoint[] controlPoints; // Control points used by non-linear paths
         [SerializeField] internal float length; // Unit length of the path
         [SerializeField] internal bool isFinalized; // TRUE when the path has been finalized (either by starting the tween or if the path was created by the Path Editor)
@@ -32,6 +33,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal float[] timesTable; // Connected to lengthsTable, used for constant speed calculations
         [SerializeField] internal float[] lengthsTable; // Connected to timesTable, used for constant speed calculations
         internal int linearWPIndex = -1; // Waypoint towards which we're moving (only stored for linear paths, when calling GetPoint)
+        internal bool addedExtraStartWp, addedExtraEndWp;
         Path _incrementalClone; // Last incremental clone. Stored in case of incremental loops, to avoid recreating a new path every time
         int _incrementalIndex = 0;
 
@@ -267,6 +269,10 @@ namespace DG.Tweening.Plugins.Core.PathCore
             case PathType.Linear:
                 if (_linearDecoder == null) _linearDecoder = new LinearDecoder();
                 _decoder = _linearDecoder;
+                break;
+            case PathType.CubicBezier:
+                if (_cubicBezierDecoder == null) _cubicBezierDecoder = new CubicBezierDecoder();
+                _decoder = _cubicBezierDecoder;
                 break;
             default: // Catmull-Rom
                 if (_catmullRomDecoder == null) _catmullRomDecoder = new CatmullRomDecoder();
