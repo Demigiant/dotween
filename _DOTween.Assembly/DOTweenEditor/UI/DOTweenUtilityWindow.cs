@@ -16,7 +16,7 @@ namespace DG.DOTweenEditor.UI
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(370,490);
+        static readonly Vector2 _WinSize = new Vector2(370,510);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -124,7 +124,10 @@ namespace DG.DOTweenEditor.UI
 
                     switch (_selectedTab) {
                     case 1:
+                        float labelW = EditorGUIUtility.labelWidth;
+                        EditorGUIUtility.labelWidth = 160;
                         DrawPreferencesGUI();
+                        EditorGUIUtility.labelWidth = labelW;
                         break;
                     default:
                         DrawSetupGUI();
@@ -199,6 +202,7 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button("Reset", EditorGUIUtils.btBigStyle)) {
                 // Reset to original defaults
                 _src.useSafeMode = true;
+                _src.safeModeOptions.nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
                 _src.showUnityEditorReport = false;
                 _src.timeScale = 1;
                 _src.useSmoothDeltaTime = false;
@@ -219,13 +223,19 @@ namespace DG.DOTweenEditor.UI
             }
             GUILayout.Space(8);
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
+            if (_src.useSafeMode) {
+                _src.safeModeOptions.nestedTweenFailureBehaviour = (NestedTweenFailureBehaviour)EditorGUILayout.EnumPopup(
+                    new GUIContent("└ On Nested Tween Failure", "Behaviour in case a tween inside a Sequence fails"),
+                    _src.safeModeOptions.nestedTweenFailureBehaviour
+                );
+            }
             _src.timeScale = EditorGUILayout.FloatField("DOTween's TimeScale", _src.timeScale);
             _src.useSmoothDeltaTime = EditorGUILayout.Toggle("Smooth DeltaTime", _src.useSmoothDeltaTime);
             _src.maxSmoothUnscaledTime = EditorGUILayout.Slider("Max SmoothUnscaledTime", _src.maxSmoothUnscaledTime, 0.01f, 1f);
             _src.rewindCallbackMode = (RewindCallbackMode)EditorGUILayout.EnumPopup("OnRewind Callback Mode", _src.rewindCallbackMode);
             GUILayout.Space(-5);
             GUILayout.BeginHorizontal();
-                GUILayout.Space(154);
+                GUILayout.Space(EditorGUIUtility.labelWidth + 4);
                 EditorGUILayout.HelpBox(
                     _src.rewindCallbackMode == RewindCallbackMode.FireIfPositionChanged
                         ? "When calling Rewind or PlayBackwards/SmoothRewind, OnRewind callbacks will be fired only if the tween isn't already rewinded"

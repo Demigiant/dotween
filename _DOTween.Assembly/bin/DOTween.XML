@@ -137,6 +137,17 @@
             Public so it can be used by external ease factories
             </summary>
         </member>
+        <member name="T:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour">
+            <summary>
+            Behaviour in case a tween nested inside a Sequence fails
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour.TryToPreserveSequence">
+            <summary>If the Sequence contains other elements, kill the failed tween but preserve the rest</summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour.KillWholeSequence">
+            <summary>Kill the whole Sequence</summary>
+        </member>
         <member name="T:DG.Tweening.Core.Enums.UpdateNotice">
             <summary>
             Additional notices passed to plugins when updating.
@@ -289,6 +300,10 @@
             <summary>If TRUE (default) makes tweens slightly slower but safer, automatically taking care of a series of things
             (like targets becoming null while a tween is playing).
             <para>Default: TRUE</para></summary>
+        </member>
+        <member name="F:DG.Tweening.DOTween.nestedTweenFailureBehaviour">
+            <summary>Behaviour in case a tween nested inside a Sequence fails (caught by safe mode).
+            <para>Default: NestedTweenFailureBehaviour.TryToPreserveSequence</para></summary>
         </member>
         <member name="F:DG.Tweening.DOTween.showUnityEditorReport">
             <summary>If TRUE you will get a DOTween report when exiting play mode (only in the Editor).

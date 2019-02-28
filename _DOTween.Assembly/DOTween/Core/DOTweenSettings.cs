@@ -14,6 +14,7 @@ namespace DG.Tweening.Core
         public const string AssetFullFilename = AssetName + ".asset";
 
         public bool useSafeMode = true;
+        public SafeModeOptions safeModeOptions = new SafeModeOptions();
         public float timeScale = 1;
         public bool useSmoothDeltaTime;
         public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
@@ -47,6 +48,12 @@ namespace DG.Tweening.Core
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
         // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        [Serializable]
+        public class SafeModeOptions
+        {
+            public NestedTweenFailureBehaviour nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
+        }
 
         [Serializable]
         public class ModulesSetup // Editor-only

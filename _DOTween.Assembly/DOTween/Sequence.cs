@@ -269,6 +269,7 @@ namespace DG.Tweening
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
                             // Nested tween failed. If it's the only tween and there's no callbacks mark for killing the whole sequence
                             // (default behaviour in any case prior to v1.2.060)...
+                            if (DOTween.nestedTweenFailureBehaviour == NestedTweenFailureBehaviour.KillWholeSequence) return true;
                             if (s.sequencedTweens.Count == 1 && s._sequencedObjs.Count == 1 && !IsAnyCallbackSet(s)) return true;
                             // ...otherwise remove failed tween from Sequence and continue
                             TweenManager.Despawn(t, false);
@@ -327,6 +328,7 @@ namespace DG.Tweening
                         if (TweenManager.Goto(t, gotoPos, false, updateMode)) {
                             // Nested tween failed. If it's the only tween and there's no callbacks mark for killing the whole sequence
                             // (default behaviour in any case prior to v1.2.060)...
+                            if (DOTween.nestedTweenFailureBehaviour == NestedTweenFailureBehaviour.KillWholeSequence) return true;
                             if (s.sequencedTweens.Count == 1 && s._sequencedObjs.Count == 1 && !IsAnyCallbackSet(s)) return true;
                             // ...otherwise remove failed tween from Sequence and continue
                             TweenManager.Despawn(t, false);
