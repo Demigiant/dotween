@@ -11,6 +11,12 @@ namespace DG.Tweening.Plugins.Core.PathCore
 {
     internal class CatmullRomDecoder : ABSPathDecoder
     {
+        // Used for temporary operations
+        static readonly ControlPoint[] _PartialControlPs = new ControlPoint[2];
+        static readonly Vector3[] _PartialWps = new Vector3[2];
+
+        #region Methods
+
         internal override void FinalizePath(Path p, Vector3[] wps, bool isClosedPath)
         {
             // Add starting and ending control points (uses only one vector per control point)
@@ -85,21 +91,19 @@ namespace DG.Tweening.Plugins.Core.PathCore
             int count = p.wps.Length;
             float[] wpLengths = new float[count];
             wpLengths[0] = 0;
-            ControlPoint[] partialControlPs = new ControlPoint[2];
-            Vector3[] partialWps = new Vector3[2];
             for (int i = 1; i < count; ++i) {
                 // Create partial path
-                partialControlPs[0].a = i == 1 ? p.controlPoints[0].a : p.wps[i - 2];
-                partialWps[0] = p.wps[i - 1];
-                partialWps[1] = p.wps[i];
-                partialControlPs[1].a = i == count - 1 ? p.controlPoints[1].a : p.wps[i + 1];
+                _PartialControlPs[0].a = i == 1 ? p.controlPoints[0].a : p.wps[i - 2];
+                _PartialWps[0] = p.wps[i - 1];
+                _PartialWps[1] = p.wps[i];
+                _PartialControlPs[1].a = i == count - 1 ? p.controlPoints[1].a : p.wps[i + 1];
                 // Calculate length of partial path
                 float partialLen = 0;
                 float incr = 1f / subdivisions;
-                Vector3 prevP = GetPoint(0, partialWps, p, partialControlPs);
+                Vector3 prevP = GetPoint(0, _PartialWps, p, _PartialControlPs);
                 for (int c = 1; c < subdivisions + 1; ++c) {
                     float perc = incr * c;
-                    Vector3 currP = GetPoint(perc, partialWps, p, partialControlPs);
+                    Vector3 currP = GetPoint(perc, _PartialWps, p, _PartialControlPs);
                     partialLen += Vector3.Distance(currP, prevP);
                     prevP = currP;
                 }
@@ -109,5 +113,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             // Assign
             p.wpLengths = wpLengths;
         }
+
+        #endregion
     }
 }
