@@ -137,12 +137,20 @@ namespace DG.Tweening.Plugins
                 t.miscInt = newWaypointIndex;
                 if (t.onWaypointChange != null) {
                     // If more than one waypoint changed, dispatch multiple callbacks
-                    bool isBackwards = newWaypointIndex < prevWPIndex;
+//                    bool isBackwards = newWaypointIndex < prevWPIndex;
+                    bool isBackwards = t.isBackwards;
+                    if (t.loopType == LoopType.Yoyo) {
+                        isBackwards = !t.isBackwards && t.loops > 1 && t.completedLoops % 2 != 0
+                                      || t.isBackwards && t.loops > 1 && t.completedLoops % 2 == 0;
+                    }
                     if (isBackwards) {
+//                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
                         for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
                     } else {
-                        for (int i = prevWPIndex + 1; i < newWaypointIndex + 1; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
+//                        for (int i = prevWPIndex + 1; i < newWaypointIndex + 1; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                        for (int i = prevWPIndex + 1; i < newWaypointIndex; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
                     }
+                    Tween.OnTweenCallback(t.onWaypointChange, newWaypointIndex);
                 }
             }
         }
