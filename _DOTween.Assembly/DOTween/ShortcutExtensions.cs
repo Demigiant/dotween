@@ -36,65 +36,81 @@ namespace DG.Tweening
         /// <summary>Tweens a Camera's <code>aspect</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOAspect(this Camera target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOAspect(this Camera target, float endValue, float duration)
         {
-            return DOTween.To(() => target.aspect, x => target.aspect = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.aspect, x => target.aspect = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's backgroundColor to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Camera target, Color endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Camera target, Color endValue, float duration)
         {
-            return DOTween.To(() => target.backgroundColor, x => target.backgroundColor = x, endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.backgroundColor, x => target.backgroundColor = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>farClipPlane</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOFarClipPlane(this Camera target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOFarClipPlane(this Camera target, float endValue, float duration)
         {
-            return DOTween.To(() => target.farClipPlane, x => target.farClipPlane = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.farClipPlane, x => target.farClipPlane = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>fieldOfView</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOFieldOfView(this Camera target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOFieldOfView(this Camera target, float endValue, float duration)
         {
-            return DOTween.To(() => target.fieldOfView, x => target.fieldOfView = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.fieldOfView, x => target.fieldOfView = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>nearClipPlane</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DONearClipPlane(this Camera target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DONearClipPlane(this Camera target, float endValue, float duration)
         {
-            return DOTween.To(() => target.nearClipPlane, x => target.nearClipPlane = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.nearClipPlane, x => target.nearClipPlane = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>orthographicSize</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOOrthoSize(this Camera target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOOrthoSize(this Camera target, float endValue, float duration)
         {
-            return DOTween.To(() => target.orthographicSize, x => target.orthographicSize = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.orthographicSize, x => target.orthographicSize = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>pixelRect</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOPixelRect(this Camera target, Rect endValue, float duration)
+        public static TweenerCore<Rect, Rect, RectOptions> DOPixelRect(this Camera target, Rect endValue, float duration)
         {
-            return DOTween.To(() => target.pixelRect, x => target.pixelRect = x, endValue, duration).SetTarget(target);
+            TweenerCore<Rect, Rect, RectOptions> t = DOTween.To(() => target.pixelRect, x => target.pixelRect = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Camera's <code>rect</code> to the given value.
         /// Also stores the camera as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DORect(this Camera target, Rect endValue, float duration)
+        public static TweenerCore<Rect, Rect, RectOptions> DORect(this Camera target, Rect endValue, float duration)
         {
-            return DOTween.To(() => target.rect, x => target.rect = x, endValue, duration).SetTarget(target);
+            TweenerCore<Rect, Rect, RectOptions> t = DOTween.To(() => target.rect, x => target.rect = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Shakes a Camera's localPosition along its relative X Y axes with the given values.
@@ -174,25 +190,31 @@ namespace DG.Tweening
         /// <summary>Tweens a Light's color to the given value.
         /// Also stores the light as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Light target, Color endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Light target, Color endValue, float duration)
         {
-            return DOTween.To(() => target.color, x => target.color = x, endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Light's intensity to the given value.
         /// Also stores the light as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOIntensity(this Light target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOIntensity(this Light target, float endValue, float duration)
         {
-            return DOTween.To(() => target.intensity, x => target.intensity = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.intensity, x => target.intensity = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Light's shadowStrength to the given value.
         /// Also stores the light as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOShadowStrength(this Light target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOShadowStrength(this Light target, float endValue, float duration)
         {
-            return DOTween.To(() => target.shadowStrength, x => target.shadowStrength = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.shadowStrength, x => target.shadowStrength = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         #endregion
@@ -217,45 +239,52 @@ namespace DG.Tweening
         /// <summary>Tweens a Material's color to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Material target, Color endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Material target, Color endValue, float duration)
         {
-            return DOTween.To(() => target.color, x => target.color = x, endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named color property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Material target, Color endValue, string property, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Material target, Color endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named color property with the given ID to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this Material target, Color endValue, int propertyID, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Material target, Color endValue, int propertyID, float duration)
         {
             if (!target.HasProperty(propertyID)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
                 return null;
             }
-            return DOTween.To(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's alpha color to the given value
         /// (will have no effect unless your material supports transparency).
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOFade(this Material target, float endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Material target, float endValue, float duration)
         {
-            return DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration)
-                .SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's alpha color to the given value
         /// (will have no effect unless your material supports transparency).
@@ -263,13 +292,15 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOFade(this Material target, float endValue, string property, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Material target, float endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.ToAlpha(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.GetColor(property), x => target.SetColor(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's alpha color with the given ID to the given value
         /// (will have no effect unless your material supports transparency).
@@ -277,13 +308,15 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param>
         /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOFade(this Material target, float endValue, int propertyID, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Material target, float endValue, int propertyID, float duration)
         {
             if (!target.HasProperty(propertyID)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
                 return null;
             }
-            return DOTween.ToAlpha(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.GetColor(propertyID), x => target.SetColor(propertyID, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's named float property to the given value.
@@ -291,70 +324,82 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOFloat(this Material target, float endValue, string property, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOFloat(this Material target, float endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.GetFloat(property), x => target.SetFloat(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named float property with the given ID to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOFloat(this Material target, float endValue, int propertyID, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOFloat(this Material target, float endValue, int propertyID, float duration)
         {
             if (!target.HasProperty(propertyID)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
                 return null;
             }
-            return DOTween.To(() => target.GetFloat(propertyID), x => target.SetFloat(propertyID, x), endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.GetFloat(propertyID), x => target.SetFloat(propertyID, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's texture offset to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOOffset(this Material target, Vector2 endValue, float duration)
+        public static TweenerCore<Vector2, Vector2, VectorOptions> DOOffset(this Material target, Vector2 endValue, float duration)
         {
-            return DOTween.To(() => target.mainTextureOffset, x => target.mainTextureOffset = x, endValue, duration).SetTarget(target);
+            TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.mainTextureOffset, x => target.mainTextureOffset = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named texture offset property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOOffset(this Material target, Vector2 endValue, string property, float duration)
+        public static TweenerCore<Vector2, Vector2, VectorOptions> DOOffset(this Material target, Vector2 endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.To(() => target.GetTextureOffset(property), x => target.SetTextureOffset(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.GetTextureOffset(property), x => target.SetTextureOffset(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's texture scale to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOTiling(this Material target, Vector2 endValue, float duration)
+        public static TweenerCore<Vector2, Vector2, VectorOptions> DOTiling(this Material target, Vector2 endValue, float duration)
         {
-            return DOTween.To(() => target.mainTextureScale, x => target.mainTextureScale = x, endValue, duration).SetTarget(target);
+            TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.mainTextureScale, x => target.mainTextureScale = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named texture scale property to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOTiling(this Material target, Vector2 endValue, string property, float duration)
+        public static TweenerCore<Vector2, Vector2, VectorOptions> DOTiling(this Material target, Vector2 endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.To(() => target.GetTextureScale(property), x => target.SetTextureScale(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.GetTextureScale(property), x => target.SetTextureScale(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's named Vector property to the given value.
@@ -362,26 +407,30 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param>
         /// <param name="property">The name of the material property to tween</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOVector(this Material target, Vector4 endValue, string property, float duration)
+        public static TweenerCore<Vector4, Vector4, VectorOptions> DOVector(this Material target, Vector4 endValue, string property, float duration)
         {
             if (!target.HasProperty(property)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(property);
                 return null;
             }
-            return DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration).SetTarget(target);
+            TweenerCore<Vector4, Vector4, VectorOptions> t = DOTween.To(() => target.GetVector(property), x => target.SetVector(property, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
         /// <summary>Tweens a Material's named Vector property with the given ID to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param>
         /// <param name="propertyID">The ID of the material property to tween (also called nameID in Unity's manual)</param>
         /// <param name="duration">The duration of the tween</param>
-        public static Tweener DOVector(this Material target, Vector4 endValue, int propertyID, float duration)
+        public static TweenerCore<Vector4, Vector4, VectorOptions> DOVector(this Material target, Vector4 endValue, int propertyID, float duration)
         {
             if (!target.HasProperty(propertyID)) {
                 if (Debugger.logPriority > 0) Debugger.LogMissingMaterialProperty(propertyID);
                 return null;
             }
-            return DOTween.To(() => target.GetVector(propertyID), x => target.SetVector(propertyID, x), endValue, duration).SetTarget(target);
+            TweenerCore<Vector4, Vector4, VectorOptions> t = DOTween.To(() => target.GetVector(propertyID), x => target.SetVector(propertyID, x), endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         #endregion
@@ -409,10 +458,11 @@ namespace DG.Tweening
         /// <summary>Tweens a TrailRenderer's time to the given value.
         /// Also stores the TrailRenderer as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOTime(this TrailRenderer target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOTime(this TrailRenderer target, float endValue, float duration)
         {
-            return DOTween.To(() => target.time, x => target.time = x, endValue, duration)
-                .SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.time, x => target.time = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         #endregion
@@ -423,87 +473,95 @@ namespace DG.Tweening
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOMove(this Transform target, Vector3 endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMove(this Transform target, Vector3 endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.position, x => target.position = x, endValue, duration)
-                .SetOptions(snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.position, x => target.position = x, endValue, duration);
+            t.SetOptions(snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's X position to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOMoveX(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<DOVector3,DOVector3,VectorOptions> DOMoveX(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue, 0, 0), duration)
-                .SetOptions(AxisConstraint.X, snapping).SetTarget(target);
+            TweenerCore<DOVector3,DOVector3,VectorOptions> t = DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue, 0, 0), duration);
+            t.SetOptions(AxisConstraint.X, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Y position to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOMoveY(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveY(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.position, x => target.position = x, new Vector3(0, endValue, 0), duration)
-                .SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.position, x => target.position = x, new Vector3(0, endValue, 0), duration);
+            t.SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Z position to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOMoveZ(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOMoveZ(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue), duration)
-                .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue), duration);
+            t.SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's localPosition to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOLocalMove(this Transform target, Vector3 endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMove(this Transform target, Vector3 endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.localPosition, x => target.localPosition = x, endValue, duration)
-                .SetOptions(snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localPosition, x => target.localPosition = x, endValue, duration);
+            t.SetOptions(snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's X localPosition to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOLocalMoveX(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveX(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(endValue, 0, 0), duration)
-                .SetOptions(AxisConstraint.X, snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(endValue, 0, 0), duration);
+            t.SetOptions(AxisConstraint.X, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Y localPosition to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOLocalMoveY(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveY(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, endValue, 0), duration)
-                .SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, endValue, 0), duration);
+            t.SetOptions(AxisConstraint.Y, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Z localPosition to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        public static Tweener DOLocalMoveZ(this Transform target, float endValue, float duration, bool snapping = false)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOLocalMoveZ(this Transform target, float endValue, float duration, bool snapping = false)
         {
-            return DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, 0, endValue), duration)
-                .SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, 0, endValue), duration);
+            t.SetOptions(AxisConstraint.Z, snapping).SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's rotation to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="mode">Rotation mode</param>
-        public static Tweener DORotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
+        public static TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> DORotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, endValue, duration);
             t.SetTarget(target);
@@ -518,7 +576,7 @@ namespace DG.Tweening
         /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
         /// </summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DORotateQuaternion(this Transform target, Quaternion endValue, float duration)
+        public static TweenerCore<Quaternion, Quaternion, NoOptions> DORotateQuaternion(this Transform target, Quaternion endValue, float duration)
         {
             TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.rotation, x => target.rotation = x, endValue, duration);
             t.SetTarget(target);
@@ -529,7 +587,7 @@ namespace DG.Tweening
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="mode">Rotation mode</param>
-        public static Tweener DOLocalRotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
+        public static TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> DOLocalRotate(this Transform target, Vector3 endValue, float duration, RotateMode mode = RotateMode.Fast)
         {
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.localRotation, x => target.localRotation = x, endValue, duration);
             t.SetTarget(target);
@@ -544,7 +602,7 @@ namespace DG.Tweening
         /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
         /// </summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOLocalRotateQuaternion(this Transform target, Quaternion endValue, float duration)
+        public static TweenerCore<Quaternion, Quaternion, NoOptions> DOLocalRotateQuaternion(this Transform target, Quaternion endValue, float duration)
         {
             TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.localRotation, x => target.localRotation = x, endValue, duration);
             t.SetTarget(target);
@@ -554,48 +612,55 @@ namespace DG.Tweening
         /// <summary>Tweens a Transform's localScale to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOScale(this Transform target, Vector3 endValue, float duration)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this Transform target, Vector3 endValue, float duration)
         {
-            return DOTween.To(() => target.localScale, x => target.localScale = x, endValue, duration).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localScale, x => target.localScale = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's localScale uniformly to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOScale(this Transform target, float endValue, float duration)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this Transform target, float endValue, float duration)
         {
             Vector3 endValueV3 = new Vector3(endValue, endValue, endValue);
-            return DOTween.To(() => target.localScale, x => target.localScale = x, endValueV3, duration).SetTarget(target);
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localScale, x => target.localScale = x, endValueV3, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's X localScale to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOScaleX(this Transform target, float endValue, float duration)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOScaleX(this Transform target, float endValue, float duration)
         {
-            return DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(endValue, 0, 0), duration)
-                .SetOptions(AxisConstraint.X)
+            TweenerCore<Vector3, Vector3, VectorOptions> t =  DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(endValue, 0, 0), duration);
+            t.SetOptions(AxisConstraint.X)
                 .SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Y localScale to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOScaleY(this Transform target, float endValue, float duration)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOScaleY(this Transform target, float endValue, float duration)
         {
-            return DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(0, endValue, 0), duration)
-                .SetOptions(AxisConstraint.Y)
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(0, endValue, 0), duration);
+            t.SetOptions(AxisConstraint.Y)
                 .SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's Z localScale to the given value.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOScaleZ(this Transform target, float endValue, float duration)
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DOScaleZ(this Transform target, float endValue, float duration)
         {
-            return DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(0, 0, endValue), duration)
-                .SetOptions(AxisConstraint.Z)
+            TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.localScale, x => target.localScale = x, new Vector3(0, 0, endValue), duration);
+            t.SetOptions(AxisConstraint.Z)
                 .SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Transform's rotation so that it will look towards the given position.
@@ -950,9 +1015,11 @@ namespace DG.Tweening
         /// <summary>Tweens a Tween's timeScale to the given value.
         /// Also stores the Tween as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOTimeScale(this Tween target, float endValue, float duration)
+        public static TweenerCore<float, float, FloatOptions> DOTimeScale(this Tween target, float endValue, float duration)
         {
-            return DOTween.To(() => target.timeScale, x => target.timeScale = x, endValue, duration).SetTarget(target);
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.timeScale, x => target.timeScale = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         #endregion

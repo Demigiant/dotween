@@ -22,6 +22,11 @@ namespace DG.Tweening.Plugins
             t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
             t.setter(t.startValue);
         }
+        public override void SetFrom(TweenerCore<long, long, NoOptions> t, long fromValue, bool setImmediately)
+        {
+            t.startValue = fromValue;
+            if (setImmediately) t.setter(fromValue);
+        }
 
         public override long ConvertToStartValue(TweenerCore<long, long, NoOptions> t, long value)
         {

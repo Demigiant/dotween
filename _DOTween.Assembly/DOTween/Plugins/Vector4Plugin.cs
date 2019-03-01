@@ -52,6 +52,42 @@ namespace DG.Tweening.Plugins
             t.setter(to);
         }
 
+        public override void SetFrom(TweenerCore<Vector4, Vector4, VectorOptions> t, Vector4 fromValue, bool setImmediately)
+        {
+            t.startValue = fromValue;
+            if (setImmediately) {
+                Vector4 to;
+                switch (t.plugOptions.axisConstraint) {
+                case AxisConstraint.X:
+                    to = t.getter();
+                    to.x = fromValue.x;
+                    break;
+                case AxisConstraint.Y:
+                    to = t.getter();
+                    to.y = fromValue.y;
+                    break;
+                case AxisConstraint.Z:
+                    to = t.getter();
+                    to.z = fromValue.z;
+                    break;
+                case AxisConstraint.W:
+                    to = t.getter();
+                    to.w = fromValue.w;
+                    break;
+                default:
+                    to = fromValue;
+                    break;
+                }
+                if (t.plugOptions.snapping) {
+                    to.x = (float)Math.Round(to.x);
+                    to.y = (float)Math.Round(to.y);
+                    to.z = (float)Math.Round(to.z);
+                    to.w = (float)Math.Round(to.w);
+                }
+                t.setter(to);
+            }
+        }
+
         public override Vector4 ConvertToStartValue(TweenerCore<Vector4, Vector4, VectorOptions> t, Vector4 value)
         {
             return value;

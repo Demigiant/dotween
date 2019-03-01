@@ -32,7 +32,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.211"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.220"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -312,7 +312,7 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
-        public static Tweener To(DOGetter<int> getter, DOSetter<int> setter, int endValue,float duration)
+        public static TweenerCore<int, int, NoOptions> To(DOGetter<int> getter, DOSetter<int> setter, int endValue,float duration)
         { return ApplyTo<int, int, NoOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -320,7 +320,7 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
-        public static Tweener To(DOGetter<uint> getter, DOSetter<uint> setter, uint endValue, float duration)
+        public static TweenerCore<uint, uint, UintOptions> To(DOGetter<uint> getter, DOSetter<uint> setter, uint endValue, float duration)
         { return ApplyTo<uint, uint, UintOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -328,7 +328,7 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
-        public static Tweener To(DOGetter<long> getter, DOSetter<long> setter, long endValue, float duration)
+        public static TweenerCore<long, long, NoOptions> To(DOGetter<long> getter, DOSetter<long> setter, long endValue, float duration)
         { return ApplyTo<long, long, NoOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -336,7 +336,7 @@ namespace DG.Tweening
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
-        public static Tweener To(DOGetter<ulong> getter, DOSetter<ulong> setter, ulong endValue, float duration)
+        public static TweenerCore<ulong, ulong, NoOptions> To(DOGetter<ulong> getter, DOSetter<ulong> setter, ulong endValue, float duration)
         { return ApplyTo<ulong, ulong, NoOptions>(getter, setter, endValue, duration); }
         /// <summary>Tweens a property or field to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -431,14 +431,19 @@ namespace DG.Tweening
             t.plugOptions.axisConstraint = axisConstraint;
             return t;
         }
+
         /// <summary>Tweens only the alpha of a Color to the given value using default plugins</summary>
         /// <param name="getter">A getter for the field or property to tween.
         /// <para>Example usage with lambda:</para><code>()=> myProperty</code></param>
         /// <param name="setter">A setter for the field or property to tween
         /// <para>Example usage with lambda:</para><code>x=> myProperty = x</code></param>
         /// <param name="endValue">The end value to reach</param><param name="duration">The tween's duration</param>
-        public static Tweener ToAlpha(DOGetter<DOColor> getter, DOSetter<DOColor> setter, float endValue, float duration)
-        { return ApplyTo<DOColor, DOColor, ColorOptions>(getter, setter, new Color(0, 0, 0, endValue), duration).SetOptions(true); }
+        public static TweenerCore<Color, Color, ColorOptions> ToAlpha(DOGetter<DOColor> getter, DOSetter<DOColor> setter, float endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = ApplyTo<DOColor, DOColor, ColorOptions>(getter, setter, new Color(0, 0, 0, endValue), duration);
+            t.SetOptions(true);
+            return t;
+        }
 
         #endregion
 

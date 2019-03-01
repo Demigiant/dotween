@@ -570,6 +570,8 @@ namespace DG.Tweening
 
         #region Tweeners-only
 
+        #region FROM
+
         /// <summary>Changes a TO tween into a FROM tween: sets the current target's position as the tween's endValue
         /// then immediately sends the target to the previously set endValue.</summary>
         public static T From<T>(this T t) where T : Tweener
@@ -592,6 +594,52 @@ namespace DG.Tweening
             else t.SetFrom(!t.isBlendable);
             return t;
         }
+
+        /// <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
+        /// and eventually sets the tween's target to that value immediately.</summary>
+        /// <param name="fromValue">Value to start from</param>
+        /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        public static TweenerCore<T1,T2,TPlugOptions> From<T1,T2,TPlugOptions>(this TweenerCore<T1,T2,TPlugOptions> t, T2 fromValue, bool setImmediately = true)
+            where TPlugOptions : struct, IPlugOptions
+        {
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
+
+            t.isFrom = true;
+            t.SetFrom(fromValue, setImmediately);
+            return t;
+        }
+
+        #region FROM Extra Overloads
+
+        /// <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
+        /// and eventually sets the tween's target to that value immediately.</summary>
+        /// <param name="fromAlphaValue">Alpha value to start from (in case of Fade tweens)</param>
+        /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        public static TweenerCore<DOColor, DOColor, ColorOptions> From(this TweenerCore<DOColor, DOColor, ColorOptions> t, float fromAlphaValue, bool setImmediately = true)
+        {
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
+
+            t.isFrom = true;
+            t.SetFrom(new Color(0,0,0,fromAlphaValue), setImmediately);
+            return t;
+        }
+
+        /// <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
+        /// and eventually sets the tween's target to that value immediately.</summary>
+        /// <param name="fromValue">Value to start from (in case of Vector tweens that act on a single coordinate or scale tweens)</param>
+        /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        public static TweenerCore<DOVector3, DOVector3, VectorOptions> From(this TweenerCore<DOVector3, DOVector3, VectorOptions> t, float fromValue, bool setImmediately = true)
+        {
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
+
+            t.isFrom = true;
+            t.SetFrom(new Vector3(fromValue, fromValue, fromValue), setImmediately);
+            return t;
+        }
+
+        #endregion
+
+        #endregion
 
         /// <summary>Sets a delayed startup for the tween.
         /// <para>Has no effect on Sequences or if the tween has already started</para></summary>

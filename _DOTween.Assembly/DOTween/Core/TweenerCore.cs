@@ -124,6 +124,17 @@ namespace DG.Tweening.Core
             hasManuallySetStartValue = true;
             return this;
         }
+        // Sets From tweens in an alternate way where you can set the start value directly
+        // (instead of setting it from the endValue).
+        // Plugins that don't support From:
+        // - Vector3ArrayPlugin
+        // - Pro > PathPlugin, SpiralPlugin
+        internal Tweener SetFrom(T2 fromValue, bool setImmediately)
+        {
+            tweenPlugin.SetFrom(this, fromValue, setImmediately);
+            hasManuallySetStartValue = true;
+            return this;
+        }
 
         // _tweenPlugin is not reset since it's useful to keep it as a reference
         internal sealed override void Reset()

@@ -39,6 +39,20 @@ namespace DG.Tweening.Plugins
             }
             t.setter(to);
         }
+        public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, Rect fromValue, bool setImmediately)
+        {
+            t.startValue = fromValue;
+            if (setImmediately) {
+                Rect to = fromValue;
+                if (t.plugOptions.snapping) {
+                    to.x = (float)Math.Round(to.x);
+                    to.y = (float)Math.Round(to.y);
+                    to.width = (float)Math.Round(to.width);
+                    to.height = (float)Math.Round(to.height);
+                }
+                t.setter(to);
+            }
+        }
 
         public override Rect ConvertToStartValue(TweenerCore<Rect, Rect, RectOptions> t, Rect value)
         {

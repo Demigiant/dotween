@@ -5,6 +5,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 #pragma warning disable 1591
 namespace DG.Tweening
@@ -18,18 +19,21 @@ namespace DG.Tweening
         /// <summary>Tweens a SpriteRenderer's color to the given value.
         /// Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this SpriteRenderer target, Color endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOColor(this SpriteRenderer target, Color endValue, float duration)
         {
-            return DOTween.To(() => target.color, x => target.color = x, endValue, duration).SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a Material's alpha color to the given value.
         /// Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOFade(this SpriteRenderer target, float endValue, float duration)
+        public static TweenerCore<Color, Color, ColorOptions> DOFade(this SpriteRenderer target, float endValue, float duration)
         {
-            return DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration)
-                .SetTarget(target);
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
         }
 
         /// <summary>Tweens a SpriteRenderer's color using the given gradient

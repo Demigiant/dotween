@@ -14,7 +14,7 @@ public class DOCompletePerformance : BrainBase
 		Debug.Log(Time.realtimeSinceStartup + " :: Create " + totTweens + " tweens on " + (tweenFloatValue ? "float" : "transform"));
 		for (int i = 0; i < totTweens; ++i) {
 			Tween t = tweenFloatValue
-				? DOTween.To(()=> floatValue, x=> floatValue = x, 2, 10)
+				? (Tween)DOTween.To(()=> floatValue, x=> floatValue = x, 2, 10)
 				: target.DOMoveX(2, 10);
 			if (!byTarget) t.SetId("myId");
 			else if (tweenFloatValue) t.SetTarget(target);

@@ -29,6 +29,7 @@ namespace DG.Tweening.Plugins
         }
 
         public override void SetFrom(TweenerCore<Vector3, Path, PathOptions> t, bool isRelative) {}
+        public override void SetFrom(TweenerCore<Vector3, Path, PathOptions> t, Path fromValue, bool setImmediately) {}
 
         public static ABSTweenPlugin<Vector3, Path, PathOptions> Get()
         {
