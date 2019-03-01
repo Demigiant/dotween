@@ -228,7 +228,7 @@
         </member>
         <member name="M:DG.Tweening.Core.Utils.GetLooseScriptType(System.String)">
             <summary>
-            Looks for the type withing all possible project assembly names
+            Looks for the type within all possible project assembly names
             </summary>
         </member>
         <member name="T:DG.Tweening.Color2">
