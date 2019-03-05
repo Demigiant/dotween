@@ -32,6 +32,9 @@ namespace DG.Tweening.Core
         public bool defaultAutoKill = true;
         public LoopType defaultLoopType = LoopType.Restart;
 
+        // Pro-only - accessed via DOTweenAnimationInspector
+        public bool showPreviewPanel = true;
+
         // Editor-only
         public enum SettingsLocation
         {

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace DG.DOTweenEditor.UI
 {
-    class DOTweenUtilityWindow : EditorWindow
+    public class DOTweenUtilityWindow : EditorWindow
     {
         [MenuItem("Tools/Demigiant/" + _Title)]
         static void ShowWindow() { Open(); }

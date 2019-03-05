@@ -39,6 +39,7 @@ zzTestBuilds
 UnityTests.Unity5BETA
 UnityTests.Unity5 - LastVersionBeforeModules
 ModulesTest.Unity2018
+packageManagerTests
 biz
 screenshots
 zzTemp
