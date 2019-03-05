@@ -25,6 +25,8 @@ namespace DG.DOTweenEditor
         public static string dotweenDir { get { if (string.IsNullOrEmpty(_dotweenDir)) StoreDOTweenDirs(); return _dotweenDir; } }
         // With final slash (system based)
         public static string dotweenProDir { get { if (string.IsNullOrEmpty(_dotweenProDir)) StoreDOTweenDirs(); return _dotweenProDir; } }
+        // With final slash (system based)
+        public static string dotweenModulesDir { get { if (string.IsNullOrEmpty(_dotweenModulesDir)) StoreDOTweenDirs(); return _dotweenModulesDir; } }
         public static bool isOSXEditor { get; private set; }
         public static string pathSlash { get; private set; } // for full paths
         public static string pathSlashToReplace { get; private set; } // for full paths
@@ -37,6 +39,7 @@ namespace DG.DOTweenEditor
         static string _demigiantDir; // with final slash
         static string _dotweenDir; // with final slash
         static string _dotweenProDir; // with final slash
+        static string _dotweenModulesDir; // with final slash
 
         static EditorUtils()
         {
@@ -372,6 +375,7 @@ namespace DG.DOTweenEditor
 
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);
+            _dotweenModulesDir = _dotweenDir + "Modules" + pathSlash;
             if (_demigiantDir != null) _demigiantDir = _demigiantDir.Replace(pathSlashToReplace, pathSlash);
         }
 

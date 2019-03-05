@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelayedCall.cs" />
+    <Compile Include="ASMDEFManager.cs" />
     <Compile Include="DOTweenEditorPreview.cs" />
     <Compile Include="MenuItems.cs" />
     <Compile Include="UI\EditorGUIUtils.cs" />

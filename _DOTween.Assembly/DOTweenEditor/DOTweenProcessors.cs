@@ -62,37 +62,23 @@ namespace DG.DOTweenEditor
 
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;
-            if (!dotweenImported) return;
+            if (dotweenImported) {
+                // Reapply modules
+                EditorUtils.DelayedCall(0.1f, ()=> {
+//                    Debug.Log("Apply Modules Settings after reimport");
+                    DOTweenUtilityWindowModules.ApplyModulesSettings();
+                });
+            }
 
-            // Reapply modules
-            EditorUtils.DelayedCall(0.1f, ()=> {
-//                Debug.Log("Apply Modules Settings after reimport");
-                DOTweenUtilityWindowModules.ApplyModulesSettings();
-            });
-//            DOTweenUtilityWindowModules.ApplyModulesSettings();
-
-
-
-//            // Delete old DOTween files
-//            EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
-//            // Delete old DemiLib configuration
-//            EditorUtils.DeleteOldDemiLibCore();
-//            // Remove old legacy defines
-//            DOTweenDefines.RemoveAllLegacyDefines();
-//            // Reapply modules
-//            DOTweenUtilityWindowModules.ApplyModulesSettings();
-//            //
-//            bool differentCoreVersion = EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.Id) != Application.dataPath + DOTween.Version;
-//            bool differentProVersion = EditorUtils.hasPro && EditorPrefs.GetString(Application.dataPath + DOTweenUtilityWindow.IdPro) != Application.dataPath + EditorUtils.proVersion;
-//            bool setupRequired = differentCoreVersion || differentProVersion;
-//            if (!setupRequired) return;
-//
-//            _setupDialogRequested = true;
-//            EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.Id, Application.dataPath + DOTween.Version);
-//            if (EditorUtils.hasPro) {
-//                EditorPrefs.SetString(Application.dataPath + DOTweenUtilityWindow.IdPro, Application.dataPath + EditorUtils.proVersion);
-//            }
-//            DOTweenUtilityWindow.Open();
+            string[] dotweenProEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
+            bool dotweenProImported = dotweenProEntries.Length > 0;
+            if (dotweenProImported) {
+                // Refresh ASMDEF
+                EditorUtils.DelayedCall(0.1f, ()=> {
+//                    Debug.Log("Refresh ASMDEF after DOTween Pro reimport");
+                    ASMDEFManager.RefreshExistingASMDEFFiles();
+                });
+            }
         }
     }
 }

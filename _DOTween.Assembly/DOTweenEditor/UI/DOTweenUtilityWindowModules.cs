@@ -199,6 +199,8 @@ namespace DG.DOTweenEditor.UI
                 strb.Remove(strb.Length - 3, 3);
                 Debug.Log(strb.ToString());
             }
+
+            ASMDEFManager.RefreshExistingASMDEFFiles();
         }
 
         static void Apply_AppendLog(StringBuilder strb, bool enabled, string id)

@@ -159,7 +159,7 @@ namespace DG.DOTweenEditor.UI
             GUI.color = Color.green;
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup)) {
+            if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
                 DOTweenUtilityWindowModules.ApplyModulesSettings();
@@ -171,14 +171,33 @@ namespace DG.DOTweenEditor.UI
                 return;
             }
             GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
             GUI.color = Color.white;
+            GUILayout.Space(4);
+
+            // ASMDEF
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
+            if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+                if (ASMDEFManager.hasModulesASMDEF) {
+                    if (EditorUtility.DisplayDialog("Remove ASMDEF",
+                        string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" and \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                      " (if you have DOTween Pro) files."),
+                        "Ok", "Cancel"
+                    )) ASMDEFManager.RemoveAllASMDEF();
+                } else {
+                    if (EditorUtility.DisplayDialog("Create ASMDEF",
+                        string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" and \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                      " (if you have DOTween Pro) files."),
+                        "Ok", "Cancel"
+                    )) ASMDEFManager.CreateAllASMDEF();
+                }
+            }
+            GUI.color = Color.white;
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(8);
-
-//            EditorGUILayout.HelpBox(
-//                "NOTE: if you get \"Requested build target group (N) doesn't exist\" or [CS0618] errors during the setup don't worry: it's ok and allows the setup to work on all possible Unity versions",
-//                MessageType.Info
-//            );
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");

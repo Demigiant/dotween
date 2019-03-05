@@ -148,7 +148,7 @@ namespace DG.DOTweenEditor.UI
                 btBigStyle.padding = new RectOffset(0, 0, 10, 10);
 
                 btSetup = new GUIStyle(btBigStyle);
-                btSetup.padding = new RectOffset(36, 36, 6, 6);
+                btSetup.padding = new RectOffset(10, 10, 6, 6);
                 btSetup.wordWrap = true;
                 btSetup.richText = true;
 
