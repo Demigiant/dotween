@@ -12,23 +12,13 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
     public Transform target;
-    Tween myTween;
-    void Start()
+    public Transform rotTarget;
+    public Ease easeType = Ease.Linear;
+    
+    IEnumerator Start()
     {
-        myTween = target.DOMove(new Vector3(5, 5, 5), 25).SetAutoKill(false).SetUpdate(true);
-    }
+        yield return new WaitForSeconds(1);
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.J))
-        {
-            DOTween.timeScale -= 0.1f;
-        }
-        if (Input.GetKey(KeyCode.K))
-        {
-            DOTween.timeScale += 0.1f;
-        }
-
-        Debug.Log(DOTween.timeScale);
+        target.DORotateQuaternion(rotTarget.rotation, 2).SetEase(easeType);
     }
 }

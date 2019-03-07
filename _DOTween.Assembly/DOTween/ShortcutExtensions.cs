@@ -576,9 +576,9 @@ namespace DG.Tweening
         /// (neither for itself nor if placed inside a LoopType.Incremental Sequence)</para>
         /// </summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Quaternion, Quaternion, NoOptions> DORotateQuaternion(this Transform target, Quaternion endValue, float duration)
+        public static TweenerCore<DOQuaternion, DOQuaternion, NoOptions> DORotateQuaternion(this Transform target, Quaternion endValue, float duration)
         {
-            TweenerCore<Quaternion, Quaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.rotation, x => target.rotation = x, endValue, duration);
+            TweenerCore<DOQuaternion, DOQuaternion, NoOptions> t = DOTween.To(PureQuaternionPlugin.Plug(), () => target.rotation, x => target.rotation = x, endValue, duration);
             t.SetTarget(target);
             return t;
         }

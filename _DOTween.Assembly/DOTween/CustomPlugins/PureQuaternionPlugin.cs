@@ -66,10 +66,11 @@ namespace DG.Tweening.CustomPlugins
         /// <summary>INTERNAL: do not use</summary>
         public override void SetChangeValue(TweenerCore<Quaternion, Quaternion, NoOptions> t)
         {
-            t.changeValue.x = t.endValue.x - t.startValue.x;
-            t.changeValue.y = t.endValue.y - t.startValue.y;
-            t.changeValue.z = t.endValue.z - t.startValue.z;
-            t.changeValue.w = t.endValue.w - t.startValue.w;
+//            t.changeValue.x = t.endValue.x - t.startValue.x;
+//            t.changeValue.y = t.endValue.y - t.startValue.y;
+//            t.changeValue.z = t.endValue.z - t.startValue.z;
+//            t.changeValue.w = t.endValue.w - t.startValue.w;
+            t.changeValue = t.endValue; // Special case where changeValue is equal to endValue so it can be applied better
         }
 
         /// <summary>INTERNAL: do not use</summary>
@@ -87,11 +88,12 @@ namespace DG.Tweening.CustomPlugins
 //                    * (t.sequenceParent.isComplete ? t.sequenceParent.completedLoops - 1 : t.sequenceParent.completedLoops);
 //            }
             float easeVal = EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
-            startValue.x += changeValue.x * easeVal;
-            startValue.y += changeValue.y * easeVal;
-            startValue.z += changeValue.z * easeVal;
-            startValue.w += changeValue.w * easeVal;
-            setter(startValue);
+            setter(Quaternion.Slerp(startValue, changeValue, easeVal));
+//            startValue.x += changeValue.x * easeVal;
+//            startValue.y += changeValue.y * easeVal;
+//            startValue.z += changeValue.z * easeVal;
+//            startValue.w += changeValue.w * easeVal;
+//            setter(startValue);
         }
     }
 }
