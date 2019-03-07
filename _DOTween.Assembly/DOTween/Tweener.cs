@@ -158,7 +158,7 @@ namespace DG.Tweening
         }
 
         // CALLED BY TweenerCore
-        internal static Tweener DoChangeStartValue<T1, T2, TPlugOptions>(
+        internal static TweenerCore<T1, T2, TPlugOptions> DoChangeStartValue<T1, T2, TPlugOptions>(
             TweenerCore<T1, T2, TPlugOptions> t, T2 newStartValue, float newDuration
         ) where TPlugOptions : struct, IPlugOptions
         {
@@ -184,7 +184,7 @@ namespace DG.Tweening
         }
 
         // CALLED BY TweenerCore
-        internal static Tweener DoChangeEndValue<T1, T2, TPlugOptions>(
+        internal static TweenerCore<T1, T2, TPlugOptions> DoChangeEndValue<T1, T2, TPlugOptions>(
             TweenerCore<T1, T2, TPlugOptions> t, T2 newEndValue, float newDuration, bool snapStartValue
         ) where TPlugOptions : struct, IPlugOptions
         {
@@ -221,7 +221,7 @@ namespace DG.Tweening
             return t;
         }
 
-        internal static Tweener DoChangeValues<T1, T2, TPlugOptions>(
+        internal static TweenerCore<T1, T2, TPlugOptions> DoChangeValues<T1, T2, TPlugOptions>(
             TweenerCore<T1, T2, TPlugOptions> t, T2 newStartValue, T2 newEndValue, float newDuration
         ) where TPlugOptions : struct, IPlugOptions
         {

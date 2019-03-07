@@ -231,6 +231,32 @@
             Looks for the type within all possible project assembly names
             </summary>
         </member>
+        <member name="M:DG.Tweening.Core.TweenerCore`3.ChangeStartValue(`1,System.Single)">
+            <summary>NO-GC METHOD: changes the start value of a tween and rewinds it (without pausing it).
+            Has no effect with tweens that are inside Sequences</summary>
+            <param name="newStartValue">The new start value</param>
+            <param name="newDuration">If bigger than 0 applies it as the new tween duration</param>
+        </member>
+        <member name="M:DG.Tweening.Core.TweenerCore`3.ChangeEndValue(`1,System.Boolean)">
+            <summary>NO-GC METHOD: changes the end value of a tween and rewinds it (without pausing it).
+            Has no effect with tweens that are inside Sequences</summary>
+            <param name="newEndValue">The new end value</param>
+            <param name="snapStartValue">If TRUE the start value will become the current target's value, otherwise it will stay the same</param>
+        </member>
+        <member name="M:DG.Tweening.Core.TweenerCore`3.ChangeEndValue(`1,System.Single,System.Boolean)">
+            <summary>NO-GC METHOD: changes the end value of a tween and rewinds it (without pausing it).
+            Has no effect with tweens that are inside Sequences</summary>
+            <param name="newEndValue">The new end value</param>
+            <param name="newDuration">If bigger than 0 applies it as the new tween duration</param>
+            <param name="snapStartValue">If TRUE the start value will become the current target's value, otherwise it will stay the same</param>
+        </member>
+        <member name="M:DG.Tweening.Core.TweenerCore`3.ChangeValues(`1,`1,System.Single)">
+            <summary>NO-GC METHOD: changes the start and end value of a tween and rewinds it (without pausing it).
+            Has no effect with tweens that are inside Sequences</summary>
+            <param name="newStartValue">The new start value</param>
+            <param name="newEndValue">The new end value</param>
+            <param name="newDuration">If bigger than 0 applies it as the new tween duration</param>
+        </member>
         <member name="T:DG.Tweening.Color2">
             <summary>
             Struct that stores two colors (used for LineRenderer tweens)
