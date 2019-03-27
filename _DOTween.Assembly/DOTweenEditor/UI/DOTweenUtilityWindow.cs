@@ -182,14 +182,16 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
                 if (ASMDEFManager.hasModulesASMDEF) {
                     if (EditorUtility.DisplayDialog("Remove ASMDEF",
-                        string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" and \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                      " (if you have DOTween Pro) files."),
+                        string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
+                                      " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                      " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
                         "Ok", "Cancel"
                     )) ASMDEFManager.RemoveAllASMDEF();
                 } else {
                     if (EditorUtility.DisplayDialog("Create ASMDEF",
-                        string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" and \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                      " (if you have DOTween Pro) files."),
+                        string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
+                                      " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                      " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
                         "Ok", "Cancel"
                     )) ASMDEFManager.CreateAllASMDEF();
                 }

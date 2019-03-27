@@ -11,6 +11,16 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
+    public enum TestEnum {
+        A,
+        B,
+        C,
+        D,
+        E,
+        z = 100
+    }
+
+    public TestEnum testEnum;
     public Transform target;
     public Transform rotTarget;
     public Ease easeType = Ease.Linear;
