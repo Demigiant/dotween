@@ -101,13 +101,17 @@ namespace DG.DOTweenEditor
         // Deletes DOTweenUpgradeManager files
         public static void DeleteDOTweenUpgradeManagerFiles()
         {
-            string adbDOTweenDir = FullPathToADBPath(dotweenDir);
+            Type t = Type.GetType("DG.DOTweenUpgradeManager.Autorun, DOTweenUpgradeManager");
+            if (t == null) return;
+
+            string filePathNoExt = t.Assembly.Location;
+            filePathNoExt = filePathNoExt.Substring(0, filePathNoExt.LastIndexOf('.'));
             AssetDatabase.StartAssetEditing();
             DeleteAssetsIfExist(new[] {
-                adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll",
-                adbDOTweenDir + "Editor/DOTweenUpgradeManager.xml",
-                adbDOTweenDir + "Editor/DOTweenUpgradeManager.pdb",
-                adbDOTweenDir + "Editor/DOTweenUpgradeManager.dll.mdb"
+                FullPathToADBPath(filePathNoExt + ".dll"),
+                FullPathToADBPath(filePathNoExt + ".dll.mdb"),
+                FullPathToADBPath(filePathNoExt + ".pdb"),
+                FullPathToADBPath(filePathNoExt + ".xml")
             });
             AssetDatabase.StopAssetEditing();
         }
