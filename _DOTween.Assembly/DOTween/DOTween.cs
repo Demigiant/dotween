@@ -4,6 +4,8 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+
+using System;
 #if COMPATIBLE
 using DOVector2 = DG.Tweening.Core.Surrogates.Vector2Wrapper;
 using DOVector3 = DG.Tweening.Core.Surrogates.Vector3Wrapper;
@@ -32,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.245"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.250"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -71,6 +73,12 @@ namespace DG.Tweening
             set { _logBehaviour = value; Debugger.SetLogPriority(_logBehaviour); }
         }
         static LogBehaviour _logBehaviour = LogBehaviour.ErrorsOnly;
+        /// <summary>Used to intercept DOTween's logs. If this method isn't NULL, DOTween will call it before writing a log via Unity's own Debug log methods.<para/>
+        /// Return TRUE if you want DOTween to proceed with the log, FALSE otherwise.<para/>
+        /// This method must return a <code>bool</code> and accept two parameters:<para/>
+        /// - <code>LogType</code>: the type of Unity log that DOTween is trying to log<para/>
+        /// - <code>object</code>: the log message that DOTween wants to log</summary>
+        public static Func<LogType, object, bool> onWillLog;
         /// <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
         /// Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         public static bool drawGizmos = true;

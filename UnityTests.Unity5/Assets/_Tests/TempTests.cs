@@ -11,24 +11,20 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public enum TestEnum {
-        A,
-        B,
-        C,
-        D,
-        E,
-        z = 100
-    }
-
-    public TestEnum testEnum;
+    public bool useFrom = true;
     public Transform target;
-    public Transform rotTarget;
-    public Ease easeType = Ease.Linear;
     
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(1);
+        if (!useFrom) {
+            target.DOMoveX(2, 2);
+        } else {
+            Vector3 currentPosition = target.position;
+            target.DOMoveX(2, 2).From().SetAutoKill(false);//.OnRewind(() => OnResetTransformFrom(transformToAnimate,currentPosition));
+        }
 
-        target.DORotateQuaternion(rotTarget.rotation, 2).SetEase(easeType);
+        yield return new WaitForSeconds(3f);
+
+        target.DORewind();
     }
 }

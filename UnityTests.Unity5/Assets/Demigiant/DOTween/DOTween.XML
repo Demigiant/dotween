@@ -360,6 +360,13 @@
             <summary>DOTween's log behaviour.
             <para>Default: LogBehaviour.ErrorsOnly</para></summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.onWillLog">
+            <summary>Used to intercept DOTween's logs. If this method isn't NULL, DOTween will call it before writing a log via Unity's own Debug log methods.<para/>
+            Return TRUE if you want DOTween to proceed with the log, FALSE otherwise.<para/>
+            This method must return a <code>bool</code> and accept two parameters:<para/>
+            - <code>LogType</code>: the type of Unity log that DOTween is trying to log<para/>
+            - <code>object</code>: the log message that DOTween wants to log</summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.drawGizmos">
             <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
             Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>

@@ -36,6 +36,7 @@ zzTestBuilds
 *.pdb
 *.DotSettings
 
+UnityTests.Unity2019
 UnityTests.Unity5BETA
 UnityTests.Unity5 - LastVersionBeforeModules
 ModulesTest.Unity2018

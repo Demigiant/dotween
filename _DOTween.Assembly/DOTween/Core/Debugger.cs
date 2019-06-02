@@ -21,20 +21,28 @@ namespace DG.Tweening.Core
 
         public static void Log(object message)
         {
-            Debug.Log(_LogPrefix + message);
+            message = _LogPrefix + message;
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Log, message)) return;
+            Debug.Log(message);
         }
         public static void LogWarning(object message)
         {
-            Debug.LogWarning(_LogPrefix + message);
+            message = _LogPrefix + message;
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Warning, message)) return;
+            Debug.LogWarning(message);
         }
         public static void LogError(object message)
         {
-            Debug.LogError(_LogPrefix + message);
+            message = _LogPrefix + message;
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Error, message)) return;
+            Debug.LogError(message);
         }
 
         public static void LogReport(object message)
         {
-            Debug.Log(string.Format("<color=#00B500FF>{0} REPORT ► {1}</color>", _LogPrefix, message));
+            message = string.Format("<color=#00B500FF>{0} REPORT ► {1}</color>", _LogPrefix, message);
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Log, message)) return;
+            Debug.Log(message);
         }
 
         public static void LogInvalidTween(Tween t)
