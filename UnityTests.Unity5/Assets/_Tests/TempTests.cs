@@ -11,20 +11,16 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public bool useFrom = true;
     public Transform target;
     
     IEnumerator Start()
     {
-        if (!useFrom) {
-            target.DOMoveX(2, 2);
-        } else {
-            Vector3 currentPosition = target.position;
-            target.DOMoveX(2, 2).From().SetAutoKill(false);//.OnRewind(() => OnResetTransformFrom(transformToAnimate,currentPosition));
-        }
+        Sequence s = DOTween.Sequence().SetAutoKill(false)
+            .Join(target.DOMoveX(2, 1))
+            .Append(target.DOMoveY(2, 1));
+        yield return s.WaitForCompletion(true);
 
-        yield return new WaitForSeconds(3f);
-
-        target.DORewind();
+        s.PlayBackwards();
+        s.PlayForward();
     }
 }

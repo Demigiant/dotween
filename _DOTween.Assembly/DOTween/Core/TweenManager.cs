@@ -738,6 +738,9 @@ namespace DG.Tweening.Core
             if (t.completedLoops == 0 && t.position <= 0) {
                 // Already rewinded, manage OnRewind callback
                 ManageOnRewindCallbackWhenAlreadyRewinded(t, true);
+                t.isBackwards = true;
+                t.isPlaying = false;
+                return false;
             }
             if (!t.isBackwards) {
                 t.isBackwards = true;
@@ -749,6 +752,11 @@ namespace DG.Tweening.Core
 
         internal static bool PlayForward(Tween t)
         {
+            if (t.isComplete) {
+                t.isBackwards = false;
+                t.isPlaying = false;
+                return false;
+            }
             if (t.isBackwards) {
                 t.isBackwards = false;
                 Play(t);
