@@ -15,7 +15,8 @@ namespace DG.Tweening.Core
     public static class Debugger
     {
         // 0: errors only - 1: default - 2: verbose
-        public static int logPriority;
+        public static int logPriority { get { if (!DOTween.initialized) DOTween.Init(); return _logPriority; } }
+        public static int _logPriority;
 
         const string _LogPrefix = "<color=#0099bc><b>DOTWEEN ► </b></color>";
 
@@ -93,13 +94,13 @@ namespace DG.Tweening.Core
         {
             switch (logBehaviour) {
             case LogBehaviour.Default:
-                logPriority = 1;
+                _logPriority = 1;
                 break;
             case LogBehaviour.Verbose:
-                logPriority = 2;
+                _logPriority = 2;
                 break;
             default:
-                logPriority = 0;
+                _logPriority = 0;
                 break;
             }
         }
