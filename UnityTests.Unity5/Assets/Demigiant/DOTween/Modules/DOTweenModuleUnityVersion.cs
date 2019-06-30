@@ -40,6 +40,7 @@ namespace DG.Tweening
                     : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
+            s.SetTarget(target);
             return s;
         }
         /// <summary>Tweens a Material's named color property using the given gradient
@@ -64,6 +65,7 @@ namespace DG.Tweening
                     : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, property, colorDuration).SetEase(Ease.Linear));
             }
+            s.SetTarget(target);
             return s;
         }
 
