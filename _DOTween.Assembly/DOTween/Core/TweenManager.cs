@@ -713,6 +713,7 @@ namespace DG.Tweening.Core
         {
             if (t.isPlaying) {
                 t.isPlaying = false;
+                t.isPaused = true;
                 if (t.onPause != null) Tween.OnTweenCallback(t.onPause);
                 return true;
             }
@@ -724,6 +725,7 @@ namespace DG.Tweening.Core
         {
             if (!t.isPlaying && (!t.isBackwards && !t.isComplete || t.isBackwards && (t.completedLoops > 0 || t.position > 0))) {
                 t.isPlaying = true;
+                t.isPaused = false;
                 if (t.playedOnce && t.delayComplete && t.onPlay != null) {
                     // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
                     Tween.OnTweenCallback(t.onPlay);
@@ -740,6 +742,7 @@ namespace DG.Tweening.Core
                 ManageOnRewindCallbackWhenAlreadyRewinded(t, true);
                 t.isBackwards = true;
                 t.isPlaying = false;
+                t.isPaused = false;
                 return false;
             }
             if (!t.isBackwards) {
@@ -755,6 +758,7 @@ namespace DG.Tweening.Core
             if (t.isComplete) {
                 t.isBackwards = false;
                 t.isPlaying = false;
+                t.isPaused = false;
                 return false;
             }
             if (t.isBackwards) {
@@ -772,6 +776,7 @@ namespace DG.Tweening.Core
             if (changeDelayTo >= 0) t.delay = changeDelayTo;
             Rewind(t, includeDelay);
             t.isPlaying = true;
+            t.isPaused = false;
             if (wasPaused && t.playedOnce && t.delayComplete && t.onPlay != null) {
                 // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
                 Tween.OnTweenCallback(t.onPlay);
@@ -783,6 +788,7 @@ namespace DG.Tweening.Core
         {
             bool wasPlaying = t.isPlaying; // Manage onPause from this method because DoGoto won't detect it
             t.isPlaying = false;
+            t.isPaused = false;
             bool rewinded = false;
             if (t.delay > 0) {
                 if (includeDelay) {

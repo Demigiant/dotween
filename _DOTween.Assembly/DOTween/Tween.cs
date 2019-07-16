@@ -110,6 +110,8 @@ namespace DG.Tweening
         
         internal int miscInt = -1; // Used by some plugins to store data (currently only by Paths to store current waypoint index)
 
+        internal bool isPaused;
+
         #region Abstracts + Overrideables
 
         // Doesn't reset active state, activeId and despawned, since those are only touched by TweenManager
@@ -139,7 +141,7 @@ namespace DG.Tweening
             specialStartupMode = SpecialStartupMode.None;
             creationLocked = startupDone = playedOnce = false;
             position = fullDuration = completedLoops = 0;
-            isPlaying = isComplete = false;
+            isPlaying = isPaused = isComplete = false;
             elapsedDelay = 0;
             delayComplete = true;
 

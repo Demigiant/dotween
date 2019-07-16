@@ -308,8 +308,8 @@ namespace DG.Tweening
                     if (sequentiable.tweenType == TweenType.Callback) {
                         if (updateMode == UpdateMode.Update) {
 //                            Debug.Log("<color=#FFEC03>FORWARD Callback > " + s.id + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + "</color>");
-                            bool fire = !s.isBackwards && !useInverse && !prevPosIsInverse
-                                || s.isBackwards && useInverse && !prevPosIsInverse;
+                            bool fire = ((!s.isBackwards && !useInverse && !prevPosIsInverse)
+                                || (s.isBackwards && useInverse && !prevPosIsInverse)) && !s.isPaused;
                             if (fire) OnTweenCallback(sequentiable.onStart);
                         }
                     } else {
