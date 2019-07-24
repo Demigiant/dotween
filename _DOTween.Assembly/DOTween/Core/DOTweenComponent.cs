@@ -129,6 +129,32 @@ namespace DG.Tweening.Core
                 string s = "Max overall simultaneous active Tweeners/Sequences: " + DOTween.maxActiveTweenersReached + "/" + DOTween.maxActiveSequencesReached;
                 Debugger.LogReport(s);
             }
+
+            if (DOTween.useSafeMode) {
+                int totSafeModeErrors = DOTween.safeModeReport.GetTotErrors();
+                if (totSafeModeErrors > 0) {
+                    string s = string.Format("DOTween's safe mode captured {0} errors." +
+                                             " This is usually ok (it's what safe mode is there for) but if your game is encountering issues" +
+                                             " you should set Log Behaviour to Default in DOTween Utility Panel in order to get detailed" +
+                                             " warnings when an error is captured (consider that these errors are always on the user side).",
+                        totSafeModeErrors
+                    );
+                    if (DOTween.safeModeReport.totMissingTargetOrFieldErrors > 0) {
+                        s += "\n- " + DOTween.safeModeReport.totMissingTargetOrFieldErrors + " missing target or field errors";
+                    }
+                    if (DOTween.safeModeReport.totStartupErrors > 0) {
+                        s += "\n- " + DOTween.safeModeReport.totStartupErrors + " startup errors";
+                    }
+                    if (DOTween.safeModeReport.totCallbackErrors > 0) {
+                        s += "\n- " + DOTween.safeModeReport.totCallbackErrors + " errors inside callbacks (these might be important)";
+                    }
+                    if (DOTween.safeModeReport.totUnsetErrors > 0) {
+                        s += "\n- " + DOTween.safeModeReport.totUnsetErrors + " undetermined errors (these might be important)";
+                    }
+                    Debugger.LogSafeModeReport(s);
+                }
+            }
+
 //            DOTween.initialized = false;
 //            DOTween.instance = null;
             if (DOTween.instance == this) DOTween.instance = null;

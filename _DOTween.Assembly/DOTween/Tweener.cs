@@ -139,6 +139,7 @@ namespace DG.Tweening
                                 "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
                             ));
                         }
+                        DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.StartupFailure);
                         return false; // Target/field doesn't exist: kill tween
                     }
                 } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
@@ -203,6 +204,7 @@ namespace DG.Tweening
                         } catch {
                             // Target/field doesn't exist: kill tween
                             TweenManager.Despawn(t);
+                            DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.TargetOrFieldMissing);
                             return null;
                         }
                     } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());

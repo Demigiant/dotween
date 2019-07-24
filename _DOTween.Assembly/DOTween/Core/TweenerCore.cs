@@ -240,6 +240,7 @@ namespace DG.Tweening.Core
                     tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
                 } catch {
                     // Target/field doesn't exist anymore: kill tween
+                    DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.TargetOrFieldMissing);
                     return true;
                 }
             } else {

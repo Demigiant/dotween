@@ -89,6 +89,7 @@
     <Compile Include="Core\Enums\UpdateMode.cs" />
     <Compile Include="Core\Extensions.cs" />
     <Compile Include="Core\DOTweenExternalCommand.cs" />
+    <Compile Include="Core\SafeModeReport.cs" />
     <Compile Include="Core\SequenceCallback.cs" />
     <Compile Include="Core\Surrogates\ColorWrapper.cs" />
     <Compile Include="Core\Surrogates\QuaternionWrapper.cs" />

@@ -41,9 +41,16 @@ namespace DG.Tweening.Core
 
         public static void LogReport(object message)
         {
-            message = string.Format("<color=#00B500FF>{0} REPORT ► {1}</color>", _LogPrefix, message);
+            message = string.Format("<color=#00B500FF>{0} REPORT ►</color> {1}", _LogPrefix, message);
             if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Log, message)) return;
             Debug.Log(message);
+        }
+
+        public static void LogSafeModeReport(object message)
+        {
+            message = string.Format("<color=#ff7337>{0} SAFE MODE ►</color> {1}", _LogPrefix, message);
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Log, message)) return;
+            Debug.LogWarning(message);
         }
 
         public static void LogInvalidTween(Tween t)

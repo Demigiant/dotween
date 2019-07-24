@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.260"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.265"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -118,6 +118,7 @@ namespace DG.Tweening
         public static DOTweenComponent instance;
 
         internal static int maxActiveTweenersReached, maxActiveSequencesReached; // Controlled by DOTweenInspector if showUnityEditorReport is active
+        internal static SafeModeReport safeModeReport; // Used to store how many safe mode errors are captured in the editor
         internal static readonly List<TweenCallback> GizmosDelegates = new List<TweenCallback>(); // Can be used by other classes to call internal gizmo draw methods
         internal static bool initialized; // Can be set to false by DOTweenComponent OnDestroy
         internal static bool isQuitting; // Set by DOTweenComponent when the application is quitting
