@@ -245,12 +245,14 @@ namespace DG.Tweening
         // Returns TRUE if the tween needs to be killed
         static bool ApplyInternalCycle(Sequence s, float fromPos, float toPos, UpdateMode updateMode, bool useInverse, bool prevPosIsInverse, bool multiCycleStep = false)
         {
+            bool wasPlaying = s.isPlaying; // Used to interrupt for loops in case a callback pauses a running Sequence
             bool isBackwardsUpdate = toPos < fromPos;
 //            Debug.Log(Time.frameCount + " " + s.id + " " + (multiCycleStep ? "<color=#FFEC03>Multicycle</color> > " : "Cycle > ") + s.position + "/" + s.duration + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + " - UpdateMode: " + updateMode + ", isPlaying: " + s.isPlaying + ", completedLoops: " + s.completedLoops);
             if (isBackwardsUpdate) {
                 int len = s._sequencedObjs.Count - 1;
                 for (int i = len; i > -1; --i) {
                     if (!s.active) return true; // Killed by some internal callback
+                    if (!s.isPlaying && wasPlaying) return false; // Paused by internal callback
                     ABSSequentiable sequentiable = s._sequencedObjs[i];
                     if (sequentiable.sequencedEndPosition < toPos || sequentiable.sequencedPosition > fromPos) continue;
                     if (sequentiable.tweenType == TweenType.Callback) {
@@ -296,6 +298,7 @@ namespace DG.Tweening
                 int len = s._sequencedObjs.Count;
                 for (int i = 0; i < len; ++i) {
                     if (!s.active) return true; // Killed by some internal callback
+                    if (!s.isPlaying && wasPlaying) return false; // Paused by internal callback
                     ABSSequentiable sequentiable = s._sequencedObjs[i];
 //                    if (sequentiable.sequencedPosition > toPos || sequentiable.sequencedEndPosition < fromPos) continue;
                     // Fix rare case with high FPS when a tween/callback might happen in same exact time as it's set
