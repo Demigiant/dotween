@@ -157,7 +157,9 @@ namespace DG.Tweening.Core
 
 //            DOTween.initialized = false;
 //            DOTween.instance = null;
+
             if (DOTween.instance == this) DOTween.instance = null;
+            DOTween.Clear(true);
         }
 
         // Detract/reapply pause time from/to unscaled time
@@ -170,10 +172,12 @@ namespace DG.Tweening.Core
             }
         }
 
-        void OnApplicationQuit()
-        {
-            DOTween.isQuitting = true;
-        }
+        // Commented this out because it interferes with Unity 2019.3 "no domain reload" experimental playmode
+        // (now I clear DOTween completely when the DOTween component is destroyed which allows this to be commented out)
+//        void OnApplicationQuit()
+//        {
+//            DOTween.isQuitting = true;
+//        }
 
         #endregion
 

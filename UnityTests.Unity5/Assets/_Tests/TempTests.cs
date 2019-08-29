@@ -12,18 +12,13 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
     public Transform target;
+    public float y = 1;
+    public AnimationCurve ease;
     
     IEnumerator Start()
     {
         yield return new WaitForSeconds(0.8f);
 
-        Sequence s = DOTween.Sequence();
-//        s.Append(target.DOMoveX(2, 1));
-        s.AppendCallback(() => {
-                Debug.Log("Gonna pause here");
-                s.Pause();
-            })
-            .AppendCallback(() => Debug.Log("Will move Y"))
-            .Append(target.DOMoveY(2, 1));
+        target.DOMoveY(y, 2).SetEase(ease);
     }
 }

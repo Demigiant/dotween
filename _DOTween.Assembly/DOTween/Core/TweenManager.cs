@@ -414,7 +414,7 @@ namespace DG.Tweening.Core
                 if (t == null || t.updateType != updateType) continue; // Wrong updateType or was added to a Sequence (thus removed from active list) while inside current updateLoop
                 if (_totTweenLinks > 0) EvaluateTweenLink(t); // TweenLinks
                 if (!t.active) {
-                    // Manually killed by another tween's callback
+                    // Manually killed by another tween's callback or deactivated by the TweenLink evaluation
                     willKill = true;
                     MarkForKilling(t);
                     continue;
