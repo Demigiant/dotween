@@ -199,7 +199,15 @@ namespace DG.DOTweenEditor.UI
             GUI.color = Color.white;
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            GUILayout.Space(8);
+//            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.Label(
+                "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
+                " from other ASMDEFs/Libraries instead of loose scripts," +
+                " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>.",
+                EditorGUIUtils.wordWrapRichTextLabelStyle
+            );
+//            GUILayout.EndVertical();
+            GUILayout.Space(3);
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");
@@ -213,7 +221,7 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button("Changelog", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php");
             if (GUILayout.Button("Check Updates", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
             GUILayout.EndHorizontal();
-            GUILayout.Space(14);
+            GUILayout.Space(4);
             if (GUILayout.Button(_footerImg, EditorGUIUtils.btImgStyle)) Application.OpenURL("http://www.demigiant.com/");
         }
 
