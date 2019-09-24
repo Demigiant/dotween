@@ -16,7 +16,7 @@ namespace DG.DOTweenEditor.UI
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(370,510);
+        static readonly Vector2 _WinSize = new Vector2(370,600);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
