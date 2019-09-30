@@ -111,6 +111,8 @@ namespace DG.Tweening
         /// <param name="complete">If TRUE completes the tween before killing it</param>
         public static void Kill(this Tween t, bool complete = false)
         {
+            if (!DOTween.initialized) return; // Called during application quit, ignore
+
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
             } else if (!t.active) {

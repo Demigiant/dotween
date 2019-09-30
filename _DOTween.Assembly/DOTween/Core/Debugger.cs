@@ -16,7 +16,7 @@ namespace DG.Tweening.Core
     {
         // 0: errors only - 1: default - 2: verbose
         public static int logPriority { get { if (!DOTween.initialized) DOTween.Init(); return _logPriority; } }
-        public static int _logPriority;
+        static int _logPriority;
 
         const string _LogPrefix = "<color=#0099bc><b>DOTWEEN ► </b></color>";
 

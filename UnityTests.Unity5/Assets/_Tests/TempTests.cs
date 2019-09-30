@@ -12,13 +12,13 @@ using UnityEngine.UI;
 public class TempTests : BrainBase
 {
     public Transform target;
-    public float y = 1;
-    public AnimationCurve ease;
-    
+    Tween t;
+
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.8f);
-
-        target.DOMoveY(y, 2).SetEase(ease);
+        target.DOBlendablePunchRotation(new Vector3(120, 120, 120), 1);
+        yield return new WaitForSeconds(0.3f);
+        Debug.Log(target.eulerAngles);
+        target.DOBlendablePunchRotation(new Vector3(200, 200, 200), 1);
     }
 }
