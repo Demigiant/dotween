@@ -15,7 +15,9 @@ namespace DG.Tweening.Core
     public static class Debugger
     {
         // 0: errors only - 1: default - 2: verbose
-        public static int logPriority { get { if (!DOTween.initialized) DOTween.Init(); return _logPriority; } }
+        // Commented this to prevent DOTween.Init being called by eventual logs that might happen during ApplicationQuit
+//        public static int logPriority { get { if (!DOTween.initialized) DOTween.Init(); return _logPriority; } }
+        public static int logPriority { get { return _logPriority; } }
         static int _logPriority;
 
         const string _LogPrefix = "<color=#0099bc><b>DOTWEEN ► </b></color>";
