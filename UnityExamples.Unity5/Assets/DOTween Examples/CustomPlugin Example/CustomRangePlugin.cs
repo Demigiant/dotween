@@ -25,6 +25,13 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
         t.setter(t.startValue);
     }
 
+    // Sets the values in case of a From tween with a specific from value
+    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue, bool setImmediately)
+    {
+        t.startValue = fromValue;
+        if (setImmediately) t.setter(fromValue);
+    }
+
     // Used by special plugins, just let it return the given value
     public override CustomRange ConvertToStartValue(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange value)
     {
