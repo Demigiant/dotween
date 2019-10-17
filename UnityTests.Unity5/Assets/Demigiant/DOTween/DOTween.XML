@@ -1004,6 +1004,18 @@
         <member name="F:DG.Tweening.LinkBehaviour.KillOnDestroy">
             <summary>Kills the tween when the link target is destroyed (becomes NULL). This is always active even if another behaviour is chosen</summary>
         </member>
+        <member name="F:DG.Tweening.LinkBehaviour.CompleteOnDisable">
+            <summary>Completes the tween when the link target is disabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.CompleteAndKillOnDisable">
+            <summary>Completes and kills the tween when the link target is disabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.RewindOnDisable">
+            <summary>Rewinds the tween (delay excluded) when the link target is disabled</summary>
+        </member>
+        <member name="F:DG.Tweening.LinkBehaviour.RewindAndKillOnDisable">
+            <summary>Rewinds and kills the tween when the link target is disabled</summary>
+        </member>
         <member name="T:DG.Tweening.PathMode">
             <summary>
             Path mode (used to determine correct LookAt orientation)

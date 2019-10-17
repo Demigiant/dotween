@@ -11,14 +11,17 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-    public Transform target;
-    Tween t;
+    Tween _tScale, _tMove;
 
-    IEnumerator Start()
+    void Start()
     {
-        target.DOBlendablePunchRotation(new Vector3(120, 120, 120), 1);
-        yield return new WaitForSeconds(0.3f);
-        Debug.Log(target.eulerAngles);
-        target.DOBlendablePunchRotation(new Vector3(200, 200, 200), 1);
+        _tScale = transform.DOScale(0.5f, 1).SetLoops(999);
+        _tMove = transform.DOMoveX(2, 1).SetLoops(999);
+    }
+
+    void OnDisable()
+    {
+        _tScale.Complete();
+        _tMove.Complete();
     }
 }

@@ -24,5 +24,13 @@ namespace DG.Tweening
         KillOnDisable,
         /// <summary>Kills the tween when the link target is destroyed (becomes NULL). This is always active even if another behaviour is chosen</summary>
         KillOnDestroy,
+        /// <summary>Completes the tween when the link target is disabled</summary>
+        CompleteOnDisable,
+        /// <summary>Completes and kills the tween when the link target is disabled</summary>
+        CompleteAndKillOnDisable,
+        /// <summary>Rewinds the tween (delay excluded) when the link target is disabled</summary>
+        RewindOnDisable,
+        /// <summary>Rewinds and kills the tween when the link target is disabled</summary>
+        RewindAndKillOnDisable,
     }
 }

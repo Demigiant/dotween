@@ -944,7 +944,7 @@ namespace DG.Tweening.Core
             if (!_TweenLinks.TryGetValue(t, out tLink)) return;
 
             if (tLink.target == null) {
-                t.active = false;
+                t.active = false; // Will be killed by rest of Update loop
             } else {
                 bool goActive = tLink.target.activeInHierarchy;
                 bool justEnabled = !tLink.lastSeenActive && goActive;
@@ -953,6 +953,22 @@ namespace DG.Tweening.Core
                 switch (tLink.behaviour) {
                 case LinkBehaviour.KillOnDisable:
                     if (!goActive) t.active = false; // Will be killed by rest of Update loop
+                    break;
+                case LinkBehaviour.CompleteAndKillOnDisable:
+                    if (goActive) break;
+                    if (!t.isComplete) t.Complete();
+                    t.active = false; // Will be killed by rest of Update loop
+                    break;
+                case LinkBehaviour.RewindAndKillOnDisable:
+                    if (goActive) break;
+                    t.Rewind(false);
+                    t.active = false; // Will be killed by rest of Update loop
+                    break;
+                case LinkBehaviour.CompleteOnDisable:
+                    if (justDisabled && !t.isComplete) t.Complete();
+                    break;
+                case LinkBehaviour.RewindOnDisable:
+                    if (justDisabled) t.Rewind(false);
                     break;
                 case LinkBehaviour.PauseOnDisable:
                     if (justDisabled && t.isPlaying) Pause(t);
