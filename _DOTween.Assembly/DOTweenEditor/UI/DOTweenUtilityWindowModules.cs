@@ -78,6 +78,11 @@ namespace DG.DOTweenEditor.UI
             if (EditorUtils.hasPro) {
                 GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
                 GUILayout.Label("External Assets (Pro)", EditorGUIUtils.boldLabelStyle);
+                GUILayout.Label(
+                    "<b>IMPORTANT:</b> these modules are for external Unity assets." +
+                    "\n<i>DO NOT activate an external module</i> unless you have the relative asset in your project.",
+                    EditorGUIUtils.wordWrapRichTextLabelStyle
+                );
                 _textMeshProModule.enabled = EditorGUILayout.Toggle("TextMesh Pro", _textMeshProModule.enabled);
                 _tk2DModule.enabled = EditorGUILayout.Toggle("2D Toolkit", _tk2DModule.enabled);
                 EditorGUILayout.EndVertical();
