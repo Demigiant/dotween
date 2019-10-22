@@ -1191,7 +1191,8 @@ namespace DG.Tweening
                 Quaternion diff = x * Quaternion.Inverse(to);
 #endif
                 to = x;
-                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+                Quaternion currRot = target.rotation;
+                target.rotation = currRot * Quaternion.Inverse(currRot) * diff * currRot;
             }, byValue, duration)
                 .Blendable().SetTarget(target);
             t.plugOptions.rotateMode = mode;
@@ -1215,7 +1216,8 @@ namespace DG.Tweening
                 Quaternion diff = x * Quaternion.Inverse(to);
 #endif
                 to = x;
-                target.localRotation = target.localRotation * Quaternion.Inverse(target.localRotation) * diff * target.localRotation;
+                Quaternion currRot = target.localRotation;
+                target.localRotation = currRot * Quaternion.Inverse(currRot) * diff * currRot;
             }, byValue, duration)
                 .Blendable().SetTarget(target);
             t.plugOptions.rotateMode = mode;
@@ -1249,7 +1251,8 @@ namespace DG.Tweening
                 Quaternion diff = qnew * Quaternion.Inverse(qto);
 #endif
                 to = v;
-                target.rotation = target.rotation * Quaternion.Inverse(target.rotation) * diff * target.rotation;
+                Quaternion currRot = target.rotation;
+                target.rotation = currRot * Quaternion.Inverse(currRot) * diff * currRot;
             }, punch, duration, vibrato, elasticity)
                 .Blendable().SetTarget(target);
             return t;
