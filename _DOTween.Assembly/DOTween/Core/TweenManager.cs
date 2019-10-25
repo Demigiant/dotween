@@ -291,9 +291,9 @@ namespace DG.Tweening.Core
         internal static void PurgeAll()
         {
             // Fire eventual onKill callbacks
-            for (int i = 0; i < totActiveTweens; ++i) {
+            for (int i = 0; i < maxActive; ++i) {
                 Tween t = _activeTweens[i];
-                if (t != null) {
+                if (t != null && t.active) {
                     t.active = false;
                     if (t.onKill != null) Tween.OnTweenCallback(t.onKill);
                 }

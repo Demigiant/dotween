@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.300"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.305"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -1003,7 +1003,8 @@ namespace DG.Tweening
         {
             InitCheck();
             TweenerCore<T1, T2, TPlugOptions> tweener = TweenManager.GetTweener<T1, T2, TPlugOptions>();
-            if (!Tweener.Setup(tweener, getter, setter, endValue, duration, plugin)) {
+            bool setupSuccessful = Tweener.Setup(tweener, getter, setter, endValue, duration, plugin);
+            if (!setupSuccessful) {
                 TweenManager.Despawn(tweener);
                 return null;
             }
