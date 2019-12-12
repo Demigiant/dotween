@@ -146,12 +146,12 @@ namespace DG.Tweening.Plugins
                     }
                     if (isBackwards) {
 //                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
-                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, t, i);
                     } else {
 //                        for (int i = prevWPIndex + 1; i < newWaypointIndex + 1; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
-                        for (int i = prevWPIndex + 1; i < newWaypointIndex; ++i) Tween.OnTweenCallback(t.onWaypointChange, i);
+                        for (int i = prevWPIndex + 1; i < newWaypointIndex; ++i) Tween.OnTweenCallback(t.onWaypointChange, t, i);
                     }
-                    Tween.OnTweenCallback(t.onWaypointChange, newWaypointIndex);
+                    Tween.OnTweenCallback(t.onWaypointChange, t, newWaypointIndex);
                 }
             }
         }

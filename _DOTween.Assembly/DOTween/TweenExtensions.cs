@@ -574,7 +574,7 @@ namespace DG.Tweening
             if (pathTween == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return Vector3.zero;
             } else if (!pathTween.endValue.isFinalized) {
-                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet"); return Vector3.zero;
+                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet", t); return Vector3.zero;
             }
 
             return pathTween.endValue.GetPoint(pathPercentage, true);
@@ -603,7 +603,7 @@ namespace DG.Tweening
             if (pathTween == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return null;
             } else if (!pathTween.endValue.isFinalized) {
-                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet"); return null;
+                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet", t); return null;
             }
 
             return Path.GetDrawPoints(pathTween.endValue, subdivisionsXSegment);
@@ -629,7 +629,7 @@ namespace DG.Tweening
             if (pathTween == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNonPathTween(t); return -1;
             } else if (!pathTween.endValue.isFinalized) {
-                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet"); return -1;
+                if (Debugger.logPriority > 1) Debugger.LogWarning("The path is not finalized yet", t); return -1;
             }
 
             return pathTween.endValue.length;

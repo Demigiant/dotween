@@ -78,6 +78,12 @@ namespace DG.Tweening
         public float easePeriod; // Public so it can be used with custom plugins
 #pragma warning restore 1591
 
+        // SPECIAL DEBUG DATA ////////////////////////////////////////////////
+        /// <summary>
+        /// Set by SetTarget if DOTween's Debug Mode is on (see DOTween Utility Panel -> "Store GameObject's ID" debug option
+        /// </summary>
+        public string debugTargetId;
+
         // SETUP DATA ////////////////////////////////////////////////
 
         internal Type typeofT1; // Only used by Tweeners
@@ -124,6 +130,8 @@ namespace DG.Tweening
             isIndependentUpdate = false;
             onStart = onPlay = onRewind = onUpdate = onComplete = onStepComplete = onKill = null;
             onWaypointChange = null;
+
+            debugTargetId = null;
 
             target = null;
             isFrom = false;
@@ -197,11 +205,11 @@ namespace DG.Tweening
             if (!t.playedOnce && updateMode == UpdateMode.Update) {
                 t.playedOnce = true;
                 if (t.onStart != null) {
-                    OnTweenCallback(t.onStart);
+                    OnTweenCallback(t.onStart, t);
                     if (!t.active) return true; // Tween might have been killed by onStart callback
                 }
                 if (t.onPlay != null) {
-                    OnTweenCallback(t.onPlay);
+                    OnTweenCallback(t.onPlay, t);
                     if (!t.active) return true; // Tween might have been killed by onPlay callback
                 }
             }
@@ -253,19 +261,19 @@ namespace DG.Tweening
 
             // Additional callbacks
             if (t.onUpdate != null && updateMode != UpdateMode.IgnoreOnUpdate) {
-                OnTweenCallback(t.onUpdate);
+                OnTweenCallback(t.onUpdate, t);
             }
             if (t.position <= 0 && t.completedLoops <= 0 && !wasRewinded && t.onRewind != null) {
-                OnTweenCallback(t.onRewind);
+                OnTweenCallback(t.onRewind, t);
             }
             if (newCompletedSteps > 0 && updateMode == UpdateMode.Update && t.onStepComplete != null) {
-                for (int i = 0; i < newCompletedSteps; ++i) OnTweenCallback(t.onStepComplete);
+                for (int i = 0; i < newCompletedSteps; ++i) OnTweenCallback(t.onStepComplete, t);
             }
             if (t.isComplete && !wasComplete && updateMode != UpdateMode.IgnoreOnComplete && t.onComplete != null) {
-                OnTweenCallback(t.onComplete);
+                OnTweenCallback(t.onComplete, t);
             }
             if (!t.isPlaying && wasPlaying && (!t.isComplete || !t.autoKill) && t.onPause != null) {
-                OnTweenCallback(t.onPause);
+                OnTweenCallback(t.onPause, t);
             }
 
             // Return
@@ -274,7 +282,7 @@ namespace DG.Tweening
 
         // Assumes that the callback exists (because it was previously checked).
         // Returns TRUE in case of success, FALSE in case of error (if safeMode is on)
-        internal static bool OnTweenCallback(TweenCallback callback)
+        internal static bool OnTweenCallback(TweenCallback callback, Tween t)
         {
             if (DOTween.useSafeMode) {
                 try {
@@ -283,7 +291,7 @@ namespace DG.Tweening
                     if (Debugger.logPriority >= 1) {
                         Debugger.LogWarning(string.Format(
                             "An error inside a tween callback was silently taken care of ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
-                        ));
+                        ), t);
                     }
                     DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.Callback);
                     return false; // Callback error
@@ -291,7 +299,7 @@ namespace DG.Tweening
             } else callback();
             return true;
         }
-        internal static bool OnTweenCallback<T>(TweenCallback<T> callback, T param)
+        internal static bool OnTweenCallback<T>(TweenCallback<T> callback, Tween t, T param)
         {
             if (DOTween.useSafeMode) {
                 try {
@@ -300,7 +308,7 @@ namespace DG.Tweening
                     if (Debugger.logPriority >= 1) {
                         Debugger.LogWarning(string.Format(
                             "An error inside a tween callback was silently taken care of ({0}) ► {1}", e.TargetSite, e.Message
-                        ));
+                        ), t);
                     }
                     DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.Callback);
                     return false; // Callback error

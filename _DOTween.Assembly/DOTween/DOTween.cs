@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.305"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.310"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -82,6 +82,16 @@ namespace DG.Tweening
         /// <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
         /// Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         public static bool drawGizmos = true;
+        // DEBUG OPTIONS
+        /// <summary>If TRUE activates various debug options</summary>
+        public static bool debugMode = false;
+        /// <summary>Stores the target id so it can be used to give more info in case of safeMode error capturing.
+        /// Only active if both <code>debugMode</code> and <code>useSafeMode</code> are TRUE</summary>
+        public static bool debugStoreTargetId {
+            get { return debugMode && useSafeMode && _fooDebugStoreTargetId; }
+            set { _fooDebugStoreTargetId = value; }
+        }
+        static bool _fooDebugStoreTargetId = false;
 
         ///////////////////////////////////////////////
         // Default options for Tweens /////////////////
@@ -195,6 +205,9 @@ namespace DG.Tweening
                 DOTween.defaultEasePeriod = settings.defaultEasePeriod;
                 DOTween.defaultAutoKill = settings.defaultAutoKill;
                 DOTween.defaultLoopType = settings.defaultLoopType;
+                // Debug options
+                DOTween.debugMode = settings.debugMode;
+                DOTween.debugStoreTargetId = settings.debugStoreTargetId;
             }
             // Log
             if (Debugger.logPriority >= 2) Debugger.Log("DOTween initialization (useSafeMode: " + DOTween.useSafeMode + ", recycling: " + (DOTween.defaultRecyclable ? "ON" : "OFF") + ", logBehaviour: " + DOTween.logBehaviour + ")");

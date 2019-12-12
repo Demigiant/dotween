@@ -229,7 +229,7 @@ namespace DG.Tweening.Core
         internal static void Despawn(Tween t, bool modifyActiveLists = true)
         {
             // Callbacks
-            if (t.onKill != null) Tween.OnTweenCallback(t.onKill);
+            if (t.onKill != null) Tween.OnTweenCallback(t.onKill, t);
 
             if (modifyActiveLists) {
                 // Remove tween from active list
@@ -295,7 +295,7 @@ namespace DG.Tweening.Core
                 Tween t = _activeTweens[i];
                 if (t != null && t.active) {
                     t.active = false;
-                    if (t.onKill != null) Tween.OnTweenCallback(t.onKill);
+                    if (t.onKill != null) Tween.OnTweenCallback(t.onKill, t);
                 }
             }
 
@@ -436,7 +436,7 @@ namespace DG.Tweening.Core
                     // Delay elapsed - call OnPlay if required
                     if (t.playedOnce && t.onPlay != null) {
                         // Don't call in case it hasn't started because onStart routine will call it
-                        Tween.OnTweenCallback(t.onPlay);
+                        Tween.OnTweenCallback(t.onPlay, t);
                     }
                 }
                 // Startup (needs to be here other than in Tween.DoGoto in case of speed-based tweens, to calculate duration correctly)
@@ -704,7 +704,7 @@ namespace DG.Tweening.Core
             } else if (toPosition >= t.duration) toPosition = 0;
             // If andPlay is FALSE manage onPause from here because DoGoto won't detect it (since t.isPlaying was already set from here)
             bool needsKilling = Tween.DoGoto(t, toPosition, toCompletedLoops, updateMode);
-            if (!andPlay && wasPlaying && !needsKilling && t.onPause != null) Tween.OnTweenCallback(t.onPause);
+            if (!andPlay && wasPlaying && !needsKilling && t.onPause != null) Tween.OnTweenCallback(t.onPause, t);
             return needsKilling;
         }
 
@@ -713,7 +713,7 @@ namespace DG.Tweening.Core
         {
             if (t.isPlaying) {
                 t.isPlaying = false;
-                if (t.onPause != null) Tween.OnTweenCallback(t.onPause);
+                if (t.onPause != null) Tween.OnTweenCallback(t.onPause, t);
                 return true;
             }
             return false;
@@ -726,7 +726,7 @@ namespace DG.Tweening.Core
                 t.isPlaying = true;
                 if (t.playedOnce && t.delayComplete && t.onPlay != null) {
                     // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
-                    Tween.OnTweenCallback(t.onPlay);
+                    Tween.OnTweenCallback(t.onPlay, t);
                 }
                 return true;
             }
@@ -774,7 +774,7 @@ namespace DG.Tweening.Core
             t.isPlaying = true;
             if (wasPaused && t.playedOnce && t.delayComplete && t.onPlay != null) {
                 // Don't call in case there's a delay to run or if it hasn't started because onStart routine will call it
-                Tween.OnTweenCallback(t.onPlay);
+                Tween.OnTweenCallback(t.onPlay, t);
             }
             return true;
         }
@@ -798,7 +798,7 @@ namespace DG.Tweening.Core
             if (t.position > 0 || t.completedLoops > 0 || !t.startupDone) {
                 rewinded = true;
                 bool needsKilling = Tween.DoGoto(t, 0, 0, UpdateMode.Goto);
-                if (!needsKilling && wasPlaying && t.onPause != null) Tween.OnTweenCallback(t.onPause);
+                if (!needsKilling && wasPlaying && t.onPause != null) Tween.OnTweenCallback(t.onPause, t);
             } else {
                 // Alread rewinded
                 ManageOnRewindCallbackWhenAlreadyRewinded(t, false);
@@ -998,7 +998,7 @@ namespace DG.Tweening.Core
 
             // Safety check (IndexOutOfRangeException)
             if (totActiveTweens < 0) {
-                Debugger.LogAddActiveTweenError("totActiveTweens < 0");
+                Debugger.LogAddActiveTweenError("totActiveTweens < 0", t);
                 totActiveTweens = 0;
             }
 //            else if (totActiveTweens > _activeTweens.Length - 1) {
@@ -1093,7 +1093,7 @@ namespace DG.Tweening.Core
                     totActiveDefaultTweens--;
                     hasActiveDefaultTweens = totActiveDefaultTweens > 0;
                 } else {
-                    Debugger.LogRemoveActiveTweenError("totActiveDefaultTweens < 0");
+                    Debugger.LogRemoveActiveTweenError("totActiveDefaultTweens < 0", t);
                 }
             } else {
                 switch (t.updateType) {
@@ -1103,7 +1103,7 @@ namespace DG.Tweening.Core
                         totActiveFixedTweens--;
                         hasActiveFixedTweens = totActiveFixedTweens > 0;
                     } else {
-                        Debugger.LogRemoveActiveTweenError("totActiveFixedTweens < 0");
+                        Debugger.LogRemoveActiveTweenError("totActiveFixedTweens < 0", t);
                     }
                     break;
                 case UpdateType.Late:
@@ -1112,7 +1112,7 @@ namespace DG.Tweening.Core
                         totActiveLateTweens--;
                         hasActiveLateTweens = totActiveLateTweens > 0;
                     } else {
-                        Debugger.LogRemoveActiveTweenError("totActiveLateTweens < 0");
+                        Debugger.LogRemoveActiveTweenError("totActiveLateTweens < 0", t);
                     }
                     break;
                 default:
@@ -1121,7 +1121,7 @@ namespace DG.Tweening.Core
                         totActiveManualTweens--;
                         hasActiveManualTweens = totActiveManualTweens > 0;
                     } else {
-                        Debugger.LogRemoveActiveTweenError("totActiveManualTweens < 0");
+                        Debugger.LogRemoveActiveTweenError("totActiveManualTweens < 0", t);
                     }
                     break;
                 }
@@ -1133,17 +1133,17 @@ namespace DG.Tweening.Core
             // Safety check (IndexOutOfRangeException)
             if (totActiveTweens < 0) {
                 totActiveTweens = 0;
-                Debugger.LogRemoveActiveTweenError("totActiveTweens < 0");
+                Debugger.LogRemoveActiveTweenError("totActiveTweens < 0", t);
             }
             // Safety check (IndexOutOfRangeException)
             if (totActiveTweeners < 0) {
                 totActiveTweeners = 0;
-                Debugger.LogRemoveActiveTweenError("totActiveTweeners < 0");
+                Debugger.LogRemoveActiveTweenError("totActiveTweeners < 0", t);
             }
             // Safety check (IndexOutOfRangeException)
             if (totActiveSequences < 0) {
                 totActiveSequences = 0;
-                Debugger.LogRemoveActiveTweenError("totActiveSequences < 0");
+                Debugger.LogRemoveActiveTweenError("totActiveSequences < 0", t);
             }
         }
 

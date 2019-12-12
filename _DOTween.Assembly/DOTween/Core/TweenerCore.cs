@@ -52,7 +52,7 @@ namespace DG.Tweening.Core
         public override Tweener ChangeStartValue(object newStartValue, float newDuration = -1)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
 #if COMPATIBLE
@@ -60,7 +60,7 @@ namespace DG.Tweening.Core
 #endif
             Type valT = newStartValue.GetType();
             if (valT != typeofT2) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeStartValue: incorrect newStartValue type (is " + valT + ", should be " + typeofT2 + ")");
+                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeStartValue: incorrect newStartValue type (is " + valT + ", should be " + typeofT2 + ")", this);
                 return this;
             }
             return DoChangeStartValue(this, (T2)newStartValue, newDuration);
@@ -73,7 +73,7 @@ namespace DG.Tweening.Core
         public override Tweener ChangeEndValue(object newEndValue, float newDuration = -1, bool snapStartValue = false)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
 #if COMPATIBLE
@@ -81,7 +81,7 @@ namespace DG.Tweening.Core
 #endif
             Type valT = newEndValue.GetType();
             if (valT != typeofT2) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeEndValue: incorrect newEndValue type (is " + valT + ", should be " + typeofT2 + ")");
+                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeEndValue: incorrect newEndValue type (is " + valT + ", should be " + typeofT2 + ")", this);
                 return this;
             }
             return DoChangeEndValue(this, (T2)newEndValue, newDuration, snapStartValue);
@@ -91,7 +91,7 @@ namespace DG.Tweening.Core
         public override Tweener ChangeValues(object newStartValue, object newEndValue, float newDuration = -1)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
 #if COMPATIBLE
@@ -101,11 +101,11 @@ namespace DG.Tweening.Core
             Type valT0 = newStartValue.GetType();
             Type valT1 = newEndValue.GetType();
             if (valT0 != typeofT2) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeValues: incorrect value type (is " + valT0 + ", should be " + typeofT2 + ")");
+                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeValues: incorrect value type (is " + valT0 + ", should be " + typeofT2 + ")", this);
                 return this;
             }
             if (valT1 != typeofT2) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeValues: incorrect value type (is " + valT1 + ", should be " + typeofT2 + ")");
+                if (Debugger.logPriority >= 1) Debugger.LogWarning("ChangeValues: incorrect value type (is " + valT1 + ", should be " + typeofT2 + ")", this);
                 return this;
             }
             return DoChangeValues(this, (T2)newStartValue, (T2)newEndValue, newDuration);
@@ -120,7 +120,7 @@ namespace DG.Tweening.Core
         public TweenerCore<T1,T2,TPlugOptions> ChangeStartValue(T2 newStartValue, float newDuration = -1)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
             return DoChangeStartValue(this, newStartValue, newDuration);
@@ -140,7 +140,7 @@ namespace DG.Tweening.Core
         public TweenerCore<T1,T2,TPlugOptions> ChangeEndValue(T2 newEndValue, float newDuration = -1, bool snapStartValue = false)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
             return DoChangeEndValue(this, newEndValue, newDuration, snapStartValue);
@@ -154,7 +154,7 @@ namespace DG.Tweening.Core
         public TweenerCore<T1,T2,TPlugOptions> ChangeValues(T2 newStartValue, T2 newEndValue, float newDuration = -1)
         {
             if (isSequenced) {
-                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues);
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(_TxtCantChangeSequencedValues, this);
                 return this;
             }
             return DoChangeValues(this, newStartValue, newEndValue, newDuration);

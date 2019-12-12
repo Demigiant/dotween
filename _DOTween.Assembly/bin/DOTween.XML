@@ -371,6 +371,13 @@
             <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
             Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.debugMode">
+            <summary>If TRUE activates various debug options</summary>
+        </member>
+        <member name="P:DG.Tweening.DOTween.debugStoreTargetId">
+            <summary>Stores the target id so it can be used to give more info in case of safeMode error capturing.
+            Only active if both <code>debugMode</code> and <code>useSafeMode</code> are TRUE</summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.defaultUpdateType">
             <summary>Default updateType for new tweens.
             <para>Default: UpdateType.Normal</para></summary>
@@ -2645,6 +2652,11 @@
         </member>
         <member name="P:DG.Tweening.Tween.isRelative">
             <summary>Tweeners-only (ignored by Sequences), returns TRUE if the tween was set as relative</summary>
+        </member>
+        <member name="F:DG.Tweening.Tween.debugTargetId">
+            <summary>
+            Set by SetTarget if DOTween's Debug Mode is on (see DOTween Utility Panel -> "Store GameObject's ID" debug option
+            </summary>
         </member>
         <member name="P:DG.Tweening.Tween.active">
             <summary>FALSE when tween is (or should be) despawned - set only by TweenManager</summary>

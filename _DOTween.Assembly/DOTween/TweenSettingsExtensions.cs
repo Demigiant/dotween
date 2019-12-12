@@ -117,6 +117,10 @@ namespace DG.Tweening
         {
             if (t == null || !t.active) return t;
 
+            if (DOTween.debugStoreTargetId) {
+                Component comp = target as Component;
+                t.debugTargetId = comp != null ? comp.name : target.ToString();
+            }
             t.target = target;
             return t;
         }

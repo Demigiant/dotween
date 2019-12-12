@@ -137,7 +137,7 @@ namespace DG.Tweening
                         if (Debugger.logPriority >= 1) {
                             Debugger.LogWarning(string.Format(
                                 "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
-                            ));
+                            ), t);
                         }
                         DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.StartupFailure);
                         return false; // Target/field doesn't exist: kill tween

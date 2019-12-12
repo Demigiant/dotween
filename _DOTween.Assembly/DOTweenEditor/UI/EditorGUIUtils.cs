@@ -101,10 +101,10 @@ namespace DG.DOTweenEditor.UI
         }
 
         // A button which works as a toggle
-        public static bool ToggleButton(bool toggled, GUIContent content, GUIStyle guiStyle = null, params GUILayoutOption[] options)
+        public static bool ToggleButton(bool toggled, GUIContent content, bool alert = false, GUIStyle guiStyle = null, params GUILayoutOption[] options)
         {
             Color orColor = UnityEngine.GUI.backgroundColor;
-            UnityEngine.GUI.backgroundColor = toggled ? Color.green : Color.white;
+            UnityEngine.GUI.backgroundColor = toggled ? alert ? Color.red : Color.green : Color.white;
             bool clicked = guiStyle == null
                 ? GUILayout.Button(content, options)
                 : GUILayout.Button(content, guiStyle, options);

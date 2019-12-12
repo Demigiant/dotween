@@ -16,7 +16,7 @@ namespace DG.DOTweenEditor.UI
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(370,600);
+        static readonly Vector2 _WinSize = new Vector2(370,650);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -27,6 +27,7 @@ namespace DG.DOTweenEditor.UI
         Vector2 _headerSize, _footerSize;
         string _innerTitle;
         bool _setupRequired;
+        Vector2 _scrollVal;
 
         int _selectedTab;
         string[] _tabLabels = new[] { "Setup", "Preferences" };
@@ -112,6 +113,7 @@ namespace DG.DOTweenEditor.UI
                 GUILayout.Space(40);
                 GUILayout.EndHorizontal();
             } else {
+                _scrollVal = GUILayout.BeginScrollView(_scrollVal);
                 if (_src.modules.showPanel) {
                     if (DOTweenUtilityWindowModules.Draw(this, _src)) {
                         _setupRequired = EditorUtils.DOTweenSetupRequired();
@@ -134,6 +136,7 @@ namespace DG.DOTweenEditor.UI
                         break;
                     }
                 }
+                GUILayout.EndScrollView();
             }
 
             if (GUI.changed) EditorUtility.SetDirty(_src);
@@ -199,14 +202,12 @@ namespace DG.DOTweenEditor.UI
             GUI.color = Color.white;
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-//            GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label(
                 "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
                 " from other ASMDEFs/Libraries instead of loose scripts," +
                 " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>.",
                 EditorGUIUtils.wordWrapRichTextLabelStyle
             );
-//            GUILayout.EndVertical();
             GUILayout.Space(3);
 
             GUILayout.BeginHorizontal();
@@ -248,6 +249,8 @@ namespace DG.DOTweenEditor.UI
                 _src.defaultEasePeriod = 0;
                 _src.defaultAutoKill = true;
                 _src.defaultLoopType = LoopType.Restart;
+                _src.debugMode = false;
+                _src.debugStoreTargetId = false;
                 EditorUtility.SetDirty(_src);
             }
             GUILayout.Space(8);
@@ -299,6 +302,21 @@ namespace DG.DOTweenEditor.UI
             _src.defaultEasePeriod = EditorGUILayout.FloatField("Ease Period", _src.defaultEasePeriod);
             _src.defaultAutoKill = EditorGUILayout.Toggle("AutoKill", _src.defaultAutoKill);
             _src.defaultLoopType = (LoopType)EditorGUILayout.EnumPopup("Loop Type", _src.defaultLoopType);
+            GUILayout.Space(8);
+            _src.debugMode = EditorGUIUtils.ToggleButton(_src.debugMode, new GUIContent("DEBUG MODE", "Turns debug mode options on/off"), true);
+            if (_src.debugMode) {
+                GUILayout.BeginVertical(GUI.skin.box);
+                EditorGUI.BeginDisabledGroup(!_src.useSafeMode && _src.logBehaviour != LogBehaviour.ErrorsOnly);
+                _src.debugStoreTargetId = EditorGUILayout.Toggle("Store GameObject's ID", _src.debugStoreTargetId);
+                GUILayout.Label(
+                    "<b>Requires Safe Mode to be active + Default or Verbose LogBehaviour:</b>" +
+                    " when using DO shortcuts stores the relative gameObject's name so it can be returned along the warning logs" +
+                    " (helps with a clearer identification of the warning's target)",
+                    EditorGUIUtils.wordWrapRichTextLabelStyle
+                );
+                EditorGUI.EndDisabledGroup();
+                GUILayout.EndVertical();
+            }
         }
 
         // ===================================================================================

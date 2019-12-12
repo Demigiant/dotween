@@ -258,7 +258,7 @@ namespace DG.Tweening
                     if (sequentiable.tweenType == TweenType.Callback) {
                         if (updateMode == UpdateMode.Update && prevPosIsInverse) {
 //                            Debug.Log("<color=#FFEC03>BACKWARDS Callback > " + s.id + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + "</color>");
-                            OnTweenCallback(sequentiable.onStart);
+                            OnTweenCallback(sequentiable.onStart, s);
                         }
                     } else {
                         // Nested Tweener/Sequence
@@ -313,7 +313,7 @@ namespace DG.Tweening
 //                            Debug.Log("<color=#FFEC03>FORWARD Callback > " + s.id + " - s.isBackwards: " + s.isBackwards + ", useInverse/prevInverse: " + useInverse + "/" + prevPosIsInverse + " - " + fromPos + " > " + toPos + "</color>");
                             bool fire = !s.isBackwards && !useInverse && !prevPosIsInverse
                                 || s.isBackwards && useInverse && !prevPosIsInverse;
-                            if (fire) OnTweenCallback(sequentiable.onStart);
+                            if (fire) OnTweenCallback(sequentiable.onStart, s);
                         }
                     } else {
                         // Nested Tweener/Sequence
