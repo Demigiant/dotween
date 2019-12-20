@@ -190,8 +190,8 @@ namespace DG.Tweening
         }
 
         /// <summary>Restarts the tween from the beginning</summary>
-        /// <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
-        /// <param name="changeDelayTo">If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
+        /// <param name="includeDelay">Ignored in case of Sequences. If TRUE includes the eventual tween delay, otherwise skips it</param>
+        /// <param name="changeDelayTo">Ignored in case of Sequences. If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
         public static void Restart(this Tween t, bool includeDelay = true, float changeDelayTo = -1)
         {
             if (t == null) {
@@ -206,7 +206,7 @@ namespace DG.Tweening
         }
 
         /// <summary>Rewinds and pauses the tween</summary>
-        /// <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
+        /// <param name="includeDelay">Ignored in case of Sequences. If TRUE includes the eventual tween delay, otherwise skips it</param>
         public static void Rewind(this Tween t, bool includeDelay = true)
         {
             if (t == null) {

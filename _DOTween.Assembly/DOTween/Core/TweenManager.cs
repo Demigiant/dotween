@@ -769,7 +769,7 @@ namespace DG.Tweening.Core
         {
             bool wasPaused = !t.isPlaying;
             t.isBackwards = false;
-            if (changeDelayTo >= 0) t.delay = changeDelayTo;
+            if (changeDelayTo >= 0 && t.tweenType == TweenType.Tweener) t.delay = changeDelayTo;
             Rewind(t, includeDelay);
             t.isPlaying = true;
             if (wasPaused && t.playedOnce && t.delayComplete && t.onPlay != null) {

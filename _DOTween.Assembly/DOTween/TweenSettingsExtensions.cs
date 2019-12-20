@@ -645,8 +645,10 @@ namespace DG.Tweening
 
         #endregion
 
-        /// <summary>Sets a delayed startup for the tween.
-        /// <para>Has no effect on Sequences or if the tween has already started</para></summary>
+        /// <summary>Sets a delayed startup for the tween.<para/>
+        /// In case of Sequences behaves the same as <see cref="PrependInterval"/>,
+        /// which means the delay will repeat in case of loops (while with tweens it's ignored after the first loop cycle).<para/>
+        /// Has no effect on Sequences or if the tween has already started</summary>
         public static T SetDelay<T>(this T t, float delay) where T : Tween
         {
             if (t == null || !t.active || t.creationLocked) return t;

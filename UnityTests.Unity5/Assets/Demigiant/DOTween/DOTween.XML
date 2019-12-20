@@ -1191,12 +1191,12 @@
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Restart(DG.Tweening.Tween,System.Boolean,System.Single)">
             <summary>Restarts the tween from the beginning</summary>
-            <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
-            <param name="changeDelayTo">If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
+            <param name="includeDelay">Ignored in case of Sequences. If TRUE includes the eventual tween delay, otherwise skips it</param>
+            <param name="changeDelayTo">Ignored in case of Sequences. If >= 0 changes the startup delay to this value, otherwise doesn't touch it</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Rewind(DG.Tweening.Tween,System.Boolean)">
             <summary>Rewinds and pauses the tween</summary>
-            <param name="includeDelay">If TRUE includes the eventual tween delay, otherwise skips it</param>
+            <param name="includeDelay">Ignored in case of Sequences. If TRUE includes the eventual tween delay, otherwise skips it</param>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.SmoothRewind(DG.Tweening.Tween)">
             <summary>Smoothly rewinds the tween (delays excluded).
@@ -2457,8 +2457,10 @@
             <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetDelay``1(``0,System.Single)">
-            <summary>Sets a delayed startup for the tween.
-            <para>Has no effect on Sequences or if the tween has already started</para></summary>
+            <summary>Sets a delayed startup for the tween.<para/>
+            In case of Sequences behaves the same as <see cref="M:DG.Tweening.TweenSettingsExtensions.PrependInterval(DG.Tweening.Sequence,System.Single)"/>,
+            which means the delay will repeat in case of loops (while with tweens it's ignored after the first loop cycle).<para/>
+            Has no effect on Sequences or if the tween has already started</summary>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetRelative``1(``0)">
             <summary>Sets the tween as relative
