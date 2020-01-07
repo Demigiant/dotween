@@ -25,6 +25,7 @@ namespace DG.Tweening.Core
         float _unscaledTime;
         float _unscaledDeltaTime;
 
+        bool _paused; // Used to mark when app is paused and to avoid resume being called when application starts playing
         float _pausedTime; // Marks the time when Unity was paused
 
         bool _duplicateToDestroy;
@@ -166,8 +167,10 @@ namespace DG.Tweening.Core
         public void OnApplicationPause(bool pauseStatus)
         {
             if (pauseStatus) {
+                _paused = true;
                 _pausedTime = Time.realtimeSinceStartup;
-            } else {
+            } else if (_paused) {
+                _paused = false;
                 _unscaledTime += Time.realtimeSinceStartup - _pausedTime;
             }
         }

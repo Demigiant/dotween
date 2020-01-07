@@ -40,6 +40,17 @@
             Content colors
             </summary>
         </member>
+        <member name="T:DG.DemiLib.DeInputUtils">
+            <summary>
+            Various Input utils
+            </summary>
+        </member>
+        <member name="M:DG.DemiLib.DeInputUtils.IsNumKeyDown">
+            <summary>
+            Returns a number key int if a number key was pressed in this frame, or -1 otherwise
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:DG.DemiLib.DeScope">
              <summary>
              Extend this to replicate Unity's Scope system with any Unity version.
@@ -90,9 +101,19 @@
             If the item exists sets it, otherwise first creates it and then sets it
             </summary>
         </member>
+        <member name="M:DG.DemiLib.External.DeHierarchyComponent.StoreItemSeparator(UnityEngine.GameObject,DG.DemiLib.External.DeHierarchyComponent.SeparatorType,DG.DemiLib.External.DeHierarchyComponent.HColor)">
+            <summary>
+            If the item exists sets it, otherwise first creates it and then sets it
+            </summary>
+        </member>
         <member name="M:DG.DemiLib.External.DeHierarchyComponent.RemoveItemData(UnityEngine.GameObject)">
             <summary>
             Returns TRUE if the item existed and was removed.
+            </summary>
+        </member>
+        <member name="M:DG.DemiLib.External.DeHierarchyComponent.ResetSeparator(UnityEngine.GameObject)">
+            <summary>
+            Returns TRUE if the item existed and was changed.
             </summary>
         </member>
         <member name="M:DG.DemiLib.External.DeHierarchyComponent.GetItem(UnityEngine.GameObject)">
@@ -131,6 +152,9 @@
             Returns a random value within this range (min/max included)
             </summary>
         </member>
+        <member name="M:DG.DemiLib.IntRange.ToString">
+            <inheritdoc />
+        </member>
         <member name="T:DG.DemiLib.Range">
             <summary>
             A serializable struct including a min and a max float value
@@ -151,6 +175,9 @@
             <summary>
             Returns a random value within this range (min/max included)
             </summary>
+        </member>
+        <member name="M:DG.DemiLib.Range.ToString">
+            <inheritdoc />
         </member>
     </members>
 </doc>
