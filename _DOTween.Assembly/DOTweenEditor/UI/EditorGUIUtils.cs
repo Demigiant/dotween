@@ -78,6 +78,9 @@ namespace DG.DOTweenEditor.UI
             "InBounce",
             "OutBounce",
             "InOutBounce",
+            // Extra custom
+            "Flash", "InFlash", "OutFlash", "InOutFlash",
+            // Curve
             ":: AnimationCurve" // Must be set manually to INTERNAL_Custom
         };
 
@@ -85,14 +88,18 @@ namespace DG.DOTweenEditor.UI
         // PUBLIC METHODS --------------------------------------------------------------------
 
         // Ease popup with filtered eases
-        public static Ease FilteredEasePopup(Ease currEase)
+        public static Ease FilteredEasePopup(string label, Ease currEase, GUIStyle style = null)
         {
             int stringEaseId = currEase == Ease.INTERNAL_Custom
                 ? FilteredEaseTypes.Length - 1
                 : Array.IndexOf(FilteredEaseTypes, currEase.ToString());
             if (stringEaseId == -1) stringEaseId = 0;
-            stringEaseId = EditorGUILayout.Popup("Ease", stringEaseId, FilteredEaseTypes);
-            return stringEaseId == FilteredEaseTypes.Length - 1 ? Ease.INTERNAL_Custom : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
+            stringEaseId = label == null
+                ? EditorGUILayout.Popup(stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style)
+                : EditorGUILayout.Popup(label, stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style);
+            return stringEaseId == FilteredEaseTypes.Length - 1
+                ? Ease.INTERNAL_Custom
+                : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
         }
 
         public static void InspectorLogo()
