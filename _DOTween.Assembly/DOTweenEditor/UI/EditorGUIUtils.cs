@@ -90,13 +90,30 @@ namespace DG.DOTweenEditor.UI
         // Ease popup with filtered eases
         public static Ease FilteredEasePopup(string label, Ease currEase, GUIStyle style = null)
         {
+            if (style == null) style = EditorStyles.popup;
+            Rect area = EditorGUILayout.GetControlRect(label != null, 18, style);
+            return FilteredEasePopup(area, label, currEase, style);
+//            int stringEaseId = currEase == Ease.INTERNAL_Custom
+//                ? FilteredEaseTypes.Length - 1
+//                : Array.IndexOf(FilteredEaseTypes, currEase.ToString());
+//            if (stringEaseId == -1) stringEaseId = 0;
+//            stringEaseId = label == null
+//                ? EditorGUILayout.Popup(stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style)
+//                : EditorGUILayout.Popup(label, stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style);
+//            return stringEaseId == FilteredEaseTypes.Length - 1
+//                ? Ease.INTERNAL_Custom
+//                : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
+        }
+        // Ease popup with filtered eases
+        public static Ease FilteredEasePopup(Rect rect, string label, Ease currEase, GUIStyle style = null)
+        {
             int stringEaseId = currEase == Ease.INTERNAL_Custom
                 ? FilteredEaseTypes.Length - 1
                 : Array.IndexOf(FilteredEaseTypes, currEase.ToString());
             if (stringEaseId == -1) stringEaseId = 0;
             stringEaseId = label == null
-                ? EditorGUILayout.Popup(stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style)
-                : EditorGUILayout.Popup(label, stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style);
+                ? EditorGUI.Popup(rect, stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style)
+                : EditorGUI.Popup(rect, label, stringEaseId, FilteredEaseTypes, style == null ? EditorStyles.popup : style);
             return stringEaseId == FilteredEaseTypes.Length - 1
                 ? Ease.INTERNAL_Custom
                 : (Ease)Enum.Parse(typeof(Ease), FilteredEaseTypes[stringEaseId]);
