@@ -104,6 +104,7 @@ namespace DG.Tweening
             }
 
             if (to < 0) to = 0;
+            if (!t.startupDone) TweenManager.ForceInit(t); // Initialize the tween if it's not initialized already (required)
             TweenManager.Goto(t, to, andPlay);
         }
 

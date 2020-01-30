@@ -584,6 +584,7 @@ namespace DG.Tweening.Core
                         break;
                     case OperationType.Complete:
                         bool hasAutoKill = t.autoKill;
+                        if (!t.startupDone) ForceInit(t); // Initialize the tween if it's not initialized already (required for speed-based)
                         // If optionalFloat is > 0 completes with callbacks
                         if (Complete(t, false, optionalFloat > 0 ? UpdateMode.Update : UpdateMode.Goto)) {
                             // If optionalBool is TRUE only returns tweens killed by completion
@@ -601,6 +602,7 @@ namespace DG.Tweening.Core
                         if (Flip(t)) totInvolved++;
                         break;
                     case OperationType.Goto:
+                        if (!t.startupDone) ForceInit(t); // Initialize the tween if it's not initialized already (required for speed-based)
                         Goto(t, optionalFloat, optionalBool);
                         totInvolved++;
                         break;
