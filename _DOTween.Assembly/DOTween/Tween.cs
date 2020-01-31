@@ -267,7 +267,10 @@ namespace DG.Tweening
                 OnTweenCallback(t.onRewind, t);
             }
             if (newCompletedSteps > 0 && updateMode == UpdateMode.Update && t.onStepComplete != null) {
-                for (int i = 0; i < newCompletedSteps; ++i) OnTweenCallback(t.onStepComplete, t);
+                for (int i = 0; i < newCompletedSteps; ++i) {
+                    OnTweenCallback(t.onStepComplete, t);
+                    if (!t.active) break; // A stepComplete killed the tween
+                }
             }
             if (t.isComplete && !wasComplete && updateMode != UpdateMode.IgnoreOnComplete && t.onComplete != null) {
                 OnTweenCallback(t.onComplete, t);
