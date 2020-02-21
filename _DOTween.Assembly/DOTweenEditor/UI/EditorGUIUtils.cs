@@ -46,7 +46,7 @@ namespace DG.DOTweenEditor.UI
         static Texture2D _logo;
 
         // Filtered ease types to show desired eases in Inspector panels
-        internal static readonly string[] FilteredEaseTypes = new[] {
+        public static readonly string[] FilteredEaseTypes = new[] {
             "Linear",
             "InSine",
             "OutSine",

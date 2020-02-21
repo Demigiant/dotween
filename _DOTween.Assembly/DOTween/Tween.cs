@@ -67,7 +67,7 @@ namespace DG.Tweening
         internal float duration;
         internal int loops;
         internal LoopType loopType;
-        // Tweeners-only (shared by Sequences only for compatibility reasons, otherwise not used)
+        // NOW USED BY SEQUENCES TOO (since v1.2.340)
         internal float delay;
         /// <summary>Tweeners-only (ignored by Sequences), returns TRUE if the tween was set as relative</summary>
         public bool isRelative { get; internal set; } // Required by Modules
@@ -172,7 +172,8 @@ namespace DG.Tweening
 
         // Called by TweenManager in case a tween has a delay that needs to be updated.
         // Returns the eventual time in excess compared to the tween's delay time.
-        // Shared also by Sequences even if they don't use it, in order to make it compatible with Tween.
+        // Previously unused by Sequences but now implemented.
+        // NOT TRUE ANYMORE: Shared also by Sequences even if they don't use it, in order to make it compatible with Tween.
         internal virtual float UpdateDelay(float elapsed) { return 0; }
 
         // Called the moment the tween starts.

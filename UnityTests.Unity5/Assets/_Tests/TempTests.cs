@@ -13,19 +13,15 @@ using Debug = UnityEngine.Debug;
 
 public class TempTests : BrainBase
 {
-    Stopwatch sw;
-    Tween t;
+    public Transform target;
+    string[] empty;
 
-    void Start()
+    IEnumerator Start()
     {
-        sw = new Stopwatch();
-        sw.Start();
-        t = DOVirtual.DelayedCall(0.1f, TestDeleteMe).SetLoops(-1);
-    }
-
-    void TestDeleteMe()
-    {
-        Debug.Log("Test " + sw.ElapsedMilliseconds);
-//        t.Kill();
+        target.DOMoveX(3, 8).OnUpdate(
+            ()=> Debug.Log(empty.Length)
+        );
+        yield return new WaitForSeconds(1);
+        Destroy(target.gameObject);
     }
 }

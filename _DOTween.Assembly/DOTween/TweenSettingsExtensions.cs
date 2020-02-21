@@ -648,7 +648,7 @@ namespace DG.Tweening
         /// <summary>Sets a delayed startup for the tween.<para/>
         /// In case of Sequences behaves the same as <see cref="PrependInterval"/>,
         /// which means the delay will repeat in case of loops (while with tweens it's ignored after the first loop cycle).<para/>
-        /// Has no effect on Sequences or if the tween has already started</summary>
+        /// Has no effect if the tween has already started</summary>
         public static T SetDelay<T>(this T t, float delay) where T : Tween
         {
             if (t == null || !t.active || t.creationLocked) return t;
@@ -658,6 +658,25 @@ namespace DG.Tweening
             } else {
                 t.delay = delay;
                 t.delayComplete = delay <= 0;
+            }
+            return t;
+        }
+        /// <summary>EXPERIMENTAL: implemented in v1.2.340.<para/>
+        /// Sets a delayed startup for the tween with options to choose how the delay is applied in case of Sequences.<para/>
+        /// Has no effect if the tween has already started</summary>
+        /// <param name="asPrependedIntervalIfSequence">Only used by <see cref="Sequence"/> types: If FALSE sets the delay as a one-time occurrence
+        /// (defaults to this for <see cref="Tweener"/> types),
+        /// otherwise as a Sequence interval which will repeat at the beginning of every loop cycle</param>
+        public static T SetDelay<T>(this T t, float delay, bool asPrependedIntervalIfSequence) where T : Tween
+        {
+            if (t == null || !t.active || t.creationLocked) return t;
+
+            bool isSequence = t.tweenType == TweenType.Sequence;
+            if (!isSequence || !asPrependedIntervalIfSequence) {
+                t.delay = delay;
+                t.delayComplete = delay <= 0;
+            } else {
+                (t as Sequence).PrependInterval(delay);
             }
             return t;
         }

@@ -111,6 +111,20 @@ namespace DG.Tweening
 
         #endregion
 
+        // NOTE: up to v1.2.340 Sequences didn't implement this method and delays were always included as prepended intervals
+        internal override float UpdateDelay(float elapsed)
+        {
+            float tweenDelay = delay;
+            if (elapsed > tweenDelay) {
+                // Delay complete
+                elapsedDelay = tweenDelay;
+                delayComplete = true;
+                return elapsed - tweenDelay;
+            }
+            elapsedDelay = elapsed;
+            return 0;
+        }
+
         internal override void Reset()
         {
             base.Reset();

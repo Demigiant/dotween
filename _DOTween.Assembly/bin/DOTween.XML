@@ -1269,6 +1269,9 @@
         <member name="M:DG.Tweening.TweenExtensions.Delay(DG.Tweening.Tween)">
             <summary>Returns the eventual delay set for this tween</summary>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.ElapsedDelay(DG.Tweening.Tween)">
+            <summary>Returns the eventual elapsed delay set for this tween</summary>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.Duration(DG.Tweening.Tween,System.Boolean)">
             <summary>Returns the duration of this tween (delays excluded).
             <para>NOTE: when using settings like SpeedBased, the duration will be recalculated when the tween starts</para></summary>
@@ -2460,7 +2463,15 @@
             <summary>Sets a delayed startup for the tween.<para/>
             In case of Sequences behaves the same as <see cref="M:DG.Tweening.TweenSettingsExtensions.PrependInterval(DG.Tweening.Sequence,System.Single)"/>,
             which means the delay will repeat in case of loops (while with tweens it's ignored after the first loop cycle).<para/>
-            Has no effect on Sequences or if the tween has already started</summary>
+            Has no effect if the tween has already started</summary>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetDelay``1(``0,System.Single,System.Boolean)">
+            <summary>EXPERIMENTAL: implemented in v1.2.340.<para/>
+            Sets a delayed startup for the tween with options to choose how the delay is applied in case of Sequences.<para/>
+            Has no effect if the tween has already started</summary>
+            <param name="asPrependedIntervalIfSequence">Only used by <see cref="T:DG.Tweening.Sequence"/> types: If FALSE sets the delay as a one-time occurrence
+            (defaults to this for <see cref="T:DG.Tweening.Tweener"/> types),
+            otherwise as a Sequence interval which will repeat at the beginning of every loop cycle</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetRelative``1(``0)">
             <summary>Sets the tween as relative
