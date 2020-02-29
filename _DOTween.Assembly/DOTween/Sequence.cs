@@ -203,7 +203,6 @@ namespace DG.Tweening
                 newPos = s.duration * EaseManager.Evaluate(s.easeType, s.customEase, newPos, s.duration, s.easeOvershootOrAmplitude, s.easePeriod);
             }
 
-
             float from, to = 0;
             // Determine if prevPos was inverse.
             // Used to calculate correct "from" value when applying internal cycle
@@ -236,7 +235,7 @@ namespace DG.Tweening
                     if (expectedCompletedLoops != s.completedLoops || Math.Abs(expectedPosition - s.position) > Single.Epsilon) return !s.active;
                 } else {
                     // Simply determine correct prevPosition after steps
-                    if (s.loopType == LoopType.Yoyo && newCompletedSteps % 2 != 0) {
+                    if (s.loopType == LoopType.Yoyo && newCompletedSteps % 2 != 0 && (s.loops == -1 || s.loops > 1)) {
                         prevPosIsInverse = !prevPosIsInverse;
                         prevPos = s.duration - prevPos;
                     }
