@@ -17,13 +17,13 @@ namespace DG.DOTweenEditor
         static bool _isPreviewing;
         static double _previewTime;
         static Action _onPreviewUpdated;
-        static GameObject _previewObj; // Used so it can be set dirty (otherwise canvas-only tweens won't refresh the view)
+//        static GameObject _previewObj; // Used so it can be set dirty (otherwise canvas-only tweens won't refresh the view) - apparently not needed anymore (test)
         static readonly List<Tween> _Tweens = new List<Tween>();
 
-        static DOTweenEditorPreview()
-        {
-            ClearPreviewObject();
-        }
+//        static DOTweenEditorPreview()
+//        {
+//            ClearPreviewObject();
+//        }
 
         #region Public Methods
 
@@ -39,7 +39,7 @@ namespace DG.DOTweenEditor
             _onPreviewUpdated = onPreviewUpdated;
             _previewTime = EditorApplication.timeSinceStartup;
             EditorApplication.update += PreviewUpdate;
-            _previewObj = new GameObject("-[ DOTween Preview ► ]-", typeof(PreviewComponent));
+//            _previewObj = new GameObject("-[ DOTween Preview ► ]-", typeof(PreviewComponent));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace DG.DOTweenEditor
                 }
             }
             ValidateTweens();
-            ClearPreviewObject();
+//            ClearPreviewObject();
         }
 
         /// <summary>
@@ -89,13 +89,13 @@ namespace DG.DOTweenEditor
 
         #region Methods
 
-        static void ClearPreviewObject()
-        {
-            _previewObj = null;
-            // Find and destroy any existing preview objects
-            PreviewComponent[] objs = Object.FindObjectsOfType<PreviewComponent>();
-            for (int i = 0; i < objs.Length; ++i) Object.DestroyImmediate(objs[i].gameObject);
-        }
+//        static void ClearPreviewObject()
+//        {
+//            _previewObj = null;
+//            // Find and destroy any existing preview objects
+//            PreviewComponent[] objs = Object.FindObjectsOfType<PreviewComponent>();
+//            for (int i = 0; i < objs.Length; ++i) Object.DestroyImmediate(objs[i].gameObject);
+//        }
 
         static void PreviewUpdate()
         {
@@ -104,7 +104,7 @@ namespace DG.DOTweenEditor
             float elapsed = (float)(_previewTime - currTime);
             DOTween.ManualUpdate(elapsed, elapsed);
             
-            if (_previewObj != null) EditorUtility.SetDirty(_previewObj);
+//            if (_previewObj != null) EditorUtility.SetDirty(_previewObj);
 
             if (_onPreviewUpdated != null) _onPreviewUpdated();
         }
@@ -117,11 +117,11 @@ namespace DG.DOTweenEditor
         }
 
         #endregion
-
-        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
-        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
-        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-        class PreviewComponent : MonoBehaviour {}
+//
+//        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+//        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+//        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+//
+//        class PreviewComponent : MonoBehaviour {}
     }
 }
