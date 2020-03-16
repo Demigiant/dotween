@@ -39,8 +39,19 @@ namespace DG.Tweening.Plugins
             }
             t.setter(to);
         }
-        public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, Rect fromValue, bool setImmediately)
+        public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, Rect fromValue, bool setImmediately, bool isRelative)
         {
+            if (isRelative) {
+                Rect currVal = t.getter();
+                t.endValue.x += currVal.x;
+                t.endValue.y += currVal.y;
+                t.endValue.width += currVal.width;
+                t.endValue.height += currVal.height;
+                fromValue.x += currVal.x;
+                fromValue.y += currVal.y;
+                fromValue.width += currVal.width;
+                fromValue.height += currVal.height;
+            }
             t.startValue = fromValue;
             if (setImmediately) {
                 Rect to = fromValue;

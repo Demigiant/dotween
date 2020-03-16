@@ -45,8 +45,13 @@ namespace DG.Tweening.CustomPlugins
             t.setter(t.startValue);
         }
         /// <summary>INTERNAL: do not use</summary>
-        public override void SetFrom(TweenerCore<Quaternion, Quaternion, NoOptions> t, Quaternion fromValue, bool setImmediately)
+        public override void SetFrom(TweenerCore<Quaternion, Quaternion, NoOptions> t, Quaternion fromValue, bool setImmediately, bool isRelative)
         {
+            if (isRelative) {
+                Quaternion currVal = t.getter();
+                t.endValue = currVal * t.endValue;
+                fromValue = currVal * fromValue;
+            }
             t.startValue = fromValue;
             if (setImmediately) t.setter(fromValue);
         }

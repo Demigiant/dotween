@@ -29,8 +29,13 @@ namespace DG.Tweening.Plugins
             else to.a = t.startValue.a;
             t.setter(to);
         }
-        public override void SetFrom(TweenerCore<Color, Color, ColorOptions> t, Color fromValue, bool setImmediately)
+        public override void SetFrom(TweenerCore<Color, Color, ColorOptions> t, Color fromValue, bool setImmediately, bool isRelative)
         {
+            if (isRelative) {
+                Color currVal = t.getter();
+                t.endValue += currVal;
+                fromValue += currVal;
+            }
             t.startValue = fromValue;
             if (setImmediately) {
                 Color to = fromValue;

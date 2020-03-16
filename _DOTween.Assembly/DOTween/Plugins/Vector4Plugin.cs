@@ -52,8 +52,13 @@ namespace DG.Tweening.Plugins
             t.setter(to);
         }
 
-        public override void SetFrom(TweenerCore<Vector4, Vector4, VectorOptions> t, Vector4 fromValue, bool setImmediately)
+        public override void SetFrom(TweenerCore<Vector4, Vector4, VectorOptions> t, Vector4 fromValue, bool setImmediately, bool isRelative)
         {
+            if (isRelative) {
+                Vector4 currVal = t.getter();
+                t.endValue += currVal;
+                fromValue += currVal;
+            }
             t.startValue = fromValue;
             if (setImmediately) {
                 Vector4 to;
