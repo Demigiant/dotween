@@ -1,0 +1,92 @@
+fileFormatVersion: 2
+guid: 89f0137620f6af44b9ba852b4190e64e
+timeCreated: 1488610019
+licenseType: Store
+PluginImporter:
+  serializedVersion: 2
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  isOverridable: 0
+  platformData:
+    data:
+      first:
+        Any: 
+      second:
+        enabled: 0
+        settings: {}
+    data:
+      first:
+        Editor: Editor
+      second:
+        enabled: 1
+        settings:
+          CPU: AnyCPU
+          DefaultValueInitialized: true
+          OS: AnyOS
+    data:
+      first:
+        Facebook: Win
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Facebook: Win64
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Linux
+      second:
+        enabled: 0
+        settings:
+          CPU: x86
+    data:
+      first:
+        Standalone: Linux64
+      second:
+        enabled: 0
+        settings:
+          CPU: x86_64
+    data:
+      first:
+        Standalone: OSXIntel
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: OSXIntel64
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Standalone: Win64
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+    data:
+      first:
+        Windows Store Apps: WindowsStoreApps
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

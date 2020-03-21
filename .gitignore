@@ -21,7 +21,6 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Assets/TK2D*
 *.Unity*/Assets/-tk2d*
 *.Unity*/Assets/Console*Pro*
-*.Unity*/Assets/Text*Mesh*Pro*
 *.Unity*/Assets/CodeStage
 *.Unity*/Assets/_DOTween Pro Examples
 *.Unity*/Assets/_Tests PRO*

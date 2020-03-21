@@ -25,8 +25,13 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
         t.setter(t.startValue);
     }
 
-    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue, bool setImmediately)
+    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue, bool setImmediately, bool isRelative)
     {
+        if (isRelative) {
+            CustomRange currVal = t.getter();
+            t.endValue += currVal;
+            fromValue += currVal;
+        }
         t.startValue = fromValue;
         if (setImmediately) t.setter(fromValue);
     }
