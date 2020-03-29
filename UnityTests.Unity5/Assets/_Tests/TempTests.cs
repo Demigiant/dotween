@@ -7,6 +7,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -14,14 +15,17 @@ using Debug = UnityEngine.Debug;
 public class TempTests : BrainBase
 {
     public Transform target;
-    string[] empty;
 
-    IEnumerator Start()
+    void Start()
     {
-        target.DOMoveX(3, 8).OnUpdate(
-            ()=> Debug.Log(empty.Length)
-        );
-        yield return new WaitForSeconds(1);
-        Destroy(target.gameObject);
+        var prefab = Instantiate(target, transform);
+        prefab.transform.DOScale(2.0f, 1.0f).SetDelay(2.0f);
+        StartCoroutine(Wait(1.0f, () => Destroy(prefab.gameObject)));
+    }
+
+    IEnumerator Wait(float time, UnityAction callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
     }
 }
