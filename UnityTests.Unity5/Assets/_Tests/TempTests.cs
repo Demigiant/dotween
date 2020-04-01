@@ -28,4 +28,10 @@ public class TempTests : BrainBase
         yield return new WaitForSeconds(time);
         callback();
     }
+
+    void OnDestroy()
+    {
+        Debug.Log("OnDestroy");
+        target.DOMoveX(2, 1);
+    }
 }

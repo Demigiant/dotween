@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.355"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.360"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -171,6 +171,7 @@ namespace DG.Tweening
         // Auto-init
         static void AutoInit()
         {
+            if (!Application.isPlaying || isQuitting) return;
             DOTweenSettings settings = Resources.Load(DOTweenSettings.AssetName) as DOTweenSettings;
             Init(settings, null, null, null);
         }
