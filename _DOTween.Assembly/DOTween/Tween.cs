@@ -249,7 +249,7 @@ namespace DG.Tweening
             }
 
             // updatePosition is different in case of Yoyo loop under certain circumstances
-            bool useInversePosition = t.loopType == LoopType.Yoyo
+            bool useInversePosition = t.loops > 1 && t.loopType == LoopType.Yoyo
                 && (t.position < t.duration ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0);
 
             // Get values from plugin and set them
