@@ -5,6 +5,9 @@ using System;
 using UnityEngine;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+#if UNITY_2018_1_OR_NEWER && NET_4_6
+using System.Threading.Tasks;
+#endif
 
 #pragma warning disable 1591
 namespace DG.Tweening
@@ -137,7 +140,8 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Returns a <see cref="CustomYieldInstruction"/> that waits until the tween is killed or has reached the given position (loops included, delays excluded).
+        /// Returns a <see cref="CustomYieldInstruction"/> that waits until the tween is killed
+        /// or has reached the given time position (loops included, delays excluded).
         /// It can be used inside a coroutine as a yield.
         /// <para>Example usage:</para><code>yield return myTween.WaitForPosition(2.5f);</code>
         /// </summary>
@@ -172,9 +176,9 @@ namespace DG.Tweening
 #endif
 
 #if UNITY_2018_1_OR_NEWER
-        #region Unity 2018.1 or Newer
+#region Unity 2018.1 or Newer
 
-        #region Material
+#region Material
 
         /// <summary>Tweens a Material's named texture offset property with the given ID to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>
@@ -207,6 +211,104 @@ namespace DG.Tweening
             t.SetTarget(target);
             return t;
         }
+
+        #endregion
+
+        #region .NET 4.6 or Newer
+
+#if NET_4_6
+
+        #region Async Instructions
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed or complete.
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.WaitForCompletion();</code>
+        /// </summary>
+        public static async Task AsyncWaitForCompletion(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active && !t.IsComplete()) await Task.Yield();
+        }
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed or rewinded.
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.AsyncWaitForRewind();</code>
+        /// </summary>
+        public static async Task AsyncWaitForRewind(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active && (!t.playedOnce || t.position * (t.CompletedLoops() + 1) > 0)) await Task.Yield();
+        }
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed.
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.AsyncWaitForKill();</code>
+        /// </summary>
+        public static async Task AsyncWaitForKill(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active) await Task.Yield();
+        }
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed or has gone through the given amount of loops.
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.AsyncWaitForElapsedLoops();</code>
+        /// </summary>
+        /// <param name="elapsedLoops">Elapsed loops to wait for</param>
+        public static async Task AsyncWaitForElapsedLoops(this Tween t, int elapsedLoops)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active && t.CompletedLoops() < elapsedLoops) await Task.Yield();
+        }
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed or started
+        /// (meaning when the tween is set in a playing state the first time, after any eventual delay).
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.AsyncWaitForPosition();</code>
+        /// </summary>
+        /// <param name="position">Position (loops included, delays excluded) to wait for</param>
+        public static async Task AsyncWaitForPosition(this Tween t, float position)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active && t.position * (t.CompletedLoops() + 1) < position) await Task.Yield();
+        }
+
+        /// <summary>
+        /// Returns an async <see cref="Task"/> that waits until the tween is killed.
+        /// It can be used inside an async operation.
+        /// <para>Example usage:</para><code>await myTween.AsyncWaitForKill();</code>
+        /// </summary>
+        public static async Task AsyncWaitForStart(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return;
+            }
+            while (t.active && !t.playedOnce) await Task.Yield();
+        }
+
+        #endregion
+#endif
 
         #endregion
 
