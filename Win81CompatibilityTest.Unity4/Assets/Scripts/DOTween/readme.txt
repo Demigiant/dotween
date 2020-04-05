@@ -11,7 +11,8 @@ DOTween and DOTween Pro are copyright (c) 2014 Daniele Giardini - Demigiant
 
 DOTween website (documentation, examples, etc): http://dotween.demigiant.com
 DOTween license: http://dotween.demigiant.com/license.php
-DOTween repository (Google Code): https://code.google.com/p/dotween/
+DOTween repository: https://github.com/Demigiant/dotween
+Demigiant website (documentation, examples, etc): https://www.demigiant.com
 
 // NOTES //////////////////////////////////////////////////////
 
