@@ -152,6 +152,7 @@ namespace DG.DOTweenEditor.UI
 
         public static void Refresh(DOTweenSettings src, bool applySrcSettings = false)
         {
+            UtilityWindowPostProcessor.Disable();
             _src = src;
             _refreshed = true;
 
@@ -180,6 +181,7 @@ namespace DG.DOTweenEditor.UI
             AssetDatabase.StopAssetEditing();
 
             EditorUtility.SetDirty(_src);
+            UtilityWindowPostProcessor.Enable();
         }
 
         static void Apply()
