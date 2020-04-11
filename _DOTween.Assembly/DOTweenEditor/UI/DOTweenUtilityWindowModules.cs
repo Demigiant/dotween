@@ -23,8 +23,8 @@ namespace DG.DOTweenEditor.UI
         static readonly ModuleInfo _uiModule = new ModuleInfo("Modules/DOTweenModuleUI.cs", "UI");
         static readonly ModuleInfo _textMeshProModule = new ModuleInfo("DOTweenTextMeshPro.cs", "TEXTMESHPRO");
         static readonly ModuleInfo _tk2DModule = new ModuleInfo("DOTweenTk2D.cs", "TK2D");
-        static readonly ModuleInfo _deAudioModule = new ModuleInfo(null, "DEAUDIO");
-        static readonly ModuleInfo _deUnityExtendedModule = new ModuleInfo(null, "DEUNITYEXTENDED");
+        static readonly ModuleInfo _deAudioModule = new ModuleInfo("DOTweenDeAudio.cs", "DEAUDIO");
+        static readonly ModuleInfo _deUnityExtendedModule = new ModuleInfo("DOTweenDeUnityExtended.cs", "DEUNITYEXTENDED");
 
         // Files that contain multiple module dependencies and which have specific define markers to change
         static readonly string[] _ModuleDependentFiles = new[] {
@@ -58,6 +58,8 @@ namespace DG.DOTweenEditor.UI
             _uiModule.filePath = EditorUtils.dotweenDir + _uiModule.filePath;
             _textMeshProModule.filePath = EditorUtils.dotweenProDir + _textMeshProModule.filePath;
             _tk2DModule.filePath = EditorUtils.dotweenProDir + _tk2DModule.filePath;
+            _deAudioModule.filePath = EditorUtils.dotweenProDir + _deAudioModule.filePath;
+            _deUnityExtendedModule.filePath = EditorUtils.dotweenProDir + _deUnityExtendedModule.filePath;
         }
 
         #region GUI
@@ -165,8 +167,8 @@ namespace DG.DOTweenEditor.UI
             //
             _textMeshProModule.enabled = ModuleIsEnabled(_textMeshProModule);
             _tk2DModule.enabled = ModuleIsEnabled(_tk2DModule);
-            _deAudioModule.enabled = ModuleIsEnabled(_deAudioModule, src.modules.deAudioEnabled);
-            _deUnityExtendedModule.enabled = ModuleIsEnabled(_deUnityExtendedModule, src.modules.deUnityExtendedEnabled);
+            _deAudioModule.enabled = ModuleIsEnabled(_deAudioModule);
+            _deUnityExtendedModule.enabled = ModuleIsEnabled(_deUnityExtendedModule);
 
             CheckAutoModuleSettings(applySrcSettings, _audioModule, ref src.modules.audioEnabled);
             CheckAutoModuleSettings(applySrcSettings, _physicsModule, ref src.modules.physicsEnabled);
@@ -233,12 +235,9 @@ namespace DG.DOTweenEditor.UI
             strb.Append("<color=#").Append(enabled ? "00ff00" : "ff0000").Append('>').Append(id).Append("</color>").Append(" - ");
         }
 
-        static bool ModuleIsEnabled(ModuleInfo m, bool? setToThisIfNoModuleBasedFileExists = null)
+        static bool ModuleIsEnabled(ModuleInfo m)
         {
-            if (!File.Exists(m.filePath)) {
-                if (setToThisIfNoModuleBasedFileExists == null) return false;
-                else return (bool)setToThisIfNoModuleBasedFileExists;
-            }
+            if (!File.Exists(m.filePath)) return false;
 
             using (StreamReader sr = new StreamReader(m.filePath)) {
                 string line = sr.ReadLine();
@@ -252,7 +251,7 @@ namespace DG.DOTweenEditor.UI
 
         static void CheckAutoModuleSettings(bool applySettings, ModuleInfo m, ref bool srcModuleEnabled)
         {
-//            if (m.enabled != srcModuleEnabled) {
+            if (m.enabled != srcModuleEnabled) {
                 if (applySettings) {
                     m.enabled = srcModuleEnabled;
                     ToggleModule(m, ref srcModuleEnabled);
@@ -260,7 +259,7 @@ namespace DG.DOTweenEditor.UI
                     srcModuleEnabled = m.enabled;
                     EditorUtility.SetDirty(_src);
                 }
-//            }
+            }
         }
 
         // Returns TRUE if files were actually modified
@@ -298,7 +297,7 @@ namespace DG.DOTweenEditor.UI
             }
 
             // Enable/disable conditions inside dependent files
-            string marker = m.id + "_MARKER";
+            string marker = "// " + m.id + "_MARKER";
             for (int i = 0; i < _ModuleDependentFiles.Length; ++i) {
                 bool mod = ToggleModuleInDependentFile(_ModuleDependentFiles[i], m.enabled, marker);
                 if (mod) modifiedFiles = true;
