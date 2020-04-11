@@ -176,9 +176,9 @@ namespace DG.Tweening
 #endif
 
 #if UNITY_2018_1_OR_NEWER
-#region Unity 2018.1 or Newer
+        #region Unity 2018.1 or Newer
 
-#region Material
+        #region Material
 
         /// <summary>Tweens a Material's named texture offset property with the given ID to the given value.
         /// Also stores the material as the tween's target so it can be used for filtered operations</summary>

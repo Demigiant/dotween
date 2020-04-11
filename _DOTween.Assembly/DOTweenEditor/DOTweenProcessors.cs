@@ -54,7 +54,18 @@ namespace DG.DOTweenEditor
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
     {
+//        const string _DisableId = "DOTweenProcessors_Disable";
         static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
+
+//        public static void Disable()
+//        {
+//            SessionState
+//        }
+//
+//        public static void Enable()
+//        {
+//
+//        }
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {

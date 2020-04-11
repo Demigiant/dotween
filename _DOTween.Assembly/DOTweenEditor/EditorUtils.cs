@@ -29,6 +29,8 @@ namespace DG.DOTweenEditor
         public static string dotweenProEditorDir { get { if (string.IsNullOrEmpty(_dotweenProEditorDir)) StoreDOTweenDirs(); return _dotweenProEditorDir; } }
         // With final slash (system based)
         public static string dotweenModulesDir { get { if (string.IsNullOrEmpty(_dotweenModulesDir)) StoreDOTweenDirs(); return _dotweenModulesDir; } }
+        // With final slash (system based)
+        public static string dotweenTimelineDir { get { if (string.IsNullOrEmpty(_dotweenTimelineDir)) StoreDOTweenDirs(); return _dotweenTimelineDir; } }
         public static bool isOSXEditor { get; private set; }
         public static string pathSlash { get; private set; } // for full paths
         public static string pathSlashToReplace { get; private set; } // for full paths
@@ -43,6 +45,7 @@ namespace DG.DOTweenEditor
         static string _dotweenProDir; // with final slash
         static string _dotweenProEditorDir; // with final slash
         static string _dotweenModulesDir; // with final slash
+        static string _dotweenTimelineDir; // with final slash
 
         static EditorUtils()
         {
@@ -366,19 +369,14 @@ namespace DG.DOTweenEditor
 
         static void StoreDOTweenDirs()
         {
-//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-//            UriBuilder uri = new UriBuilder(codeBase);
-//            _dotweenDir = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
             _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
             _dotweenDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator) + 1);
-
-            _dotweenProDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
-            _dotweenProDir = _dotweenProDir.Substring(0, _dotweenProDir.LastIndexOf(pathSeparator) + 1) + "DOTweenPro" + pathSeparator;
-
-            _demigiantDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
-            _demigiantDir = _demigiantDir.Substring(0, _demigiantDir.LastIndexOf(pathSeparator) + 1);
-            if (_demigiantDir.Substring(_demigiantDir.Length - 10, 9) != "Demigiant") _demigiantDir = null;
+            string dotweenParentDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
+            dotweenParentDir = dotweenParentDir.Substring(0, dotweenParentDir.LastIndexOf(pathSeparator) + 1); // with final slash
+            _dotweenProDir = dotweenParentDir + "DOTweenPro" + pathSeparator;
+            _dotweenTimelineDir = dotweenParentDir + "DOTweenTimeline" + pathSeparator;
+            _demigiantDir = dotweenParentDir.Substring(dotweenParentDir.Length - 10, 9) == "Demigiant" ? dotweenParentDir : null;
 
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);

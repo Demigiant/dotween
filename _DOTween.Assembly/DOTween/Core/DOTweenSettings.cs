@@ -75,6 +75,8 @@ namespace DG.Tweening.Core
             public bool uiEnabled = true;
             public bool textMeshProEnabled;
             public bool tk2DEnabled;
+            public bool deAudioEnabled;
+            public bool deUnityExtendedEnabled;
         }
     }
 }
