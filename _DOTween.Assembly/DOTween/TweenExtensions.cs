@@ -494,14 +494,14 @@ namespace DG.Tweening
             return isInverse ? 1 - perc : perc;
         }
 
-        /// <summary>Returns FALSE if this tween has been killed.
+        /// <summary>Returns FALSE if this tween has been killed or is NULL, TRUE otherwise.
         /// <para>BEWARE: if this tween is recyclable it might have been spawned again for another use and thus return TRUE anyway.</para>
         /// When working with recyclable tweens you should take care to know when a tween has been killed and manually set your references to NULL.
         /// If you want to be sure your references are set to NULL when a tween is killed you can use the <code>OnKill</code> callback like this:
         /// <para><code>.OnKill(()=> myTweenReference = null)</code></para></summary>
         public static bool IsActive(this Tween t)
         {
-            return t.active;
+            return t != null && t.active;
         }
 
         /// <summary>Returns TRUE if this tween was reversed and is set to go backwards</summary>
