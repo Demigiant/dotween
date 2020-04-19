@@ -76,6 +76,7 @@
     <Compile Include="DelayedCall.cs" />
     <Compile Include="ASMDEFManager.cs" />
     <Compile Include="DOTweenEditorPreview.cs" />
+    <Compile Include="EditorVersion.cs" />
     <Compile Include="MenuItems.cs" />
     <Compile Include="UI\EditorGUIUtils.cs" />
     <Compile Include="EditorUtils.cs" />

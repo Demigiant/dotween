@@ -25,6 +25,15 @@
             <param name="preventAutoKill">If TRUE prevents the tween from being auto-killed at completion</param>
             <param name="andPlay">If TRUE starts playing the tween immediately</param>
         </member>
+        <member name="F:DG.DOTweenEditor.EditorVersion.Version">
+            <summary>Full major version + first minor version (ex: 2018.1f)</summary>
+        </member>
+        <member name="F:DG.DOTweenEditor.EditorVersion.MajorVersion">
+            <summary>Major version</summary>
+        </member>
+        <member name="F:DG.DOTweenEditor.EditorVersion.MinorVersion">
+            <summary>First minor version (ex: in 2018.1 it would be 1)</summary>
+        </member>
         <member name="M:DG.DOTweenEditor.EditorUtils.SetEditorTexture(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
             <summary>
             Checks that the given editor texture use the correct import settings,
