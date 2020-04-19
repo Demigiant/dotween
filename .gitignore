@@ -25,6 +25,12 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Assets/_DOTween Pro Examples
 *.Unity*/Assets/_Tests PRO*
 .vs
+*DOTweenPro
+*DOTweenPro.*
+*DemiLib
+*DemiLib.*
+*DOTweenTimeline
+*DOTweenTimeline.*
 *HOPoolOperator*
 *HOTools*
 extra

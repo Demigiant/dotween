@@ -15,28 +15,34 @@ namespace DG.DOTweenEditor
     {
         public static string projectPath { get; private set; } // Without final slash
         public static string assetsPath { get; private set; } // Without final slash
-        public static bool hasPro { get { if (!_hasCheckedForPro) CheckForPro(); return _hasPro; } }
-        public static string proVersion { get { if (!_hasCheckedForPro) CheckForPro(); return _proVersion; } }
+        public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
+        public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimeline; } }
+        public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimelineUnityPackage; } }
+        public static string proVersion { get { RetrieveDependenciesData(); return _proVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
-        public static string editorADBDir { get { if (string.IsNullOrEmpty(_editorADBDir)) StoreEditorADBDir(); return _editorADBDir; } }
+        public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
         // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
-        public static string demigiantDir { get { if (string.IsNullOrEmpty(_demigiantDir)) StoreDOTweenDirs(); return _demigiantDir; } }
+        public static string demigiantDir { get { RetrieveDependenciesData(); return _demigiantDir; } }
         // With final slash (system based)
-        public static string dotweenDir { get { if (string.IsNullOrEmpty(_dotweenDir)) StoreDOTweenDirs(); return _dotweenDir; } }
+        public static string dotweenDir { get { RetrieveDependenciesData(); return _dotweenDir; } }
         // With final slash (system based)
-        public static string dotweenProDir { get { if (string.IsNullOrEmpty(_dotweenProDir)) StoreDOTweenDirs(); return _dotweenProDir; } }
+        public static string dotweenProDir { get { RetrieveDependenciesData(); return _dotweenProDir; } }
         // With final slash (system based)
-        public static string dotweenProEditorDir { get { if (string.IsNullOrEmpty(_dotweenProEditorDir)) StoreDOTweenDirs(); return _dotweenProEditorDir; } }
+        public static string dotweenProEditorDir { get { RetrieveDependenciesData(); return _dotweenProEditorDir; } }
         // With final slash (system based)
-        public static string dotweenModulesDir { get { if (string.IsNullOrEmpty(_dotweenModulesDir)) StoreDOTweenDirs(); return _dotweenModulesDir; } }
+        public static string dotweenModulesDir { get { RetrieveDependenciesData(); return _dotweenModulesDir; } }
         // With final slash (system based)
-        public static string dotweenTimelineDir { get { if (string.IsNullOrEmpty(_dotweenTimelineDir)) StoreDOTweenDirs(); return _dotweenTimelineDir; } }
+        public static string dotweenTimelineDir { get { RetrieveDependenciesData(); return _dotweenTimelineDir; } }
+        public static string dotweenTimelineUnityPackageFilePath { get { RetrieveDependenciesData(); return _dotweenTimelineUnityPackageFilePath; } }
         public static bool isOSXEditor { get; private set; }
         public static string pathSlash { get; private set; } // for full paths
         public static string pathSlashToReplace { get; private set; } // for full paths
 
         static readonly StringBuilder _Strb = new StringBuilder();
+        static bool _retrievedDependenciesData;
         static bool _hasPro;
+        static bool _hasDOTweenTimeline;
+        static bool _hasDOTweenTimelineUnityPackage;
         static string _proVersion;
         static bool _hasCheckedForPro;
         static string _editorADBDir;
@@ -46,6 +52,7 @@ namespace DG.DOTweenEditor
         static string _dotweenProEditorDir; // with final slash
         static string _dotweenModulesDir; // with final slash
         static string _dotweenTimelineDir; // with final slash
+        static string _dotweenTimelineUnityPackageFilePath;
 
         static EditorUtils()
         {
@@ -63,6 +70,15 @@ namespace DG.DOTweenEditor
 
         // ===================================================================================
         // PUBLIC METHODS --------------------------------------------------------------------
+
+        public static void RetrieveDependenciesData(bool force = false)
+        {
+            if (!force && _retrievedDependenciesData) return;
+            _retrievedDependenciesData = true;
+            CheckForPro();
+            StoreEditorADBDir();
+            StoreDOTweenDirsAndFilePaths();
+        }
 
         public static void DelayedCall(float delay, Action callback)
         {
@@ -367,7 +383,7 @@ namespace DG.DOTweenEditor
             _editorADBDir = adbPath.Replace("\\", "/") + "/";
         }
 
-        static void StoreDOTweenDirs()
+        static void StoreDOTweenDirsAndFilePaths()
         {
             _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
             string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
@@ -383,6 +399,10 @@ namespace DG.DOTweenEditor
             _dotweenProEditorDir = _dotweenProDir + "Editor" + pathSlash;
             _dotweenModulesDir = _dotweenDir + "Modules" + pathSlash;
             if (_demigiantDir != null) _demigiantDir = _demigiantDir.Replace(pathSlashToReplace, pathSlash);
+
+            _dotweenTimelineUnityPackageFilePath = _dotweenProDir + "DOTweenTimeline_UnityPackage.unitypackage";
+            _hasDOTweenTimelineUnityPackage = File.Exists(_dotweenTimelineUnityPackageFilePath);
+            _hasDOTweenTimeline = Directory.Exists(_dotweenTimelineDir);
         }
 
         static void CreateScriptableAsset<T>(string adbFilePath) where T : ScriptableObject

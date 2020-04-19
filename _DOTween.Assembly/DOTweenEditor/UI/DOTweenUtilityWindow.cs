@@ -38,6 +38,7 @@ namespace DG.DOTweenEditor.UI
         // NOTE: this is also called via Reflection by UpgradeWindow
         public static void Open()
         {
+            EditorUtils.RetrieveDependenciesData(true);
             DOTweenUtilityWindow window = EditorWindow.GetWindow<DOTweenUtilityWindow>(true, _Title, true);
             window.minSize = _WinSize;
             window.maxSize = _WinSize;
@@ -160,68 +161,86 @@ namespace DG.DOTweenEditor.UI
                 GUI.backgroundColor = Color.white;
             } else GUILayout.Space(8);
             GUI.color = Color.green;
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+            using (new GUILayout.HorizontalScope()) {
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
-                DOTweenUtilityWindowModules.ApplyModulesSettings();
-                _src.modules.showPanel = true;
-                EditorUtility.SetDirty(_src);
-                EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
-                DOTweenDefines.RemoveAllLegacyDefines();
-                EditorUtils.DeleteDOTweenUpgradeManagerFiles();
-                return;
+                    DOTweenUtilityWindowModules.ApplyModulesSettings();
+                    _src.modules.showPanel = true;
+                    EditorUtility.SetDirty(_src);
+                    EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
+                    DOTweenDefines.RemoveAllLegacyDefines();
+                    EditorUtils.DeleteDOTweenUpgradeManagerFiles();
+                    return;
+                }
+                GUILayout.FlexibleSpace();
             }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
             GUI.color = Color.white;
             GUILayout.Space(4);
 
-            // ASMDEF
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
-            if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
-                if (ASMDEFManager.hasModulesASMDEF) {
-                    if (EditorUtility.DisplayDialog("Remove ASMDEF",
-                        string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
-                                      " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                      " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
-                        "Ok", "Cancel"
-                    )) ASMDEFManager.RemoveAllASMDEF();
-                } else {
-                    if (EditorUtility.DisplayDialog("Create ASMDEF",
-                        string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
-                                      " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                      " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
-                        "Ok", "Cancel"
-                    )) ASMDEFManager.CreateAllASMDEF();
+            // DOTweenTimeline
+            if (EditorUtils.hasDOTweenTimelineUnityPackage) {
+                using (new GUILayout.HorizontalScope()) {
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("<b>Import DOTweenTimeline</b>\n<b>-[ EXPERIMENTAL ]-</b>\n(requires Unity 2018 or later)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+                        if (EditorUtility.DisplayDialog("Import DOTweenTimeline",
+                            "DOTweenTimeline requires Unity 2018 or later. Do not import it if you're on earlier versions." +
+                            "\n\nProceed and import?",
+                            "Ok", "Cancel"
+                        )) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+                    }
+                    GUILayout.FlexibleSpace();
                 }
+                GUILayout.Space(4);
             }
-            GUI.color = Color.white;
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.Label(
-                "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
-                " from other ASMDEFs/Libraries instead of loose scripts," +
-                " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>.",
-                EditorGUIUtils.wordWrapRichTextLabelStyle
-            );
+
+            // ASMDEF
+            using (new GUILayout.VerticalScope(GUI.skin.box)) {
+                using (new GUILayout.HorizontalScope()) {
+                    GUILayout.FlexibleSpace();
+                    GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
+                    if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+                        if (ASMDEFManager.hasModulesASMDEF) {
+                            if (EditorUtility.DisplayDialog("Remove ASMDEF",
+                                string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
+                                              " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                              " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
+                                "Ok", "Cancel"
+                            )) ASMDEFManager.RemoveAllASMDEF();
+                        } else {
+                            if (EditorUtility.DisplayDialog("Create ASMDEF",
+                                string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
+                                              " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
+                                              " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
+                                "Ok", "Cancel"
+                            )) ASMDEFManager.CreateAllASMDEF();
+                        }
+                    }
+                    GUI.color = Color.white;
+                    GUILayout.FlexibleSpace();
+                }
+                GUILayout.Label(
+                    "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
+                    " from other ASMDEFs/Libraries instead of loose scripts," +
+                    " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>.",
+                    EditorGUIUtils.wordWrapRichTextLabelStyle
+                );
+            }
             GUILayout.Space(3);
 
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");
-            if (GUILayout.Button("Get Started", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/getstarted.php");
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Documentation", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/documentation.php");
-            if (GUILayout.Button("Support", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/support.php");
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Changelog", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php");
-            if (GUILayout.Button("Check Updates", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
-            GUILayout.EndHorizontal();
+            using (new GUILayout.HorizontalScope()) {
+                if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");
+                if (GUILayout.Button("Get Started", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/getstarted.php");
+            }
+            using (new GUILayout.HorizontalScope()) {
+                if (GUILayout.Button("Documentation", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/documentation.php");
+                if (GUILayout.Button("Support", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/support.php");
+            }
+            using (new GUILayout.HorizontalScope()) {
+                if (GUILayout.Button("Changelog", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php");
+                if (GUILayout.Button("Check Updates", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/download.php?v=" + DOTween.Version);
+            }
             GUILayout.Space(4);
             if (GUILayout.Button(_footerImg, EditorGUIUtils.btImgStyle)) Application.OpenURL("http://www.demigiant.com/");
         }

@@ -54,23 +54,11 @@ namespace DG.DOTweenEditor
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
     {
-        const string _DisableId = "DOTweenProcessors_Disable";
         static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
-
-        public static void Disable()
-        {
-            SessionState.SetBool(_DisableId, true);
-        }
-
-        public static void Enable()
-        {
-            SessionState.SetBool(_DisableId, false);
-        }
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             if (_setupDialogRequested) return;
-            if (SessionState.GetBool(_DisableId, false)) return;
 
             string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
             bool dotweenImported = dotweenEntries.Length > 0;

@@ -150,7 +150,7 @@ namespace DG.DOTweenEditor.UI
                 btImgStyle.normal.background = null;
                 btImgStyle.imagePosition = ImagePosition.ImageOnly;
                 btImgStyle.padding = new RectOffset(0, 0, 0, 0);
-                btImgStyle.fixedWidth = footerSizeV.x;
+//                btImgStyle.fixedWidth = footerSizeV.x;
                 btImgStyle.fixedHeight = footerSizeV.y;
             }
 
