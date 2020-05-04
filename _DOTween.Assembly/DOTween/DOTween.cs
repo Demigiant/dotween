@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.385"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.390"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -241,7 +241,12 @@ namespace DG.Tweening
         /// (so that next time you use it it will need to be re-initialized)</param>
         public static void Clear(bool destroy = false)
         {
-            TweenManager.PurgeAll();
+            Clear(destroy, false);
+        }
+
+        internal static void Clear(bool destroy, bool isApplicationQuitting)
+        {
+            TweenManager.PurgeAll(isApplicationQuitting);
             PluginsManager.PurgeAll();
             if (!destroy) return;
 

@@ -16,22 +16,14 @@ public class TempTests : BrainBase
 {
     public Transform target;
 
-    void Start()
+    IEnumerator Start()
     {
-        var prefab = Instantiate(target, transform);
-        prefab.transform.DOScale(2.0f, 1.0f).SetDelay(2.0f);
-        StartCoroutine(Wait(1.0f, () => Destroy(prefab.gameObject)));
+        yield return new WaitForSeconds(0.5f);
+        MakeTween();
     }
 
-    IEnumerator Wait(float time, UnityAction callback)
+    void MakeTween()
     {
-        yield return new WaitForSeconds(time);
-        callback();
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("OnDestroy");
-        target.DOMoveX(2, 1);
+        target.DOMoveX(2, 3).OnKill(MakeTween);
     }
 }

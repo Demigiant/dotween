@@ -288,14 +288,16 @@ namespace DG.Tweening.Core
 
         // Destroys any active tween without putting them back in a pool,
         // then purges all pools and resets capacities
-        internal static void PurgeAll()
+        internal static void PurgeAll(bool isApplicationQuitting)
         {
-            // Fire eventual onKill callbacks
-            for (int i = 0; i < maxActive; ++i) {
-                Tween t = _activeTweens[i];
-                if (t != null && t.active) {
-                    t.active = false;
-                    if (t.onKill != null) Tween.OnTweenCallback(t.onKill, t);
+            if (!isApplicationQuitting) {
+                // Fire eventual onKill callbacks
+                for (int i = 0; i < maxActive; ++i) {
+                    Tween t = _activeTweens[i];
+                    if (t != null && t.active) {
+                        t.active = false;
+                        if (t.onKill != null) Tween.OnTweenCallback(t.onKill, t);
+                    }
                 }
             }
 
