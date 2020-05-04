@@ -2,7 +2,9 @@
 // Created: 2018/07/13
 
 #if true && (UNITY_4_6 || UNITY_5 || UNITY_2017_1_OR_NEWER) // MODULE_MARKER
+
 using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening.Core;
@@ -477,6 +479,29 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOColor(this Text target, Color endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
+
+        /// <summary>
+        /// Tweens a Text's text from one integer to another, with options for thousands separators
+        /// </summary>
+        /// <param name="fromValue">The value to start from</param>
+        /// <param name="endValue">The end value to reach</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="addThousandsSeparator">If TRUE (default) also adds thousands separators</param>
+        /// <param name="culture">The <see cref="CultureInfo"/> to use (InvariantCulture if NULL)</param>
+        public static TweenerCore<int, int, NoOptions> DOCounter(
+            this Text target, int fromValue, int endValue, float duration, bool addThousandsSeparator = true, CultureInfo culture = null
+        ){
+            int v = fromValue;
+            CultureInfo cInfo = !addThousandsSeparator ? null : culture ?? CultureInfo.InvariantCulture;
+            TweenerCore<int, int, NoOptions> t = DOTween.To(() => v, x => {
+                v = x;
+                target.text = addThousandsSeparator
+                    ? v.ToString("N0", cInfo)
+                    : v.ToString();
+            }, endValue, duration);
             t.SetTarget(target);
             return t;
         }

@@ -14,16 +14,12 @@ using Debug = UnityEngine.Debug;
 
 public class TempTests : BrainBase
 {
-    public Transform target;
+    public Text target;
 
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.5f);
-        MakeTween();
-    }
-
-    void MakeTween()
-    {
-        target.DOMoveX(2, 3).OnKill(MakeTween);
+        Tween t = target.DOCounter(800000, 13000, 3).SetEase(Ease.Linear).Pause();
+        yield return new WaitForSeconds(1);
+        t.Play();
     }
 }
