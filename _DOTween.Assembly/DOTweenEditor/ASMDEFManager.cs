@@ -65,10 +65,11 @@ namespace DG.DOTweenEditor
                 if (hasProEditorASMDEF) RemoveASMDEF(ASMDEFType.DOTweenProEditor);
                 return;
             }
-            if (EditorUtils.hasPro) {
-                if (!hasProASMDEF) CreateASMDEF(ASMDEFType.DOTweenPro);
-                if (!hasProEditorASMDEF) CreateASMDEF(ASMDEFType.DOTweenProEditor);
-            }
+
+            if (!EditorUtils.hasPro) return;
+
+            if (!hasProASMDEF) CreateASMDEF(ASMDEFType.DOTweenPro);
+            if (!hasProEditorASMDEF) CreateASMDEF(ASMDEFType.DOTweenProEditor);
 
             // Pro ASMDEF present: check that they contain correct elements
             DOTweenSettings src = DOTweenUtilityWindow.GetDOTweenSettings();
@@ -81,6 +82,7 @@ namespace DG.DOTweenEditor
         public static void CreateAllASMDEF()
         {
             CreateASMDEF(ASMDEFType.Modules);
+            if (!EditorUtils.hasPro) return;
             CreateASMDEF(ASMDEFType.DOTweenPro);
             CreateASMDEF(ASMDEFType.DOTweenProEditor);
         }
