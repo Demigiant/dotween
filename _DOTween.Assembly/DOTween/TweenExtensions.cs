@@ -286,7 +286,7 @@ namespace DG.Tweening
             for (int i = 0; i < waypointIndex + 1; i++) wpLength += pathTween.changeValue.wpLengths[i];
             float wpPerc = wpLength / pathTween.changeValue.length;
             // Convert to time taking eventual inverse direction into account
-            bool useInversePosition = t.loops > 1 && t.loopType == LoopType.Yoyo
+            bool useInversePosition = t.hasLoops && t.loopType == LoopType.Yoyo
                 && (t.position < t.duration ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0);
             if (useInversePosition) wpPerc = 1 - wpPerc;
             float to = (t.isComplete ? t.completedLoops - 1 : t.completedLoops) * t.duration + wpPerc * t.duration;
@@ -489,7 +489,7 @@ namespace DG.Tweening
             }
 
             float perc = t.position / t.duration;
-            bool isInverse = t.completedLoops > 0 && t.loops > 1 && t.loopType == LoopType.Yoyo
+            bool isInverse = t.completedLoops > 0 && t.hasLoops && t.loopType == LoopType.Yoyo
                              && (!t.isComplete && t.completedLoops % 2 != 0 || t.isComplete && t.completedLoops % 2 == 0);
             return isInverse ? 1 - perc : perc;
         }

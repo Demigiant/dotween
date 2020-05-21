@@ -140,9 +140,9 @@ namespace DG.Tweening.Plugins
                     // If more than one waypoint changed, dispatch multiple callbacks
 //                    bool isBackwards = newWaypointIndex < prevWPIndex;
                     bool isBackwards = t.isBackwards;
-                    if (t.loopType == LoopType.Yoyo) {
-                        isBackwards = !t.isBackwards && t.loops > 1 && t.completedLoops % 2 != 0
-                                      || t.isBackwards && t.loops > 1 && t.completedLoops % 2 == 0;
+                    if (t.hasLoops && t.loopType == LoopType.Yoyo) {
+                        isBackwards = !t.isBackwards && t.completedLoops % 2 != 0
+                                      || t.isBackwards && t.completedLoops % 2 == 0;
                     }
                     if (isBackwards) {
 //                        for (int i = prevWPIndex - 1; i > newWaypointIndex - 1; --i) Tween.OnTweenCallback(t.onWaypointChange, i);

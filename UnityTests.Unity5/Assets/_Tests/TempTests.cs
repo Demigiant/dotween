@@ -15,11 +15,10 @@ using Debug = UnityEngine.Debug;
 public class TempTests : BrainBase
 {
     public Text target;
+    public int loops = -1;
 
-    IEnumerator Start()
+    void Start()
     {
-        Tween t = target.DOCounter(800000, 13000, 3).SetEase(Ease.Linear).Pause();
-        yield return new WaitForSeconds(1);
-        t.Play();
+        target.transform.DOMoveX(2, 1).SetLoops(loops, LoopType.Yoyo);
     }
 }

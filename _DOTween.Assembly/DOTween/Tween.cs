@@ -100,6 +100,8 @@ namespace DG.Tweening
 
         /// <summary>Gets and sets the time position (loops included, delays excluded) of the tween</summary>
         public float fullPosition { get { return this.Elapsed(true); } set { this.Goto(value, this.isPlaying); } }
+        /// <summary>Returns TRUE if the tween is set to loop (either a set number of times or infinitely)</summary>
+        public bool hasLoops { get { return loops == -1 || loops > 1; } }
 
         internal bool creationLocked; // TRUE after the tween was updated the first time (even if it was delayed), or when added to a Sequence
         internal bool startupDone; // TRUE the first time the actual tween starts, AFTER any delay has elapsed (unless it's a FROM tween)
@@ -249,7 +251,7 @@ namespace DG.Tweening
             }
 
             // updatePosition is different in case of Yoyo loop under certain circumstances
-            bool useInversePosition = t.loops > 1 && t.loopType == LoopType.Yoyo
+            bool useInversePosition = t.hasLoops && t.loopType == LoopType.Yoyo
                 && (t.position < t.duration ? t.completedLoops % 2 != 0 : t.completedLoops % 2 == 0);
 
             // Get values from plugin and set them

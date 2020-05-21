@@ -2677,6 +2677,9 @@
         <member name="P:DG.Tweening.Tween.fullPosition">
             <summary>Gets and sets the time position (loops included, delays excluded) of the tween</summary>
         </member>
+        <member name="P:DG.Tweening.Tween.hasLoops">
+            <summary>Returns TRUE if the tween is set to loop (either a set number of times or infinitely)</summary>
+        </member>
         <member name="P:DG.Tweening.Tween.playedOnce">
             <summary>TRUE after the tween was set in a play state at least once, AFTER any delay is elapsed</summary>
         </member>
