@@ -14,11 +14,12 @@ using Debug = UnityEngine.Debug;
 
 public class TempTests : BrainBase
 {
-    public Text target;
+    public RectTransform target;
     public int loops = -1;
 
-    void Start()
+    IEnumerator Start()
     {
-        target.transform.DOMoveX(2, 1).SetLoops(loops, LoopType.Yoyo);
+        yield return new WaitForSeconds(1);
+        target.DOLocalMoveX(2, 1);
     }
 }

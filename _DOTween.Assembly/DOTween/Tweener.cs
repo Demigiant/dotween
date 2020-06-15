@@ -201,8 +201,13 @@ namespace DG.Tweening
                     if (DOTween.useSafeMode) {
                         try {
                             t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
-                        } catch {
+                        } catch (Exception e) {
                             // Target/field doesn't exist: kill tween
+                            if (Debugger.logPriority >= 1) {
+                                Debugger.LogWarning(string.Format(
+                                    "Target or field is missing/null ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
+                                ), t);
+                            }
                             TweenManager.Despawn(t);
                             DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.TargetOrFieldMissing);
                             return null;
