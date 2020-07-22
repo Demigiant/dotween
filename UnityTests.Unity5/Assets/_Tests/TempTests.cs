@@ -14,12 +14,14 @@ using Debug = UnityEngine.Debug;
 
 public class TempTests : BrainBase
 {
-    public RectTransform target;
-    public int loops = -1;
+    public Transform target;
+    public bool doQuaternion = false;
 
     IEnumerator Start()
     {
+        target.eulerAngles = new Vector3(95, 0, 0);
         yield return new WaitForSeconds(1);
-        target.DOLocalMoveX(2, 1);
+        if (doQuaternion) target.DORotateQuaternion(Quaternion.Euler(new Vector3(100, 0, 0)), 1);
+        else target.DORotate(new Vector3(100, 0, 0), 1);
     }
 }

@@ -21,11 +21,14 @@ namespace DG.Tweening.Plugins.Core.PathCore
         static LinearDecoder _linearDecoder;
         static CubicBezierDecoder _cubicBezierDecoder;
         public float[] wpLengths; // Unit length of each waypoint (public so it can be accessed at runtime by external scripts)
+        /// <summary>
+        /// Path waypoints (modified by PathPlugin when setting relative end/change value or by CubicBezierDecoder) and by DOTweenPathInspector
+        /// </summary>
+        [SerializeField] public Vector3[] wps; // public so it can be accessed at runtime by external scripts
 
         [SerializeField] internal PathType type;
         [SerializeField] internal int subdivisionsXSegment; // Subdivisions x each segment
         [SerializeField] internal int subdivisions; // Stored by PathPlugin > total subdivisions for whole path (derived automatically from subdivisionsXSegment)
-        [SerializeField] internal Vector3[] wps; // Waypoints (modified by PathPlugin when setting relative end/change value or by CubicBezierDecoder) - also modified by DOTweenPathInspector
         [SerializeField] internal ControlPoint[] controlPoints; // Control points used by non-linear paths
         [SerializeField] internal float length; // Unit length of the path
         [SerializeField] internal bool isFinalized; // TRUE when the path has been finalized (either by starting the tween or if the path was created by the Path Editor)
