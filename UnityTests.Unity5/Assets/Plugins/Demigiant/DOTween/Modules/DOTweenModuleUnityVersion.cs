@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-#if UNITY_2018_1_OR_NEWER && NET_4_6
+#if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0)
 using System.Threading.Tasks;
 #endif
 
@@ -216,7 +216,7 @@ namespace DG.Tweening
 
         #region .NET 4.6 or Newer
 
-#if NET_4_6
+#if (NET_4_6 || NET_STANDARD_2_0)
 
         #region Async Instructions
 
