@@ -1059,6 +1059,11 @@
             Path control point
             </summary>
         </member>
+        <member name="F:DG.Tweening.Plugins.Core.PathCore.Path.wps">
+            <summary>
+            Path waypoints (modified by PathPlugin when setting relative end/change value or by CubicBezierDecoder) and by DOTweenPathInspector
+            </summary>
+        </member>
         <member name="M:DG.Tweening.Plugins.Core.PathCore.Path.GetPoint(System.Single,System.Boolean)">
             <summary>
             Gets the point on the path at the given percentage (0 to 1)
