@@ -170,12 +170,14 @@ namespace DG.Tweening.Plugins
             switch (options.orientType) {
             case OrientType.LookAtPosition:
                 path.lookAtPosition = options.lookAtPosition; // Used to draw editor gizmos
-                newRot = Quaternion.LookRotation(options.lookAtPosition - trans.position, trans.up);
+//                newRot = Quaternion.LookRotation(options.lookAtPosition - trans.position, trans.up);
+                newRot = Quaternion.LookRotation(options.lookAtPosition - trans.position, options.stableZRotation ? Vector3.up : trans.up);
                 break;
             case OrientType.LookAtTransform:
                 if (options.lookAtTransform != null) {
                     path.lookAtPosition = options.lookAtTransform.position; // Used to draw editor gizmos
-                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - trans.position, trans.up);
+//                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - trans.position, trans.up);
+                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - trans.position, options.stableZRotation ? Vector3.up : trans.up);
                 }
                 break;
             case OrientType.ToPath:

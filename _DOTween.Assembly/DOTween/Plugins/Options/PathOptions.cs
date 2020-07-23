@@ -31,6 +31,7 @@ namespace DG.Tweening.Plugins.Options
         public bool useLocalPosition;
         public Transform parent; // Only used with OrientType.ToPath and useLocalPosition set as TRUE
         public bool isRigidbody;
+        public bool stableZRotation; // If TRUE doesn't rotate the target along the Z axis
 
         internal Quaternion startupRot; // Used to reset orientation when rewinding
         internal float startupZRot; // Used to store Z value in case of lock Z, in order to rotate things differently
@@ -49,8 +50,11 @@ namespace DG.Tweening.Plugins.Options
             forward = Quaternion.identity;
             useLocalPosition = false;
             parent = null;
+            isRigidbody = false;
+            stableZRotation = false;
             startupRot = Quaternion.identity;
             startupZRot = 0;
+            addedExtraStartWp = addedExtraEndWp = false;
         }
     }
 }

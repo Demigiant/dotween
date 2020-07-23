@@ -918,14 +918,16 @@ namespace DG.Tweening
         public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
             this TweenerCore<Vector3, Path, PathOptions> t, Vector3 lookAtPosition, Vector3? forwardDirection = null, Vector3? up = null
         )
-        {
-            if (t == null || !t.active) return t;
-
-            t.plugOptions.orientType = OrientType.LookAtPosition;
-            t.plugOptions.lookAtPosition = lookAtPosition;
-            SetPathForwardDirection(t, forwardDirection, up);
-            return t;
-        }
+        { return SetLookAt(t, OrientType.LookAtPosition, lookAtPosition, null, -1, forwardDirection, up); }
+        /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
+        /// Orients the target towards the given position with options to keep the Z rotation stable.
+        /// Must be chained directly to the tween creation method or to a <code>SetOptions</code></summary>
+        /// <param name="lookAtPosition">The position to look at</param>
+        /// <param name="stableZRotation">If TRUE doesn't rotate the target along the Z axis</param>
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
+            this TweenerCore<Vector3, Path, PathOptions> t, Vector3 lookAtPosition, bool stableZRotation
+        )
+        { return SetLookAt(t, OrientType.LookAtPosition, lookAtPosition, null, -1, null, null, stableZRotation); }
         /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
         /// Orients the target towards another transform.
         /// Must be chained directly to the tween creation method or to a <code>SetOptions</code></summary>
@@ -936,14 +938,16 @@ namespace DG.Tweening
         public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
             this TweenerCore<Vector3, Path, PathOptions> t, Transform lookAtTransform, Vector3? forwardDirection = null, Vector3? up = null
         )
-        {
-            if (t == null || !t.active) return t;
-
-            t.plugOptions.orientType = OrientType.LookAtTransform;
-            t.plugOptions.lookAtTransform = lookAtTransform;
-            SetPathForwardDirection(t, forwardDirection, up);
-            return t;
-        }
+        { return SetLookAt(t, OrientType.LookAtTransform, Vector3.zero, lookAtTransform, -1, forwardDirection, up); }
+        /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
+        /// Orients the target towards another transform with options to keep the Z rotation stable.
+        /// Must be chained directly to the tween creation method or to a <code>SetOptions</code></summary>
+        /// <param name="lookAtTransform">The transform to look at</param>
+        /// <param name="stableZRotation">If TRUE doesn't rotate the target along the Z axis</param>
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
+            this TweenerCore<Vector3, Path, PathOptions> t, Transform lookAtTransform, bool stableZRotation
+        )
+        { return SetLookAt(t, OrientType.LookAtTransform, Vector3.zero, lookAtTransform, -1, null, null, stableZRotation); }
         /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
         /// Orients the target to the path, with the given lookAhead.
         /// Must be chained directly to the tween creation method or to a <code>SetOptions</code></summary>
@@ -954,12 +958,39 @@ namespace DG.Tweening
         public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
             this TweenerCore<Vector3, Path, PathOptions> t, float lookAhead, Vector3? forwardDirection = null, Vector3? up = null
         )
+        { return SetLookAt(t, OrientType.ToPath, Vector3.zero, null, lookAhead, forwardDirection, up); }
+        /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
+        /// Orients the path with options to keep the Z rotation stable.
+        /// Must be chained directly to the tween creation method or to a <code>SetOptions</code></summary>
+        /// <param name="lookAhead">The percentage of lookAhead to use (0 to 1)</param>
+        /// <param name="stableZRotation">If TRUE doesn't rotate the target along the Z axis</param>
+        public static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
+            this TweenerCore<Vector3, Path, PathOptions> t, float lookAhead, bool stableZRotation
+        )
+        { return SetLookAt(t, OrientType.ToPath, Vector3.zero, null, lookAhead, null, null, stableZRotation); }
+        static TweenerCore<Vector3, Path, PathOptions> SetLookAt(
+            this TweenerCore<Vector3, Path, PathOptions> t,
+            OrientType orientType, Vector3 lookAtPosition, Transform lookAtTransform, float lookAhead,
+            Vector3? forwardDirection = null, Vector3? up = null, bool stableZRotation = false
+        )
         {
             if (t == null || !t.active) return t;
 
-            t.plugOptions.orientType = OrientType.ToPath;
-            if (lookAhead < PathPlugin.MinLookAhead) lookAhead = PathPlugin.MinLookAhead;
-            t.plugOptions.lookAhead = lookAhead;
+            t.plugOptions.orientType = orientType;
+            switch (orientType) {
+            case OrientType.LookAtPosition:
+                t.plugOptions.lookAtPosition = lookAtPosition;
+                break;
+            case OrientType.LookAtTransform:
+                t.plugOptions.lookAtTransform = lookAtTransform;
+                break;
+            case OrientType.ToPath:
+                if (lookAhead < PathPlugin.MinLookAhead) lookAhead = PathPlugin.MinLookAhead;
+                t.plugOptions.lookAhead = lookAhead;
+                break;
+            }
+            t.plugOptions.lookAtPosition = lookAtPosition;
+            t.plugOptions.stableZRotation = stableZRotation;
             SetPathForwardDirection(t, forwardDirection, up);
             return t;
         }
