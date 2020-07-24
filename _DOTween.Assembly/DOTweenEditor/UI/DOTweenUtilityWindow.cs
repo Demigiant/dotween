@@ -184,7 +184,8 @@ namespace DG.DOTweenEditor.UI
                 using (new GUILayout.HorizontalScope()) {
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("<b>Import DOTweenTimeline</b>\n<b>-[ EXPERIMENTAL ]-</b>\n(requires Unity 2018.4.24 or later)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
-                        if (EditorVersion.MajorVersion < 2018 || EditorVersion.MinorVersion < 4) {
+                        bool isValidUnityVersion = EditorVersion.MajorVersion > 2018 || EditorVersion.MajorVersion == 2018 && EditorVersion.MinorVersion > 4;
+                        if (!isValidUnityVersion) {
                             EditorUtility.DisplayDialog("Import DOTweenTimeline",
                                 "Sorry, you need to be on Unity 2018.4 or later in order to import DOTweenTimeline.",
                                 "Ooops"
