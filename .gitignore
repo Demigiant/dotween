@@ -44,6 +44,7 @@ zzTestBuilds
 UnityTests.Unity2019
 UnityTests.Unity5BETA
 UnityTests.Unity5 - LastVersionBeforeModules
+UnityTests.Unity2020
 ModulesTest.Unity2018
 packageManagerTests
 biz

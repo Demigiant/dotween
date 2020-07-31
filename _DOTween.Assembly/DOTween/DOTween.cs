@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.421"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.425"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -127,11 +127,25 @@ namespace DG.Tweening
         /// <summary>Used internally. Assigned/removed by DOTweenComponent.Create/DestroyInstance</summary>
         public static DOTweenComponent instance;
 
+        // Set by DOTweenComponent when the application is quitting.
+        // Resets isQuitting if the frame count when it was set to TRUE changed (in order to work with no-domain-reload quick enter playmode)
+        internal static bool isQuitting {
+            get {
+                if (!_foo_isQuitting) return false;
+                if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) {
+                    _foo_isQuitting = false;
+                    return false;
+                }
+                return true;
+            }
+            set { _foo_isQuitting = value; if (value)_isQuittingFrame = Time.frameCount; }
+        }
+        static bool _foo_isQuitting;
         internal static int maxActiveTweenersReached, maxActiveSequencesReached; // Controlled by DOTweenInspector if showUnityEditorReport is active
         internal static SafeModeReport safeModeReport; // Used to store how many safe mode errors are captured in the editor
         internal static readonly List<TweenCallback> GizmosDelegates = new List<TweenCallback>(); // Can be used by other classes to call internal gizmo draw methods
         internal static bool initialized; // Can be set to false by DOTweenComponent OnDestroy
-        internal static bool isQuitting; // Set by DOTweenComponent when the application is quitting
+        static int _isQuittingFrame = -1; // Frame when isQuitting was set. Sets isQuitting to false after this frame (so no-domain-reload playmode can work)
 
         #region Public Methods
 
@@ -257,7 +271,10 @@ namespace DG.Tweening
             drawGizmos = true;
             timeScale = 1;
             useSmoothDeltaTime = false;
+            maxSmoothUnscaledTime = 0.15f;
+            rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
             logBehaviour = LogBehaviour.ErrorsOnly;
+            onWillLog = null;
             defaultEaseType = Ease.OutQuad;
             defaultEaseOvershootOrAmplitude = 1.70158f;
             defaultEasePeriod = 0;
@@ -268,6 +285,7 @@ namespace DG.Tweening
             defaultAutoKill = true;
             defaultRecyclable = false;
             maxActiveTweenersReached = maxActiveSequencesReached = 0;
+            GizmosDelegates.Clear();
 
             DOTweenComponent.DestroyInstance();
         }
