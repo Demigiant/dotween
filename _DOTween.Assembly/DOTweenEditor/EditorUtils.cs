@@ -18,6 +18,7 @@ namespace DG.DOTweenEditor
         public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
         public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimeline; } }
         public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimelineUnityPackage; } }
+        public static bool isValidDOTweenTimelineUnityVersion { get { RetrieveDependenciesData(); return hasPro && _isValidDOTweenTimelineUnityVersion; } }
         public static string proVersion { get { RetrieveDependenciesData(); return _proVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
         public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
@@ -43,6 +44,7 @@ namespace DG.DOTweenEditor
         static bool _hasPro;
         static bool _hasDOTweenTimeline;
         static bool _hasDOTweenTimelineUnityPackage;
+        static bool _isValidDOTweenTimelineUnityVersion;
         static string _proVersion;
         static bool _hasCheckedForPro;
         static string _editorADBDir;
@@ -403,6 +405,7 @@ namespace DG.DOTweenEditor
             _dotweenTimelineUnityPackageFilePath = _dotweenProDir + "DOTweenTimeline_UnityPackage.unitypackage";
             _hasDOTweenTimelineUnityPackage = File.Exists(_dotweenTimelineUnityPackageFilePath);
             _hasDOTweenTimeline = Directory.Exists(_dotweenTimelineDir);
+            _isValidDOTweenTimelineUnityVersion = EditorVersion.MajorVersion > 2018 || EditorVersion.MajorVersion == 2018 && EditorVersion.MinorVersion >= 4;
         }
 
         static void CreateScriptableAsset<T>(string adbFilePath) where T : ScriptableObject

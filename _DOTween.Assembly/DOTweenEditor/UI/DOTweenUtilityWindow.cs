@@ -172,6 +172,16 @@ namespace DG.DOTweenEditor.UI
                     EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                     DOTweenDefines.RemoveAllLegacyDefines();
                     EditorUtils.DeleteDOTweenUpgradeManagerFiles();
+                    if (EditorUtils.hasDOTweenTimelineUnityPackage && EditorUtils.isValidDOTweenTimelineUnityVersion) {
+                        EditorUtils.DelayedCall(0.1f, ()=> {
+                            bool unpackTimeline = EditorUtility.DisplayDialog("Install DOTweenTimeline",
+                                "Import the most recent version of DOTweenTimeline?\n\nIf you select \"Ok\" please wait for Unity compilation to end" +
+                                " before pressing \"Import\" in the next screen.",
+                                "Ok", "Cancel"
+                            );
+                            if (unpackTimeline) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+                        });
+                    }
                     return;
                 }
                 GUILayout.FlexibleSpace();
@@ -184,8 +194,7 @@ namespace DG.DOTweenEditor.UI
                 using (new GUILayout.HorizontalScope()) {
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("<b>Import DOTweenTimeline</b>\n<b>-[ EXPERIMENTAL ]-</b>\n(requires Unity 2018.4.24 or later)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
-                        bool isValidUnityVersion = EditorVersion.MajorVersion > 2018 || EditorVersion.MajorVersion == 2018 && EditorVersion.MinorVersion > 4;
-                        if (!isValidUnityVersion) {
+                        if (!EditorUtils.isValidDOTweenTimelineUnityVersion) {
                             EditorUtility.DisplayDialog("Import DOTweenTimeline",
                                 "Sorry, you need to be on Unity 2018.4 or later in order to import DOTweenTimeline.",
                                 "Ooops"
