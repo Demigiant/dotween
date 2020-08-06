@@ -249,13 +249,22 @@ namespace DG.DOTweenEditor.UI
 
         static void CheckAutoModuleSettings(bool applySettings, ModuleInfo m, ref bool srcModuleEnabled)
         {
+            bool moduleSettingsToggled = false;
             if (m.enabled != srcModuleEnabled) {
                 if (applySettings) {
                     m.enabled = srcModuleEnabled;
-                    ToggleModule(m, ref srcModuleEnabled);
+                    moduleSettingsToggled = ToggleModule(m, ref srcModuleEnabled);
                 } else {
                     srcModuleEnabled = m.enabled;
                     EditorUtility.SetDirty(_src);
+                }
+            }
+            if (applySettings && !moduleSettingsToggled) {
+                // If we were applying modifications but nothing changed in the main module file,
+                // check the modules dependent files anyway
+                string marker = "// " + m.id + "_MARKER";
+                for (int i = 0; i < _ModuleDependentFiles.Length; ++i) {
+                    ToggleModuleInDependentFile(_ModuleDependentFiles[i], m.enabled, marker);
                 }
             }
         }

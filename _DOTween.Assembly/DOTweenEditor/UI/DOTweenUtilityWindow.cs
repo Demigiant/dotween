@@ -194,7 +194,9 @@ namespace DG.DOTweenEditor.UI
                             "DOTweenTimeline requires Unity 2018.4.24 or later. Do not import it if you're on earlier versions." +
                             "\n\nProceed and import?",
                             "Ok", "Cancel"
-                        )) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+                        )) {
+                            AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+                        }
                     }
                     GUILayout.FlexibleSpace();
                 }
