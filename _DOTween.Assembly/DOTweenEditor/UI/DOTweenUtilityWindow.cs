@@ -175,9 +175,9 @@ namespace DG.DOTweenEditor.UI
                     if (EditorUtils.hasDOTweenTimelineUnityPackage && EditorUtils.isValidDOTweenTimelineUnityVersion) {
                         EditorUtils.DelayedCall(0.1f, ()=> {
                             bool unpackTimeline = EditorUtility.DisplayDialog("Install DOTweenTimeline",
-                                "Import the most recent version of DOTweenTimeline?\n\nIf you select \"Ok\" please wait for Unity compilation to end" +
+                                "Import the most recent version of DOTweenTimeline?\n\nIf you select \"Yes\" please wait for Unity compilation to end" +
                                 " before pressing \"Import\" in the next screen.",
-                                "Ok", "Cancel"
+                                "Yes", "Skip"
                             );
                             if (unpackTimeline) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
                         });

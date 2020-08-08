@@ -14,11 +14,13 @@ using Debug = UnityEngine.Debug;
 
 public class TempTests : BrainBase
 {
-    public Rigidbody2D target;
+    public Transform target;
+    public float shakeStrength = 0.5f;
 
     IEnumerator Start()
     {
         yield return new WaitForSeconds(1);
-        target.DOPath(new Vector2[] {new Vector2(2, 1), new Vector2(-2, -1)}, 3, PathType.CatmullRom); 
+        Debug.Log(target.position.x.ToString("N6"));
+        target.DOShakePosition(2, shakeStrength, 10, 90, false, true).OnComplete(()=> Debug.Log(target.position.x.ToString("N6")));
     }
 }
