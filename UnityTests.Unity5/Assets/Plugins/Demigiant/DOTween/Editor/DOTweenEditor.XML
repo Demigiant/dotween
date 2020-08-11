@@ -10,11 +10,14 @@
             </summary>
             <param name="onPreviewUpdated">Eventual callback to call after every update</param>
         </member>
-        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop(System.Boolean)">
+        <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Stop(System.Boolean,System.Boolean)">
             <summary>
             Stops the update loop and clears the onPreviewUpdated callback.
             </summary>
-            <param name="resetTweenTargets">If TRUE also resets the tweened objects to their original state</param>
+            <param name="resetTweenTargets">If TRUE also resets the tweened objects to their original state.
+            Note that this works by calling Rewind on all tweens, so it will work correctly
+            only if you have a single tween type per object and it wasn't killed</param>
+            <param name="clearTweens">If TRUE also kills any cached tween</param>
         </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.PrepareTweenForPreview(DG.Tweening.Tween,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
