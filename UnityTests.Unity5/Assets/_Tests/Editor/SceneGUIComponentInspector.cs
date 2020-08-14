@@ -11,7 +11,6 @@ using UnityEngine;
 public class SceneGUIComponentInspector : UnityEditor.Editor
 {
     SceneGUIComponent _src;
-    bool _isUpdatingTweens;
 
     void OnEnable()
     {
@@ -29,9 +28,13 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
         Handles.BeginGUI();
         using (new GUILayout.HorizontalScope()) {
             GUILayout.Space(6);
-            if (GUILayout.Button("Begin tweens update loop")) BeginTweensUpdateLoop();
-            if (GUILayout.Button("Stop tweens update loop")) StopTweensUpdateLoop(false);
-            if (GUILayout.Button("Stop tweens update loop and reset targets")) StopTweensUpdateLoop(true);
+            using (new EditorGUI.DisabledScope(DOTweenEditorPreview.isPreviewing)) {
+                if (GUILayout.Button("Begin tweens update loop")) BeginTweensUpdateLoop();
+            }
+            using (new EditorGUI.DisabledScope(!DOTweenEditorPreview.isPreviewing)) {
+                if (GUILayout.Button("Stop tweens update loop")) StopTweensUpdateLoop(false);
+                if (GUILayout.Button("Stop tweens update loop and reset targets")) StopTweensUpdateLoop(true);
+            }
             GUILayout.Space(60);
         }
         using (new GUILayout.HorizontalScope()) {
@@ -39,13 +42,12 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
             if (GUILayout.Button("Create tweens")) CreateTweens();
             GUILayout.Space(60);
         }
-        if (_isUpdatingTweens) GUILayout.Label("Tweens are being updated");
+        if (DOTweenEditorPreview.isPreviewing) GUILayout.Label("Tweens are being updated");
         Handles.EndGUI();
     }
 
     void BeginTweensUpdateLoop()
     {
-        _isUpdatingTweens = true;
         // Start the editor tweens update loop
         // (will update any tween you passed to PrepareTweenForPreview)
         DOTweenEditorPreview.Start();
@@ -53,7 +55,6 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
 
     void StopTweensUpdateLoop(bool andResetTargets)
     {
-        _isUpdatingTweens = false;
         // Stop all editor tweens
         // (you can pass a TRUE parameter to also reset the tween targets to their original state)
         DOTweenEditorPreview.Stop(andResetTargets);
