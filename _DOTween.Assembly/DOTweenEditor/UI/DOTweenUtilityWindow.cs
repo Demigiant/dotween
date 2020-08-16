@@ -1,6 +1,8 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2014/12/24 13:37
 
+using System;
+using System.Collections.Generic;
 using System.IO;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -12,6 +14,23 @@ namespace DG.DOTweenEditor.UI
 {
     public class DOTweenUtilityWindow : EditorWindow
     {
+        #region Events
+
+        public static event Action<bool> OnRequestDOTweenProMissingScriptsFix;
+        public static event Action<bool> OnRequestDOTweenTimelineMissingScriptsFix;
+
+        static void Dispatch_OnRequestDOTweenProMissingScriptsFix(bool currentSceneOnly)
+        {
+            if (OnRequestDOTweenProMissingScriptsFix != null) OnRequestDOTweenProMissingScriptsFix(currentSceneOnly);
+        }
+
+        static void Dispatch_OnRequestDOTweenTimelineMissingScriptsFix(bool currentSceneOnly)
+        {
+            if (OnRequestDOTweenTimelineMissingScriptsFix != null) OnRequestDOTweenTimelineMissingScriptsFix(currentSceneOnly);
+        }
+
+        #endregion
+
         [MenuItem("Tools/Demigiant/" + _Title)]
         static void ShowWindow() { Open(); }
 		
@@ -30,7 +49,7 @@ namespace DG.DOTweenEditor.UI
         Vector2 _scrollVal;
 
         int _selectedTab;
-        string[] _tabLabels = new[] { "Setup", "Preferences" };
+        string[] _tabLabels = new[] { "Setup", "Preferences", "Utilities" };
         string[] _settingsLocation = new[] {"Assets > Resources", "DOTween > Resources", "Demigiant > Resources"};
 
         // If force is FALSE opens the window only if DOTween's version has changed
@@ -131,6 +150,9 @@ namespace DG.DOTweenEditor.UI
                         EditorGUIUtility.labelWidth = 160;
                         DrawPreferencesGUI();
                         EditorGUIUtility.labelWidth = labelW;
+                        break;
+                    case 2:
+                        DrawUtilsGUI();
                         break;
                     default:
                         DrawSetupGUI();
@@ -352,6 +374,45 @@ namespace DG.DOTweenEditor.UI
                 );
                 EditorGUI.EndDisabledGroup();
                 GUILayout.EndVertical();
+            }
+        }
+
+        void DrawUtilsGUI()
+        {
+            GUILayout.Space(40);
+
+            // Fix missingScript references in scenes and prefabs
+            if (EditorUtils.hasPro) {
+                using (new GUILayout.VerticalScope(GUI.skin.box)) {
+                    GUILayout.Label("Fix DOTweenPro MissingScript References", EditorStyles.wordWrappedLabel);
+                    if (GUILayout.Button("In <b>current</b> Scene", EditorGUIUtils.btSetup)) {
+                        if (EditorUtility.DisplayDialog("Fix MissingScript References",
+                            "Inspect current scene for missing DOTweenPro script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")
+                        ) Dispatch_OnRequestDOTweenProMissingScriptsFix(true);
+                    }
+                    if (GUILayout.Button("In <b>all</b> Scenes and Prefabs", EditorGUIUtils.btSetup)) {
+                        if (EditorUtility.DisplayDialog("Fix MissingScript References",
+                            "Inspect all your project's Prefabs and Scenes to find missing DOTweenPro script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")
+                        ) Dispatch_OnRequestDOTweenProMissingScriptsFix(false);
+                    }
+                    GUILayout.Space(4);
+                }
+            }
+            if (EditorUtils.hasDOTweenTimeline) {
+                using (new GUILayout.VerticalScope(GUI.skin.box)) {
+                    GUILayout.Label("Fix DOTweenTimeline MissingScript References", EditorStyles.wordWrappedLabel);
+                    if (GUILayout.Button("In <b>current</b> Scene", EditorGUIUtils.btSetup)) {
+                        if (EditorUtility.DisplayDialog("Fix MissingScript References",
+                            "Inspect current scene for missing DOTweenTimeline script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")
+                        ) Dispatch_OnRequestDOTweenTimelineMissingScriptsFix(true);
+                    }
+                    if (GUILayout.Button("In <b>all</b> Scenes and Prefabs", EditorGUIUtils.btSetup)) {
+                        if (EditorUtility.DisplayDialog("Fix MissingScript References",
+                            "Inspect all your project's Prefabs and Scenes to find missing DOTweenTimeline script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")
+                        ) Dispatch_OnRequestDOTweenTimelineMissingScriptsFix(false);
+                    }
+                    GUILayout.Space(4);
+                }
             }
         }
 

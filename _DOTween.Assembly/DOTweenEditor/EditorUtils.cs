@@ -2,10 +2,12 @@
 // Created: 2014/12/24 13:50
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using DG.Tweening;
+using DG.Tweening.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -278,13 +280,6 @@ namespace DG.DOTweenEditor
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             if (path.Substring(path.Length - 3) == "dll") return path;
-
-//            string codeBase = assembly.CodeBase;
-//            UriBuilder uri = new UriBuilder(codeBase);
-//            string path = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-//            string lastChar = path.Substring(path.Length - 4);
-//            if (lastChar == "dll") return path;
-
             // Invalid path, use Location
             return Path.GetFullPath(assembly.Location);
         }
