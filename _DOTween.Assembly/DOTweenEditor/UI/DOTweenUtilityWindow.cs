@@ -101,6 +101,8 @@ namespace DG.DOTweenEditor.UI
 #endif
             if (EditorUtils.hasPro) _innerTitle += "\nDOTweenPro v" + EditorUtils.proVersion;
             else _innerTitle += "\nDOTweenPro not installed";
+            if (EditorUtils.hasDOTweenTimeline) _innerTitle += "\nDOTweenTimeline v" + EditorUtils.dotweenTimelineVersion;
+            else _innerTitle += "\nDOTweenTimeline not installed";
 
             Init();
 
@@ -194,16 +196,17 @@ namespace DG.DOTweenEditor.UI
                     EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
                     DOTweenDefines.RemoveAllLegacyDefines();
                     EditorUtils.DeleteDOTweenUpgradeManagerFiles();
-                    if (EditorUtils.hasDOTweenTimelineUnityPackage && EditorUtils.isValidDOTweenTimelineUnityVersion) {
-                        EditorUtils.DelayedCall(0.1f, ()=> {
-                            bool unpackTimeline = EditorUtility.DisplayDialog("Install DOTweenTimeline",
-                                "Import the most recent version of DOTweenTimeline?\n\nIf you select \"Yes\" please wait for Unity compilation to end" +
-                                " before pressing \"Import\" in the next screen.",
-                                "Yes", "Skip"
-                            );
-                            if (unpackTimeline) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
-                        });
-                    }
+                    // ► Timeline is now a separate thing
+                    // if (EditorUtils.hasDOTweenTimelineUnityPackage && EditorUtils.isValidDOTweenTimelineUnityVersion) {
+                    //     EditorUtils.DelayedCall(0.1f, ()=> {
+                    //         bool unpackTimeline = EditorUtility.DisplayDialog("Install DOTweenTimeline",
+                    //             "Import the most recent version of DOTweenTimeline?\n\nIf you select \"Yes\" please wait for Unity compilation to end" +
+                    //             " before pressing \"Import\" in the next screen.",
+                    //             "Yes", "Skip"
+                    //         );
+                    //         if (unpackTimeline) AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+                    //     });
+                    // }
                     return;
                 }
                 GUILayout.FlexibleSpace();
@@ -211,28 +214,28 @@ namespace DG.DOTweenEditor.UI
             GUI.color = Color.white;
             GUILayout.Space(4);
 
-            // DOTweenTimeline
-            if (EditorUtils.hasDOTweenTimelineUnityPackage) {
-                using (new GUILayout.HorizontalScope()) {
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("<b>Import DOTweenTimeline</b>\n<b>-[ EXPERIMENTAL ]-</b>\n(requires Unity 2018.4.24 or later)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
-                        if (!EditorUtils.isValidDOTweenTimelineUnityVersion) {
-                            EditorUtility.DisplayDialog("Import DOTweenTimeline",
-                                "Sorry, you need to be on Unity 2018.4 or later in order to import DOTweenTimeline.",
-                                "Ooops"
-                            );
-                        } else if (EditorUtility.DisplayDialog("Import DOTweenTimeline",
-                            "DOTweenTimeline requires Unity 2018.4.24 or later. Do not import it if you're on earlier versions." +
-                            "\n\nProceed and import?",
-                            "Ok", "Cancel"
-                        )) {
-                            AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
-                        }
-                    }
-                    GUILayout.FlexibleSpace();
-                }
-                GUILayout.Space(4);
-            }
+            // DOTweenTimeline (now a separate thing so this button is removed)
+            // if (EditorUtils.hasDOTweenTimelineUnityPackage) {
+            //     using (new GUILayout.HorizontalScope()) {
+            //         GUILayout.FlexibleSpace();
+            //         if (GUILayout.Button("<b>Import DOTweenTimeline</b>\n<b>-[ EXPERIMENTAL ]-</b>\n(requires Unity 2018.4.24 or later)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+            //             if (!EditorUtils.isValidDOTweenTimelineUnityVersion) {
+            //                 EditorUtility.DisplayDialog("Import DOTweenTimeline",
+            //                     "Sorry, you need to be on Unity 2018.4 or later in order to import DOTweenTimeline.",
+            //                     "Ooops"
+            //                 );
+            //             } else if (EditorUtility.DisplayDialog("Import DOTweenTimeline",
+            //                 "DOTweenTimeline requires Unity 2018.4.24 or later. Do not import it if you're on earlier versions." +
+            //                 "\n\nProceed and import?",
+            //                 "Ok", "Cancel"
+            //             )) {
+            //                 AssetDatabase.ImportPackage(EditorUtils.dotweenTimelineUnityPackageFilePath, true);
+            //             }
+            //         }
+            //         GUILayout.FlexibleSpace();
+            //     }
+            //     GUILayout.Space(4);
+            // }
 
             // ASMDEF
             using (new GUILayout.VerticalScope(GUI.skin.box)) {
@@ -384,7 +387,7 @@ namespace DG.DOTweenEditor.UI
             // Fix missingScript references in scenes and prefabs
             if (EditorUtils.hasPro) {
                 using (new GUILayout.VerticalScope(GUI.skin.box)) {
-                    GUILayout.Label("Fix DOTweenPro MissingScript References", EditorStyles.wordWrappedLabel);
+                    GUILayout.Label("Fix <b>DOTweenPro</b> MissingScript References", EditorGUIUtils.wordWrapRichTextLabelStyle);
                     if (GUILayout.Button("In <b>current</b> Scene", EditorGUIUtils.btSetup)) {
                         if (EditorUtility.DisplayDialog("Fix MissingScript References",
                             "Inspect current scene for missing DOTweenPro script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")
@@ -400,7 +403,7 @@ namespace DG.DOTweenEditor.UI
             }
             if (EditorUtils.hasDOTweenTimeline) {
                 using (new GUILayout.VerticalScope(GUI.skin.box)) {
-                    GUILayout.Label("Fix DOTweenTimeline MissingScript References", EditorStyles.wordWrappedLabel);
+                    GUILayout.Label("Fix <b>DOTweenTimeline</b> MissingScript References", EditorGUIUtils.wordWrapRichTextLabelStyle);
                     if (GUILayout.Button("In <b>current</b> Scene", EditorGUIUtils.btSetup)) {
                         if (EditorUtility.DisplayDialog("Fix MissingScript References",
                             "Inspect current scene for missing DOTweenTimeline script References and fix them?\n\n(MAKE A BACKUP first!)", "Ok", "Cancel")

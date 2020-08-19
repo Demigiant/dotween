@@ -15,13 +15,21 @@ namespace DG.DOTweenEditor
 {
     public static class EditorUtils
     {
+        #region EVENTS
+
+        public static event Func<string> OnRequestDOTweenTimelineVersion;
+        static string Dispatch_OnRequestDOTweenTimelineVersion() { return OnRequestDOTweenTimelineVersion != null ? OnRequestDOTweenTimelineVersion() : null; }
+
+        #endregion
+
         public static string projectPath { get; private set; } // Without final slash
         public static string assetsPath { get; private set; } // Without final slash
         public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
-        public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimeline; } }
-        public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return hasPro && _hasDOTweenTimelineUnityPackage; } }
-        public static bool isValidDOTweenTimelineUnityVersion { get { RetrieveDependenciesData(); return hasPro && _isValidDOTweenTimelineUnityVersion; } }
+        public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return _hasDOTweenTimeline; } }
+        public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return _hasDOTweenTimelineUnityPackage; } }
+        public static bool isValidDOTweenTimelineUnityVersion { get { RetrieveDependenciesData(); return _isValidDOTweenTimelineUnityVersion; } }
         public static string proVersion { get { RetrieveDependenciesData(); return _proVersion; } }
+        public static string dotweenTimelineVersion { get { RetrieveDependenciesData(); return _dotweenTimelineVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
         public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
         // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
@@ -48,7 +56,9 @@ namespace DG.DOTweenEditor
         static bool _hasDOTweenTimelineUnityPackage;
         static bool _isValidDOTweenTimelineUnityVersion;
         static string _proVersion;
+        static string _dotweenTimelineVersion;
         static bool _hasCheckedForPro;
+        static bool _hasCheckedForDOTweenTimeline;
         static string _editorADBDir;
         static string _demigiantDir; // with final slash
         static string _dotweenDir; // with final slash
@@ -80,6 +90,7 @@ namespace DG.DOTweenEditor
             if (!force && _retrievedDependenciesData) return;
             _retrievedDependenciesData = true;
             CheckForPro();
+            CheckForTimeline();
             StoreEditorADBDir();
             StoreDOTweenDirsAndFilePaths();
         }
@@ -366,6 +377,19 @@ namespace DG.DOTweenEditor
                 // No DOTweenPro present
                 _hasPro = false;
                 _proVersion = "-";
+            }
+        }
+
+        static void CheckForTimeline()
+        {
+            _hasCheckedForDOTweenTimeline = true;
+            string version = Dispatch_OnRequestDOTweenTimelineVersion();
+            if (version != null) {
+                _hasDOTweenTimeline = true;
+                _dotweenTimelineVersion = version;
+            } else {
+                _hasDOTweenTimeline = false;
+                _dotweenTimelineVersion = "-";
             }
         }
 

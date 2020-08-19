@@ -83,9 +83,9 @@ namespace DG.DOTweenEditor.UI
             _spriteModule.enabled = EditorGUILayout.Toggle("Sprites", _spriteModule.enabled);
             _uiModule.enabled = EditorGUILayout.Toggle("UI", _uiModule.enabled);
             EditorGUILayout.EndVertical();
-            if (EditorUtils.hasPro) {
+            if (EditorUtils.hasPro || EditorUtils.hasDOTweenTimeline) {
                 GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
-                GUILayout.Label("External Assets (Pro)", EditorGUIUtils.boldLabelStyle);
+                GUILayout.Label("External Assets (Pro/Timeline)", EditorGUIUtils.boldLabelStyle);
                 GUILayout.Label(
                     "<b>IMPORTANT:</b> these modules are for external Unity assets." +
                     "\n<i>DO NOT activate an external module</i> unless you have the relative asset in your project.",
@@ -197,7 +197,7 @@ namespace DG.DOTweenEditor.UI
             bool tk2DToggled = false;
             bool deAudioToggled = false;
             bool deUnityExtendedToggled = false;
-            if (EditorUtils.hasPro) {
+            if (EditorUtils.hasPro || EditorUtils.hasDOTweenTimeline) {
                 textMeshProToggled = ToggleModule(_textMeshProModule, ref _src.modules.textMeshProEnabled);
                 tk2DToggled = ToggleModule(_tk2DModule, ref _src.modules.tk2DEnabled);
                 deAudioToggled = ToggleModule(_deAudioModule, ref _src.modules.deAudioEnabled);

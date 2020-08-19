@@ -37,6 +37,8 @@ namespace DG.DOTweenEditor.UI
 
             if (EditorUtils.hasPro) _strb.Append("\nDOTweenPro v").Append(EditorUtils.proVersion);
             else _strb.Append("\nDOTweenPro not installed");
+            if (EditorUtils.hasDOTweenTimeline) _strb.Append("\nDOTweenTimeline v").Append(EditorUtils.dotweenTimelineVersion);
+            else _strb.Append("\nDOTweenTimeline not installed");
             _title = _strb.ToString();
 
             _playingTweensHex = EditorGUIUtility.isProSkin ? "<color=#00c514>" : "<color=#005408>";
