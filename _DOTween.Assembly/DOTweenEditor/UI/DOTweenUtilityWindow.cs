@@ -244,19 +244,27 @@ namespace DG.DOTweenEditor.UI
                     GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
                     if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
                         if (ASMDEFManager.hasModulesASMDEF) {
-                            if (EditorUtility.DisplayDialog("Remove ASMDEF",
-                                string.Format("This will remove the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
-                                              " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                              " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
-                                "Ok", "Cancel"
-                            )) ASMDEFManager.RemoveAllASMDEF();
+                            string msg = "This will remove:\n-DOTween/Modules/DOTween.Modules.asmdef";
+                            if (EditorUtils.hasPro) {
+                                msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
+                                       "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
+                            }
+                            if (EditorUtils.hasDOTweenTimeline) {
+                                msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
+                                       "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
+                            }
+                            if (EditorUtility.DisplayDialog("Remove ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.RemoveAllASMDEF();
                         } else {
-                            if (EditorUtility.DisplayDialog("Create ASMDEF",
-                                string.Format("This will create the \"DOTween/Modules/DOTween.Modules.asmdef\" file" +
-                                              " (and if you have DOTween Pro also the \"DOTweenPro/DOTweenPro.Scripts.asmdef\"" +
-                                              " and \"DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef\" files)"),
-                                "Ok", "Cancel"
-                            )) ASMDEFManager.CreateAllASMDEF();
+                            string msg = "This will create:\n-DOTween/Modules/DOTween.Modules.asmdef";
+                            if (EditorUtils.hasPro) {
+                                msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
+                                       "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
+                            }
+                            if (EditorUtils.hasDOTweenTimeline) {
+                                msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
+                                       "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
+                            }
+                            if (EditorUtility.DisplayDialog("Create ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.CreateAllASMDEF();
                         }
                     }
                     GUI.color = Color.white;

@@ -67,40 +67,40 @@ namespace DG.DOTweenEditor
 //            string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
 //            bool dotweenImported = dotweenEntries.Length > 0;
             if (dotweenImported) {
-                // Reapply modules
+                // DOTween or Pro or Timeline imported
+                // Reapply modules and refresh ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {
-//                    Debug.Log("Apply Modules Settings after DOTween reimport (" + dotweenFile + ")");
+                    // Debug.Log("Apply Modules Settings after DOTween reimport (" + dotweenFile + ")");
                     DOTweenUtilityWindowModules.ApplyModulesSettings();
-                });
-            }
-
-            string dotweenProFile = System.Array.Find(
-                importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
-            );
-            bool dotweenProImported = dotweenProFile != null;
-//            string[] dotweenProEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
-//            bool dotweenProImported = dotweenProEntries.Length > 0;
-            if (dotweenProImported) {
-                // Refresh ASMDEF
-                EditorUtils.DelayedCall(0.1f, ()=> {
-//                    Debug.Log("Refresh ASMDEF after DOTweenPro reimport (" + dotweenProFile + ")");
                     ASMDEFManager.RefreshExistingASMDEFFiles();
                 });
             }
 
-            string dotweenTimelineFile = System.Array.Find(
-                importedAssets, name => name.Contains("DOTweenTimeline") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
-            );
-            bool dotweenTimelineImported = dotweenTimelineFile != null;
-//            string[] dotweenTimelineEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
-//            bool dotweenTimelineImported = dotweenTimelineEntries.Length > 0;
-            if (dotweenTimelineImported) {
-                // Reapply modules
-                EditorUtils.DelayedCall(0.1f, ()=> {
-//                    Debug.Log("Apply Modules Settings after DOTweenTimeline reimport (" + dotweenTimelineFile + ")");
-                    DOTweenUtilityWindowModules.ApplyModulesSettings();
-                });
-            }
+//             string dotweenProFile = System.Array.Find(
+//                 importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
+//             );
+//             bool dotweenProImported = dotweenProFile != null;
+// //            string[] dotweenProEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
+// //            bool dotweenProImported = dotweenProEntries.Length > 0;
+//             if (dotweenProImported) {
+//                 // Refresh ASMDEF
+//                 EditorUtils.DelayedCall(0.1f, ()=> {
+// //                    Debug.Log("Refresh ASMDEF after DOTweenPro reimport (" + dotweenProFile + ")");
+//                     ASMDEFManager.RefreshExistingASMDEFFiles();
+//                 });
+//             }
+//
+//             string dotweenTimelineFile = System.Array.Find(
+//                 importedAssets, name => name.Contains("DOTweenTimeline") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
+//             );
+//             bool dotweenTimelineImported = dotweenTimelineFile != null;
+//             if (dotweenTimelineImported) {
+//                 // Reapply modules
+//                 EditorUtils.DelayedCall(0.1f, ()=> {
+// //                    Debug.Log("Apply Modules Settings after DOTweenTimeline reimport (" + dotweenTimelineFile + ")");
+//                     DOTweenUtilityWindowModules.ApplyModulesSettings();
+//                 });
+//             }
         }
     }
 }

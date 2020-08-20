@@ -44,6 +44,8 @@ namespace DG.DOTweenEditor
         public static string dotweenModulesDir { get { RetrieveDependenciesData(); return _dotweenModulesDir; } }
         // With final slash (system based)
         public static string dotweenTimelineDir { get { RetrieveDependenciesData(); return _dotweenTimelineDir; } }
+        public static string dotweenTimelineScriptsDir { get { RetrieveDependenciesData(); return _dotweenTimelineScriptsDir; } }
+        public static string dotweenTimelineEditorScriptsDir { get { RetrieveDependenciesData(); return _dotweenTimelineEditorScriptsDir; } }
         public static string dotweenTimelineUnityPackageFilePath { get { RetrieveDependenciesData(); return _dotweenTimelineUnityPackageFilePath; } }
         public static bool isOSXEditor { get; private set; }
         public static string pathSlash { get; private set; } // for full paths
@@ -66,6 +68,8 @@ namespace DG.DOTweenEditor
         static string _dotweenProEditorDir; // with final slash
         static string _dotweenModulesDir; // with final slash
         static string _dotweenTimelineDir; // with final slash
+        static string _dotweenTimelineScriptsDir; // with final slash
+        static string _dotweenTimelineEditorScriptsDir; // with final slash
         static string _dotweenTimelineUnityPackageFilePath;
 
         static EditorUtils()
@@ -416,9 +420,12 @@ namespace DG.DOTweenEditor
             _demigiantDir = dotweenParentDir.Substring(dotweenParentDir.Length - 10, 9) == "Demigiant" ? dotweenParentDir : null;
 
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
+            _dotweenModulesDir = _dotweenDir + "Modules" + pathSlash;
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProEditorDir = _dotweenProDir + "Editor" + pathSlash;
-            _dotweenModulesDir = _dotweenDir + "Modules" + pathSlash;
+            _dotweenTimelineDir = _dotweenTimelineDir.Replace(pathSlashToReplace, pathSlash);
+            _dotweenTimelineScriptsDir = _dotweenTimelineDir + "Scripts" + pathSlash;
+            _dotweenTimelineEditorScriptsDir = _dotweenTimelineScriptsDir + "Editor" + pathSlash;
             if (_demigiantDir != null) _demigiantDir = _demigiantDir.Replace(pathSlashToReplace, pathSlash);
 
             _dotweenTimelineUnityPackageFilePath = _dotweenProDir + "DOTweenTimeline_UnityPackage.unitypackage";

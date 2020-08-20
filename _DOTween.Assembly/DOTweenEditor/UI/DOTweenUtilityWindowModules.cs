@@ -49,6 +49,7 @@ namespace DG.DOTweenEditor.UI
                 _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace("DOTWEENDIR/", EditorUtils.dotweenDir);
                 _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace("DOTWEENPRODIR/", EditorUtils.dotweenProDir);
                 _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace("DOTWEENTIMELINEDIR/", EditorUtils.dotweenTimelineDir);
+                _ModuleDependentFiles[i] = _ModuleDependentFiles[i].Replace(EditorUtils.pathSlashToReplace, EditorUtils.pathSlash);
             }
 
             _audioModule.filePath = EditorUtils.dotweenDir + _audioModule.filePath;
@@ -235,16 +236,32 @@ namespace DG.DOTweenEditor.UI
 
         static bool ModuleIsEnabled(ModuleInfo m)
         {
-            if (!File.Exists(m.filePath)) return false;
-
-            using (StreamReader sr = new StreamReader(m.filePath)) {
-                string line = sr.ReadLine();
-                while (line != null) {
-                    if (line.EndsWith(ModuleMarkerId) && line.StartsWith("#if")) return line.Contains("true");
-                    line = sr.ReadLine();
+            bool result = false;
+            if (File.Exists(m.filePath)) {
+                ModuleIsEnabled_Retrieve(m.filePath, ref result, ModuleMarkerId);
+                return result;
+            } else {
+                // Main module file doesn't exist: look in dependent files to find the first specific marker line
+                for (int i = 0; i < _ModuleDependentFiles.Length; ++i) {
+                    if (!File.Exists(_ModuleDependentFiles[i])) continue;
+                    if (ModuleIsEnabled_Retrieve(_ModuleDependentFiles[i], ref result, string.Format("// {0}_MARKER", m.id))) break;
                 }
             }
-            return true;
+            return result;
+        }
+        // Returns TRUE if a module-relative line was found
+        static bool ModuleIsEnabled_Retrieve(string filePath, ref bool isEnabled, string marker)
+        {
+            using (StreamReader sr = new StreamReader(filePath)) {
+                string line;
+                while ((line = sr.ReadLine()) != null) {
+                    if (line.EndsWith(marker) && line.StartsWith("#if")) {
+                        isEnabled = line.Contains("true");
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         static void CheckAutoModuleSettings(bool applySettings, ModuleInfo m, ref bool srcModuleEnabled)
@@ -272,9 +289,6 @@ namespace DG.DOTweenEditor.UI
         // Returns TRUE if files were actually modified
         static bool ToggleModule(ModuleInfo m, ref bool srcSetting)
         {
-//            if (!File.Exists(m.filePath)) return false;
-//            if (ModuleIsEnabled(m) == m.enabled) return; // Already set
-
             srcSetting = m.enabled;
             bool modifiedFiles = false;
 
