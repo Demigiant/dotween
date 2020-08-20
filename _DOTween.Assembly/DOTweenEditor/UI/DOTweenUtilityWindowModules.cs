@@ -149,10 +149,6 @@ namespace DG.DOTweenEditor.UI
             if (src != null) Refresh(src, true);
         }
 
-        #endregion
-
-        #region Methods
-
         public static void Refresh(DOTweenSettings src, bool applySrcSettings = false)
         {
             _src = src;
@@ -184,6 +180,10 @@ namespace DG.DOTweenEditor.UI
 
             EditorUtility.SetDirty(_src);
         }
+
+        #endregion
+
+        #region Methods
 
         static void Apply()
         {

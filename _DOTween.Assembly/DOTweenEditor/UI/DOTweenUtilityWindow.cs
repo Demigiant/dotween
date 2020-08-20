@@ -191,6 +191,7 @@ namespace DG.DOTweenEditor.UI
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
                     DOTweenUtilityWindowModules.ApplyModulesSettings();
+                    ASMDEFManager.ApplyASMDEFSettings();
                     _src.modules.showPanel = true;
                     EditorUtility.SetDirty(_src);
                     EditorUtils.DeleteLegacyNoModulesDOTweenFiles();

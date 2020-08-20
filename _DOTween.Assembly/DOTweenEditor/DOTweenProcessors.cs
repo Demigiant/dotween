@@ -64,15 +64,14 @@ namespace DG.DOTweenEditor
                 importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
             );
             bool dotweenImported = dotweenFile != null;
-//            string[] dotweenEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
-//            bool dotweenImported = dotweenEntries.Length > 0;
             if (dotweenImported) {
                 // DOTween or Pro or Timeline imported
-                // Reapply modules and refresh ASMDEF
+                // Reapply modules and ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {
                     // Debug.Log("Apply Modules Settings after DOTween reimport (" + dotweenFile + ")");
                     DOTweenUtilityWindowModules.ApplyModulesSettings();
-                    ASMDEFManager.RefreshExistingASMDEFFiles();
+                    ASMDEFManager.ApplyASMDEFSettings();
+                    // ASMDEFManager.RefreshExistingASMDEFFiles();
                 });
             }
 
@@ -80,8 +79,6 @@ namespace DG.DOTweenEditor
 //                 importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
 //             );
 //             bool dotweenProImported = dotweenProFile != null;
-// //            string[] dotweenProEntries = System.Array.FindAll(importedAssets, name => name.Contains("DOTweenPro") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png"));
-// //            bool dotweenProImported = dotweenProEntries.Length > 0;
 //             if (dotweenProImported) {
 //                 // Refresh ASMDEF
 //                 EditorUtils.DelayedCall(0.1f, ()=> {

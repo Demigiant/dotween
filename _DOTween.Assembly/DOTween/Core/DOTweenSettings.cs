@@ -49,6 +49,7 @@ namespace DG.Tweening.Core
         }
         public SettingsLocation storeSettingsLocation = SettingsLocation.AssetsDirectory;
         public ModulesSetup modules = new ModulesSetup();
+        public bool createASMDEF = false;
 
         // Editor-Only ► DOTween Inspector
         public bool showPlayingTweens, showPausedTweens;

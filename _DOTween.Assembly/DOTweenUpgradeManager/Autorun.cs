@@ -27,7 +27,7 @@ namespace DG.DOTweenUpgradeManager
         public static void OnUpdate()
         {
             if (!UpgradeWindowIsOpen()) {
-                ApplyModulesSettings();
+                ApplyModulesAndASMDEFSettings();
                 UpgradeWindow.Open();
             }
         }
@@ -37,14 +37,17 @@ namespace DG.DOTweenUpgradeManager
             return Resources.FindObjectsOfTypeAll<UpgradeWindow>().Length > 0;
         }
 
-        static void ApplyModulesSettings()
+        static void ApplyModulesAndASMDEFSettings()
         {
             Type doeditorT = Type.GetType("DG.DOTweenEditor.UI.DOTweenUtilityWindowModules, DOTweenEditor");
             if (doeditorT != null) {
                 MethodInfo miOpen = doeditorT.GetMethod("ApplyModulesSettings", BindingFlags.Static | BindingFlags.Public);
-                if (miOpen != null) {
-                    miOpen.Invoke(null, null);
-                }
+                if (miOpen != null) miOpen.Invoke(null, null);
+            }
+            doeditorT = Type.GetType("DG.DOTweenEditor.ASMDEFManager, DOTweenEditor");
+            if (doeditorT != null) {
+                MethodInfo miOpen = doeditorT.GetMethod("ApplyASMDEFSettings", BindingFlags.Static | BindingFlags.Public);
+                if (miOpen != null) miOpen.Invoke(null, null);
             }
         }
     }
