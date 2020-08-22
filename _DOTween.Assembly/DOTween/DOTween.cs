@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.460"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.465"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -733,6 +733,11 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             return TweenManager.FilteredOperation(OperationType.Complete, FilterType.TargetOrId, targetOrId, true, 0);
         }
+        internal static int CompleteAndReturnKilledTot(object target, object id)
+        {
+            if (target == null || id == null) return 0;
+            return TweenManager.FilteredOperation(OperationType.Complete, FilterType.TargetAndId, id, true, 0, target);
+        }
         internal static int CompleteAndReturnKilledTotExceptFor(params object[] excludeTargetsOrIds)
         {
             // excludeTargetsOrIds is never NULL (checked by DOTween.KillAll)
@@ -793,6 +798,14 @@ namespace DG.Tweening
             if (targetOrId == null) return 0;
             int tot = complete ? CompleteAndReturnKilledTot(targetOrId) : 0;
             return tot + TweenManager.FilteredOperation(OperationType.Despawn, FilterType.TargetOrId, targetOrId, false, 0);
+        }
+        /// <summary>Kills all tweens with the given target and the given ID, and returns the number of actual tweens killed</summary>
+        /// <param name="complete">If TRUE completes the tweens before killing them</param>
+        public static int Kill(object target, object id, bool complete = false)
+        {
+            if (target == null || id == null) return 0;
+            int tot = complete ? CompleteAndReturnKilledTot(target, id) : 0;
+            return tot + TweenManager.FilteredOperation(OperationType.Despawn, FilterType.TargetAndId, id, false, 0, target);
         }
 
         /// <summary>Pauses all tweens and returns the number of actual tweens paused</summary>
