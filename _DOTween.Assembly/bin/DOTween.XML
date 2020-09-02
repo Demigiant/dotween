@@ -1186,6 +1186,15 @@
             <summary>Kills the tween</summary>
             <param name="complete">If TRUE completes the tween before killing it</param>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.ManualUpdate(DG.Tweening.Tween,System.Single,System.Single)">
+            <summary>
+            Forces this tween to update manually, regardless of the <see cref="T:DG.Tweening.UpdateType"/> set via SetUpdate.<para/>
+            Note that if you only want to update this tween instance manually you'll have to set it to <see cref="F:DG.Tweening.UpdateType.Manual"/>  anyway,
+            so that it's not updated automatically.
+            </summary>
+            <param name="deltaTime">Manual deltaTime</param>
+            <param name="unscaledDeltaTime">Unscaled delta time (used with tweens set as timeScaleIndependent)</param>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.Pause``1(``0)">
             <summary>Pauses the tween</summary>
         </member>

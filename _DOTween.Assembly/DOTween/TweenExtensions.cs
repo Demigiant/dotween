@@ -132,6 +132,26 @@ namespace DG.Tweening
             } else TweenManager.Despawn(t);
         }
 
+        /// <summary>
+        /// Forces this tween to update manually, regardless of the <see cref="UpdateType"/> set via SetUpdate.<para/>
+        /// Note that if you only want to update this tween instance manually you'll have to set it to <see cref="UpdateType.Manual"/>  anyway,
+        /// so that it's not updated automatically.
+        /// </summary>
+        /// <param name="deltaTime">Manual deltaTime</param>
+        /// <param name="unscaledDeltaTime">Unscaled delta time (used with tweens set as timeScaleIndependent)</param>
+        public static void ManualUpdate(this Tween t, float deltaTime, float unscaledDeltaTime)
+        {
+            if (t == null) {
+                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
+            } else if (!t.active) {
+                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+            } else if (t.isSequenced) {
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
+            }
+
+            TweenManager.Update(t, deltaTime, unscaledDeltaTime, true);
+        }
+
         /// <summary>Pauses the tween</summary>
         public static T Pause<T>(this T t) where T : Tween
         {

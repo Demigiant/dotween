@@ -414,86 +414,78 @@ namespace DG.Tweening.Core
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
                 if (t == null || t.updateType != updateType) continue; // Wrong updateType or was added to a Sequence (thus removed from active list) while inside current updateLoop
-                if (_totTweenLinks > 0) EvaluateTweenLink(t); // TweenLinks
-                if (!t.active) {
-                    // Manually killed by another tween's callback or deactivated by the TweenLink evaluation
-                    willKill = true;
-                    MarkForKilling(t);
-                    continue;
-                }
-                if (!t.isPlaying) continue;
-                t.creationLocked = true; // Lock tween creation methods from now on
-                float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
-//                if (tDeltaTime <= 0) continue; // Skip update in case time is 0 (commented in favor of next line because this prevents negative timeScales)
-                if (tDeltaTime < _EpsilonVsTimeCheck && tDeltaTime > -_EpsilonVsTimeCheck) continue; // Skip update in case time is approximately 0
-                if (!t.delayComplete) {
-                    tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
-                    if (tDeltaTime <= -1) {
-                        // Error during startup (can happen with FROM tweens): mark tween for killing
-                        willKill = true;
-                        MarkForKilling(t);
-                        continue;
-                    }
-                    if (tDeltaTime <= 0) continue;
-                    // Delay elapsed - call OnPlay if required
-                    if (t.playedOnce && t.onPlay != null) {
-                        // Don't call in case it hasn't started because onStart routine will call it
-                        Tween.OnTweenCallback(t.onPlay, t);
-                    }
-                }
-                // Startup (needs to be here other than in Tween.DoGoto in case of speed-based tweens, to calculate duration correctly)
-                if (!t.startupDone) {
-                    if (!t.Startup()) {
-                        // Startup failure: mark for killing
-                        willKill = true;
-                        MarkForKilling(t);
-                        continue;
-                    }
-                }
-                // Find update data
-                float toPosition = t.position;
-                bool wasEndPosition = toPosition >= t.duration;
-                int toCompletedLoops = t.completedLoops;
-                if (t.duration <= 0) {
-                    toPosition = 0;
-                    toCompletedLoops = t.loops == -1 ? t.completedLoops + 1 : t.loops;
-                } else {
-                    if (t.isBackwards) {
-                        toPosition -= tDeltaTime;
-                        while (toPosition < 0 && toCompletedLoops > -1) {
-                            toPosition += t.duration;
-                            toCompletedLoops--;
-                        }
-                        if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
-                            // Result is equivalent to a rewind, so set values according to it
-                            toPosition = 0;
-                            toCompletedLoops = wasEndPosition ? 1 : 0;
-                        }
-//                        while (toPosition < 0 && toCompletedLoops > 0) {
-//                            toPosition += t.duration;
-//                            toCompletedLoops--;
-//                        }
-//                        if (wasEndPosition && toCompletedLoops <= 0) {
-//                            // Force-rewind
-//                            Rewind(t, false);
-//                            continue;
-//                        }
-                    } else {
-                        toPosition += tDeltaTime;
-                        while (toPosition >= t.duration && (t.loops == -1 || toCompletedLoops < t.loops)) {
-                            toPosition -= t.duration;
-                            toCompletedLoops++;
-                        }
-                    }
-                    if (wasEndPosition) toCompletedLoops--;
-                    if (t.loops != -1 && toCompletedLoops >= t.loops) toPosition = t.duration;
-                }
-                // Goto
-                bool needsKilling = Tween.DoGoto(t, toPosition, toCompletedLoops, UpdateMode.Update);
-                if (needsKilling) {
-                    willKill = true;
-                    MarkForKilling(t);
-                }
+                if (Update(t, deltaTime, independentTime, false)) willKill = true;
+                // ► Commented in favor of the new Update(tween...) method
+                // if (_totTweenLinks > 0) EvaluateTweenLink(t); // TweenLinks
+                // if (!t.active) {
+                //     // Manually killed by another tween's callback or deactivated by the TweenLink evaluation
+                //     willKill = true;
+                //     MarkForKilling(t);
+                //     continue;
+                // }
+                // if (!t.isPlaying) continue;
+                // t.creationLocked = true; // Lock tween creation methods from now on
+                // float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
+                // if (tDeltaTime < _EpsilonVsTimeCheck && tDeltaTime > -_EpsilonVsTimeCheck) continue; // Skip update in case time is approximately 0
+                // if (!t.delayComplete) {
+                //     tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
+                //     if (tDeltaTime <= -1) {
+                //         // Error during startup (can happen with FROM tweens): mark tween for killing
+                //         willKill = true;
+                //         MarkForKilling(t);
+                //         continue;
+                //     }
+                //     if (tDeltaTime <= 0) continue;
+                //     // Delay elapsed - call OnPlay if required
+                //     if (t.playedOnce && t.onPlay != null) {
+                //         // Don't call in case it hasn't started because onStart routine will call it
+                //         Tween.OnTweenCallback(t.onPlay, t);
+                //     }
+                // }
+                // // Startup (needs to be here other than in Tween.DoGoto in case of speed-based tweens, to calculate duration correctly)
+                // if (!t.startupDone) {
+                //     if (!t.Startup()) {
+                //         // Startup failure: mark for killing
+                //         willKill = true;
+                //         MarkForKilling(t);
+                //         continue;
+                //     }
+                // }
+                // // Find update data
+                // float toPosition = t.position;
+                // bool wasEndPosition = toPosition >= t.duration;
+                // int toCompletedLoops = t.completedLoops;
+                // if (t.duration <= 0) {
+                //     toPosition = 0;
+                //     toCompletedLoops = t.loops == -1 ? t.completedLoops + 1 : t.loops;
+                // } else {
+                //     if (t.isBackwards) {
+                //         toPosition -= tDeltaTime;
+                //         while (toPosition < 0 && toCompletedLoops > -1) {
+                //             toPosition += t.duration;
+                //             toCompletedLoops--;
+                //         }
+                //         if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
+                //             // Result is equivalent to a rewind, so set values according to it
+                //             toPosition = 0;
+                //             toCompletedLoops = wasEndPosition ? 1 : 0;
+                //         }
+                //     } else {
+                //         toPosition += tDeltaTime;
+                //         while (toPosition >= t.duration && (t.loops == -1 || toCompletedLoops < t.loops)) {
+                //             toPosition -= t.duration;
+                //             toCompletedLoops++;
+                //         }
+                //     }
+                //     if (wasEndPosition) toCompletedLoops--;
+                //     if (t.loops != -1 && toCompletedLoops >= t.loops) toPosition = t.duration;
+                // }
+                // // Goto
+                // bool needsKilling = Tween.DoGoto(t, toPosition, toCompletedLoops, UpdateMode.Update);
+                // if (needsKilling) {
+                //     willKill = true;
+                //     MarkForKilling(t);
+                // }
             }
             // Kill all eventually marked tweens
             if (willKill) {
@@ -506,6 +498,80 @@ namespace DG.Tweening.Core
                 _KillList.Clear();
             }
             isUpdateLoop = false;
+        }
+
+        // deltaTime will be passed as fixedDeltaTime in case of UpdateType.Fixed
+        // Returns TRUE if the tween should be killed
+        internal static bool Update(Tween t, float deltaTime, float independentTime, bool isSingleTweenManualUpdate)
+        {
+            if (_totTweenLinks > 0) EvaluateTweenLink(t); // TweenLinks
+            if (!t.active) {
+                // Manually killed by another tween's callback or deactivated by the TweenLink evaluation
+                MarkForKilling(t, isSingleTweenManualUpdate);
+                return true;
+            }
+            if (!t.isPlaying) return false;
+            t.creationLocked = true; // Lock tween creation methods from now on
+            float tDeltaTime = (t.isIndependentUpdate ? independentTime : deltaTime) * t.timeScale;
+            if (tDeltaTime < _EpsilonVsTimeCheck && tDeltaTime > -_EpsilonVsTimeCheck) return false; // Skip update in case time is approximately 0
+            if (!t.delayComplete) {
+                tDeltaTime = t.UpdateDelay(t.elapsedDelay + tDeltaTime);
+                if (tDeltaTime <= -1) {
+                    // Error during startup (can happen with FROM tweens): mark tween for killing
+                    MarkForKilling(t, isSingleTweenManualUpdate);
+                    return true;
+                }
+                if (tDeltaTime <= 0) return false;
+                // Delay elapsed - call OnPlay if required
+                if (t.playedOnce && t.onPlay != null) {
+                    // Don't call in case it hasn't started because onStart routine will call it
+                    Tween.OnTweenCallback(t.onPlay, t);
+                }
+            }
+            // Startup (needs to be here other than in Tween.DoGoto in case of speed-based tweens, to calculate duration correctly)
+            if (!t.startupDone) {
+                if (!t.Startup()) {
+                    // Startup failure: mark for killing
+                    MarkForKilling(t, isSingleTweenManualUpdate);
+                    return true;
+                }
+            }
+            // Find update data
+            float toPosition = t.position;
+            bool wasEndPosition = toPosition >= t.duration;
+            int toCompletedLoops = t.completedLoops;
+            if (t.duration <= 0) {
+                toPosition = 0;
+                toCompletedLoops = t.loops == -1 ? t.completedLoops + 1 : t.loops;
+            } else {
+                if (t.isBackwards) {
+                    toPosition -= tDeltaTime;
+                    while (toPosition < 0 && toCompletedLoops > -1) {
+                        toPosition += t.duration;
+                        toCompletedLoops--;
+                    }
+                    if (toCompletedLoops < 0 || wasEndPosition && toCompletedLoops < 1) {
+                        // Result is equivalent to a rewind, so set values according to it
+                        toPosition = 0;
+                        toCompletedLoops = wasEndPosition ? 1 : 0;
+                    }
+                } else {
+                    toPosition += tDeltaTime;
+                    while (toPosition >= t.duration && (t.loops == -1 || toCompletedLoops < t.loops)) {
+                        toPosition -= t.duration;
+                        toCompletedLoops++;
+                    }
+                }
+                if (wasEndPosition) toCompletedLoops--;
+                if (t.loops != -1 && toCompletedLoops >= t.loops) toPosition = t.duration;
+            }
+            // Goto
+            bool needsKilling = Tween.DoGoto(t, toPosition, toCompletedLoops, UpdateMode.Update);
+            if (needsKilling) {
+                MarkForKilling(t, isSingleTweenManualUpdate);
+                return true;
+            }
+            return false;
         }
 
         internal static int FilteredOperation(OperationType operationType, FilterType filterType, object id, bool optionalBool, float optionalFloat, object optionalObj = null, object[] optionalArray = null)
@@ -698,7 +764,7 @@ namespace DG.Tweening.Core
             t.isPlaying = andPlay;
             t.delayComplete = true;
             t.elapsedDelay = t.delay;
-//            int toCompletedLoops = (int)(to / t.duration); // With very small floats creates floating points imprecisions
+//            int toCompletedLoops = (int)(to / t.duration); // With very small floats creates floating points imprecision
             int toCompletedLoops = t.duration <= 0 ? 1 : Mathf.FloorToInt(to / t.duration); // Still generates imprecision with some values (like 0.4)
 //            int toCompletedLoops = (int)((decimal)to / (decimal)t.duration); // Takes care of floating points imprecision (nahh doesn't work correctly either)
             float toPosition = to % t.duration;
@@ -934,10 +1000,16 @@ namespace DG.Tweening.Core
 
         #region Private Methods
 
-        static void MarkForKilling(Tween t)
+        // If isSingleTweenManualUpdate is TRUE will kill the tween immediately instead of adding it to the KillList
+        static void MarkForKilling(Tween t, bool isSingleTweenManualUpdate = false)
         {
-            t.active = false;
-            _KillList.Add(t);
+            if (isSingleTweenManualUpdate && !isUpdateLoop) {
+                // Kill immediately
+                Despawn(t);
+            } else {
+                t.active = false;
+                _KillList.Add(t);
+            }
         }
 
         // Called by Update method
