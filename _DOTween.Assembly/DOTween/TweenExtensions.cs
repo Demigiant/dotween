@@ -133,8 +133,9 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Forces this tween to update manually, regardless of the <see cref="UpdateType"/> set via SetUpdate.<para/>
-        /// Note that if you only want to update this tween instance manually you'll have to set it to <see cref="UpdateType.Manual"/>  anyway,
+        /// Forces this tween to update manually, regardless of the <see cref="UpdateType"/> set via SetUpdate.
+        /// Note that the tween will still be subject to normal tween rules, so if for example it's paused this method will do nothing.<para/>
+        /// Also note that if you only want to update this tween instance manually you'll have to set it to <see cref="UpdateType.Manual"/> anyway,
         /// so that it's not updated automatically.
         /// </summary>
         /// <param name="deltaTime">Manual deltaTime</param>

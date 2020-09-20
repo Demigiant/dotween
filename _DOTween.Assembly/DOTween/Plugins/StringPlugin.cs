@@ -62,8 +62,8 @@ namespace DG.Tweening.Plugins
             t.changeValue = t.endValue;
 
             // Store no-tags versions of values
-            t.plugOptions.startValueStrippedLength = Regex.Replace(t.startValue, @"<[^>]*>", "").Length;
-            t.plugOptions.changeValueStrippedLength = Regex.Replace(t.changeValue, @"<[^>]*>", "").Length;
+            t.plugOptions.startValueStrippedLength = string.IsNullOrEmpty(t.startValue) ? 0 : Regex.Replace(t.startValue, @"<[^>]*>", "").Length;
+            t.plugOptions.changeValueStrippedLength = string.IsNullOrEmpty(t.changeValue) ? 0 : Regex.Replace(t.changeValue, @"<[^>]*>", "").Length;
         }
 
         public override float GetSpeedBasedDuration(StringOptions options, float unitsXSecond, string changeValue)
