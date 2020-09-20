@@ -23,7 +23,7 @@ namespace DG.Tweening.Plugins
     public class StringPlugin : ABSTweenPlugin<string, string, StringOptions>
     {
         static readonly StringBuilder _Buffer = new StringBuilder();
-        static readonly List<Char> _OpenedTags = new List<char>(); // Opened tags that need to be closed at the end, stored by first character required in closing tag
+        static readonly List<char> _OpenedTags = new List<char>(); // Opened tags that need to be closed at the end, stored by first character required in closing tag
 
         public override void SetFrom(TweenerCore<string, string, StringOptions> t, bool isRelative)
         {
@@ -34,6 +34,7 @@ namespace DG.Tweening.Plugins
         }
         public override void SetFrom(TweenerCore<string, string, StringOptions> t, string fromValue, bool setImmediately, bool isRelative)
         {
+            if (fromValue == null) fromValue = "";
             if (isRelative) {
                 string currVal = t.getter();
                 fromValue += currVal;
@@ -44,7 +45,7 @@ namespace DG.Tweening.Plugins
 
         public override void Reset(TweenerCore<string, string, StringOptions> t)
         {
-            t.startValue = t.endValue = t.changeValue = null;
+            t.startValue = t.endValue = t.changeValue = "";
         }
 
         public override string ConvertToStartValue(TweenerCore<string, string, StringOptions> t, string value)
