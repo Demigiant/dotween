@@ -94,6 +94,14 @@ namespace DG.Tweening
         /// (if higher than the whole tween duration the tween will simply reach its end)</param>
         /// <param name="andPlay">If TRUE will play the tween after reaching the given position, otherwise it will pause it</param>
         public static void Goto(this Tween t, float to, bool andPlay = false)
+        { DoGoto(t, to, andPlay, false); }
+        /// <summary>Send the tween to the given position in time while also executing any callback between the previous time position and the new one</summary>
+        /// <param name="to">Time position to reach
+        /// (if higher than the whole tween duration the tween will simply reach its end)</param>
+        /// <param name="andPlay">If TRUE will play the tween after reaching the given position, otherwise it will pause it</param>
+        public static void GotoWithCallbacks(this Tween t, float to, bool andPlay = false)
+        { DoGoto(t, to, andPlay, true); }
+        static void DoGoto(Tween t, float to, bool andPlay, bool withCallbacks)
         {
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
@@ -105,7 +113,7 @@ namespace DG.Tweening
 
             if (to < 0) to = 0;
             if (!t.startupDone) TweenManager.ForceInit(t); // Initialize the tween if it's not initialized already (required)
-            TweenManager.Goto(t, to, andPlay);
+            TweenManager.Goto(t, to, andPlay, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
         }
 
         /// <summary>Kills the tween</summary>
