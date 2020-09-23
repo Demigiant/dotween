@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace DG.Tweening.Core
 {
-    internal static class Utils
+    public static class DOTweenUtils
     {
         static Assembly[] _loadedAssemblies;
         static readonly string[] _defAssembliesToQuery = new[] { // First assemblies to look into before checking all of them
@@ -43,6 +43,21 @@ namespace DG.Tweening.Core
         internal static Vector3 RotateAroundPivot(Vector3 point, Vector3 pivot, Quaternion rotation)
         {
             return rotation * (point - pivot) + pivot;
+        }
+
+        /// <summary>
+        /// Returns a point on a circle with the given center and radius,
+        /// using Unity's circle coordinates (0° points up and increases clockwise)
+        /// </summary>
+        public static Vector2 GetPointOnCircle(Vector2 center, float radius, float degrees)
+        {
+            // Adapt to Unity's circle coordinates
+            // (Unity's circle 0° points up and increases clockwise, unit circle 0° points right and rotates counter-clockwise)
+            degrees += 90;
+            degrees -= degrees * 2 + 180;
+            //
+            float radians = degrees * Mathf.Deg2Rad;
+            return center + new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * radius;
         }
 
         /// <summary>

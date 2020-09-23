@@ -98,7 +98,7 @@
     <Compile Include="Core\Surrogates\Vector4Wrapper.cs" />
     <Compile Include="Core\TweenLink.cs" />
     <Compile Include="Core\TweenManager.cs" />
-    <Compile Include="Core\Utils.cs" />
+    <Compile Include="Core\DOTweenUtils.cs" />
     <Compile Include="CustomPlugins\PureQuaternionPlugin.cs" />
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />

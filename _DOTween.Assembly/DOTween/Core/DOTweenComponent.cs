@@ -48,7 +48,7 @@ namespace DG.Tweening.Core
             _unscaledTime = Time.realtimeSinceStartup;
 
             // Initialize DOTweenModuleUtils via Reflection
-            Type modules = Utils.GetLooseScriptType("DG.Tweening.DOTweenModuleUtils");
+            Type modules = DOTweenUtils.GetLooseScriptType("DG.Tweening.DOTweenModuleUtils");
             if (modules == null) {
                 Debugger.LogError("Couldn't load Modules system");
                 return;

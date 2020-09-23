@@ -34,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.485"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.490"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -621,7 +621,7 @@ namespace DG.Tweening
                     if (i > 0) ang = ang - 180 + UnityEngine.Random.Range(-randomness, randomness);
                     if (vectorBased) {
                         Quaternion rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
-                        Vector3 to = rndQuaternion * Utils.Vector3FromAngle(ang, shakeMagnitude);
+                        Vector3 to = rndQuaternion * DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         to.x = Vector3.ClampMagnitude(to, strength.x).x;
                         to.y = Vector3.ClampMagnitude(to, strength.y).y;
                         to.z = Vector3.ClampMagnitude(to, strength.z).z;
@@ -630,10 +630,10 @@ namespace DG.Tweening
                         strength = Vector3.ClampMagnitude(strength, shakeMagnitude);
                     } else {
                         if (ignoreZAxis) {
-                            tos[i] = Utils.Vector3FromAngle(ang, shakeMagnitude);
+                            tos[i] = DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         } else {
                             Quaternion rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
-                            tos[i] = rndQuaternion * Utils.Vector3FromAngle(ang, shakeMagnitude);
+                            tos[i] = rndQuaternion * DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         }
                         if (fadeOut) shakeMagnitude -= decayXTween;
                     }

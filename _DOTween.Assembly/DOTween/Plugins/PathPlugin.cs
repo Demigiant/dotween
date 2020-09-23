@@ -70,7 +70,7 @@ namespace DG.Tweening.Plugins
             bool hasAdditionalStartingP = false, hasAdditionalEndingP = false;
             
             // Create final wps and add eventual starting/ending waypoints.
-            if (!Utils.Vector3AreApproximatelyEqual(path.wps[0], currVal)) {
+            if (!DOTweenUtils.Vector3AreApproximatelyEqual(path.wps[0], currVal)) {
                 hasAdditionalStartingP = true;
                 additionalWps += 1;
             }
@@ -227,7 +227,7 @@ namespace DG.Tweening.Plugins
                 } else {
                     // 2D path
                     float rotY = 0;
-                    float rotZ = Utils.Angle2D(trans.position, lookAtP);
+                    float rotZ = DOTweenUtils.Angle2D(trans.position, lookAtP);
                     if (rotZ < 0) rotZ = 360 + rotZ;
                     if (options.mode == PathMode.Sidescroller2D) {
                         // Manage Y and modified Z rotation

@@ -210,23 +210,29 @@
             Used to dispatch commands that need to be captured externally, usually by Modules
             </summary>
         </member>
-        <member name="M:DG.Tweening.Core.Utils.Vector3FromAngle(System.Single,System.Single)">
+        <member name="M:DG.Tweening.Core.DOTweenUtils.Vector3FromAngle(System.Single,System.Single)">
             <summary>
             Returns a Vector3 with z = 0
             </summary>
         </member>
-        <member name="M:DG.Tweening.Core.Utils.Angle2D(UnityEngine.Vector3,UnityEngine.Vector3)">
+        <member name="M:DG.Tweening.Core.DOTweenUtils.Angle2D(UnityEngine.Vector3,UnityEngine.Vector3)">
             <summary>
             Returns the 2D angle between two vectors
             </summary>
         </member>
-        <member name="M:DG.Tweening.Core.Utils.Vector3AreApproximatelyEqual(UnityEngine.Vector3,UnityEngine.Vector3)">
+        <member name="M:DG.Tweening.Core.DOTweenUtils.GetPointOnCircle(UnityEngine.Vector2,System.Single,System.Single)">
+            <summary>
+            Returns a point on a circle with the given center and radius,
+            using Unity's circle coordinates (0° points up and increases clockwise)
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.Core.DOTweenUtils.Vector3AreApproximatelyEqual(UnityEngine.Vector3,UnityEngine.Vector3)">
             <summary>
             Uses approximate equality on each axis instead of Unity's Vector3 equality,
             because the latter fails (in some cases) when assigning a Vector3 to a transform.position and then checking it.
             </summary>
         </member>
-        <member name="M:DG.Tweening.Core.Utils.GetLooseScriptType(System.String)">
+        <member name="M:DG.Tweening.Core.DOTweenUtils.GetLooseScriptType(System.String)">
             <summary>
             Looks for the type within all possible project assembly names
             </summary>

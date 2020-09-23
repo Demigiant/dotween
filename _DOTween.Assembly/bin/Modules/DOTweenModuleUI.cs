@@ -606,6 +606,33 @@ namespace DG.Tweening
 
         #endregion
 
+        #region Shapes
+
+        /// <summary>Tweens a RectTransform's anchoredPosition so that it draws a circle around the given center.
+        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations.<para/>
+        /// IMPORTANT: </summary>
+        /// <param name="center">Circle-center/pivot around which to rotate (in UI anchoredPosition coordinates)</param>
+        /// <param name="endValueDegrees">The end value degrees to reach (to rotate counter-clockwise pass a negative value)</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="relativeCenter">If TRUE the <see cref="center"/> coordinates will be considered as relative to the target's current anchoredPosition</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static TweenerCore<float, float, FloatOptions> DOShapeCircle(
+            this RectTransform target, Vector2 center, float endValueDegrees, float duration, bool relativeCenter = false, bool snapping = false
+        ){
+            if (relativeCenter) center = target.anchoredPosition + center;
+            float radius = Vector2.Distance(center, target.anchoredPosition);
+            Vector2 semiNormalizedP = target.anchoredPosition - center;
+            float currDegrees = Mathf.Atan2(semiNormalizedP.x, semiNormalizedP.y) * Mathf.Rad2Deg;
+            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => currDegrees, x => {
+                currDegrees = x;
+                target.anchoredPosition = DOTweenUtils.GetPointOnCircle(center, radius, x);
+            }, endValueDegrees, duration);
+            t.SetOptions(snapping).SetTarget(target);
+            return t;
+        }
+
+        #endregion
+
         #endregion
 
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
