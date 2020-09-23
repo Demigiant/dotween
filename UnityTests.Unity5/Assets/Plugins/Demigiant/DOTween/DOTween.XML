@@ -894,7 +894,39 @@
             <param name="to">The value to tween to</param>
             <param name="duration">The duration of the tween</param>
             <param name="onVirtualUpdate">A callback which must accept a parameter of type float, called at each update</param>
-            <returns></returns>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.Int(System.Int32,System.Int32,System.Single,DG.Tweening.TweenCallback{System.Int32})">
+            <summary>
+            Tweens a virtual int.
+            You can add regular settings to the generated tween,
+            but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+            </summary>
+            <param name="from">The value to start from</param>
+            <param name="to">The value to tween to</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="onVirtualUpdate">A callback which must accept a parameter of type int, called at each update</param>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.Vector3(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,DG.Tweening.TweenCallback{UnityEngine.Vector3})">
+            <summary>
+            Tweens a virtual Vector3.
+            You can add regular settings to the generated tween,
+            but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+            </summary>
+            <param name="from">The value to start from</param>
+            <param name="to">The value to tween to</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="onVirtualUpdate">A callback which must accept a parameter of type Vector3, called at each update</param>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.Color(UnityEngine.Color,UnityEngine.Color,System.Single,DG.Tweening.TweenCallback{UnityEngine.Color})">
+            <summary>
+            Tweens a virtual Color.
+            You can add regular settings to the generated tween,
+            but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+            </summary>
+            <param name="from">The value to start from</param>
+            <param name="to">The value to tween to</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="onVirtualUpdate">A callback which must accept a parameter of type Color, called at each update</param>
         </member>
         <member name="M:DG.Tweening.DOVirtual.EasedValue(System.Single,System.Single,System.Single,DG.Tweening.Ease)">
             <summary>Returns a value based on the given ease and lifetime percentage (0 to 1)</summary>

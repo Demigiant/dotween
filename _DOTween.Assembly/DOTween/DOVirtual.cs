@@ -23,10 +23,51 @@ namespace DG.Tweening
         /// <param name="to">The value to tween to</param>
         /// <param name="duration">The duration of the tween</param>
         /// <param name="onVirtualUpdate">A callback which must accept a parameter of type float, called at each update</param>
-        /// <returns></returns>
         public static Tweener Float(float from, float to, float duration, TweenCallback<float> onVirtualUpdate)
         {
             float val = from;
+            return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
+        }
+        /// <summary>
+        /// Tweens a virtual int.
+        /// You can add regular settings to the generated tween,
+        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// </summary>
+        /// <param name="from">The value to start from</param>
+        /// <param name="to">The value to tween to</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="onVirtualUpdate">A callback which must accept a parameter of type int, called at each update</param>
+        public static Tweener Int(int from, int to, float duration, TweenCallback<int> onVirtualUpdate)
+        {
+            int val = from;
+            return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
+        }
+        /// <summary>
+        /// Tweens a virtual Vector3.
+        /// You can add regular settings to the generated tween,
+        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// </summary>
+        /// <param name="from">The value to start from</param>
+        /// <param name="to">The value to tween to</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="onVirtualUpdate">A callback which must accept a parameter of type Vector3, called at each update</param>
+        public static Tweener Vector3(Vector3 from, Vector3 to, float duration, TweenCallback<Vector3> onVirtualUpdate)
+        {
+            Vector3 val = from;
+            return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
+        }
+        /// <summary>
+        /// Tweens a virtual Color.
+        /// You can add regular settings to the generated tween,
+        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// </summary>
+        /// <param name="from">The value to start from</param>
+        /// <param name="to">The value to tween to</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="onVirtualUpdate">A callback which must accept a parameter of type Color, called at each update</param>
+        public static Tweener Color(Color from, Color to, float duration, TweenCallback<Color> onVirtualUpdate)
+        {
+            Color val = from;
             return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
         }
 
