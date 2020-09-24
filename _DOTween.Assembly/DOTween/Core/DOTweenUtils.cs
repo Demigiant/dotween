@@ -53,8 +53,7 @@ namespace DG.Tweening.Core
         {
             // Adapt to Unity's circle coordinates
             // (Unity's circle 0° points up and increases clockwise, unit circle 0° points right and rotates counter-clockwise)
-            degrees += 90;
-            degrees -= degrees * 2 + 180;
+            degrees = 90 - degrees;
             //
             float radians = degrees * Mathf.Deg2Rad;
             return center + new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * radius;

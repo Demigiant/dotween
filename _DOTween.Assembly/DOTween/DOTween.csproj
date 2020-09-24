@@ -108,6 +108,7 @@
     <Compile Include="LinkBehaviour.cs" />
     <Compile Include="PathMode.cs" />
     <Compile Include="PathType.cs" />
+    <Compile Include="Plugins\CirclePlugin.cs" />
     <Compile Include="Plugins\Color2Plugin.cs" />
     <Compile Include="Plugins\ColorWrapperPlugin.cs" />
     <Compile Include="Plugins\Core\PathCore\CubicBezierDecoder.cs" />

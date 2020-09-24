@@ -138,13 +138,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pivot: {fileID: 1669455875}
-  duration: 2
+  duration: 1
   ease: 8
+  fromMode: 2
+  isRelative: 1
+  loops: 0
+  loopType: 1
   circle:
     target: {fileID: 1019819242}
-    snapping: 0
-    degrees: -360
-    relative: 1
+    useRelativeCenter: 0
+    relativeCenter: {x: 70, y: 0}
+    snapping: 1
+    degrees: 90
+    fromDegrees: -90
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +175,7 @@ GameObject:
   - component: {fileID: 1019819244}
   - component: {fileID: 1019819243}
   m_Layer: 5
-  m_Name: Ship
+  m_Name: Anime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,8 +196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -131, y: 103}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: -332, y: 121}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1019819243
 MonoBehaviour:
@@ -212,7 +218,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 30b9eaf483abe564a95121a10370d87e, type: 3}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

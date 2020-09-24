@@ -907,6 +907,18 @@ namespace DG.Tweening
             t.plugOptions.lockRotationAxis = lockRotation;
             return t;
         }
+        /// <summary>Options for ShapeCircle tweens</summary>
+        /// <param name="relativeCenter">If TRUE the center you set in the DOTween.To method will be considered as relative
+        /// to the starting position of the target</param>
+        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        public static Tweener SetOptions(this TweenerCore<DOVector2, DOVector2, CircleOptions> t, bool relativeCenter = true, bool snapping = false)
+        {
+            if (t == null || !t.active) return t;
+
+            t.plugOptions.relativeCenter = relativeCenter;
+            t.plugOptions.snapping = snapping;
+            return t;
+        }
 
         /// <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).
         /// Orients the target towards the given position.
