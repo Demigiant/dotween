@@ -17,12 +17,12 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<double, double, NoOptions> t) { }
 
-        public override void SetFrom(TweenerCore<double, double, NoOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<double, double, NoOptions> t, bool setImmediately, bool isRelative)
         {
             double prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
-            t.setter(t.startValue);
+            if (setImmediately) t.setter(t.startValue);
         }
         public override void SetFrom(TweenerCore<double, double, NoOptions> t, double fromValue, bool setImmediately, bool isRelative)
         {

@@ -579,23 +579,23 @@ namespace DG.Tweening
         /// <summary>Changes a TO tween into a FROM tween: sets the current target's position as the tween's endValue
         /// then immediately sends the target to the previously set endValue.</summary>
         public static T From<T>(this T t) where T : Tweener
-        {
-            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
-
-            t.isFrom = true;
-            t.SetFrom(false);
-            return t;
-        }
+        { return From(t, true, false); }
         /// <summary>Changes a TO tween into a FROM tween: sets the current target's position as the tween's endValue
         /// then immediately sends the target to the previously set endValue.</summary>
         /// <param name="isRelative">If TRUE the FROM value will be calculated as relative to the current one</param>
         public static T From<T>(this T t, bool isRelative) where T : Tweener
+        { { return From(t, true, isRelative); } }
+        /// <summary>Changes a TO tween into a FROM tween: sets the current value of the target as the endValue,
+        /// and the previously passed endValue as the actual startValue.</summary>
+        /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        /// <param name="isRelative">If TRUE the FROM value will be calculated as relative to the current one</param>
+        public static T From<T>(this T t, bool setImmediately, bool isRelative) where T : Tweener
         {
             if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
 
             t.isFrom = true;
-            if (!isRelative) t.SetFrom(false);
-            else t.SetFrom(!t.isBlendable);
+            if (!isRelative) t.SetFrom(setImmediately, false);
+            else t.SetFrom(setImmediately, !t.isBlendable);
             return t;
         }
 
@@ -603,6 +603,7 @@ namespace DG.Tweening
         /// and eventually sets the tween's target to that value immediately.</summary>
         /// <param name="fromValue">Value to start from</param>
         /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        /// <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         public static TweenerCore<T1,T2,TPlugOptions> From<T1,T2,TPlugOptions>(
             this TweenerCore<T1,T2,TPlugOptions> t, T2 fromValue, bool setImmediately = true, bool isRelative = false
         ) where TPlugOptions : struct, IPlugOptions
@@ -620,6 +621,7 @@ namespace DG.Tweening
         /// and eventually sets the tween's target to that value immediately.</summary>
         /// <param name="fromAlphaValue">Alpha value to start from (in case of Fade tweens)</param>
         /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        /// <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         public static TweenerCore<DOColor, DOColor, ColorOptions> From(
             this TweenerCore<DOColor, DOColor, ColorOptions> t, float fromAlphaValue, bool setImmediately = true, bool isRelative = false
         ){
@@ -634,6 +636,7 @@ namespace DG.Tweening
         /// and eventually sets the tween's target to that value immediately.</summary>
         /// <param name="fromValue">Value to start from (in case of Vector tweens that act on a single coordinate or scale tweens)</param>
         /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        /// <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         public static TweenerCore<DOVector3, DOVector3, VectorOptions> From(
             this TweenerCore<DOVector3, DOVector3, VectorOptions> t, float fromValue, bool setImmediately = true, bool isRelative = false
         ){
@@ -641,6 +644,21 @@ namespace DG.Tweening
 
             t.isFrom = true;
             t.SetFrom(new Vector3(fromValue, fromValue, fromValue), setImmediately, isRelative);
+            return t;
+        }
+
+        /// <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
+        /// and eventually sets the tween's target to that value immediately.</summary>
+        /// <param name="fromValueDegrees">Value to start from (in case of Vector tweens that act on a single coordinate or scale tweens)</param>
+        /// <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+        /// <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
+        public static TweenerCore<DOVector2, DOVector2, CircleOptions> From(
+            this TweenerCore<DOVector2, DOVector2, CircleOptions> t, float fromValueDegrees, bool setImmediately = true, bool isRelative = false
+        ){
+            if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
+
+            t.isFrom = true;
+            t.SetFrom(new Vector2(fromValueDegrees, 0), setImmediately, isRelative);
             return t;
         }
 

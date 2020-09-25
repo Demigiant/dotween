@@ -37,12 +37,12 @@ namespace DG.Tweening.CustomPlugins
         public override void Reset(TweenerCore<Quaternion, Quaternion, NoOptions> t) { }
 
         /// <summary>INTERNAL: do not use</summary>
-        public override void SetFrom(TweenerCore<Quaternion, Quaternion, NoOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<Quaternion, Quaternion, NoOptions> t, bool setImmediately, bool isRelative)
         {
             Quaternion prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = isRelative ? t.endValue * prevEndVal : prevEndVal;
-            t.setter(t.startValue);
+            if (setImmediately) t.setter(t.startValue);
         }
         /// <summary>INTERNAL: do not use</summary>
         public override void SetFrom(TweenerCore<Quaternion, Quaternion, NoOptions> t, Quaternion fromValue, bool setImmediately, bool isRelative)

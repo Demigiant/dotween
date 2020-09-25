@@ -19,7 +19,7 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<Rect, Rect, RectOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, bool setImmediately, bool isRelative)
         {
             Rect prevEndVal = t.endValue;
             t.endValue = t.getter();
@@ -30,14 +30,16 @@ namespace DG.Tweening.Plugins
                 t.startValue.width += t.endValue.width;
                 t.startValue.height += t.endValue.height;
             }
-            Rect to = t.startValue;
-            if (t.plugOptions.snapping) {
-                to.x = (float)Math.Round(to.x);
-                to.y = (float)Math.Round(to.y);
-                to.width = (float)Math.Round(to.width);
-                to.height = (float)Math.Round(to.height);
+            if (setImmediately) {
+                Rect to = t.startValue;
+                if (t.plugOptions.snapping) {
+                    to.x = (float)Math.Round(to.x);
+                    to.y = (float)Math.Round(to.y);
+                    to.width = (float)Math.Round(to.width);
+                    to.height = (float)Math.Round(to.height);
+                }
+                t.setter(to);
             }
-            t.setter(to);
         }
         public override void SetFrom(TweenerCore<Rect, Rect, RectOptions> t, Rect fromValue, bool setImmediately, bool isRelative)
         {

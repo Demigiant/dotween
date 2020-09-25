@@ -20,28 +20,30 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<Vector2, Vector2, VectorOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Vector2, Vector2, VectorOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<Vector2, Vector2, VectorOptions> t, bool setImmediately, bool isRelative)
         {
             Vector2 prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
-            Vector2 to = t.endValue;
-            switch (t.plugOptions.axisConstraint) {
-            case AxisConstraint.X:
-                to.x = t.startValue.x;
-                break;
-            case AxisConstraint.Y:
-                to.y = t.startValue.y;
-                break;
-            default:
-                to = t.startValue;
-                break;
+            if (setImmediately) {
+                Vector2 to = t.endValue;
+                switch (t.plugOptions.axisConstraint) {
+                case AxisConstraint.X:
+                    to.x = t.startValue.x;
+                    break;
+                case AxisConstraint.Y:
+                    to.y = t.startValue.y;
+                    break;
+                default:
+                    to = t.startValue;
+                    break;
+                }
+                if (t.plugOptions.snapping) {
+                    to.x = (float)Math.Round(to.x);
+                    to.y = (float)Math.Round(to.y);
+                }
+                t.setter(to);
             }
-            if (t.plugOptions.snapping) {
-                to.x = (float)Math.Round(to.x);
-                to.y = (float)Math.Round(to.y);
-            }
-            t.setter(to);
         }
         public override void SetFrom(TweenerCore<Vector2, Vector2, VectorOptions> t, Vector2 fromValue, bool setImmediately, bool isRelative)
         {

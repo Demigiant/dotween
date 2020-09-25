@@ -61,7 +61,7 @@ public class ShapeTweens : MonoBehaviour
             var t = target.DOShapeCircle(useRelativeCenter ? relativeCenter : pivot.anchoredPosition, degrees, data.duration, useRelativeCenter, snapping);
             if (data.fromMode != FromMode.None) {
                 if (data.fromMode == FromMode.Dynamic) t.From(data.isRelative);
-                else t.From(new Vector2(fromDegrees, 0), true, data.isRelative);
+                else t.From(fromDegrees, true, data.isRelative);
             } else t.SetRelative(data.isRelative);
             t.SetEase(data.ease)
                 .SetLoops(data.loops, data.loopType);

@@ -19,12 +19,12 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<float, float, FloatOptions> t) { }
 
-        public override void SetFrom(TweenerCore<float, float, FloatOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<float, float, FloatOptions> t, bool setImmediately, bool isRelative)
         {
             float prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
-            t.setter(!t.plugOptions.snapping ? t.startValue : (float)Math.Round(t.startValue));
+            if (setImmediately) t.setter(!t.plugOptions.snapping ? t.startValue : (float)Math.Round(t.startValue));
         }
         public override void SetFrom(TweenerCore<float, float, FloatOptions> t, float fromValue, bool setImmediately, bool isRelative)
         {

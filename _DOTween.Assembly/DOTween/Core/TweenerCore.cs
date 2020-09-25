@@ -174,9 +174,9 @@ namespace DG.Tweening.Core
         // Plugins that don't support From:
         // - Vector3ArrayPlugin
         // - Pro > PathPlugin, SpiralPlugin
-        internal override Tweener SetFrom(bool relative)
+        internal override Tweener SetFrom(bool setImmediately, bool relative)
         {
-            tweenPlugin.SetFrom(this, relative);
+            tweenPlugin.SetFrom(this, setImmediately, relative);
             hasManuallySetStartValue = true;
             return this;
         }

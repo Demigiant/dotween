@@ -26,7 +26,7 @@ namespace DG.Tweening.Plugins
             t.startValue = t.endValue = t.changeValue = null;
         }
 
-        public override void SetFrom(TweenerCore<RectOffset, RectOffset, NoOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<RectOffset, RectOffset, NoOptions> t, bool setImmediately, bool isRelative)
         {
             RectOffset prevEndVal = t.endValue;
             t.endValue = t.getter();
@@ -37,7 +37,7 @@ namespace DG.Tweening.Plugins
                 t.startValue.top += t.endValue.top;
                 t.startValue.bottom += t.endValue.bottom;
             }
-            t.setter(t.startValue);
+            if (setImmediately) t.setter(t.startValue);
         }
         public override void SetFrom(TweenerCore<RectOffset, RectOffset, NoOptions> t, RectOffset fromValue, bool setImmediately, bool isRelative)
         {

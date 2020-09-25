@@ -17,12 +17,12 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
 	public override void Reset(TweenerCore<CustomRange, CustomRange, NoOptions> t) {}
 
     // Sets the values in case of a From tween
-    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, bool isRelative)
+    public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, bool setImmediately, bool isRelative)
     {
         CustomRange prevEndVal = t.endValue;
         t.endValue = t.getter();
         t.startValue = isRelative ? t.endValue + prevEndVal : prevEndVal;
-        t.setter(t.startValue);
+        if (setImmediately) t.setter(t.startValue);
     }
 
     public override void SetFrom(TweenerCore<CustomRange, CustomRange, NoOptions> t, CustomRange fromValue, bool setImmediately, bool isRelative)

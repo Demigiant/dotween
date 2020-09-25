@@ -25,7 +25,7 @@ namespace DG.Tweening.Plugins
             t.startValue = t.endValue = t.changeValue = null;
         }
 
-        public override void SetFrom(TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, bool isRelative) {}
+        public override void SetFrom(TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, bool setImmediately, bool isRelative) {}
         public override void SetFrom(TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, Vector3[] fromValue, bool setImmediately, bool isRelative) {}
 
         public override Vector3[] ConvertToStartValue(TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> t, Vector3 value)

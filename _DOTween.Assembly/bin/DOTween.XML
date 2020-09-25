@@ -302,7 +302,7 @@
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.Reset(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions})">
             <summary>INTERNAL: do not use</summary>
         </member>
-        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},System.Boolean)">
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},System.Boolean,System.Boolean)">
             <summary>INTERNAL: do not use</summary>
         </member>
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},UnityEngine.Quaternion,System.Boolean,System.Boolean)">
@@ -2511,23 +2511,39 @@
             then immediately sends the target to the previously set endValue.</summary>
             <param name="isRelative">If TRUE the FROM value will be calculated as relative to the current one</param>
         </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.From``1(``0,System.Boolean,System.Boolean)">
+            <summary>Changes a TO tween into a FROM tween: sets the current value of the target as the endValue,
+            and the previously passed endValue as the actual startValue.</summary>
+            <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+            <param name="isRelative">If TRUE the FROM value will be calculated as relative to the current one</param>
+        </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.From``3(DG.Tweening.Core.TweenerCore{``0,``1,``2},``1,System.Boolean,System.Boolean)">
             <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
             and eventually sets the tween's target to that value immediately.</summary>
             <param name="fromValue">Value to start from</param>
             <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+            <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.From(DG.Tweening.Core.TweenerCore{UnityEngine.Color,UnityEngine.Color,DG.Tweening.Plugins.Options.ColorOptions},System.Single,System.Boolean,System.Boolean)">
             <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
             and eventually sets the tween's target to that value immediately.</summary>
             <param name="fromAlphaValue">Alpha value to start from (in case of Fade tweens)</param>
             <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+            <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.From(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,UnityEngine.Vector3,DG.Tweening.Plugins.Options.VectorOptions},System.Single,System.Boolean,System.Boolean)">
             <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
             and eventually sets the tween's target to that value immediately.</summary>
             <param name="fromValue">Value to start from (in case of Vector tweens that act on a single coordinate or scale tweens)</param>
             <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+            <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.From(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.CircleOptions},System.Single,System.Boolean,System.Boolean)">
+            <summary>Changes a TO tween into a FROM tween: sets the tween's starting value to the given one
+            and eventually sets the tween's target to that value immediately.</summary>
+            <param name="fromValueDegrees">Value to start from (in case of Vector tweens that act on a single coordinate or scale tweens)</param>
+            <param name="setImmediately">If TRUE sets the target to from value immediately, otherwise waits for the tween to start</param>
+            <param name="isRelative">If TRUE the FROM/TO values will be calculated as relative to the current ones</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetDelay``1(``0,System.Single)">
             <summary>Sets a delayed startup for the tween.<para/>

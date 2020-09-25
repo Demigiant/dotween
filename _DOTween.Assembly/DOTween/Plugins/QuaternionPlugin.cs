@@ -19,7 +19,7 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<Quaternion, Vector3, QuaternionOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, bool setImmediately, bool isRelative)
         {
             Vector3 prevEndVal = t.endValue;
             t.endValue = t.getter().eulerAngles;
@@ -36,7 +36,7 @@ namespace DG.Tweening.Plugins
                 }
                 t.endValue = -prevEndVal;
             }
-            t.setter(Quaternion.Euler(t.startValue));
+            if (setImmediately) t.setter(Quaternion.Euler(t.startValue));
         }
         public override void SetFrom(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, Vector3 fromValue, bool setImmediately, bool isRelative)
         {

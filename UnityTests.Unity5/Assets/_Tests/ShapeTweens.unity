@@ -209,7 +209,7 @@ MonoBehaviour:
   pivot: {fileID: 1669455875}
   duration: 1
   ease: 8
-  fromMode: 0
+  fromMode: 1
   isRelative: 0
   loops: 0
   loopType: 1

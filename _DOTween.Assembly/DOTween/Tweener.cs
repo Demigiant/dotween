@@ -62,7 +62,7 @@ namespace DG.Tweening
         /// <param name="newDuration">If bigger than 0 applies it as the new tween duration</param>
         public abstract Tweener ChangeValues(object newStartValue, object newEndValue, float newDuration = -1);
 
-        internal abstract Tweener SetFrom(bool relative);
+        internal abstract Tweener SetFrom(bool setImmediately, bool relative);
 
         // ===================================================================================
         // INTERNAL METHODS ------------------------------------------------------------------

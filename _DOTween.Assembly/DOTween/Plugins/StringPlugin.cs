@@ -25,12 +25,12 @@ namespace DG.Tweening.Plugins
         static readonly StringBuilder _Buffer = new StringBuilder();
         static readonly List<char> _OpenedTags = new List<char>(); // Opened tags that need to be closed at the end, stored by first character required in closing tag
 
-        public override void SetFrom(TweenerCore<string, string, StringOptions> t, bool isRelative)
+        public override void SetFrom(TweenerCore<string, string, StringOptions> t, bool setImmediately, bool isRelative)
         {
             string prevEndVal = t.endValue;
             t.endValue = t.getter();
             t.startValue = prevEndVal;
-            t.setter(t.startValue);
+            if (setImmediately) t.setter(t.startValue);
         }
         public override void SetFrom(TweenerCore<string, string, StringOptions> t, string fromValue, bool setImmediately, bool isRelative)
         {
