@@ -619,13 +619,12 @@ namespace DG.Tweening
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         public static TweenerCore<Vector2, Vector2, CircleOptions> DOShapeCircle(
             this RectTransform target, Vector2 center, float endValueDegrees, float duration, bool relativeCenter = false, bool snapping = false
-        ){
-            TweenerCore<Vector2, Vector2, CircleOptions> t = DOTween.To(CirclePlugin.Get(), () => target.anchoredPosition, x => target.anchoredPosition = x, Vector2.zero, duration);
-            t.plugOptions.center = center;
-            t.plugOptions.endValueDegrees = endValueDegrees;
-            t.plugOptions.relativeCenter = relativeCenter;
-            t.plugOptions.snapping = snapping;
-            t.SetTarget(target);
+        )
+        {
+            TweenerCore<Vector2, Vector2, CircleOptions> t = DOTween.To(
+                CirclePlugin.Get(), () => target.anchoredPosition, x => target.anchoredPosition = x, center, duration
+            );
+            t.SetOptions(endValueDegrees, relativeCenter, snapping).SetTarget(target);
             return t;
         }
 

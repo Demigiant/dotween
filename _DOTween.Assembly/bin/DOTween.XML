@@ -1099,7 +1099,7 @@
         <member name="T:DG.Tweening.Plugins.CirclePlugin">
             <summary>
             Tweens a Vector2 along a circle.
-            EndValue is unused in favor of values inside options
+            EndValue represents the center of the circle, start and end value degrees are inside options
             ChangeValue x is changeValue°, y is unused
             </summary>
         </member>
@@ -2624,6 +2624,12 @@
             <summary>Options for Vector3Array tweens</summary>
             <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.CircleOptions},System.Single,System.Boolean,System.Boolean)">
+            <summary>Options for ShapeCircle tweens</summary>
+            <param name="relativeCenter">If TRUE the center you set in the DOTween.To method will be considered as relative
+            to the starting position of the target</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,DG.Tweening.Plugins.Core.PathCore.Path,DG.Tweening.Plugins.Options.PathOptions},DG.Tweening.AxisConstraint,DG.Tweening.AxisConstraint)">
             <summary>Options for Path tweens (created via the <code>DOPath</code> shortcut)</summary>
             <param name="lockPosition">The eventual movement axis to lock. You can input multiple axis if you separate them like this:
@@ -2638,12 +2644,6 @@
             <para>AxisConstrain.X | AxisConstraint.Y</para></param>
             <param name="lockRotation">The eventual rotation axis to lock. You can input multiple axis if you separate them like this:
             <para>AxisConstrain.X | AxisConstraint.Y</para></param>
-        </member>
-        <member name="M:DG.Tweening.TweenSettingsExtensions.SetOptions(DG.Tweening.Core.TweenerCore{UnityEngine.Vector2,UnityEngine.Vector2,DG.Tweening.Plugins.CircleOptions},System.Boolean,System.Boolean)">
-            <summary>Options for ShapeCircle tweens</summary>
-            <param name="relativeCenter">If TRUE the center you set in the DOTween.To method will be considered as relative
-            to the starting position of the target</param>
-            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.SetLookAt(DG.Tweening.Core.TweenerCore{UnityEngine.Vector3,DG.Tweening.Plugins.Core.PathCore.Path,DG.Tweening.Plugins.Options.PathOptions},UnityEngine.Vector3,System.Nullable{UnityEngine.Vector3},System.Nullable{UnityEngine.Vector3})">
             <summary>Additional LookAt options for Path tweens (created via the <code>DOPath</code> shortcut).

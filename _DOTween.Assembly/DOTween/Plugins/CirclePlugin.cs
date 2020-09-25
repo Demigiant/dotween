@@ -17,10 +17,10 @@ namespace DG.Tweening.Plugins
     public struct CircleOptions : IPlugOptions
     {
         public float endValueDegrees;
-        public Vector2 center;
         public bool relativeCenter;
         public bool snapping;
 
+        internal Vector2 center; // Simply replicates the Tweener's endValue
         internal float radius;
         internal float startValueDegrees;
 
@@ -30,14 +30,14 @@ namespace DG.Tweening.Plugins
         {
             initialized = false;
             startValueDegrees = endValueDegrees = 0;
-            center = Vector2.zero;
             relativeCenter = false;
             snapping = false;
         }
 
-        public void Initialize(Vector2 startValue)
+        public void Initialize(Vector2 startValue, Vector2 endValue)
         {
             initialized = true;
+            center = endValue;
             if (relativeCenter) center = startValue + center;
             radius = Vector2.Distance(center, startValue);
             Vector2 semiNormalizedP = startValue - center;
@@ -47,7 +47,7 @@ namespace DG.Tweening.Plugins
 
     /// <summary>
     /// Tweens a Vector2 along a circle.
-    /// EndValue is unused in favor of values inside options
+    /// EndValue represents the center of the circle, start and end value degrees are inside options
     /// ChangeValue x is changeValue°, y is unused
     /// </summary>
     public class CirclePlugin : ABSTweenPlugin<Vector2, Vector2, CircleOptions>
@@ -58,7 +58,7 @@ namespace DG.Tweening.Plugins
         {
             if (!t.plugOptions.initialized) {
                 t.startValue = t.getter();
-                t.plugOptions.Initialize(t.startValue);
+                t.plugOptions.Initialize(t.startValue, t.endValue);
             }
             float prevEndVal = t.plugOptions.endValueDegrees;
             t.plugOptions.endValueDegrees = t.plugOptions.startValueDegrees;
@@ -71,7 +71,7 @@ namespace DG.Tweening.Plugins
         {
             if (!t.plugOptions.initialized) {
                 t.startValue = t.getter();
-                t.plugOptions.Initialize(t.startValue);
+                t.plugOptions.Initialize(t.startValue, t.endValue);
             }
             float fromValueDegrees = fromValue.x;
             if (isRelative) {
@@ -96,13 +96,13 @@ namespace DG.Tweening.Plugins
 
         public override void SetRelativeEndValue(TweenerCore<Vector2, Vector2, CircleOptions> t)
         {
-            if (!t.plugOptions.initialized) t.plugOptions.Initialize(t.startValue);
+            if (!t.plugOptions.initialized) t.plugOptions.Initialize(t.startValue, t.endValue);
             t.plugOptions.endValueDegrees += t.plugOptions.startValueDegrees;
         }
 
         public override void SetChangeValue(TweenerCore<Vector2, Vector2, CircleOptions> t)
         {
-            if (!t.plugOptions.initialized) t.plugOptions.Initialize(t.startValue);
+            if (!t.plugOptions.initialized) t.plugOptions.Initialize(t.startValue, t.endValue);
             t.changeValue = new Vector2(t.plugOptions.endValueDegrees - t.plugOptions.startValueDegrees, 0);
         }
 
