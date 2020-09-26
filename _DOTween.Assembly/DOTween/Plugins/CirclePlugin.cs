@@ -54,7 +54,7 @@ namespace DG.Tweening.Plugins
     {
         public override void Reset(TweenerCore<Vector2, Vector2, CircleOptions> t) { }
 
-        public override void SetFrom(TweenerCore<Vector2, Vector2, CircleOptions> t, bool setImmediately, bool isRelative)
+        public override void SetFrom(TweenerCore<Vector2, Vector2, CircleOptions> t, bool isRelative)
         {
             if (!t.plugOptions.initialized) {
                 t.startValue = t.getter();
@@ -64,7 +64,7 @@ namespace DG.Tweening.Plugins
             t.plugOptions.endValueDegrees = t.plugOptions.startValueDegrees;
             t.plugOptions.startValueDegrees = isRelative ? t.plugOptions.endValueDegrees + prevEndVal : prevEndVal;
             t.startValue = GetPositionOnCircle(t.plugOptions, t.plugOptions.startValueDegrees);
-            if (setImmediately) t.setter(t.startValue);
+            t.setter(t.startValue);
         }
 
         public override void SetFrom(TweenerCore<Vector2, Vector2, CircleOptions> t, Vector2 fromValue, bool setImmediately, bool isRelative)

@@ -594,8 +594,12 @@ namespace DG.Tweening
             if (t == null || !t.active || t.creationLocked || !t.isFromAllowed) return t;
 
             t.isFrom = true;
-            if (!isRelative) t.SetFrom(setImmediately, false);
-            else t.SetFrom(setImmediately, !t.isBlendable);
+            if (setImmediately) t.SetFrom(isRelative && !t.isBlendable);
+            else {
+                // Just mark the tween as relative (will be reset to FALSE once the From is applied at startup)
+                // and let the startup routine set the From values
+                t.isRelative = isRelative;
+            }
             return t;
         }
 

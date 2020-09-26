@@ -210,7 +210,7 @@ MonoBehaviour:
   duration: 1
   ease: 8
   fromMode: 1
-  isRelative: 0
+  isRelative: 1
   loops: 0
   loopType: 1
   circleTweens:
@@ -224,7 +224,7 @@ MonoBehaviour:
     useRelativeCenter: 0
     relativeCenter: {x: 0, y: 0}
     snapping: 0
-    degrees: 360
+    degrees: 180
     fromDegrees: 0
 --- !u!4 &640244604
 Transform:

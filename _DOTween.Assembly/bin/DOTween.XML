@@ -302,7 +302,7 @@
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.Reset(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions})">
             <summary>INTERNAL: do not use</summary>
         </member>
-        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},System.Boolean,System.Boolean)">
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},System.Boolean)">
             <summary>INTERNAL: do not use</summary>
         </member>
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.SetFrom(DG.Tweening.Core.TweenerCore{UnityEngine.Quaternion,UnityEngine.Quaternion,DG.Tweening.Plugins.Options.NoOptions},UnityEngine.Quaternion,System.Boolean,System.Boolean)">

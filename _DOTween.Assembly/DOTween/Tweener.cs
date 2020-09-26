@@ -62,7 +62,7 @@ namespace DG.Tweening
         /// <param name="newDuration">If bigger than 0 applies it as the new tween duration</param>
         public abstract Tweener ChangeValues(object newStartValue, object newEndValue, float newDuration = -1);
 
-        internal abstract Tweener SetFrom(bool setImmediately, bool relative);
+        internal abstract Tweener SetFrom(bool relative);
 
         // ===================================================================================
         // INTERNAL METHODS ------------------------------------------------------------------
@@ -132,7 +132,12 @@ namespace DG.Tweening
                 // Take start value from current target value
                 if (DOTween.useSafeMode) {
                     try {
-                        t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                        if (t.isFrom) {
+                            // From tween without forced From value and where setImmediately was FALSE
+                            // (contrary to other forms of From tweens its values will be set at startup)
+                            t.SetFrom(t.isRelative && !t.isBlendable);
+                            t.isRelative = false;
+                        } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                     } catch (Exception e) {
                         if (Debugger.logPriority >= 1) {
                             Debugger.LogWarning(string.Format(
@@ -142,7 +147,15 @@ namespace DG.Tweening
                         DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.StartupFailure);
                         return false; // Target/field doesn't exist: kill tween
                     }
-                } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                } else {
+                    if (t.isFrom) {
+                        // From tween without forced From value and where setImmediately was FALSE
+                        // (contrary to other forms of From tweens its values will be set at startup)
+                        t.SetFrom(t.isRelative && !t.isBlendable);
+                        t.isRelative = false;
+                    }
+                    else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
+                }
             }
 
             if (t.isRelative) t.tweenPlugin.SetRelativeEndValue(t);
