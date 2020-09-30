@@ -25,6 +25,7 @@ namespace DG.DOTweenEditor.UI
         static readonly ModuleInfo _tk2DModule = new ModuleInfo("DOTweenTk2D.cs", "TK2D");
         static readonly ModuleInfo _deAudioModule = new ModuleInfo("DOTweenDeAudio.cs", "DEAUDIO");
         static readonly ModuleInfo _deUnityExtendedModule = new ModuleInfo("DOTweenDeUnityExtended.cs", "DEUNITYEXTENDED");
+        static readonly ModuleInfo _dotweenProModule = new ModuleInfo(null, "DOTWEENPRO");
 
         // Files that contain multiple module dependencies and which have specific define markers to change
         static readonly string[] _ModuleDependentFiles = new[] {
@@ -165,6 +166,7 @@ namespace DG.DOTweenEditor.UI
             _tk2DModule.enabled = ModuleIsEnabled(_tk2DModule);
             _deAudioModule.enabled = ModuleIsEnabled(_deAudioModule);
             _deUnityExtendedModule.enabled = ModuleIsEnabled(_deUnityExtendedModule);
+            _dotweenProModule.enabled = ModuleIsEnabled(_dotweenProModule);
 
             CheckAutoModuleSettings(applySrcSettings, _audioModule, ref src.modules.audioEnabled);
             CheckAutoModuleSettings(applySrcSettings, _physicsModule, ref src.modules.physicsEnabled);
@@ -176,6 +178,10 @@ namespace DG.DOTweenEditor.UI
             CheckAutoModuleSettings(applySrcSettings, _tk2DModule, ref src.modules.tk2DEnabled);
             CheckAutoModuleSettings(applySrcSettings, _deAudioModule, ref src.modules.deAudioEnabled);
             CheckAutoModuleSettings(applySrcSettings, _deUnityExtendedModule, ref src.modules.deUnityExtendedEnabled);
+            // Not dependent by DOTween Preferences but by simple presence of other assets
+            bool proEnabled = EditorUtils.hasPro;
+            CheckAutoModuleSettings(applySrcSettings, _dotweenProModule, ref proEnabled);
+
             AssetDatabase.StopAssetEditing();
 
             EditorUtility.SetDirty(_src);
@@ -237,7 +243,8 @@ namespace DG.DOTweenEditor.UI
         static bool ModuleIsEnabled(ModuleInfo m)
         {
             bool result = false;
-            if (File.Exists(m.filePath)) {
+            bool hasMainFile = !string.IsNullOrEmpty(m.filePath) && File.Exists(m.filePath);
+            if (hasMainFile) {
                 ModuleIsEnabled_Retrieve(m.filePath, ref result, ModuleMarkerId);
                 return result;
             } else {

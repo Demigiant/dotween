@@ -334,6 +334,7 @@ MonoBehaviour:
   forceFrameRate: 0
   forcedFrameRate: 10
   target: {fileID: 1255076790}
+  targetAlt: {fileID: 920573426}
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0
@@ -347,6 +348,10 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &920573426 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400000, guid: 6b0e36b42e0f7024eb9b052a60417e1b, type: 2}
+  m_PrefabInternal: {fileID: 1329644051}
 --- !u!1001 &1255076789
 Prefab:
   m_ObjectHideFlags: 0
@@ -540,7 +545,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 6b0e36b42e0f7024eb9b052a60417e1b, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b0e36b42e0f7024eb9b052a60417e1b, type: 2}
