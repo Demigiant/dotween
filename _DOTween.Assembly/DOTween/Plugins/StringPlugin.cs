@@ -92,7 +92,8 @@ namespace DG.Tweening.Plugins
                 }
             }
 
-            int startValueLen = options.richTextEnabled ? options.startValueStrippedLength : startValue.Length;
+            int startValueLen = options.richTextEnabled ? options.startValueStrippedLength
+                : string.IsNullOrEmpty(startValue) ? 0 : startValue.Length;
             int changeValueLen = options.richTextEnabled ? options.changeValueStrippedLength : changeValue.Length;
             int len = (int)Math.Round(changeValueLen * EaseManager.Evaluate(t.easeType, t.customEase, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod));
             if (len > changeValueLen) len = changeValueLen;
