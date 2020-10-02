@@ -100,6 +100,7 @@
     <Compile Include="Core\TweenManager.cs" />
     <Compile Include="Core\DOTweenUtils.cs" />
     <Compile Include="CustomPlugins\PureQuaternionPlugin.cs" />
+    <Compile Include="DOCurve.cs" />
     <Compile Include="DOTween.cs" />
     <Compile Include="DOVirtual.cs" />
     <Compile Include="Ease.cs" />

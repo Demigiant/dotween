@@ -323,6 +323,46 @@
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.EvaluateAndApply(DG.Tweening.Plugins.Options.NoOptions,DG.Tweening.Tween,System.Boolean,DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},System.Single,UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single,System.Boolean,DG.Tweening.Core.Enums.UpdateNotice)">
             <summary>INTERNAL: do not use</summary>
         </member>
+        <member name="T:DG.Tweening.DOCurve">
+            <summary>
+            Extra non-tweening-related curve methods
+            </summary>
+        </member>
+        <member name="T:DG.Tweening.DOCurve.CubicBezier">
+            <summary>
+            Cubic bezier curve methods
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.DOCurve.CubicBezier.GetPointOnSegment(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
+            <summary>
+            Calculates a point along the given Cubic Bezier segment-curve.<para/>
+            </summary>
+            <param name="startPoint">Segment start point</param>
+            <param name="startControlPoint">Start point's control point/handle</param>
+            <param name="endPoint">Segment end point</param>
+            <param name="endControlPoint">End point's control point/handle</param>
+            <param name="factor">0-1 percentage along which to retrieve point</param>
+        </member>
+        <member name="M:DG.Tweening.DOCurve.CubicBezier.GetSegmentPointCloud(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Int32)">
+            <summary>
+            Returns an array containing a series of points along the given Cubic Bezier segment-curve.<para/>
+            </summary>
+            <param name="startPoint">Start point</param>
+            <param name="startControlPoint">Start point's control point/handle</param>
+            <param name="endPoint">End point</param>
+            <param name="endControlPoint">End point's control point/handle</param>
+            <param name="resolution">Cloud resolution (min: 2)</param>
+        </member>
+        <member name="M:DG.Tweening.DOCurve.CubicBezier.GetSegmentPointCloud(System.Collections.Generic.List{UnityEngine.Vector3},UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Int32)">
+            <summary>
+            Calculates a series of points along the given Cubic Bezier segment-curve and adds them to the given list.<para/>
+            </summary>
+            <param name="startPoint">Start point</param>
+            <param name="startControlPoint">Start point's control point/handle</param>
+            <param name="endPoint">End point</param>
+            <param name="endControlPoint">End point's control point/handle</param>
+            <param name="resolution">Cloud resolution (min: 2)</param>
+        </member>
         <member name="T:DG.Tweening.DOTween">
             <summary>
             Main DOTween class. Contains static methods to create and control tweens in a generic way
