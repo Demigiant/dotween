@@ -42,7 +42,7 @@ public class InvertedTweens : MonoBehaviour
             .OnRewind(() => Log("TWEEN Rewinded"))
             .OnComplete(() => Log("TWEEN Completed ► " + VerboseVector3(tweenTarget.position)))
             .OnKill(() => Log("TWEEN Killed"));
-        t.isInverted = invert;
+        t.SetInverted(invert);
 
         s = DOTween.Sequence()
             .SetAutoKill(autoKill)
@@ -65,7 +65,7 @@ public class InvertedTweens : MonoBehaviour
                 .OnRewind(() => Log("INNER Rewinded", "00ff00"))
                 .OnComplete(() => Log("INNER Completed", "00ff00")));
         }
-        s.isInverted = invert;
+        s.SetInverted(invert);
 
         Debug.Log("CREATED ► tween: " + VerboseVector3(tweenTarget.position) + ", sequence: " + VerboseVector3(sequenceTarget.position));
     }

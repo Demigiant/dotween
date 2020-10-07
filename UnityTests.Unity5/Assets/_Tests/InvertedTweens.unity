@@ -581,7 +581,7 @@ MonoBehaviour:
   invert: 1
   autoKill: 0
   loops: 2
-  loopType: 0
+  loopType: 1
   composedSequence: 1
   tweenTarget: {fileID: 816659809}
   sequenceTarget: {fileID: 1255076790}
