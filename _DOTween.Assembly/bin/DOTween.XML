@@ -2441,6 +2441,17 @@
             <param name="updateType">The type of update</param>
             <param name="isIndependentUpdate">If TRUE the tween will ignore Unity's Time.timeScale</param>
         </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetInverted``1(``0)">
+            <summary>EXPERIMENTAL: inverts this tween, so that it will play from the end to the beginning
+            (playing it backwards will actually play it from the beginning to the end). 
+            <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
+        </member>
+        <member name="M:DG.Tweening.TweenSettingsExtensions.SetInverted``1(``0,System.Boolean)">
+            <summary>EXPERIMENTAL: inverts this tween, so that it will play from the end to the beginning
+            (playing it backwards will actually play it from the beginning to the end). 
+            <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
+            <param name="inverted">If TRUE the tween will be inverted, otherwise it won't</param>
+        </member>
         <member name="M:DG.Tweening.TweenSettingsExtensions.OnStart``1(``0,DG.Tweening.TweenCallback)">
             <summary>Sets the <code>onStart</code> callback for the tween, clearing any previous <code>onStart</code> callback that was set.
             Called the first time the tween is set in a playing state, after any eventual delay</summary>
@@ -2772,7 +2783,11 @@
             <summary>TimeScale for the tween</summary>
         </member>
         <member name="F:DG.Tweening.Tween.isBackwards">
-            <summary>If TRUE the tween wil go backwards</summary>
+            <summary>If TRUE the tween will play backwards</summary>
+        </member>
+        <member name="F:DG.Tweening.Tween.isInverted">
+            <summary>If TRUE the tween is completely inverted but without playing it backwards
+            (play backwards will actually play the tween in the original direction)</summary>
         </member>
         <member name="F:DG.Tweening.Tween.id">
             <summary>Object ID (usable for filtering with DOTween static methods). Can be anything except a string or an int

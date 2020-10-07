@@ -280,6 +280,28 @@ namespace DG.Tweening
             return t;
         }
 
+        /// <summary>EXPERIMENTAL: inverts this tween, so that it will play from the end to the beginning
+        /// (playing it backwards will actually play it from the beginning to the end). 
+        /// <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
+        public static T SetInverted<T>(this T t) where T : Tween
+        {
+            if (t == null || !t.active || t.creationLocked) return t;
+
+            t.isInverted = true;
+            return t;
+        }
+        /// <summary>EXPERIMENTAL: inverts this tween, so that it will play from the end to the beginning
+        /// (playing it backwards will actually play it from the beginning to the end). 
+        /// <code>Has no effect</code> if the tween has already started or if it's added to a Sequence</summary>
+        /// <param name="inverted">If TRUE the tween will be inverted, otherwise it won't</param>
+        public static T SetInverted<T>(this T t, bool inverted) where T : Tween
+        {
+            if (t == null || !t.active || t.creationLocked) return t;
+
+            t.isInverted = inverted;
+            return t;
+        }
+
         /// <summary>Sets the <code>onStart</code> callback for the tween, clearing any previous <code>onStart</code> callback that was set.
         /// Called the first time the tween is set in a playing state, after any eventual delay</summary>
         public static T OnStart<T>(this T t, TweenCallback action) where T : Tween

@@ -21,8 +21,11 @@ namespace DG.Tweening
         // Modifiable at runtime
         /// <summary>TimeScale for the tween</summary>
         public float timeScale;
-        /// <summary>If TRUE the tween wil go backwards</summary>
+        /// <summary>If TRUE the tween will play backwards</summary>
         public bool isBackwards;
+        /// <summary>If TRUE the tween is completely inverted but without playing it backwards
+        /// (play backwards will actually play the tween in the original direction)</summary>
+        internal bool isInverted;
         /// <summary>Object ID (usable for filtering with DOTween static methods). Can be anything except a string or an int
         /// (use <see cref="stringId"/> or <see cref="intId"/> for those)</summary>
         public object id;
