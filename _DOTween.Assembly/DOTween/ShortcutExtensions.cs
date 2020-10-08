@@ -843,7 +843,7 @@ namespace DG.Tweening
         public static Sequence DOJump(this Transform target, Vector3 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            float startPosY = 0;
+            float startPosY = target.position.y; // Temporary fix for OnStart not being called when using Goto instead of GotoWithCallbacks
             float offsetY = -1;
             bool offsetYSet = false;
 
@@ -853,7 +853,7 @@ namespace DG.Tweening
             Tween yTween = DOTween.To(() => target.position, x => target.position = x, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                 .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
                 .SetLoops(numJumps * 2, LoopType.Yoyo)
-                .OnStart(()=> startPosY = target.position.y);
+                .OnStart(()=> startPosY = target.position.y); // FIXME not called if you only use Goto (and not GotoWithCallbacks)
             s.Append(DOTween.To(() => target.position, x => target.position = x, new Vector3(endValue.x, 0, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.position, x => target.position = x, new Vector3(0, 0, endValue.z), duration)
@@ -904,7 +904,7 @@ namespace DG.Tweening
         public static Sequence DOLocalJump(this Transform target, Vector3 endValue, float jumpPower, int numJumps, float duration, bool snapping = false)
         {
             if (numJumps < 1) numJumps = 1;
-            float startPosY = 0;
+            float startPosY = target.localPosition.y; // Temporary fix for OnStart not being called when using Goto instead of GotoWithCallbacks
             float offsetY = -1;
             bool offsetYSet = false;
 
@@ -914,7 +914,7 @@ namespace DG.Tweening
             Tween yTween = DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, jumpPower, 0), duration / (numJumps * 2))
                 .SetOptions(AxisConstraint.Y, snapping).SetEase(Ease.OutQuad).SetRelative()
                 .SetLoops(numJumps * 2, LoopType.Yoyo)
-                .OnStart(()=> startPosY = target.localPosition.y);
+                .OnStart(()=> startPosY = target.localPosition.y); // FIXME not called if you only use Goto (and not GotoWithCallbacks)
             s.Append(DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(endValue.x, 0, 0), duration)
                     .SetOptions(AxisConstraint.X, snapping).SetEase(Ease.Linear)
                 ).Join(DOTween.To(() => target.localPosition, x => target.localPosition = x, new Vector3(0, 0, endValue.z), duration)
