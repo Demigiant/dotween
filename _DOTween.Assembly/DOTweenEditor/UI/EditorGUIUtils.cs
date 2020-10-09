@@ -44,6 +44,18 @@ namespace DG.DOTweenEditor.UI
             }
         }
         static Texture2D _logo;
+        public static Texture2D miniIcon
+        {
+            get
+            {
+                if (_miniIcon == null) {
+                    _miniIcon = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
+                    EditorUtils.SetEditorTexture(_miniIcon, FilterMode.Point, 16);
+                }
+                return _miniIcon;
+            }
+        }
+        static Texture2D _miniIcon;
 
         // Filtered ease types to show desired eases in Inspector panels
         public static readonly string[] FilteredEaseTypes = new[] {
