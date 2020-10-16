@@ -35,7 +35,7 @@ namespace DG.Tweening.Core
         // Debug
         public bool debugMode = false;
         // Stores the target id so it can be used to give more info in case of safeMode error capturing
-        public bool debugStoreTargetId = false;
+        public bool debugStoreTargetId = true;
 
         // Pro-only - accessed via DOTweenAnimationInspector
         public bool showPreviewPanel = true;
@@ -61,6 +61,7 @@ namespace DG.Tweening.Core
         [Serializable]
         public class SafeModeOptions
         {
+            public SafeModeLogBehaviour logBehaviour = SafeModeLogBehaviour.Warning;
             public NestedTweenFailureBehaviour nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
         }
 

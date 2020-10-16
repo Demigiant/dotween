@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useSafeMode: 1
   safeModeOptions:
+    logBehaviour: 3
     nestedTweenFailureBehaviour: 0
   timeScale: 1
   useSmoothDeltaTime: 0

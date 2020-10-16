@@ -84,6 +84,7 @@
     <Compile Include="Core\Enums\FilterType.cs" />
     <Compile Include="Core\Enums\NestedTweenFailureBehaviour.cs" />
     <Compile Include="Core\Enums\OperationType.cs" />
+    <Compile Include="Core\Enums\SafeModeLogBehaviour.cs" />
     <Compile Include="Core\Enums\SpecialStartupMode.cs" />
     <Compile Include="Core\Enums\UpdateNotice.cs" />
     <Compile Include="Core\Enums\UpdateMode.cs" />

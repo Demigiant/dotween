@@ -6,7 +6,7 @@
 namespace DG.Tweening.Core.Enums
 {
     /// <summary>
-    /// Behaviour in case a tween nested inside a Sequence fails
+    /// Behaviour in case a tween nested inside a Sequence fails and is captured by safe mode
     /// </summary>
     public enum NestedTweenFailureBehaviour
     {

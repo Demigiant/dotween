@@ -302,6 +302,7 @@ namespace DG.DOTweenEditor.UI
             if (GUILayout.Button("Reset", EditorGUIUtils.btBigStyle)) {
                 // Reset to original defaults
                 _src.useSafeMode = true;
+                _src.safeModeOptions.logBehaviour = SafeModeLogBehaviour.Warning;
                 _src.safeModeOptions.nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
                 _src.showUnityEditorReport = false;
                 _src.timeScale = 1;
@@ -320,12 +321,16 @@ namespace DG.DOTweenEditor.UI
                 _src.defaultAutoKill = true;
                 _src.defaultLoopType = LoopType.Restart;
                 _src.debugMode = false;
-                _src.debugStoreTargetId = false;
+                _src.debugStoreTargetId = true;
                 EditorUtility.SetDirty(_src);
             }
             GUILayout.Space(8);
             _src.useSafeMode = EditorGUILayout.Toggle("Safe Mode", _src.useSafeMode);
             if (_src.useSafeMode) {
+                _src.safeModeOptions.logBehaviour = (SafeModeLogBehaviour)EditorGUILayout.EnumPopup(
+                    new GUIContent("└ Log Type On Capture", "Type of log to throw when safe mode captures an error"),
+                    _src.safeModeOptions.logBehaviour
+                );
                 _src.safeModeOptions.nestedTweenFailureBehaviour = (NestedTweenFailureBehaviour)EditorGUILayout.EnumPopup(
                     new GUIContent("└ On Nested Tween Failure", "Behaviour in case a tween inside a Sequence fails"),
                     _src.safeModeOptions.nestedTweenFailureBehaviour

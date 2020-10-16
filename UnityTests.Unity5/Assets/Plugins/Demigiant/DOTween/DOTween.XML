@@ -139,7 +139,7 @@
         </member>
         <member name="T:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour">
             <summary>
-            Behaviour in case a tween nested inside a Sequence fails
+            Behaviour in case a tween nested inside a Sequence fails and is captured by safe mode
             </summary>
         </member>
         <member name="F:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour.TryToPreserveSequence">
@@ -147,6 +147,23 @@
         </member>
         <member name="F:DG.Tweening.Core.Enums.NestedTweenFailureBehaviour.KillWholeSequence">
             <summary>Kill the whole Sequence</summary>
+        </member>
+        <member name="T:DG.Tweening.Core.Enums.SafeModeLogBehaviour">
+            <summary>
+            Log types thrown by errors captured and prevented by safe mode
+            </summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.SafeModeLogBehaviour.None">
+            <summary>No logs. NOT RECOMMENDED</summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.SafeModeLogBehaviour.Normal">
+            <summary>Throw a normal log</summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.SafeModeLogBehaviour.Warning">
+            <summary>Throw a warning log (default)</summary>
+        </member>
+        <member name="F:DG.Tweening.Core.Enums.SafeModeLogBehaviour.Error">
+            <summary>Throw an error log</summary>
         </member>
         <member name="T:DG.Tweening.Core.Enums.UpdateNotice">
             <summary>
@@ -376,8 +393,11 @@
             (like targets becoming null while a tween is playing).
             <para>Default: TRUE</para></summary>
         </member>
+        <member name="F:DG.Tweening.DOTween.safeModeLogBehaviour">
+            <summary>Log type when safe mode reports capturing an error and preventing it</summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.nestedTweenFailureBehaviour">
-            <summary>Behaviour in case a tween nested inside a Sequence fails (caught by safe mode).
+            <summary>Behaviour in case a tween nested inside a Sequence fails (and is caught by safe mode).
             <para>Default: NestedTweenFailureBehaviour.TryToPreserveSequence</para></summary>
         </member>
         <member name="F:DG.Tweening.DOTween.showUnityEditorReport">

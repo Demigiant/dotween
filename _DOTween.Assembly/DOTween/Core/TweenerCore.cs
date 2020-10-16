@@ -261,8 +261,8 @@ namespace DG.Tweening.Core
                     tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
                 } catch (Exception e) {
                     // Target/field doesn't exist anymore: kill tween
-                    if (Debugger.logPriority >= 1) {
-                        Debugger.LogWarning(string.Format(
+                    if (Debugger.ShouldLogSafeModeCapturedError()) {
+                        Debugger.LogSafeModeCapturedError(string.Format(
                             "Target or field is missing/null ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
                         ), this);
                     }

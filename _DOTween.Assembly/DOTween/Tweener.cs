@@ -139,8 +139,8 @@ namespace DG.Tweening
                             t.isRelative = false;
                         } else t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                     } catch (Exception e) {
-                        if (Debugger.logPriority >= 1) {
-                            Debugger.LogWarning(string.Format(
+                        if (Debugger.ShouldLogSafeModeCapturedError()) {
+                            Debugger.LogSafeModeCapturedError(string.Format(
                                 "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
                             ), t);
                         }
@@ -216,8 +216,8 @@ namespace DG.Tweening
                             t.startValue = t.tweenPlugin.ConvertToStartValue(t, t.getter());
                         } catch (Exception e) {
                             // Target/field doesn't exist: kill tween
-                            if (Debugger.logPriority >= 1) {
-                                Debugger.LogWarning(string.Format(
+                            if (Debugger.ShouldLogSafeModeCapturedError()) {
+                                Debugger.LogSafeModeCapturedError(string.Format(
                                     "Target or field is missing/null ({0}) ► {1}\n\n{2}\n\n", e.TargetSite, e.Message, e.StackTrace
                                 ), t);
                             }

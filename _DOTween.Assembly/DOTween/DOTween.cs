@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.540"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.550"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -44,7 +44,9 @@ namespace DG.Tweening
         /// (like targets becoming null while a tween is playing).
         /// <para>Default: TRUE</para></summary>
         public static bool useSafeMode = true;
-        /// <summary>Behaviour in case a tween nested inside a Sequence fails (caught by safe mode).
+        /// <summary>Log type when safe mode reports capturing an error and preventing it</summary>
+        public static SafeModeLogBehaviour safeModeLogBehaviour = SafeModeLogBehaviour.Warning;
+        /// <summary>Behaviour in case a tween nested inside a Sequence fails (and is caught by safe mode).
         /// <para>Default: NestedTweenFailureBehaviour.TryToPreserveSequence</para></summary>
         public static NestedTweenFailureBehaviour nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
         /// <summary>If TRUE you will get a DOTween report when exiting play mode (only in the Editor).
@@ -92,7 +94,7 @@ namespace DG.Tweening
             get { return debugMode && useSafeMode && _fooDebugStoreTargetId; }
             set { _fooDebugStoreTargetId = value; }
         }
-        static bool _fooDebugStoreTargetId = false;
+        static bool _fooDebugStoreTargetId = true;
 
         ///////////////////////////////////////////////
         // Default options for Tweens /////////////////
@@ -205,6 +207,7 @@ namespace DG.Tweening
                 if (useSafeMode == null) DOTween.useSafeMode = settings.useSafeMode;
                 if (logBehaviour == null) DOTween.logBehaviour = settings.logBehaviour;
                 if (recycleAllByDefault == null) DOTween.defaultRecyclable = settings.defaultRecyclable;
+                DOTween.safeModeLogBehaviour = settings.safeModeOptions.logBehaviour;
                 DOTween.nestedTweenFailureBehaviour = settings.safeModeOptions.nestedTweenFailureBehaviour;
                 DOTween.timeScale = settings.timeScale;
                 DOTween.useSmoothDeltaTime = settings.useSmoothDeltaTime;
@@ -267,6 +270,7 @@ namespace DG.Tweening
 
             initialized = false;
             useSafeMode = false;
+            safeModeLogBehaviour = SafeModeLogBehaviour.Warning;
             nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
             showUnityEditorReport = false;
             drawGizmos = true;

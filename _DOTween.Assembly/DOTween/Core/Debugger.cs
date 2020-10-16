@@ -4,6 +4,7 @@
 // License Copyright (c) Daniele Giardini.
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using DG.Tweening.Core.Enums;
 using UnityEngine;
 
 #pragma warning disable 1591
@@ -14,9 +15,9 @@ namespace DG.Tweening.Core
     /// </summary>
     public static class Debugger
     {
-        // 0: errors only - 1: default - 2: verbose
         // Commented this to prevent DOTween.Init being called by eventual logs that might happen during ApplicationQuit
 //        public static int logPriority { get { if (!DOTween.initialized) DOTween.Init(); return _logPriority; } }
+        // 0: errors only - 1: default - 2: verbose
         public static int logPriority { get { return _logPriority; } }
         static int _logPriority;
 
@@ -32,17 +33,37 @@ namespace DG.Tweening.Core
         }
         public static void LogWarning(object message, Tween t = null)
         {
-            string txt = _LogPrefix + message;
-            if (DOTween.debugMode) AddDebugDataToMessage(ref txt, t);
+            string txt;
+            if (DOTween.debugMode) txt = _LogPrefix + GetDebugDataMessage(t) + message;
+            else txt = _LogPrefix + message;
             if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Warning, txt)) return;
             Debug.LogWarning(txt);
         }
         public static void LogError(object message, Tween t = null)
         {
-            string txt = _LogPrefix + message;
-            if (DOTween.debugMode) AddDebugDataToMessage(ref txt, t);
+            string txt;
+            if (DOTween.debugMode) txt = _LogPrefix + GetDebugDataMessage(t) + message;
+            else txt = _LogPrefix + message;
             if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Error, txt)) return;
             Debug.LogError(txt);
+        }
+        public static void LogSafeModeCapturedError(object message, Tween t = null)
+        {
+            string txt;
+            if (DOTween.debugMode) txt = _LogPrefix + GetDebugDataMessage(t) + message;
+            else txt = _LogPrefix + message;
+            if (DOTween.onWillLog != null && !DOTween.onWillLog(LogType.Log, txt)) return;
+            switch (DOTween.safeModeLogBehaviour) {
+            case SafeModeLogBehaviour.Normal:
+                Debug.Log(txt);
+                break;
+            case SafeModeLogBehaviour.Warning:
+                Debug.LogWarning(txt);
+                break;
+            case SafeModeLogBehaviour.Error:
+                Debug.LogError(txt);
+                break;
+            }
         }
 
         public static void LogReport(object message)
@@ -122,9 +143,29 @@ namespace DG.Tweening.Core
             }
         }
 
+        public static bool ShouldLogSafeModeCapturedError()
+        {
+            switch (DOTween.safeModeLogBehaviour) {
+            case SafeModeLogBehaviour.None:
+                return false;
+            case SafeModeLogBehaviour.Normal:
+            case SafeModeLogBehaviour.Warning:
+                return _logPriority >= 1;
+            default:
+                return true;
+            }
+        }
+
         #endregion
 
         #region Methods
+
+        static string GetDebugDataMessage(Tween t)
+        {
+            string txt = "";
+            AddDebugDataToMessage(ref txt, t);
+            return txt;
+        }
 
         static void AddDebugDataToMessage(ref string message, Tween t)
         {
@@ -133,10 +174,11 @@ namespace DG.Tweening.Core
             bool hasStringId = t.stringId != null;
             bool hasIntId = t.intId != -999;
             if (hasDebugTargetId || hasStringId || hasIntId) {
+                message += "DEBUG MODE INFO ► ";
+                if (hasDebugTargetId) message += string.Format("[tween target: {0}]", t.debugTargetId);
+                if (hasStringId) message += string.Format("[stringId: {0}]", t.stringId);
+                if (hasIntId) message += string.Format("[intId: {0}]", t.intId);
                 message += "\n";
-                if (hasDebugTargetId) message += string.Format("-[debug target ID: {0}]-", t.debugTargetId);
-                if (hasStringId) message += string.Format("-[stringId: {0}]-", t.stringId);
-                if (hasIntId) message += string.Format("-[intId: {0}]-", t.intId);
             }
         }
 
