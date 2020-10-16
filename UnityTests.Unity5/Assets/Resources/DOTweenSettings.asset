@@ -45,6 +45,7 @@ MonoBehaviour:
     tk2DEnabled: 0
     deAudioEnabled: 1
     deUnityExtendedEnabled: 0
+    epoOutlineEnabled: 0
   createASMDEF: 0
   showPlayingTweens: 1
   showPausedTweens: 1

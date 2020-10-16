@@ -74,10 +74,13 @@ namespace DG.Tweening.Core
             public bool physics2DEnabled = true;
             public bool spriteEnabled = true;
             public bool uiEnabled = true;
+            //
             public bool textMeshProEnabled;
             public bool tk2DEnabled;
             public bool deAudioEnabled;
             public bool deUnityExtendedEnabled;
+            //
+            public bool epoOutlineEnabled; // For asset https://assetstore.unity.com/packages/vfx/easy-performant-outline-2d-3d-srp-lwrp-urp-default-renderer-157187
         }
     }
 }
