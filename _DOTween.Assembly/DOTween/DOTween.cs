@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.550"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.555"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -694,7 +694,10 @@ namespace DG.Tweening
         #region Tween SEQUENCE
 
         /// <summary>
-        /// Returns a new <see cref="Sequence"/> to be used for tween groups
+        /// Returns a new <see cref="DG.Tweening.Sequence"/> to be used for tween groups.<para/>
+        /// Mind that Sequences don't have a target applied automatically like Tweener creation shortcuts,
+        /// so if you want to be able to kill this Sequence when calling DOTween.Kill(target) you'll have to add
+        /// the target manually; you can do that directly by using the <see cref="Sequence(object)"/> overload instead of this one
         /// </summary>
         public static Sequence Sequence()
         {
@@ -703,6 +706,16 @@ namespace DG.Tweening
             Tweening.Sequence.Setup(sequence);
             return sequence;
         }
+        /// <summary>
+        /// Returns a new <see cref="DG.Tweening.Sequence"/> to be used for tween groups, and allows to set a target
+        /// (because Sequences don't have their target set automatically like Tweener creation shortcuts).
+        /// That way killing/controlling tweens by target will apply to this Sequence too.
+        /// </summary>
+        /// <param name="target">The target of the Sequence. Relevant only for static target-based methods like DOTween.Kill(target),
+        /// useless otherwise</param>
+        public static Sequence Sequence(object target)
+        { return DOTween.Sequence().SetTarget(target); }
+
         #endregion
 
         /////////////////////////////////////////////////////////////////////
