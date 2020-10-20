@@ -55,10 +55,15 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
 
-//            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
-            UpdateMode updateMode = TweenManager.isUpdateLoop ? UpdateMode.IgnoreOnComplete
-                : withCallbacks ? UpdateMode.Update : UpdateMode.Goto;
-            TweenManager.Complete(t, true, updateMode);
+            // Previously disused in favor of bottom code because otherwise OnComplete was called twice when fired inside am OnUpdate call,
+            // but that created another recent issue where events (OnComplete and any other) weren't called anymore
+            // if called from another tween's internal callbacks.
+            // Reinstated because thanks to other fixes this now works correctly
+            TweenManager.Complete(t, true, withCallbacks ? UpdateMode.Update : UpdateMode.Goto);
+            // See above note for reason why this was commented
+            // UpdateMode updateMode = TweenManager.isUpdateLoop ? UpdateMode.IgnoreOnComplete
+            //     : withCallbacks ? UpdateMode.Update : UpdateMode.Goto;
+            // TweenManager.Complete(t, true, updateMode);
         }
 
         /// <summary>Flips the direction of this tween (backwards if it was going forward or viceversa)</summary>
