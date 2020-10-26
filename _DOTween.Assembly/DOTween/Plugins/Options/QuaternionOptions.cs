@@ -14,12 +14,16 @@ namespace DG.Tweening.Plugins.Options
         public RotateMode rotateMode; // Accessed by shortcuts and Modules
         public AxisConstraint axisConstraint; // Used by SpecialStartupMode SetLookAt, accessed by shortcuts and Modules
         public Vector3 up; // Used by SpecialStartupMode SetLookAt, accessed by shortcuts and Modules
+        public bool dynamicLookAt; // Used by DODynamicLookAt shortcut, updates the lookAt every frame
+        public Vector3 dynamicLookAtWorldPosition;
 
         public void Reset()
         {
             rotateMode = RotateMode.Fast;
             axisConstraint = AxisConstraint.None;
             up = Vector3.zero;
+            dynamicLookAt = false;
+            dynamicLookAtWorldPosition = Vector3.zero;
         }
     }
 }

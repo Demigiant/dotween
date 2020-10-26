@@ -22,6 +22,8 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Assets/-tk2d*
 *.Unity*/Assets/Console*Pro*
 *.Unity*/Assets/CodeStage
+*ScriptInspector3
+*ScriptInspector3.*
 *.Unity*/Assets/_DOTween Pro Examples
 *.Unity*/Assets/_Tests PRO*
 .vs

@@ -663,17 +663,32 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Tweens a Transform's rotation so that it will look towards the given position.
+        /// <summary>Tweens a Transform's rotation so that it will look towards the given world position.
         /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
         /// <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
         /// <param name="axisConstraint">Eventual axis constraint for the rotation</param>
         /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
         public static Tweener DOLookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
+        { return LookAt(target, towards, duration, axisConstraint, up, false); }
+        /// <summary><code>EXPERIMENTAL</code> Tweens a Transform's rotation so that it will look towards the given world position,
+        /// while also updating the lookAt position every frame
+        /// (contrary to <see cref="DOLookAt"/> which calculates the lookAt rotation only once, when the tween starts).
+        /// Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+        /// <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
+        /// <param name="axisConstraint">Eventual axis constraint for the rotation</param>
+        /// <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
+        public static Tweener DODynamicLookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint = AxisConstraint.None, Vector3? up = null)
+        { return LookAt(target, towards, duration, axisConstraint, up, true); }
+        static Tweener LookAt(this Transform target, Vector3 towards, float duration, AxisConstraint axisConstraint, Vector3? up, bool dynamic)
         {
             TweenerCore<DOQuaternion, DOVector3, QuaternionOptions> t = DOTween.To(() => target.rotation, x => target.rotation = x, towards, duration)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetLookAt);
             t.plugOptions.axisConstraint = axisConstraint;
             t.plugOptions.up = (up == null) ? Vector3.up : (Vector3)up;
+            if (dynamic) {
+                t.plugOptions.dynamicLookAt = true;
+                t.plugOptions.dynamicLookAtWorldPosition = towards;
+            } else t.plugOptions.dynamicLookAt = false;
             return t;
         }
 

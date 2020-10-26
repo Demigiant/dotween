@@ -92,6 +92,14 @@ namespace DG.Tweening.Plugins
 
         public override void EvaluateAndApply(QuaternionOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Vector3 startValue, Vector3 changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
         {
+            if (options.dynamicLookAt) {
+                TweenerCore<Quaternion, Vector3, QuaternionOptions> tweener = (TweenerCore<Quaternion, Vector3, QuaternionOptions>)t;
+                tweener.endValue = options.dynamicLookAtWorldPosition;
+                SpecialPluginsUtils.SetLookAt(tweener);
+                SetChangeValue(tweener);
+                changeValue = tweener.changeValue;
+            }
+
             Vector3 endValue = startValue;
 
             if (t.loopType == LoopType.Incremental) endValue += changeValue * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);

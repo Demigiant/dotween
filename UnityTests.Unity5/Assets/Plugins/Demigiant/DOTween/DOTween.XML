@@ -1824,7 +1824,16 @@
             <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         </member>
         <member name="M:DG.Tweening.ShortcutExtensions.DOLookAt(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.AxisConstraint,System.Nullable{UnityEngine.Vector3})">
-            <summary>Tweens a Transform's rotation so that it will look towards the given position.
+            <summary>Tweens a Transform's rotation so that it will look towards the given world position.
+            Also stores the transform as the tween's target so it can be used for filtered operations</summary>
+            <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
+            <param name="axisConstraint">Eventual axis constraint for the rotation</param>
+            <param name="up">The vector that defines in which direction up is (default: Vector3.up)</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DODynamicLookAt(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.AxisConstraint,System.Nullable{UnityEngine.Vector3})">
+            <summary><code>EXPERIMENTAL</code> Tweens a Transform's rotation so that it will look towards the given world position,
+            while also updating the lookAt position every frame
+            (contrary to <see cref="M:DG.Tweening.ShortcutExtensions.DOLookAt(UnityEngine.Transform,UnityEngine.Vector3,System.Single,DG.Tweening.AxisConstraint,System.Nullable{UnityEngine.Vector3})"/> which calculates the lookAt rotation only once, when the tween starts).
             Also stores the transform as the tween's target so it can be used for filtered operations</summary>
             <param name="towards">The position to look at</param><param name="duration">The duration of the tween</param>
             <param name="axisConstraint">Eventual axis constraint for the rotation</param>
