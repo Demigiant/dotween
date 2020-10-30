@@ -274,7 +274,9 @@ namespace DG.DOTweenEditor.UI
                 GUILayout.Label(
                     "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
                     " from other ASMDEFs/Libraries instead of loose scripts," +
-                    " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>.",
+                    " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>," +
+                    " <b>except for DOTween's Editor ASMDEFs</b> (DOTweenPro.EditorScripts) which <b>must never be referenced</b>" +
+                    " by your runtime code or runtime ASMDEFs.",
                     EditorGUIUtils.wordWrapRichTextLabelStyle
                 );
             }
