@@ -183,5 +183,42 @@ namespace DG.Tweening.Core
         }
 
         #endregion
+
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
+        // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+        internal static class Sequence
+        {
+            public static void LogAddToNullSequence()
+            {
+                LogWarning("You can't add elements to a NULL Sequence");
+            }
+
+            public static void LogAddToInactiveSequence()
+            {
+                LogWarning("You can't add elements to an inactive/killed Sequence");
+            }
+
+            public static void LogAddToLockedSequence()
+            {
+                LogWarning("The Sequence has started and is now locked, you can only elements to a Sequence before it starts");
+            }
+
+            public static void LogAddNullTween()
+            {
+                LogWarning("You can't add a NULL tween to a Sequence");
+            }
+
+            public static void LogAddInactiveTween(Tween t)
+            {
+                LogWarning("You can't add an inactive/killed tween to a Sequence", t);
+            }
+
+            public static void LogAddAlreadySequencedTween(Tween t)
+            {
+                LogWarning("You can't add a tween that is already nested into a Sequence to another Sequence", t);
+            }
+        }
     }
 }

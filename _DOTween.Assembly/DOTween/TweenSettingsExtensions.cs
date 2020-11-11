@@ -494,9 +494,7 @@ namespace DG.Tweening
         /// <param name="t">The tween to append</param>
         public static Sequence Append(this Sequence s, Tween t)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active || t.isSequenced) return s;
-
+            if (!ValidateAddToSequence(s, t)) return s;
             Sequence.DoInsert(s, t, s.duration);
             return s;
         }
@@ -505,9 +503,7 @@ namespace DG.Tweening
         /// <param name="t">The tween to prepend</param>
         public static Sequence Prepend(this Sequence s, Tween t)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active || t.isSequenced) return s;
-
+            if (!ValidateAddToSequence(s, t)) return s;
             Sequence.DoPrepend(s, t);
             return s;
         }
@@ -516,9 +512,7 @@ namespace DG.Tweening
         /// Has no effect if the Sequence has already started</summary>
         public static Sequence Join(this Sequence s, Tween t)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active || t.isSequenced) return s;
-
+            if (!ValidateAddToSequence(s, t)) return s;
             Sequence.DoInsert(s, t, s.lastTweenInsertTime);
             return s;
         }
@@ -529,9 +523,7 @@ namespace DG.Tweening
         /// <param name="t">The tween to insert</param>
         public static Sequence Insert(this Sequence s, float atPosition, Tween t)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-            if (t == null || !t.active || t.isSequenced) return s;
-
+            if (!ValidateAddToSequence(s, t)) return s;
             Sequence.DoInsert(s, t, atPosition);
             return s;
         }
@@ -541,8 +533,7 @@ namespace DG.Tweening
         /// <param name="interval">The interval duration</param>
         public static Sequence AppendInterval(this Sequence s, float interval)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-
+            if (!ValidateAddToSequence(s, null, true)) return s;
             Sequence.DoAppendInterval(s, interval);
             return s;
         }
@@ -551,8 +542,7 @@ namespace DG.Tweening
         /// <param name="interval">The interval duration</param>
         public static Sequence PrependInterval(this Sequence s, float interval)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
-
+            if (!ValidateAddToSequence(s, null, true)) return s;
             Sequence.DoPrependInterval(s, interval);
             return s;
         }
@@ -562,7 +552,7 @@ namespace DG.Tweening
         /// <param name="callback">The callback to append</param>
         public static Sequence AppendCallback(this Sequence s, TweenCallback callback)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
+            if (!ValidateAddToSequence(s, null, true)) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, s.duration);
@@ -573,7 +563,7 @@ namespace DG.Tweening
         /// <param name="callback">The callback to prepend</param>
         public static Sequence PrependCallback(this Sequence s, TweenCallback callback)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
+            if (!ValidateAddToSequence(s, null, true)) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, 0);
@@ -586,12 +576,44 @@ namespace DG.Tweening
         /// <param name="callback">The callback to insert</param>
         public static Sequence InsertCallback(this Sequence s, float atPosition, TweenCallback callback)
         {
-            if (s == null || !s.active || s.creationLocked) return s;
+            if (!ValidateAddToSequence(s, null, true)) return s;
             if (callback == null) return s;
 
             Sequence.DoInsertCallback(s, callback, atPosition);
             return s;
         }
+
+        static bool ValidateAddToSequence(Sequence s, Tween t, bool ignoreTween = false)
+        {
+            if (s == null) {
+                Debugger.Sequence.LogAddToNullSequence();
+                return false;
+            }
+            if (!s.active) {
+                Debugger.Sequence.LogAddToInactiveSequence();
+                return false;
+            }
+            if (s.creationLocked) {
+                Debugger.Sequence.LogAddToLockedSequence();
+                return false;
+            }
+            if (!ignoreTween) {
+                if (t == null) {
+                    Debugger.Sequence.LogAddNullTween();
+                    return false;
+                }
+                if (!t.active) {
+                    Debugger.Sequence.LogAddInactiveTween(t);
+                    return false;
+                }
+                if (t.isSequenced) {
+                    Debugger.Sequence.LogAddAlreadySequencedTween(t);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         #endregion
 
         #region Tweeners-only
