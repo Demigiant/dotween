@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.570"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.575"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -630,6 +630,7 @@ namespace DG.Tweening
                         to.x = Vector3.ClampMagnitude(to, strength.x).x;
                         to.y = Vector3.ClampMagnitude(to, strength.y).y;
                         to.z = Vector3.ClampMagnitude(to, strength.z).z;
+                        to = to.normalized * shakeMagnitude; // Make sure first shake uses max magnitude
                         tos[i] = to;
                         if (fadeOut) shakeMagnitude -= decayXTween;
                         strength = Vector3.ClampMagnitude(strength, shakeMagnitude);
