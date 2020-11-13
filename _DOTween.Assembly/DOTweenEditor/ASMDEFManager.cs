@@ -287,6 +287,7 @@ namespace DG.DOTweenEditor
                         if (src.modules.textMeshProEnabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
                     }
                     if (type == ASMDEFType.DOTweenTimelineEditor) {
+                        if (EditorUtils.hasPro) sw.WriteLine("\t\t\"{0}\",", _ProId);
                         sw.WriteLine("\t\t\"{0}\",", _ModulesId);
                         sw.WriteLine("\t\t\"{0}\"", _DOTweenTimelineId);
                         sw.WriteLine("\t],");
@@ -295,6 +296,7 @@ namespace DG.DOTweenEditor
                         sw.WriteLine("\t],");
                         sw.WriteLine("\t\"autoReferenced\": false");
                     } else {
+                        if (EditorUtils.hasPro) sw.WriteLine("\t\t\"{0}\",", _ProId);
                         sw.WriteLine("\t\t\"{0}\"", _ModulesId);
                         sw.WriteLine("\t]");
                     }
