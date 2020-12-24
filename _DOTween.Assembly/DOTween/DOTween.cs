@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.580"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.585"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -135,7 +135,8 @@ namespace DG.Tweening
         internal static bool isQuitting {
             get {
                 if (!_foo_isQuitting) return false;
-                if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) {
+                // if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) { // Doesn't work with domain reload if checking with a > 0 frameCount
+                if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount) {
                     _foo_isQuitting = false;
                     return false;
                 }

@@ -2,22 +2,15 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TempTests : MonoBehaviour
 {
-    public Transform target;
+    public Text tf;
 
-    public float effectDuration = 0.3f;
-    public Vector3 shakeStrength = new Vector3(10f, 0, 0);
-    public int shakeVibrato = 20;
-    public float shakeRandomness = 0;
-    
-    void Update()
+    IEnumerator Start()
     {
-        if (Input.GetMouseButtonDown(0)) DoShake();
-    }
-    
-    public void DoShake() {
-        target.DOShakePosition(effectDuration, shakeStrength, shakeVibrato, shakeRandomness).SetLoops(1, LoopType.Restart);
+        yield return new WaitForSeconds(1);
+        DOTween.ToAlpha(() => tf.color, x => tf.color = x, 0, 1);
     }
 }
