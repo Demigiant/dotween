@@ -6,7 +6,7 @@ using UnityEngine;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 #if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0)
-using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 #endif
 
 #pragma warning disable 1591
