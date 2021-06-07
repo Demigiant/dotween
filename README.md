@@ -1,4 +1,4 @@
-# dotween
+# DOTween
 
 A Unity C# animation/tween engine. HOTween v2  
 Developed by Daniele Giardini - http://www.demigiant.com
