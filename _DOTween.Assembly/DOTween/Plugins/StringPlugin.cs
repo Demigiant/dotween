@@ -63,8 +63,35 @@ namespace DG.Tweening.Plugins
             t.changeValue = t.endValue;
 
             // Store no-tags versions of values
-            t.plugOptions.startValueStrippedLength = string.IsNullOrEmpty(t.startValue) ? 0 : Regex.Replace(t.startValue, @"<[^>]*>", "").Length;
-            t.plugOptions.changeValueStrippedLength = string.IsNullOrEmpty(t.changeValue) ? 0 : Regex.Replace(t.changeValue, @"<[^>]*>", "").Length;
+            bool emptyStartValue = string.IsNullOrEmpty(t.startValue);
+            bool emptyChangeValue = string.IsNullOrEmpty(t.changeValue);
+            t.plugOptions.startValueStrippedLength = emptyStartValue ? 0 : Regex.Replace(t.startValue, @"<[^>]*>", "").Length;
+            t.plugOptions.changeValueStrippedLength = emptyChangeValue ? 0 : Regex.Replace(t.changeValue, @"<[^>]*>", "").Length;
+            // Check if texts end with an open tag in which case consider it
+            int startValueFullLen = emptyStartValue ? 0 : t.startValue.Length;
+            int changeValueFullLen = emptyChangeValue ? 0 : t.changeValue.Length;
+            if (startValueFullLen > 3 && t.startValue[startValueFullLen - 1] == '>') {
+                for (int i = startValueFullLen - 3; i > -1; --i) {
+                    if (t.startValue[i] == '<') {
+                        if (t.startValue[i + 1] != '/') {
+                            // Start value ends with open tag
+                            t.plugOptions.startValueStrippedLength++;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (changeValueFullLen > 3 && t.changeValue[changeValueFullLen - 1] == '>') {
+                for (int i = changeValueFullLen - 3; i > -1; --i) {
+                    if (t.changeValue[i] == '<') {
+                        if (t.changeValue[i + 1] != '/') {
+                            // End value ends with open tag
+                            t.plugOptions.changeValueStrippedLength++;
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         public override float GetSpeedBasedDuration(StringOptions options, float unitsXSecond, string changeValue)
@@ -126,7 +153,7 @@ namespace DG.Tweening.Plugins
             setter(_Buffer.ToString());
         }
 
-        // Manages eventual rich text, if enabled, readding tags to the given string and closing them when necessary
+        // Manages eventual rich text, if enabled, re-adding tags to the given string and closing them when necessary
         StringBuilder Append(string value, int startIndex, int length, bool richTextEnabled)
         {
             if (!richTextEnabled) {
@@ -141,6 +168,7 @@ namespace DG.Tweening.Plugins
             int fullLen = value.Length;
             int i;
             for (i = 0; i < length; ++i) {
+                if (i > fullLen - 1) break; // Happens when string ends with an open tag
                 char c = value[i];
                 if (c == '<') {
                     bool hadOpenTag = hasOpenTag;
