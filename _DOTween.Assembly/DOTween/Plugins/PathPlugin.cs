@@ -70,7 +70,7 @@ namespace DG.Tweening.Plugins
             bool hasAdditionalStartingP = false, hasAdditionalEndingP = false;
             
             // Create final wps and add eventual starting/ending waypoints.
-            if (!DOTweenUtils.Vector3AreApproximatelyEqual(path.wps[0], currVal)) {
+            if (unmodifiedWpsLen <= path.minInputWaypoints || !DOTweenUtils.Vector3AreApproximatelyEqual(path.wps[0], currVal)) {
                 hasAdditionalStartingP = true;
                 additionalWps += 1;
             }

@@ -37,6 +37,10 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal float[] lengthsTable; // Connected to timesTable, used for constant speed calculations
         internal int linearWPIndex = -1; // Waypoint towards which we're moving (only stored for linear paths, when calling GetPoint)
         internal bool addedExtraStartWp, addedExtraEndWp;
+        /// <summary>
+        /// Minimum input points necessary to create the path (doesn't correspond to actual waypoints required)
+        /// </summary>
+        internal int minInputWaypoints { get { return _decoder.minInputWaypoints; } }
         Path _incrementalClone; // Last incremental clone. Stored in case of incremental loops, to avoid recreating a new path every time
         int _incrementalIndex = 0;
 
@@ -111,6 +115,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             if (type == PathType.Linear) return perc;
 
             if (perc > 0 && perc < 1) {
+                if (length <= 0) return perc; // Fix bug in case of 0-length path
                 float tLen = length * perc;
                 // Find point in time/length table
                 float t0 = 0, l0 = 0, t1 = 0, l1 = 0;

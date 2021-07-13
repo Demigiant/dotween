@@ -11,6 +11,8 @@ namespace DG.Tweening.Plugins.Core.PathCore
 {
     internal class CatmullRomDecoder : ABSPathDecoder
     {
+        internal override int minInputWaypoints { get { return 1; } }
+
         // Used for temporary operations
         static readonly ControlPoint[] _PartialControlPs = new ControlPoint[2];
         static readonly Vector3[] _PartialWps = new Vector3[2];

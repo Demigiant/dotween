@@ -11,6 +11,8 @@ namespace DG.Tweening.Plugins.Core.PathCore
 {
     internal class CubicBezierDecoder : ABSPathDecoder
     {
+        internal override int minInputWaypoints { get { return 3; } }
+
         // Used for temporary operations
         static readonly ControlPoint[] _PartialControlPs = new ControlPoint[1];
         static readonly Vector3[] _PartialWps = new Vector3[2];

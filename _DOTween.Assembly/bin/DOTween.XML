@@ -1185,6 +1185,11 @@
             Path waypoints (modified by PathPlugin when setting relative end/change value or by CubicBezierDecoder) and by DOTweenPathInspector
             </summary>
         </member>
+        <member name="P:DG.Tweening.Plugins.Core.PathCore.Path.minInputWaypoints">
+            <summary>
+            Minimum input points necessary to create the path (doesn't correspond to actual waypoints required)
+            </summary>
+        </member>
         <member name="M:DG.Tweening.Plugins.Core.PathCore.Path.GetPoint(System.Single,System.Boolean)">
             <summary>
             Gets the point on the path at the given percentage (0 to 1)

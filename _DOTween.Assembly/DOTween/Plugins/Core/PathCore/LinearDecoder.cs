@@ -10,6 +10,8 @@ namespace DG.Tweening.Plugins.Core.PathCore
 {
     internal class LinearDecoder : ABSPathDecoder
     {
+        internal override int minInputWaypoints { get { return 1; } }
+
         internal override void FinalizePath(Path p, Vector3[] wps, bool isClosedPath)
         {
             p.controlPoints = null;
