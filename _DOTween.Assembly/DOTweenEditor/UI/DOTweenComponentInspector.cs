@@ -124,7 +124,9 @@ namespace DG.DOTweenEditor.UI
                         if (t == null || !t.isPlaying) continue;
                         _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
                         AppendTweenIdLabel(_strb, t);
-                        _strb.Append("] ").Append(GetTargetTypeLabel(t.target));
+                        _strb.Append("]");
+                        AppendDebugTargetIdLabel(_strb, t);
+                        AppendTargetTypeLabel(_strb, t.target);
                     }
                 }
                 _strb.Append("</color>");
@@ -134,7 +136,9 @@ namespace DG.DOTweenEditor.UI
                         if (t == null || t.isPlaying) continue;
                         _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
                         AppendTweenIdLabel(_strb, t);
-                        _strb.Append("] ").Append(GetTargetTypeLabel(t.target));
+                        _strb.Append("]");
+                        AppendDebugTargetIdLabel(_strb, t);
+                        AppendTargetTypeLabel(_strb, t.target);
                     }
                 }
                 _strb.Append("</color>");
@@ -205,13 +209,31 @@ namespace DG.DOTweenEditor.UI
             else if (t.id != null) strb.Append(":<b>").Append(t.id).Append("</b>");
         }
 
-        string GetTargetTypeLabel(object tweenTarget)
+        void AppendDebugTargetIdLabel(StringBuilder strb, Tween t)
         {
-            if (tweenTarget == null) return null;
-            string s = tweenTarget.ToString();
-            int dotIndex = s.LastIndexOf('.');
-            if (dotIndex != -1) s = '(' + s.Substring(dotIndex + 1);
-            return s;
+            if (string.IsNullOrEmpty(t.debugTargetId)) return;
+            strb.Append(' ').Append(t.debugTargetId);
+        }
+
+        void AppendTargetTypeLabel(StringBuilder strb, object tweenTarget)
+        {
+            strb.Append(' ');
+            if (tweenTarget == null) {
+                _strb.Append("<b><color=#ff0000>×</color></b>");
+            } else {
+                string s = tweenTarget.ToString();
+                if (s == "null") {
+                    _strb.Append("<b><color=#ff0000>×</color></b>");
+                } else {
+                    strb.Append('(');
+                    int dotIndex = s.LastIndexOf('.');
+                    if (dotIndex == -1) {
+                        strb.Append(s).Append(')');
+                    } else {
+                        strb.Append(s.Substring(dotIndex + 1));
+                    }
+                }
+            }
         }
 
         #endregion
