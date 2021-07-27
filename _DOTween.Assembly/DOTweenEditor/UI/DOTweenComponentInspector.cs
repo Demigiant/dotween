@@ -217,21 +217,18 @@ namespace DG.DOTweenEditor.UI
 
         void AppendTargetTypeLabel(StringBuilder strb, object tweenTarget)
         {
+            if (tweenTarget == null) return;
             strb.Append(' ');
-            if (tweenTarget == null) {
+            string s = tweenTarget.ToString();
+            if (s == "null") {
                 _strb.Append("<b><color=#ff0000>×</color></b>");
             } else {
-                string s = tweenTarget.ToString();
-                if (s == "null") {
-                    _strb.Append("<b><color=#ff0000>×</color></b>");
+                strb.Append('(');
+                int dotIndex = s.LastIndexOf('.');
+                if (dotIndex == -1) {
+                    strb.Append(s).Append(')');
                 } else {
-                    strb.Append('(');
-                    int dotIndex = s.LastIndexOf('.');
-                    if (dotIndex == -1) {
-                        strb.Append(s).Append(')');
-                    } else {
-                        strb.Append(s.Substring(dotIndex + 1));
-                    }
+                    strb.Append(s.Substring(dotIndex + 1));
                 }
             }
         }
