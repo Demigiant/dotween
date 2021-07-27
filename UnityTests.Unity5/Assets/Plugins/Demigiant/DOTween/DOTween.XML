@@ -917,6 +917,12 @@
             <param name="alsoCheckIfIsPlaying">If FALSE (default) returns TRUE as long as a tween for the given target/ID is active,
             otherwise also requires it to be playing</param>
         </member>
+        <member name="M:DG.Tweening.DOTween.TotalActiveTweens">
+            <summary>
+            Returns the total number of active tweens.
+            A tween is considered active if it wasn't killed, regardless if it's playing or paused
+            </summary>
+        </member>
         <member name="M:DG.Tweening.DOTween.TotalPlayingTweens">
             <summary>
             Returns the total number of active and playing tweens.

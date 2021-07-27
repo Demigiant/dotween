@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.600"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.605"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -991,6 +991,15 @@ namespace DG.Tweening
         public static bool IsTweening(object targetOrId, bool alsoCheckIfIsPlaying = false)
         {
             return TweenManager.FilteredOperation(OperationType.IsTweening, FilterType.TargetOrId, targetOrId, alsoCheckIfIsPlaying, 0) > 0;
+        }
+
+        /// <summary>
+        /// Returns the total number of active tweens.
+        /// A tween is considered active if it wasn't killed, regardless if it's playing or paused
+        /// </summary>
+        public static int TotalActiveTweens()
+        {
+            return TweenManager.totActiveTweens;
         }
 
         /// <summary>
