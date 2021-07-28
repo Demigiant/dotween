@@ -65,6 +65,7 @@ namespace DG.Tweening.Plugins
 
             Vector3 currVal = t.getter();
             Path path = t.endValue;
+            path.plugOptions = t.plugOptions;
             int unmodifiedWpsLen = path.wps.Length;
             int additionalWps = 0;
             bool hasAdditionalStartingP = false, hasAdditionalEndingP = false;

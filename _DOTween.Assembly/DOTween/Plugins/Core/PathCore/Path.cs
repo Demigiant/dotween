@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 #pragma warning disable 1591
@@ -37,6 +38,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
         [SerializeField] internal float[] lengthsTable; // Connected to timesTable, used for constant speed calculations
         internal int linearWPIndex = -1; // Waypoint towards which we're moving (only stored for linear paths, when calling GetPoint)
         internal bool addedExtraStartWp, addedExtraEndWp;
+        internal PathOptions plugOptions; // Assigned by tween SetChangeValue and only used to draw gizmos correctly considering local space
         /// <summary>
         /// Minimum input points necessary to create the path (doesn't correspond to actual waypoints required)
         /// </summary>
@@ -320,18 +322,18 @@ namespace DG.Tweening.Plugins.Core.PathCore
             Vector3 prevPt;
             switch (p.type) {
             case PathType.Linear:
-                prevPt = p.wps[0];
+                prevPt = ConvertToDrawPoint(p.wps[0], p.plugOptions);
                 for (int i = 0; i < wpsCount; ++i) {
-                    currPt = p.wps[i];
+                    currPt = ConvertToDrawPoint(p.wps[i], p.plugOptions);
                     Gizmos.DrawLine(currPt, prevPt);
                     prevPt = currPt;
                 }
                 break;
             default: // Curved
-                prevPt = p.nonLinearDrawWps[0];
+                prevPt = ConvertToDrawPoint(p.nonLinearDrawWps[0], p.plugOptions);
                 int count = p.nonLinearDrawWps.Length;
                 for (int i = 1; i < count; ++i) {
-                    currPt = p.nonLinearDrawWps[i];
+                    currPt = ConvertToDrawPoint(p.nonLinearDrawWps[i], p.plugOptions);
                     Gizmos.DrawLine(currPt, prevPt);
                     prevPt = currPt;
                 }
@@ -342,7 +344,7 @@ namespace DG.Tweening.Plugins.Core.PathCore
             const float spheresSize = 0.075f;
 
             // Draw path control points
-            for (int i = 0; i < wpsCount; ++i) Gizmos.DrawSphere(p.wps[i], spheresSize);
+            for (int i = 0; i < wpsCount; ++i) Gizmos.DrawSphere(ConvertToDrawPoint(p.wps[i], p.plugOptions), spheresSize);
 
             // Draw eventual path lookAt
             if (p.lookAtPosition != null) {
@@ -350,6 +352,12 @@ namespace DG.Tweening.Plugins.Core.PathCore
                 Gizmos.DrawLine(p.targetPosition, lookAtP);
                 Gizmos.DrawWireSphere(lookAtP, spheresSize);
             }
+        }
+
+        static Vector3 ConvertToDrawPoint(Vector3 wp, PathOptions plugOptions)
+        {
+            if (!plugOptions.useLocalPosition || plugOptions.parent == null) return wp;
+            return plugOptions.parent.TransformPoint(wp);
         }
     }
 }
