@@ -6,38 +6,45 @@ using DG.Tweening;
 public class NonUniformlyScaledPathsLookAt : BrainBase
 {
     public bool useLocalSpace;
-    public Vector3 endP = new Vector3(4, 2, 0);
+    public bool tweenUnscaledTarget, tweenScaledTarget;
+    public bool setTransfFwUp;
     public float duration = 3;
+    public PathMode pathMode = PathMode.Full3D;
+    public Vector3 endP = new Vector3(4, 2, 0);
     public Transform unscaledTarget, scaledTarget;
     
     Vector3[] startPs;
     
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.8f);
-        CreateLocalPathTween(unscaledTarget);
-        CreateLocalPathTween(scaledTarget);
-    }
-    
-    void CreateLocalPathTween(Transform t)
-    {
         startPs = new[] {
             unscaledTarget.position,
             scaledTarget.position
         };
-        
+        yield return new WaitForSeconds(0.8f);
+        if (tweenUnscaledTarget) CreateLocalPathTween(unscaledTarget);
+        if (tweenScaledTarget) CreateLocalPathTween(scaledTarget);
+    }
+    
+    void CreateLocalPathTween(Transform t)
+    {
+        Tween tween = null;
         Vector3[] ps = new[] {
             Vector3.zero,
             endP
         };
-        
-        Tween tween = null;
         if (useLocalSpace) {
-            tween = t.DOLocalPath(ps, duration, PathType.CatmullRom)
-                .SetLookAt(0.01f);
+            tween = setTransfFwUp
+                ? t.DOLocalPath(ps, duration, PathType.CatmullRom, pathMode)
+                    .SetLookAt(0, t.forward, t.up)
+                : t.DOLocalPath(ps, duration, PathType.CatmullRom, pathMode)
+                .SetLookAt(0);
         } else {
-            tween = t.DOPath(ps, duration, PathType.CatmullRom)
-                .SetLookAt(0.01f);
+            tween = setTransfFwUp
+                ? t.DOPath(ps, duration, PathType.CatmullRom, pathMode)
+                .SetLookAt(0, t.forward, t.up)
+                : t.DOPath(ps, duration, PathType.CatmullRom, pathMode)
+                .SetLookAt(0);
         }
         tween.SetEase(Ease.Linear).SetLoops(-1);
     }

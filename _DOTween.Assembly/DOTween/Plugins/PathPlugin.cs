@@ -56,7 +56,8 @@ namespace DG.Tweening.Plugins
         public override void SetChangeValue(TweenerCore<Vector3, Path, PathOptions> t)
         {
             Transform trans = ((Component)t.target).transform;
-            if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
+            // if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
+            if (t.plugOptions.orientType == OrientType.ToPath) t.plugOptions.parent = trans.parent;
 
             if (t.endValue.isFinalized) {
                 t.changeValue = t.endValue;
@@ -162,6 +163,7 @@ namespace DG.Tweening.Plugins
         {
             Transform trans = ((Component)t.target).transform;
             Quaternion newRot = Quaternion.identity;
+            Vector3 transP = trans.position;
 
             if (updateNotice == UpdateNotice.RewindStep) {
                 // Reset orientation before continuing
@@ -171,14 +173,14 @@ namespace DG.Tweening.Plugins
             switch (options.orientType) {
             case OrientType.LookAtPosition:
                 path.lookAtPosition = options.lookAtPosition; // Used to draw editor gizmos
-//                newRot = Quaternion.LookRotation(options.lookAtPosition - trans.position, trans.up);
-                newRot = Quaternion.LookRotation(options.lookAtPosition - trans.position, options.stableZRotation ? Vector3.up : trans.up);
+//                newRot = Quaternion.LookRotation(options.lookAtPosition - transP, trans.up);
+                newRot = Quaternion.LookRotation(options.lookAtPosition - transP, options.stableZRotation ? Vector3.up : trans.up);
                 break;
             case OrientType.LookAtTransform:
                 if (options.lookAtTransform != null) {
                     path.lookAtPosition = options.lookAtTransform.position; // Used to draw editor gizmos
-//                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - trans.position, trans.up);
-                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - trans.position, options.stableZRotation ? Vector3.up : trans.up);
+//                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - transP, trans.up);
+                    newRot = Quaternion.LookRotation(options.lookAtTransform.position - transP, options.stableZRotation ? Vector3.up : trans.up);
                 }
                 break;
             case OrientType.ToPath:
@@ -198,14 +200,16 @@ namespace DG.Tweening.Plugins
                 }
                 Vector3 transUp = trans.up;
                 // Apply basic modification for local position movement
-                if (options.useLocalPosition && options.parent != null) lookAtP = options.parent.TransformPoint(lookAtP);
+                bool hasParent = options.parent != null;
+                bool hasLocalPositionAndParent = options.useLocalPosition && hasParent;
+                if (hasLocalPositionAndParent) lookAtP = options.parent.TransformPoint(lookAtP);
                 // LookAt axis constraint
                 if (options.lockRotationAxis != AxisConstraint.None) {
                     if ((options.lockRotationAxis & AxisConstraint.X) == AxisConstraint.X) {
                         Vector3 v0 = trans.InverseTransformPoint(lookAtP);
                         v0.y = 0;
                         lookAtP = trans.TransformPoint(v0);
-                        transUp = options.useLocalPosition && options.parent != null ? options.parent.up : Vector3.up;
+                        transUp = hasLocalPositionAndParent ? options.parent.up : Vector3.up;
                     }
                     if ((options.lockRotationAxis & AxisConstraint.Y) == AxisConstraint.Y) {
                         Vector3 v0 = trans.InverseTransformPoint(lookAtP);
@@ -215,24 +219,33 @@ namespace DG.Tweening.Plugins
                     }
                     if ((options.lockRotationAxis & AxisConstraint.Z) == AxisConstraint.Z) {
                         // Fix to allow racing loops to keep cars straight and not flip it
-                        if (options.useLocalPosition && options.parent != null) transUp = options.parent.TransformDirection(Vector3.up);
+                        if (hasLocalPositionAndParent) transUp = options.parent.TransformDirection(Vector3.up);
                         else transUp = trans.TransformDirection(Vector3.up);
                         transUp.z = options.startupZRot;
                     }
                 }
                 if (options.mode == PathMode.Full3D) {
                     // 3D path
-                    Vector3 diff = lookAtP - trans.position;
+                    Vector3 diff = lookAtP - transP;
                     if (diff == Vector3.zero) diff = trans.forward;
+                    if (hasParent) {
+                        // Adapt diff to parent scale, fixes problems with non-uniform parent scale
+                        diff = DivideVectorByVector(diff, options.parent.localScale);
+                    }
                     newRot = Quaternion.LookRotation(diff, transUp);
                 } else {
                     // 2D path
+                    if (hasParent) {
+                        // Adapt diff to parent scale, fixes problems with non-uniform parent scale
+                        Vector3 diffScaled = DivideVectorByVector(lookAtP - transP, options.parent.localScale);
+                        lookAtP = transP + diffScaled;
+                    }
                     float rotY = 0;
-                    float rotZ = DOTweenUtils.Angle2D(trans.position, lookAtP);
+                    float rotZ = DOTweenUtils.Angle2D(transP, lookAtP);
                     if (rotZ < 0) rotZ = 360 + rotZ;
                     if (options.mode == PathMode.Sidescroller2D) {
                         // Manage Y and modified Z rotation
-                        rotY = lookAtP.x < trans.position.x ? 180 : 0;
+                        rotY = lookAtP.x < transP.x ? 180 : 0;
                         if (rotZ > 90 && rotZ < 270) rotZ = 180 - rotZ;
                     }
                     newRot = Quaternion.Euler(0, rotY, rotZ);
@@ -248,6 +261,16 @@ namespace DG.Tweening.Plugins
 //#else
 //            trans.rotation = newRot;
 //#endif
+        }
+
+        Vector3 DivideVectorByVector(Vector3 vector, Vector3 byVector)
+        {
+            return new Vector3(vector.x / byVector.x, vector.y / byVector.y, vector.z / byVector.z);
+        }
+
+        Vector3 MultiplyVectorByVector(Vector3 vector, Vector3 byVector)
+        {
+            return new Vector3(vector.x * byVector.x, vector.y * byVector.y, vector.z * byVector.z);
         }
     }
 }

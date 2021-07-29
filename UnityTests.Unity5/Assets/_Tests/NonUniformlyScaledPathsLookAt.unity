@@ -119,11 +119,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.1
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalPosition.z
@@ -151,7 +151,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.05
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
@@ -168,7 +168,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 640244604}
-  - component: {fileID: 640244603}
   - component: {fileID: 640244605}
   m_Layer: 0
   m_Name: '- - BRAIN'
@@ -177,18 +176,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &640244603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 640244602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501d8bd74a44ee2408a65e2d6289c416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0
@@ -215,6 +202,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceFrameRate: 0
   forcedFrameRate: 10
+  useLocalSpace: 1
+  tweenUnscaledTarget: 1
+  tweenScaledTarget: 1
+  setTransfFwUp: 1
+  duration: 3
+  pathMode: 1
+  endP: {x: 1, y: 2, z: 0}
   unscaledTarget: {fileID: 1286180232}
   scaledTarget: {fileID: 428353850}
 --- !u!1001 &1286180231
@@ -230,7 +224,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 447940, guid: f8922f9ed12a9cf49a2f087e32d3fcbc, type: 2}
       propertyPath: m_LocalPosition.z
@@ -367,7 +361,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1414367987}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: -1, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1286180232}
@@ -396,8 +390,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1563988808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 1}
+  m_LocalPosition: {x: -1, y: -1, z: 0}
+  m_LocalScale: {x: 5, y: 1, z: 1}
   m_Children:
   - {fileID: 428353850}
   m_Father: {fileID: 0}
