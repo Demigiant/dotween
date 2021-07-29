@@ -129,23 +129,35 @@ namespace DG.Tweening
             public static TweenerCore<Vector3, Path, PathOptions> CreateDOTweenPathTween(
                 MonoBehaviour target, bool tweenRigidbody, bool isLocal, Path path, float duration, PathMode pathMode
             ){
-                TweenerCore<Vector3, Path, PathOptions> t;
+                TweenerCore<Vector3, Path, PathOptions> t = null;
+                bool rBodyFoundAndTweened = false;
 #if true // PHYSICS_MARKER
-                Rigidbody rBody = tweenRigidbody ? target.GetComponent<Rigidbody>() : null;
-                if (tweenRigidbody && rBody != null) {
-                    t = isLocal
-                        ? rBody.DOLocalPath(path, duration, pathMode)
-                        : rBody.DOPath(path, duration, pathMode);
-                } else {
+                if (tweenRigidbody) {
+                    Rigidbody rBody = target.GetComponent<Rigidbody>();
+                    if (rBody != null) {
+                        rBodyFoundAndTweened = true;
+                        t = isLocal
+                            ? rBody.DOLocalPath(path, duration, pathMode)
+                            : rBody.DOPath(path, duration, pathMode);
+                    }
+                }
+#endif
+#if true // PHYSICS2D_MARKER
+                if (!rBodyFoundAndTweened && tweenRigidbody) {
+                    Rigidbody2D rBody2D = target.GetComponent<Rigidbody2D>();
+                    if (rBody2D != null) {
+                        rBodyFoundAndTweened = true;
+                        t = isLocal
+                            ? rBody2D.DOLocalPath(path, duration, pathMode)
+                            : rBody2D.DOPath(path, duration, pathMode);
+                    }
+                }
+#endif
+                if (!rBodyFoundAndTweened) {
                     t = isLocal
                         ? target.transform.DOLocalPath(path, duration, pathMode)
                         : target.transform.DOPath(path, duration, pathMode);
                 }
-#else
-                t = isLocal
-                    ? target.transform.DOLocalPath(path, duration, pathMode)
-                    : target.transform.DOPath(path, duration, pathMode);
-#endif
                 return t;
             }
 

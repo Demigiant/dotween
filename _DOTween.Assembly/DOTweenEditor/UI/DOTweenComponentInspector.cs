@@ -61,14 +61,6 @@ namespace DG.DOTweenEditor.UI
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            int totActiveTweens = TweenManager.totActiveTweens;
-            int totPlayingTweens = TweenManager.TotalPlayingTweens();
-            int totPausedTweens = totActiveTweens - totPlayingTweens;
-            int totActiveDefaultTweens = TweenManager.totActiveDefaultTweens;
-            int totActiveLateTweens = TweenManager.totActiveLateTweens;
-            int totActiveFixedTweens = TweenManager.totActiveFixedTweens;
-            int totActiveManualTweens = TweenManager.totActiveManualTweens;
-
             GUILayout.Label(_title, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
 
             if (!_isRuntime) {
@@ -106,10 +98,14 @@ namespace DG.DOTweenEditor.UI
                 if (GUILayout.Button("Kill all")) DOTween.KillAll();
                 GUILayout.EndHorizontal();
 
-                GUILayout.Space(8);
-                GUILayout.Label("<b>Legend: </b> TW = Tweener, SE = Sequence", EditorGUIUtils.wordWrapRichTextLabelStyle);
+                int totActiveTweens = TweenManager.totActiveTweens;
+                int totPlayingTweens = TweenManager.TotalPlayingTweens();
+                int totPausedTweens = totActiveTweens - totPlayingTweens;
+                int totActiveDefaultTweens = TweenManager.totActiveDefaultTweens;
+                int totActiveLateTweens = TweenManager.totActiveLateTweens;
+                int totActiveFixedTweens = TweenManager.totActiveFixedTweens;
+                int totActiveManualTweens = TweenManager.totActiveManualTweens;
 
-                GUILayout.Space(8);
                 _strb.Length = 0;
                 _strb.Append("Active tweens: ").Append(totActiveTweens)
                     .Append(" (").Append(TweenManager.totActiveTweeners).Append(" TW, ")
@@ -117,37 +113,24 @@ namespace DG.DOTweenEditor.UI
                     .Append("\nDefault/Late/Fixed/Manual tweens: ").Append(totActiveDefaultTweens)
                     .Append("/").Append(totActiveLateTweens)
                     .Append("/").Append(totActiveFixedTweens)
-                    .Append("/").Append(totActiveManualTweens)
-                    .Append(_playingTweensHex).Append("\nPlaying tweens: ").Append(totPlayingTweens);
-                if (_settings.showPlayingTweens) {
-                    foreach (Tween t in TweenManager._activeTweens) {
-                        if (t == null || !t.isPlaying) continue;
-                        _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
-                        AppendTweenIdLabel(_strb, t);
-                        _strb.Append("]");
-                        AppendDebugTargetIdLabel(_strb, t);
-                        AppendTargetTypeLabel(_strb, t.target);
-                    }
+                    .Append("/").Append(totActiveManualTweens);
+                GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
+
+                if (_settings.showPlayingTweens || _settings.showPausedTweens) {
+                    GUILayout.Space(8);
+                    GUILayout.Label("<b>Legend: </b> TW = Tweener, SE = Sequence", EditorGUIUtils.wordWrapRichTextLabelStyle);
+                    // DrawSimpleTweensList();
+                    DrawTweensButtons(totPlayingTweens, totPausedTweens);
                 }
-                _strb.Append("</color>");
-                _strb.Append(_pausedTweensHex).Append("\nPaused tweens: ").Append(totPausedTweens);
-                if (_settings.showPausedTweens) {
-                    foreach (Tween t in TweenManager._activeTweens) {
-                        if (t == null || t.isPlaying) continue;
-                        _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
-                        AppendTweenIdLabel(_strb, t);
-                        _strb.Append("]");
-                        AppendDebugTargetIdLabel(_strb, t);
-                        AppendTargetTypeLabel(_strb, t.target);
-                    }
-                }
-                _strb.Append("</color>");
-                _strb.Append("\nPooled tweens: ").Append(TweenManager.TotalPooledTweens())
+
+                GUILayout.Space(2);
+                _strb.Length = 0;
+                _strb.Append("Pooled tweens: ").Append(TweenManager.TotalPooledTweens())
                     .Append(" (").Append(TweenManager.totPooledTweeners).Append(" TW, ")
                     .Append(TweenManager.totPooledSequences).Append(" SE)");
                 GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
 
-                GUILayout.Space(8);
+                GUILayout.Space(2);
                 _strb.Remove(0, _strb.Length);
                 _strb.Append("Tweens Capacity: ").Append(TweenManager.maxTweeners).Append(" TW, ").Append(TweenManager.maxSequences).Append(" SE")
                     .Append("\nMax Simultaneous Active Tweens: ").Append(DOTween.maxActiveTweenersReached).Append(" TW, ")
@@ -198,6 +181,121 @@ namespace DG.DOTweenEditor.UI
             }
         }
 
+        void DrawTweensButtons(int totPlayingTweens, int totPausedTweens)
+        {
+            if (_settings.showPlayingTweens) {
+                _strb.Length = 0;
+                _strb.Append(_playingTweensHex).Append("Playing tweens: ").Append(totPlayingTweens).Append("</color>");
+                GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
+                foreach (Tween t in TweenManager._activeTweens) {
+                    if (t == null || !t.isPlaying) continue;
+                    DrawTweenButton(t, true);
+                }
+            }
+            if (_settings.showPausedTweens) {
+                _strb.Length = 0;
+                _strb.Append(_pausedTweensHex).Append("Paused tweens: ").Append(totPausedTweens).Append("</color>");
+                GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
+                foreach (Tween t in TweenManager._activeTweens) {
+                    if (t == null || t.isPlaying) continue;
+                    DrawTweenButton(t, false);
+                }
+            }
+        }
+
+        void DrawTweenButton(Tween tween, bool isPlaying, bool isSequenced = false, int sequencedDepth = 0)
+        {
+            _strb.Length = 0;
+            if (!isSequenced) {
+                _strb.Append(isPlaying ? _playingTweensHex : _pausedTweensHex);
+                _strb.Append(tween.isPlaying ? "► </color>" : "❚❚ </color>");
+            }
+            else {
+                int spaces = sequencedDepth;
+                while (spaces > 0) {
+                    spaces--;
+                    _strb.Append("     ");
+                }
+                _strb.Append("└ ");
+            }
+            _strb.Append("[").Append(tween.tweenType == TweenType.Sequence ? "SE" : "TW");
+            AppendTweenIdLabel(_strb, tween);
+            _strb.Append("]");
+            AppendDebugTargetIdLabel(_strb, tween);
+            AppendTargetTypeLabel(_strb, tween.target);
+            switch (tween.tweenType) {
+            case TweenType.Tweener:
+                if (GUILayout.Button(_strb.ToString(), isSequenced ? EditorGUIUtils.btSequencedStyle : EditorGUIUtils.btTweenStyle)) {
+                    Object tweenTarget = tween.target as Object;
+                    if (tweenTarget != null)  EditorGUIUtility.PingObject(tweenTarget);
+                }
+                break;
+            case TweenType.Sequence:
+                GUILayout.Button(_strb.ToString(), isSequenced ? EditorGUIUtils.btSequencedStyle : EditorGUIUtils.btSequenceStyle);
+                Sequence s = (Sequence)tween;
+                sequencedDepth++;
+                foreach (Tween t in s.sequencedTweens) {
+                    DrawTweenButton(t, isPlaying, true, sequencedDepth);
+                }
+                break;
+            }
+        }
+
+        // Old method now replaced with DrawTweensButtons
+        // void DrawSimpleTweensList()
+        // {
+        //     int totActiveTweens = TweenManager.totActiveTweens;
+        //     int totPlayingTweens = TweenManager.TotalPlayingTweens();
+        //     int totPausedTweens = totActiveTweens - totPlayingTweens;
+        //     int totActiveDefaultTweens = TweenManager.totActiveDefaultTweens;
+        //     int totActiveLateTweens = TweenManager.totActiveLateTweens;
+        //     int totActiveFixedTweens = TweenManager.totActiveFixedTweens;
+        //     int totActiveManualTweens = TweenManager.totActiveManualTweens;
+        //     _strb.Length = 0;
+        //     _strb.Append("Active tweens: ").Append(totActiveTweens)
+        //         .Append(" (").Append(TweenManager.totActiveTweeners).Append(" TW, ")
+        //         .Append(TweenManager.totActiveSequences).Append(" SE)")
+        //         .Append("\nDefault/Late/Fixed/Manual tweens: ").Append(totActiveDefaultTweens)
+        //         .Append("/").Append(totActiveLateTweens)
+        //         .Append("/").Append(totActiveFixedTweens)
+        //         .Append("/").Append(totActiveManualTweens)
+        //         .Append(_playingTweensHex).Append("\nPlaying tweens: ").Append(totPlayingTweens);
+        //     if (_settings.showPlayingTweens) {
+        //         foreach (Tween t in TweenManager._activeTweens) {
+        //             if (t == null || !t.isPlaying) continue;
+        //             _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
+        //             AppendTweenIdLabel(_strb, t);
+        //             _strb.Append("]");
+        //             AppendDebugTargetIdLabel(_strb, t);
+        //             AppendTargetTypeLabel(_strb, t.target);
+        //         }
+        //     }
+        //     _strb.Append("</color>");
+        //     _strb.Append(_pausedTweensHex).Append("\nPaused tweens: ").Append(totPausedTweens);
+        //     if (_settings.showPausedTweens) {
+        //         foreach (Tween t in TweenManager._activeTweens) {
+        //             if (t == null || t.isPlaying) continue;
+        //             _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
+        //             AppendTweenIdLabel(_strb, t);
+        //             _strb.Append("]");
+        //             AppendDebugTargetIdLabel(_strb, t);
+        //             AppendTargetTypeLabel(_strb, t.target);
+        //         }
+        //     }
+        //     _strb.Append("</color>");
+        //     _strb.Append("\nPooled tweens: ").Append(TweenManager.TotalPooledTweens())
+        //         .Append(" (").Append(TweenManager.totPooledTweeners).Append(" TW, ")
+        //         .Append(TweenManager.totPooledSequences).Append(" SE)");
+        //     GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
+        //
+        //     GUILayout.Space(8);
+        //     _strb.Remove(0, _strb.Length);
+        //     _strb.Append("Tweens Capacity: ").Append(TweenManager.maxTweeners).Append(" TW, ").Append(TweenManager.maxSequences).Append(" SE")
+        //         .Append("\nMax Simultaneous Active Tweens: ").Append(DOTween.maxActiveTweenersReached).Append(" TW, ")
+        //         .Append(DOTween.maxActiveSequencesReached).Append(" SE");
+        //     GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
+        // }
+
         #endregion
 
         #region Helpers
@@ -212,7 +310,7 @@ namespace DG.DOTweenEditor.UI
         void AppendDebugTargetIdLabel(StringBuilder strb, Tween t)
         {
             if (string.IsNullOrEmpty(t.debugTargetId)) return;
-            strb.Append(' ').Append(t.debugTargetId);
+            strb.Append(" \"<b>").Append(t.debugTargetId).Append("</b>\"");
         }
 
         void AppendTargetTypeLabel(StringBuilder strb, object tweenTarget)
@@ -223,13 +321,14 @@ namespace DG.DOTweenEditor.UI
             if (s == "null") {
                 _strb.Append("<b><color=#ff0000>×</color></b>");
             } else {
-                strb.Append('(');
+                strb.Append("<i>(");
                 int dotIndex = s.LastIndexOf('.');
                 if (dotIndex == -1) {
                     strb.Append(s).Append(')');
                 } else {
                     strb.Append(s.Substring(dotIndex + 1));
                 }
+                strb.Append("</i>");
             }
         }
 

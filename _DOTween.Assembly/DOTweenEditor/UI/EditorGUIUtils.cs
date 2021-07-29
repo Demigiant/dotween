@@ -31,6 +31,7 @@ namespace DG.DOTweenEditor.UI
                                popupButton,
                                btIconStyle;
         public static GUIStyle infoboxStyle;
+        public static GUIStyle btTweenStyle, btSequenceStyle, btSequencedStyle;
 
         public static Texture2D logo
         {
@@ -250,6 +251,15 @@ namespace DG.DOTweenEditor.UI
                     padding = new RectOffset(5, 5, 5, 6),
                     normal = { textColor = Color.white, background = Texture2D.whiteTexture }
                 };
+
+                btTweenStyle = new GUIStyle(EditorStyles.miniButton) {
+                    alignment = TextAnchor.MiddleLeft,
+                    richText = true,
+                    margin = new RectOffset(0, 0, 0, 0),
+                    normal = { background = null, scaledBackgrounds = null }
+                };
+                btSequenceStyle = new GUIStyle(btTweenStyle);
+                btSequencedStyle = new GUIStyle(btTweenStyle);
             }
         }
     }
