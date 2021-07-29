@@ -123,7 +123,7 @@ namespace DG.Tweening
             TweenerCore<Vector3, Path, PathOptions> t = DOTween.To(PathPlugin.Get(), () => target.position, x => target.MovePosition(x), new Path(pathType, path3D, resolution, gizmoColor), duration)
                 .SetTarget(target).SetUpdate(UpdateType.Fixed);
 
-            t.plugOptions.isRigidbody = true;
+            t.plugOptions.isRigidbody2D = true;
             t.plugOptions.mode = pathMode;
             return t;
         }
@@ -152,7 +152,32 @@ namespace DG.Tweening
             TweenerCore<Vector3, Path, PathOptions> t = DOTween.To(PathPlugin.Get(), () => trans.localPosition, x => target.MovePosition(trans.parent == null ? x : trans.parent.TransformPoint(x)), new Path(pathType, path3D, resolution, gizmoColor), duration)
                 .SetTarget(target).SetUpdate(UpdateType.Fixed);
 
-            t.plugOptions.isRigidbody = true;
+            t.plugOptions.isRigidbody2D = true;
+            t.plugOptions.mode = pathMode;
+            t.plugOptions.useLocalPosition = true;
+            return t;
+        }
+        // Used by path editor when creating the actual tween, so it can pass a pre-compiled path
+        internal static TweenerCore<Vector3, Path, PathOptions> DOPath(
+            this Rigidbody2D target, Path path, float duration, PathMode pathMode = PathMode.Full3D
+        )
+        {
+            TweenerCore<Vector3, Path, PathOptions> t = DOTween.To(PathPlugin.Get(), () => target.position, x => target.MovePosition(x), path, duration)
+                .SetTarget(target);
+
+            t.plugOptions.isRigidbody2D = true;
+            t.plugOptions.mode = pathMode;
+            return t;
+        }
+        internal static TweenerCore<Vector3, Path, PathOptions> DOLocalPath(
+            this Rigidbody2D target, Path path, float duration, PathMode pathMode = PathMode.Full3D
+        )
+        {
+            Transform trans = target.transform;
+            TweenerCore<Vector3, Path, PathOptions> t = DOTween.To(PathPlugin.Get(), () => trans.localPosition, x => target.MovePosition(trans.parent == null ? x : trans.parent.TransformPoint(x)), path, duration)
+                .SetTarget(target);
+
+            t.plugOptions.isRigidbody2D = true;
             t.plugOptions.mode = pathMode;
             t.plugOptions.useLocalPosition = true;
             return t;
