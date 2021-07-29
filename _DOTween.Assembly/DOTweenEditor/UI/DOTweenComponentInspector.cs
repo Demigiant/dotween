@@ -16,12 +16,16 @@ namespace DG.DOTweenEditor.UI
     public class DOTweenComponentInspector : Editor
     {
         DOTweenSettings _settings;
-        string _title;
         readonly StringBuilder _strb = new StringBuilder();
         bool _isRuntime;
         Texture2D _headerImg;
         string _playingTweensHex;
         string _pausedTweensHex;
+        GUIContent _gcTitle;
+        GUIContent _gcDebugModeSuggest = new GUIContent("Activate both Safe Mode and Debug Mode (including all checkboxes) " +
+                                                        "in DOTween's preferences in order to " +
+                                                        "allow this Inspector to give you <b>way more information</b> " +
+                                                        "(like using a red cross to mark tweens with NULL targets)");
 
         #region Unity + GUI
 
@@ -39,13 +43,13 @@ namespace DG.DOTweenEditor.UI
             else _strb.Append("\nDOTweenPro not installed");
             if (EditorUtils.hasDOTweenTimeline) _strb.Append("\nDOTweenTimeline v").Append(EditorUtils.dotweenTimelineVersion);
             else _strb.Append("\nDOTweenTimeline not installed");
-            _title = _strb.ToString();
+            _gcTitle = new GUIContent(_strb.ToString());
 
             _playingTweensHex = EditorGUIUtility.isProSkin ? "<color=#00c514>" : "<color=#005408>";
             _pausedTweensHex = EditorGUIUtility.isProSkin ? "<color=#ff832a>" : "<color=#873600>";
         }
 
-        override public void OnInspectorGUI()
+        public override void OnInspectorGUI()
         {
             _isRuntime = EditorApplication.isPlaying;
             ConnectToSource();
@@ -61,7 +65,10 @@ namespace DG.DOTweenEditor.UI
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            GUILayout.Label(_title, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
+            GUILayout.Label(_gcTitle, TweenManager.isDebugBuild ? EditorGUIUtils.redLabelStyle : EditorGUIUtils.boldLabelStyle);
+            if (!DOTween.useSafeMode || !DOTween.debugMode || !DOTween.debugStoreTargetId) {
+                GUILayout.Label(_gcDebugModeSuggest, EditorGUIUtils.wordWrapRichTextLabelStyle);
+            }
 
             if (!_isRuntime) {
                 GUI.backgroundColor = new Color(0f, 0.31f, 0.48f);
@@ -83,16 +90,6 @@ namespace DG.DOTweenEditor.UI
 
             if (_isRuntime) {
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button(_settings.showPlayingTweens ? "Hide Playing Tweens" : "Show Playing Tweens")) {
-                    _settings.showPlayingTweens = !_settings.showPlayingTweens;
-                    EditorUtility.SetDirty(_settings);
-                }
-                if (GUILayout.Button(_settings.showPausedTweens ? "Hide Paused Tweens" : "Show Paused Tweens")) {
-                    _settings.showPausedTweens = !_settings.showPausedTweens;
-                    EditorUtility.SetDirty(_settings);
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Play all")) DOTween.PlayAll();
                 if (GUILayout.Button("Pause all")) DOTween.PauseAll();
                 if (GUILayout.Button("Kill all")) DOTween.KillAll();
@@ -106,6 +103,7 @@ namespace DG.DOTweenEditor.UI
                 int totActiveFixedTweens = TweenManager.totActiveFixedTweens;
                 int totActiveManualTweens = TweenManager.totActiveManualTweens;
 
+                GUILayout.Space(5);
                 _strb.Length = 0;
                 _strb.Append("Active tweens: ").Append(totActiveTweens)
                     .Append(" (").Append(TweenManager.totActiveTweeners).Append(" TW, ")
@@ -116,12 +114,9 @@ namespace DG.DOTweenEditor.UI
                     .Append("/").Append(totActiveManualTweens);
                 GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
 
-                if (_settings.showPlayingTweens || _settings.showPausedTweens) {
-                    GUILayout.Space(8);
-                    GUILayout.Label("<b>Legend: </b> TW = Tweener, SE = Sequence", EditorGUIUtils.wordWrapRichTextLabelStyle);
-                    // DrawSimpleTweensList();
-                    DrawTweensButtons(totPlayingTweens, totPausedTweens);
-                }
+                GUILayout.Space(4);
+                // DrawSimpleTweensList();
+                DrawTweensButtons(totPlayingTweens, totPausedTweens);
 
                 GUILayout.Space(2);
                 _strb.Length = 0;
@@ -183,19 +178,21 @@ namespace DG.DOTweenEditor.UI
 
         void DrawTweensButtons(int totPlayingTweens, int totPausedTweens)
         {
+            _strb.Length = 0;
+            _strb.Append("Playing tweens: ").Append(totPlayingTweens);
+            if (_settings.showPlayingTweens) _strb.Append(" (TW = Tweener, SE = Sequence)");
+            _settings.showPlayingTweens = EditorGUILayout.Foldout(_settings.showPlayingTweens, _strb.ToString());
             if (_settings.showPlayingTweens) {
-                _strb.Length = 0;
-                _strb.Append(_playingTweensHex).Append("Playing tweens: ").Append(totPlayingTweens).Append("</color>");
-                GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
                 foreach (Tween t in TweenManager._activeTweens) {
                     if (t == null || !t.isPlaying) continue;
                     DrawTweenButton(t, true);
                 }
             }
+            _strb.Length = 0;
+            _strb.Append("Paused tweens: ").Append(totPausedTweens);
+            if (_settings.showPausedTweens) _strb.Append(" (TW = Tweener, SE = Sequence)");
+            _settings.showPausedTweens = EditorGUILayout.Foldout(_settings.showPausedTweens, _strb.ToString());
             if (_settings.showPausedTweens) {
-                _strb.Length = 0;
-                _strb.Append(_pausedTweensHex).Append("Paused tweens: ").Append(totPausedTweens).Append("</color>");
-                GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
                 foreach (Tween t in TweenManager._activeTweens) {
                     if (t == null || t.isPlaying) continue;
                     DrawTweenButton(t, false);
@@ -240,61 +237,6 @@ namespace DG.DOTweenEditor.UI
                 break;
             }
         }
-
-        // Old method now replaced with DrawTweensButtons
-        // void DrawSimpleTweensList()
-        // {
-        //     int totActiveTweens = TweenManager.totActiveTweens;
-        //     int totPlayingTweens = TweenManager.TotalPlayingTweens();
-        //     int totPausedTweens = totActiveTweens - totPlayingTweens;
-        //     int totActiveDefaultTweens = TweenManager.totActiveDefaultTweens;
-        //     int totActiveLateTweens = TweenManager.totActiveLateTweens;
-        //     int totActiveFixedTweens = TweenManager.totActiveFixedTweens;
-        //     int totActiveManualTweens = TweenManager.totActiveManualTweens;
-        //     _strb.Length = 0;
-        //     _strb.Append("Active tweens: ").Append(totActiveTweens)
-        //         .Append(" (").Append(TweenManager.totActiveTweeners).Append(" TW, ")
-        //         .Append(TweenManager.totActiveSequences).Append(" SE)")
-        //         .Append("\nDefault/Late/Fixed/Manual tweens: ").Append(totActiveDefaultTweens)
-        //         .Append("/").Append(totActiveLateTweens)
-        //         .Append("/").Append(totActiveFixedTweens)
-        //         .Append("/").Append(totActiveManualTweens)
-        //         .Append(_playingTweensHex).Append("\nPlaying tweens: ").Append(totPlayingTweens);
-        //     if (_settings.showPlayingTweens) {
-        //         foreach (Tween t in TweenManager._activeTweens) {
-        //             if (t == null || !t.isPlaying) continue;
-        //             _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
-        //             AppendTweenIdLabel(_strb, t);
-        //             _strb.Append("]");
-        //             AppendDebugTargetIdLabel(_strb, t);
-        //             AppendTargetTypeLabel(_strb, t.target);
-        //         }
-        //     }
-        //     _strb.Append("</color>");
-        //     _strb.Append(_pausedTweensHex).Append("\nPaused tweens: ").Append(totPausedTweens);
-        //     if (_settings.showPausedTweens) {
-        //         foreach (Tween t in TweenManager._activeTweens) {
-        //             if (t == null || t.isPlaying) continue;
-        //             _strb.Append("\n   - [").Append(t.tweenType == TweenType.Tweener ? "TW" : "SE");
-        //             AppendTweenIdLabel(_strb, t);
-        //             _strb.Append("]");
-        //             AppendDebugTargetIdLabel(_strb, t);
-        //             AppendTargetTypeLabel(_strb, t.target);
-        //         }
-        //     }
-        //     _strb.Append("</color>");
-        //     _strb.Append("\nPooled tweens: ").Append(TweenManager.TotalPooledTweens())
-        //         .Append(" (").Append(TweenManager.totPooledTweeners).Append(" TW, ")
-        //         .Append(TweenManager.totPooledSequences).Append(" SE)");
-        //     GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
-        //
-        //     GUILayout.Space(8);
-        //     _strb.Remove(0, _strb.Length);
-        //     _strb.Append("Tweens Capacity: ").Append(TweenManager.maxTweeners).Append(" TW, ").Append(TweenManager.maxSequences).Append(" SE")
-        //         .Append("\nMax Simultaneous Active Tweens: ").Append(DOTween.maxActiveTweenersReached).Append(" TW, ")
-        //         .Append(DOTween.maxActiveSequencesReached).Append(" SE");
-        //     GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
-        // }
 
         #endregion
 

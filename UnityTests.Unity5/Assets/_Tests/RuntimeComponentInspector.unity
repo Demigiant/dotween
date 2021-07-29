@@ -167,8 +167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceFrameRate: 0
   forcedFrameRate: 10
-  totTweensToCreate: 100
-  totSequencesToCreate: 100
+  totTweensToCreate: 2
+  totSequencesToCreate: 2
   prefab: {fileID: 400000, guid: aae2e9c3c4f059e4c8ec71aab1fb107f, type: 2}
   instancesContainer: {fileID: 568240771}
 --- !u!4 &640244604
