@@ -31,7 +31,7 @@ namespace DG.DOTweenEditor.UI
                                popupButton,
                                btIconStyle;
         public static GUIStyle infoboxStyle;
-        public static GUIStyle btTweenStyle, btSequenceStyle, btSequencedStyle;
+        public static GUIStyle btTweenStyle, btSequenceStyle, btSequencedStyle, btPlayPauseStyle;
 
         public static Texture2D logo
         {
@@ -260,6 +260,12 @@ namespace DG.DOTweenEditor.UI
                 };
                 btSequenceStyle = new GUIStyle(btTweenStyle);
                 btSequencedStyle = new GUIStyle(btTweenStyle);
+                btPlayPauseStyle = new GUIStyle(EditorStyles.toolbarButton) {
+                    margin = new RectOffset(0, 0, 0, 0),
+                    padding = new RectOffset(0, 0, 0, 0),
+                    fixedWidth = 16,
+                    fixedHeight = 16
+                };
             }
         }
     }

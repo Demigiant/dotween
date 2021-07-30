@@ -21,6 +21,8 @@ namespace DG.DOTweenEditor.UI
         Texture2D _headerImg;
         string _playingTweensHex;
         string _pausedTweensHex;
+        readonly GUIContent _gcPlay = new GUIContent("►");
+        readonly GUIContent _gcPause = new GUIContent("❚❚");
         GUIContent _gcTitle;
         GUIContent _gcDebugModeSuggest = new GUIContent("Activate both Safe Mode and Debug Mode (including all checkboxes) " +
                                                         "in DOTween's preferences in order to " +
@@ -180,7 +182,6 @@ namespace DG.DOTweenEditor.UI
         {
             _strb.Length = 0;
             _strb.Append("Playing tweens: ").Append(totPlayingTweens);
-            if (_settings.showPlayingTweens) _strb.Append(" (TW = Tweener, SE = Sequence)");
             _settings.showPlayingTweens = EditorGUILayout.Foldout(_settings.showPlayingTweens, _strb.ToString());
             if (_settings.showPlayingTweens) {
                 foreach (Tween t in TweenManager._activeTweens) {
@@ -190,7 +191,6 @@ namespace DG.DOTweenEditor.UI
             }
             _strb.Length = 0;
             _strb.Append("Paused tweens: ").Append(totPausedTweens);
-            if (_settings.showPausedTweens) _strb.Append(" (TW = Tweener, SE = Sequence)");
             _settings.showPausedTweens = EditorGUILayout.Foldout(_settings.showPausedTweens, _strb.ToString());
             if (_settings.showPausedTweens) {
                 foreach (Tween t in TweenManager._activeTweens) {
@@ -208,27 +208,43 @@ namespace DG.DOTweenEditor.UI
                 _strb.Append(tween.isPlaying ? "► </color>" : "❚❚ </color>");
             }
             else {
-                int spaces = sequencedDepth;
-                while (spaces > 0) {
-                    spaces--;
-                    _strb.Append("     ");
+                int spaces = 0;
+                while (spaces < sequencedDepth) {
+                    if (spaces == 0) _strb.Append("         ");
+                    else _strb.Append("   ");
+                    spaces++;
                 }
                 _strb.Append("└ ");
             }
-            _strb.Append("[").Append(tween.tweenType == TweenType.Sequence ? "SE" : "TW");
+            if (tween.tweenType == TweenType.Sequence) _strb.Append("[SEQUENCE] ");
             AppendTweenIdLabel(_strb, tween);
-            _strb.Append("]");
             AppendDebugTargetIdLabel(_strb, tween);
             AppendTargetTypeLabel(_strb, tween.target);
             switch (tween.tweenType) {
             case TweenType.Tweener:
+                if (!isSequenced) {
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button(isPlaying ? _gcPause : _gcPlay, EditorGUIUtils.btPlayPauseStyle)) {
+                        if (isPlaying) TweenManager.Pause(tween);
+                        else TweenManager.Play(tween);
+                    }
+                }
                 if (GUILayout.Button(_strb.ToString(), isSequenced ? EditorGUIUtils.btSequencedStyle : EditorGUIUtils.btTweenStyle)) {
                     Object tweenTarget = tween.target as Object;
                     if (tweenTarget != null)  EditorGUIUtility.PingObject(tweenTarget);
                 }
+                if (!isSequenced) GUILayout.EndHorizontal();
                 break;
             case TweenType.Sequence:
+                if (!isSequenced) {
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button(isPlaying ? _gcPause : _gcPlay, EditorGUIUtils.btPlayPauseStyle)) {
+                        if (isPlaying) TweenManager.Pause(tween);
+                        else TweenManager.Play(tween);
+                    }
+                }
                 GUILayout.Button(_strb.ToString(), isSequenced ? EditorGUIUtils.btSequencedStyle : EditorGUIUtils.btSequenceStyle);
+                if (!isSequenced) GUILayout.EndHorizontal();
                 Sequence s = (Sequence)tween;
                 sequencedDepth++;
                 foreach (Tween t in s.sequencedTweens) {
@@ -244,15 +260,15 @@ namespace DG.DOTweenEditor.UI
 
         void AppendTweenIdLabel(StringBuilder strb, Tween t)
         {
-            if (!string.IsNullOrEmpty(t.stringId)) strb.Append(":<b>").Append(t.stringId).Append("</b>");
-            else if (t.intId != -999) strb.Append(":<b>").Append(t.intId).Append("</b>");
-            else if (t.id != null) strb.Append(":<b>").Append(t.id).Append("</b>");
+            if (!string.IsNullOrEmpty(t.stringId)) strb.Append("ID:\"<b>").Append(t.stringId).Append("</b>\" ");
+            else if (t.intId != -999) strb.Append("ID:\"<b>").Append(t.intId).Append("</b>\" ");
+            else if (t.id != null) strb.Append("ID:\"<b>").Append(t.id).Append("</b>\" ");
         }
 
         void AppendDebugTargetIdLabel(StringBuilder strb, Tween t)
         {
             if (string.IsNullOrEmpty(t.debugTargetId)) return;
-            strb.Append(" \"<b>").Append(t.debugTargetId).Append("</b>\"");
+            strb.Append("GO name: \"<b>").Append(t.debugTargetId).Append("</b>\"");
         }
 
         void AppendTargetTypeLabel(StringBuilder strb, object tweenTarget)
@@ -261,7 +277,7 @@ namespace DG.DOTweenEditor.UI
             strb.Append(' ');
             string s = tweenTarget.ToString();
             if (s == "null") {
-                _strb.Append("<b><color=#ff0000>×</color></b>");
+                _strb.Append("<b><color=#ff0000>NULL TARGET</color></b>");
             } else {
                 strb.Append("<i>(");
                 int dotIndex = s.LastIndexOf('.');

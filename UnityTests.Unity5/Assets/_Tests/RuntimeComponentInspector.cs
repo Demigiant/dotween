@@ -20,12 +20,16 @@ public class RuntimeComponentInspector : BrainBase
             _tweenersTargets.Add(t);
             t.name = "Target " + i;
             t.position = new Vector3(Random.Range(-10f, 10f), Random.Range(-5f, 5f), 0);
-            t.DOMoveX(Random.Range(-1f, 1f), 2).SetRelative().Pause()
+            Tween tween = t.DOMoveX(Random.Range(-1f, 1f), 2).SetRelative().Pause()
                 .SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            if (i % 8 == 0) tween.SetId("A String ID");
+            else if (i % 4 == 0) tween.SetId(987);
         }
         for (int i = 0; i < totSequencesToCreate; ++i) {
             Sequence s = DOTween.Sequence().Pause()
                 .SetLoops(-1, LoopType.Yoyo);
+            if (i % 8 == 0) s.SetId("A String ID");
+            else if (i % 4 == 0) s.SetId(987);
             for (int j = 0; j < 4; ++j) {
                 Transform t = Instantiate(prefab, instancesContainer);
                 _sequencesTargets.Add(t);
