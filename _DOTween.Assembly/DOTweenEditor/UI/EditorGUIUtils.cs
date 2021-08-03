@@ -57,6 +57,21 @@ namespace DG.DOTweenEditor.UI
             }
         }
         static Texture2D _miniIcon;
+        static Texture2D _transparent {
+            get {
+                if (_fooTransparent == null) {
+                    _fooTransparent = new Texture2D(16, 16, TextureFormat.ARGB32, false);
+                    Color[] colors = new Color[16 * 16];
+                    for (int i = 0; i < colors.Length; ++i) {
+                        colors[i] = new Color(0, 0, 0, 0);
+                    }
+                    _fooTransparent.SetPixels(colors);
+                    _fooTransparent.Apply();
+                }
+                return _fooTransparent;
+            }
+        }
+        static Texture2D _fooTransparent;
 
         // Filtered ease types to show desired eases in Inspector panels
         public static readonly string[] FilteredEaseTypes = new[] {
@@ -256,7 +271,7 @@ namespace DG.DOTweenEditor.UI
                     alignment = TextAnchor.MiddleLeft,
                     richText = true,
                     margin = new RectOffset(0, 0, 0, 0),
-                    normal = { background = null, scaledBackgrounds = null }
+                    normal = { background = _transparent, scaledBackgrounds = new Texture2D[0] }
                 };
                 btSequenceStyle = new GUIStyle(btTweenStyle);
                 btSequencedStyle = new GUIStyle(btTweenStyle);
