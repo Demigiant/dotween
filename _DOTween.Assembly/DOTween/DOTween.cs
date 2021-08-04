@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.632"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.635"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -577,11 +577,13 @@ namespace DG.Tweening
         /// Setting it to 0 will shake along a single direction and behave like a random punch.</param>
         /// <param name="ignoreZAxis">If TRUE only shakes on the X Y axis (looks better with things like cameras).</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
+        /// <param name="randomnessMode">Randomness mode</param>
         public static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            float strength = 3, int vibrato = 10, float randomness = 90, bool ignoreZAxis = true, bool fadeOut = true
+            float strength = 3, int vibrato = 10, float randomness = 90, bool ignoreZAxis = true,
+            bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full
         )
         {
-            return Shake(getter, setter, duration, new Vector3(strength, strength, strength), vibrato, randomness, ignoreZAxis, false, fadeOut);
+            return Shake(getter, setter, duration, new Vector3(strength, strength, strength), vibrato, randomness, ignoreZAxis, false, fadeOut, randomnessMode);
         }
         /// <summary>Shakes a Vector3 with the given values.</summary>
         /// <param name="getter">A getter for the field or property to tween.
@@ -594,14 +596,17 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction and behave like a random punch.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
+        /// <param name="randomnessMode">Randomness mode</param>
         public static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true
+            Vector3 strength, int vibrato = 10, float randomness = 90,
+            bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full
         )
         {
-            return Shake(getter, setter, duration, strength, vibrato, randomness, false, true, fadeOut);
+            return Shake(getter, setter, duration, strength, vibrato, randomness, false, true, fadeOut, randomnessMode);
         }
         static TweenerCore<Vector3, Vector3[], Vector3ArrayOptions> Shake(DOGetter<Vector3> getter, DOSetter<Vector3> setter, float duration,
-            Vector3 strength, int vibrato, float randomness, bool ignoreZAxis, bool vectorBased, bool fadeOut
+            Vector3 strength, int vibrato, float randomness, bool ignoreZAxis, bool vectorBased,
+            bool fadeOut, ShakeRandomnessMode randomnessMode
         )
         {
             float shakeMagnitude = vectorBased ? strength.magnitude : strength.x;
@@ -624,9 +629,22 @@ namespace DG.Tweening
             Vector3[] tos = new Vector3[totIterations];
             for (int i = 0; i < totIterations; ++i) {
                 if (i < totIterations - 1) {
-                    if (i > 0) ang = ang - 180 + UnityEngine.Random.Range(-randomness, randomness);
+                    Quaternion rndQuaternion = Quaternion.identity;
+                    switch (randomnessMode) {
+                    case ShakeRandomnessMode.Harmonic:
+                        if (i > 0) ang = ang - 180 + UnityEngine.Random.Range(0, randomness);
+                        if (vectorBased || !ignoreZAxis) {
+                            rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(0, randomness), Vector3.up);
+                        }
+                        break;
+                    default: // Full
+                        if (i > 0) ang = ang - 180 + UnityEngine.Random.Range(-randomness, randomness);
+                        if (vectorBased || !ignoreZAxis) {
+                            rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
+                        }
+                        break;
+                    }
                     if (vectorBased) {
-                        Quaternion rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
                         Vector3 to = rndQuaternion * DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         to.x = Vector3.ClampMagnitude(to, strength.x).x;
                         to.y = Vector3.ClampMagnitude(to, strength.y).y;
@@ -639,7 +657,6 @@ namespace DG.Tweening
                         if (ignoreZAxis) {
                             tos[i] = DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         } else {
-                            Quaternion rndQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-randomness, randomness), Vector3.up);
                             tos[i] = rndQuaternion * DOTweenUtils.Vector3FromAngle(ang, shakeMagnitude);
                         }
                         if (fadeOut) shakeMagnitude -= decayXTween;

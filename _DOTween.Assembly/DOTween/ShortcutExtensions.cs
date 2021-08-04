@@ -121,13 +121,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakePosition(this Camera target, float duration, float strength = 3, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakePosition(this Camera target, float duration, float strength = 3, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakePosition: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.transform.localPosition, x => target.transform.localPosition = x, duration, strength, vibrato, randomness, true, fadeOut)
+            return DOTween.Shake(() => target.transform.localPosition, x => target.transform.localPosition = x, duration, strength, vibrato, randomness, true, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetCameraShakePosition);
         }
         /// <summary>Shakes a Camera's localPosition along its relative X Y axes with the given values.
@@ -138,13 +139,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakePosition(this Camera target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakePosition(this Camera target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakePosition: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.transform.localPosition, x => target.transform.localPosition = x, duration, strength, vibrato, randomness, fadeOut)
+            return DOTween.Shake(() => target.transform.localPosition, x => target.transform.localPosition = x, duration, strength, vibrato, randomness, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetCameraShakePosition);
         }
 
@@ -156,13 +158,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeRotation(this Camera target, float duration, float strength = 90, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeRotation(this Camera target, float duration, float strength = 90, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeRotation: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.transform.localEulerAngles, x => target.transform.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, false, fadeOut)
+            return DOTween.Shake(() => target.transform.localEulerAngles, x => target.transform.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, false, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
         /// <summary>Shakes a Camera's localRotation.
@@ -173,13 +176,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeRotation(this Camera target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeRotation(this Camera target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeRotation: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.transform.localEulerAngles, x => target.transform.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, fadeOut)
+            return DOTween.Shake(() => target.transform.localEulerAngles, x => target.transform.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
 
@@ -753,13 +757,14 @@ namespace DG.Tweening
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakePosition(this Transform target, float duration, float strength = 1, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakePosition(this Transform target, float duration, float strength = 1, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakePosition: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localPosition, x => target.localPosition = x, duration, strength, vibrato, randomness, false, fadeOut)
+            return DOTween.Shake(() => target.localPosition, x => target.localPosition = x, duration, strength, vibrato, randomness, false, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
         }
         /// <summary>Shakes a Transform's localPosition with the given values.</summary>
@@ -770,13 +775,14 @@ namespace DG.Tweening
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakePosition(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakePosition(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakePosition: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localPosition, x => target.localPosition = x, duration, strength, vibrato, randomness, fadeOut)
+            return DOTween.Shake(() => target.localPosition, x => target.localPosition = x, duration, strength, vibrato, randomness, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
         }
         /// <summary>Shakes a Transform's localRotation.</summary>
@@ -786,13 +792,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeRotation(this Transform target, float duration, float strength = 90, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeRotation(this Transform target, float duration, float strength = 90, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeRotation: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localEulerAngles, x => target.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, false, fadeOut)
+            return DOTween.Shake(() => target.localEulerAngles, x => target.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, false, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
         /// <summary>Shakes a Transform's localRotation.</summary>
@@ -802,13 +809,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeRotation(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeRotation(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeRotation: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localEulerAngles, x => target.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, fadeOut)
+            return DOTween.Shake(() => target.localEulerAngles, x => target.localRotation = Quaternion.Euler(x), duration, strength, vibrato, randomness, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
         /// <summary>Shakes a Transform's localScale.</summary>
@@ -818,14 +826,15 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeScale(this Transform target, float duration, float strength = 1, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeScale(this Transform target, float duration, float strength = 1, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 Debug.Log(Debugger.logPriority);
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeScale: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localScale, x => target.localScale = x, duration, strength, vibrato, randomness, false, fadeOut)
+            return DOTween.Shake(() => target.localScale, x => target.localScale = x, duration, strength, vibrato, randomness, false, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
         /// <summary>Shakes a Transform's localScale.</summary>
@@ -835,13 +844,14 @@ namespace DG.Tweening
         /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        public static Tweener DOShakeScale(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true)
+        /// <param name="randomnessMode">Randomness mode</param>
+        public static Tweener DOShakeScale(this Transform target, float duration, Vector3 strength, int vibrato = 10, float randomness = 90, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
         {
             if (duration <= 0) {
                 if (Debugger.logPriority > 0) Debug.LogWarning("DOShakeScale: duration can't be 0, returning NULL without creating a tween");
                 return null;
             }
-            return DOTween.Shake(() => target.localScale, x => target.localScale = x, duration, strength, vibrato, randomness, fadeOut)
+            return DOTween.Shake(() => target.localScale, x => target.localScale = x, duration, strength, vibrato, randomness, fadeOut, randomnessMode)
                 .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake);
         }
 

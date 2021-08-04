@@ -27,7 +27,6 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
     {
         Handles.BeginGUI();
         using (new GUILayout.HorizontalScope()) {
-            GUILayout.Space(6);
             using (new EditorGUI.DisabledScope(DOTweenEditorPreview.isPreviewing)) {
                 if (GUILayout.Button("Begin tweens update loop")) BeginTweensUpdateLoop();
             }
@@ -35,12 +34,11 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
                 if (GUILayout.Button("Stop tweens update loop")) StopTweensUpdateLoop(false);
                 if (GUILayout.Button("Stop tweens update loop and reset targets")) StopTweensUpdateLoop(true);
             }
-            GUILayout.Space(60);
         }
         using (new GUILayout.HorizontalScope()) {
-            GUILayout.Space(6);
-            if (GUILayout.Button("Create tweens")) CreateTweens();
-            GUILayout.Space(60);
+            if (GUILayout.Button("Create tweens")) CreateTweens(false);
+            if (GUILayout.Button("Create tweens FROM")) CreateTweens(true);
+            if (GUILayout.Button("Create sequences")) CreateSequences();
         }
         if (DOTweenEditorPreview.isPreviewing) GUILayout.Label("Tweens are being updated");
         Handles.EndGUI();
@@ -60,14 +58,21 @@ public class SceneGUIComponentInspector : UnityEditor.Editor
         DOTweenEditorPreview.Stop(andResetTargets);
     }
 
-    void CreateTweens()
+    void CreateTweens(bool from)
     {
         // Create tweens as usual
         foreach (Transform t in _src.tweenTargets) {
-            Tween tween = t.DOMoveX(2, 1);
+            Tween tween = from ? t.DOMoveX(2, 1).From() : t.DOMoveX(2, 1);
             DOTweenEditorPreview.PrepareTweenForPreview(tween);
         }
     }
 
-    
+    void CreateSequences()
+    {
+        Sequence s = DOTween.Sequence();
+        foreach (Transform t in _src.tweenTargets) {
+            s.Join(t.DOMoveX(2, 1));
+        }
+        DOTweenEditorPreview.PrepareTweenForPreview(s);
+    }
 }

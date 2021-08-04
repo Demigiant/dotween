@@ -27,4 +27,11 @@ public class BrainBase : MonoBehaviour
 		// DOTween.defaultRecyclable = recycleTweens;
 		// DOTween.logBehaviour = logBehaviour;
 	}
+    
+    protected virtual void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5)) {
+            Application.LoadLevel(Application.loadedLevelName);
+        }
+    }
 }
