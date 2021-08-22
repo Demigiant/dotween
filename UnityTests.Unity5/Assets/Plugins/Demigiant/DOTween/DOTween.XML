@@ -1045,6 +1045,37 @@
             <param name="lifetimePercentage">The time percentage (0 to 1) at which the value should be taken</param>
             <param name="easeCurve">The AnimationCurve to use for ease</param>
         </member>
+        <member name="M:DG.Tweening.DOVirtual.EasedValue(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,DG.Tweening.Ease)">
+            <summary>Returns a value based on the given ease and lifetime percentage (0 to 1)</summary>
+            <param name="from">The value to start from when lifetimePercentage is 0</param>
+            <param name="to">The value to reach when lifetimePercentage is 1</param>
+            <param name="lifetimePercentage">The time percentage (0 to 1) at which the value should be taken</param>
+            <param name="easeType">The type of ease</param>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.EasedValue(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,DG.Tweening.Ease,System.Single)">
+            <summary>Returns a value based on the given ease and lifetime percentage (0 to 1)</summary>
+            <param name="from">The value to start from when lifetimePercentage is 0</param>
+            <param name="to">The value to reach when lifetimePercentage is 1</param>
+            <param name="lifetimePercentage">The time percentage (0 to 1) at which the value should be taken</param>
+            <param name="easeType">The type of ease</param>
+            <param name="overshoot">Eventual overshoot to use with Back ease</param>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.EasedValue(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,DG.Tweening.Ease,System.Single,System.Single)">
+            <summary>Returns a value based on the given ease and lifetime percentage (0 to 1)</summary>
+            <param name="from">The value to start from when lifetimePercentage is 0</param>
+            <param name="to">The value to reach when lifetimePercentage is 1</param>
+            <param name="lifetimePercentage">The time percentage (0 to 1) at which the value should be taken</param>
+            <param name="easeType">The type of ease</param>
+            <param name="amplitude">Eventual amplitude to use with Elastic easeType</param>
+            <param name="period">Eventual period to use with Elastic easeType</param>
+        </member>
+        <member name="M:DG.Tweening.DOVirtual.EasedValue(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEngine.AnimationCurve)">
+            <summary>Returns a value based on the given ease and lifetime percentage (0 to 1)</summary>
+            <param name="from">The value to start from when lifetimePercentage is 0</param>
+            <param name="to">The value to reach when lifetimePercentage is 1</param>
+            <param name="lifetimePercentage">The time percentage (0 to 1) at which the value should be taken</param>
+            <param name="easeCurve">The AnimationCurve to use for ease</param>
+        </member>
         <member name="M:DG.Tweening.DOVirtual.DelayedCall(System.Single,DG.Tweening.TweenCallback,System.Boolean)">
             <summary>Fires the given callback after the given time.</summary>
             <param name="delay">Callback delay</param>

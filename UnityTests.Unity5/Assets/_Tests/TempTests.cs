@@ -7,10 +7,17 @@ using TMPro;
 
 public class TempTests : MonoBehaviour
 {
-    public Transform target;
+    public Vector3 from;
+    public Vector3 to;
+    [Range(0, 1)]
+    public float lifetimePercentage;
+    public Ease easeType;
 
-    void Start()
+    void Update()
     {
-        target.DOMoveX(2, 1).SetLoops(-1, LoopType.Yoyo);
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Vector3 result = DOVirtual.EasedValue(from, to, lifetimePercentage, easeType);
+            Debug.Log(result);
+        }
     }
 }
