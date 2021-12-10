@@ -921,8 +921,20 @@
         </member>
         <member name="M:DG.Tweening.DOTween.TotalActiveTweens">
             <summary>
-            Returns the total number of active tweens.
+            Returns the total number of active tweens (so both Tweeners and Sequences).
             A tween is considered active if it wasn't killed, regardless if it's playing or paused
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.TotalActiveTweeners">
+            <summary>
+            Returns the total number of active Tweeners.
+            A Tweener is considered active if it wasn't killed, regardless if it's playing or paused
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.DOTween.TotalActiveSequences">
+            <summary>
+            Returns the total number of active Sequences.
+            A Sequence is considered active if it wasn't killed, regardless if it's playing or paused
             </summary>
         </member>
         <member name="M:DG.Tweening.DOTween.TotalPlayingTweens">

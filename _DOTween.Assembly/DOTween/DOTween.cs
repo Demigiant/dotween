@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.645"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.650"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -1011,12 +1011,30 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Returns the total number of active tweens.
+        /// Returns the total number of active tweens (so both Tweeners and Sequences).
         /// A tween is considered active if it wasn't killed, regardless if it's playing or paused
         /// </summary>
         public static int TotalActiveTweens()
         {
             return TweenManager.totActiveTweens;
+        }
+
+        /// <summary>
+        /// Returns the total number of active Tweeners.
+        /// A Tweener is considered active if it wasn't killed, regardless if it's playing or paused
+        /// </summary>
+        public static int TotalActiveTweeners()
+        {
+            return TweenManager.totActiveTweeners;
+        }
+
+        /// <summary>
+        /// Returns the total number of active Sequences.
+        /// A Sequence is considered active if it wasn't killed, regardless if it's playing or paused
+        /// </summary>
+        public static int TotalActiveSequences()
+        {
+            return TweenManager.totActiveSequences;
         }
 
         /// <summary>
