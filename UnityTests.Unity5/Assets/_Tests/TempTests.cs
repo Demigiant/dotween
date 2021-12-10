@@ -7,17 +7,12 @@ using TMPro;
 
 public class TempTests : MonoBehaviour
 {
-    public Vector3 from;
-    public Vector3 to;
-    [Range(0, 1)]
-    public float lifetimePercentage;
-    public Ease easeType;
-
-    void Update()
+    public Transform target;
+    public bool forceEnd;
+    
+    IEnumerator Start()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Vector3 result = DOVirtual.EasedValue(from, to, lifetimePercentage, easeType);
-            Debug.Log(result);
-        }
+        yield return new WaitForSeconds(0.5f);
+        DOTween.To(() => target.position, x => {target.position = x; Debug.Log("FFF");}, Vector3.zero, 1);
     }
 }

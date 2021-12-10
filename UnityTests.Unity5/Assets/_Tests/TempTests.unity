@@ -228,10 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501d8bd74a44ee2408a65e2d6289c416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  from: {x: 1, y: 2, z: 3}
-  to: {x: 5, y: 5, z: 5}
-  lifetimePercentage: 0
-  easeType: 0
+  target: {fileID: 415291158}
+  forceEnd: 1
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0

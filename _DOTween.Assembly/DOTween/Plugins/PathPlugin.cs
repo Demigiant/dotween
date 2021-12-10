@@ -55,7 +55,8 @@ namespace DG.Tweening.Plugins
         // then sets the final path version
         public override void SetChangeValue(TweenerCore<Vector3, Path, PathOptions> t)
         {
-            Transform trans = ((Component)t.target).transform;
+            GameObject go = t.target as GameObject;
+            Transform trans = !(go is null) ? go.transform : ((Component)t.target).transform;
             // if (t.plugOptions.orientType == OrientType.ToPath && t.plugOptions.useLocalPosition) t.plugOptions.parent = trans.parent;
             if (t.plugOptions.orientType == OrientType.ToPath) t.plugOptions.parent = trans.parent;
 
@@ -161,7 +162,8 @@ namespace DG.Tweening.Plugins
         // Public so it can be called by GotoWaypoint
         public void SetOrientation(PathOptions options, Tween t, Path path, float pathPerc, Vector3 tPos, UpdateNotice updateNotice)
         {
-            Transform trans = ((Component)t.target).transform;
+            GameObject go = t.target as GameObject;
+            Transform trans = !(go is null) ? go.transform : ((Component)t.target).transform;
             Quaternion newRot = Quaternion.identity;
             Vector3 transP = trans.position;
 
