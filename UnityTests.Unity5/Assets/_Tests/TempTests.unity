@@ -229,7 +229,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 415291158}
-  forceEnd: 1
+  duration: 1
+  jumpPower: 1
+  endValue: {x: 2, y: 1, z: 0}
+  gotoAtStart: 0
+  gotoTime: 0.4
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0

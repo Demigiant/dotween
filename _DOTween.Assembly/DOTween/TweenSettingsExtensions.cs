@@ -412,6 +412,8 @@ namespace DG.Tweening
             t.isBackwards = asTween.isBackwards;
             TweenManager.SetUpdateType(t, asTween.updateType, asTween.isIndependentUpdate);
             t.id = asTween.id;
+            t.stringId = asTween.stringId;
+            t.intId = asTween.intId;
             t.onStart = asTween.onStart;
             t.onPlay = asTween.onPlay;
             t.onRewind = asTween.onRewind;
@@ -451,6 +453,8 @@ namespace DG.Tweening
 
             TweenManager.SetUpdateType(t, tweenParams.updateType, tweenParams.isIndependentUpdate);
             t.id = tweenParams.id;
+            t.stringId = tweenParams.stringId;
+            t.intId = tweenParams.intId;
             t.onStart = tweenParams.onStart;
             t.onPlay = tweenParams.onPlay;
             t.onRewind = tweenParams.onRewind;

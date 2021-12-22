@@ -21,6 +21,8 @@ namespace DG.Tweening
         public static readonly TweenParams Params = new TweenParams();
 
         internal object id;
+        internal string stringId;
+        internal int intId = -999;
         internal object target;
         internal UpdateType updateType;
         internal bool isIndependentUpdate;
@@ -63,6 +65,8 @@ namespace DG.Tweening
         public TweenParams Clear()
         {
             id = target = null;
+            stringId = null;
+            intId = -999;
             updateType = DOTween.defaultUpdateType;
             isIndependentUpdate = DOTween.defaultTimeScaleIndependent;
             onStart = onPlay = onRewind = onUpdate = onStepComplete = onComplete = onKill = null;
@@ -96,10 +100,24 @@ namespace DG.Tweening
         }
 
         /// <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
-        /// <param name="id">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
-        public TweenParams SetId(object id)
+        /// <param name="objectId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        public TweenParams SetId(object objectId)
         {
-            this.id = id;
+            this.id = objectId;
+            return this;
+        }
+        /// <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
+        /// <param name="stringId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        public TweenParams SetId(string stringId)
+        {
+            this.stringId = stringId;
+            return this;
+        }
+        /// <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
+        /// <param name="intId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        public TweenParams SetId(int intId)
+        {
+            this.intId = intId;
             return this;
         }
 

@@ -2355,7 +2355,15 @@
         </member>
         <member name="M:DG.Tweening.TweenParams.SetId(System.Object)">
             <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
-            <param name="id">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+            <param name="objectId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        </member>
+        <member name="M:DG.Tweening.TweenParams.SetId(System.String)">
+            <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
+            <param name="stringId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
+        </member>
+        <member name="M:DG.Tweening.TweenParams.SetId(System.Int32)">
+            <summary>Sets an ID for the tween, which can then be used as a filter with DOTween's static methods.</summary>
+            <param name="intId">The ID to assign to this tween. Can be an int, a string, an object or anything else.</param>
         </member>
         <member name="M:DG.Tweening.TweenParams.SetTarget(System.Object)">
             <summary>Sets the target for the tween, which can then be used as a filter with DOTween's static methods.

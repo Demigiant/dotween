@@ -2,17 +2,17 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class TempTests : MonoBehaviour
 {
     public Transform target;
-    public bool forceEnd;
     
     IEnumerator Start()
     {
+        TweenParams p = new TweenParams().SetId(12);
         yield return new WaitForSeconds(0.5f);
-        DOTween.To(() => target.position, x => {target.position = x; Debug.Log("FFF");}, Vector3.zero, 1);
+        target.DOMoveX(2, 2).SetAs(p);
+        yield return new WaitForSeconds(1);
+        DOTween.Complete(12);
     }
 }
