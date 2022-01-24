@@ -113,7 +113,8 @@ namespace DG.Tweening.Plugins
 
         public override void EvaluateAndApply(
             CircleOptions options, Tween t, bool isRelative, DOGetter<Vector2> getter, DOSetter<Vector2> setter,
-            float elapsed, Vector2 startValue, Vector2 changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice
+            float elapsed, Vector2 startValue, Vector2 changeValue, float duration, bool usingInversePosition, int newCompletedSteps,
+            UpdateNotice updateNotice
         ){
             float startValueDegrees = options.startValueDegrees;
             if (t.loopType == LoopType.Incremental) startValueDegrees += changeValue.x * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);

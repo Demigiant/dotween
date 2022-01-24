@@ -90,8 +90,11 @@ namespace DG.Tweening.Plugins
             return diag / unitsXSecond;
         }
 
-        public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<RectOffset> getter, DOSetter<RectOffset> setter, float elapsed, RectOffset startValue, RectOffset changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
-        {
+        public override void EvaluateAndApply(
+            NoOptions options, Tween t, bool isRelative, DOGetter<RectOffset> getter, DOSetter<RectOffset> setter,
+            float elapsed, RectOffset startValue, RectOffset changeValue, float duration, bool usingInversePosition, int newCompletedSteps,
+            UpdateNotice updateNotice
+        ){
             _r.left = startValue.left;
             _r.right = startValue.right;
             _r.top = startValue.top;

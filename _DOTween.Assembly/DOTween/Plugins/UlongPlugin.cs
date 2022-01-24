@@ -56,8 +56,11 @@ namespace DG.Tweening.Plugins
             return res;
         }
 
-        public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<ulong> getter, DOSetter<ulong> setter, float elapsed, ulong startValue, ulong changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
-        {
+        public override void EvaluateAndApply(
+            NoOptions options, Tween t, bool isRelative, DOGetter<ulong> getter, DOSetter<ulong> setter,
+            float elapsed, ulong startValue, ulong changeValue, float duration, bool usingInversePosition, int newCompletedSteps,
+            UpdateNotice updateNotice
+        ){
             if (t.loopType == LoopType.Incremental) startValue += changeValue * (uint)(t.isComplete ? t.completedLoops - 1 : t.completedLoops);
             if (t.isSequenced && t.sequenceParent.loopType == LoopType.Incremental) {
                 startValue += changeValue * (uint)(t.loopType == LoopType.Incremental ? t.loops : 1)

@@ -337,7 +337,7 @@
         <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.GetSpeedBasedDuration(DG.Tweening.Plugins.Options.NoOptions,System.Single,UnityEngine.Quaternion)">
             <summary>INTERNAL: do not use</summary>
         </member>
-        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.EvaluateAndApply(DG.Tweening.Plugins.Options.NoOptions,DG.Tweening.Tween,System.Boolean,DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},System.Single,UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single,System.Boolean,DG.Tweening.Core.Enums.UpdateNotice)">
+        <member name="M:DG.Tweening.CustomPlugins.PureQuaternionPlugin.EvaluateAndApply(DG.Tweening.Plugins.Options.NoOptions,DG.Tweening.Tween,System.Boolean,DG.Tweening.Core.DOGetter{UnityEngine.Quaternion},DG.Tweening.Core.DOSetter{UnityEngine.Quaternion},System.Single,UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single,System.Boolean,System.Int32,DG.Tweening.Core.Enums.UpdateNotice)">
             <summary>INTERNAL: do not use</summary>
         </member>
         <member name="T:DG.Tweening.DOCurve">

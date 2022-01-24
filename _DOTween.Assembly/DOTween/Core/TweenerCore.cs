@@ -258,7 +258,7 @@ namespace DG.Tweening.Core
             float updatePosition = useInversePosition ? duration - position : position;
             if (DOTween.useSafeMode) {
                 try {
-                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                    tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, newCompletedSteps, updateNotice);
                 } catch (Exception e) {
                     // Target/field doesn't exist anymore: kill tween
                     if (Debugger.ShouldLogSafeModeCapturedError()) {
@@ -270,7 +270,7 @@ namespace DG.Tweening.Core
                     return true;
                 }
             } else {
-                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, updateNotice);
+                tweenPlugin.EvaluateAndApply(plugOptions, this, isRelative, getter, setter, updatePosition, startValue, changeValue, duration, useInversePosition, newCompletedSteps, updateNotice);
             }
             return false;
         }

@@ -85,8 +85,11 @@ namespace DG.Tweening.CustomPlugins
         }
 
         /// <summary>INTERNAL: do not use</summary>
-        public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, float elapsed, Quaternion startValue, Quaternion changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
-        {
+        public override void EvaluateAndApply(
+            NoOptions options, Tween t, bool isRelative, DOGetter<Quaternion> getter, DOSetter<Quaternion> setter,
+            float elapsed, Quaternion startValue, Quaternion changeValue, float duration, bool usingInversePosition, int newCompletedSteps,
+            UpdateNotice updateNotice
+        ){
 //            if (t.loopType == LoopType.Incremental) startValue *= changeValue * (t.isComplete ? t.completedLoops - 1 : t.completedLoops);
 //            if (t.isSequenced && t.sequenceParent.loopType == LoopType.Incremental) {
 //                startValue += changeValue * (t.loopType == LoopType.Incremental ? t.loops : 1)
