@@ -38,7 +38,10 @@ namespace DG.Tweening
 
         internal static Sequence DoPrepend(Sequence inSequence, Tween t)
         {
-            if (t.loops == -1) t.loops = 1;
+            if (t.loops == -1) {
+                t.loops = int.MaxValue;
+                Debugger.LogWarning("Infinite loops aren't allowed inside a Sequence (only on the Sequence itself) and will be changed to int.MaxValue", t);
+            }
             float tFullTime = t.delay + (t.duration * t.loops);
 //            float tFullTime = t.duration * t.loops;
             inSequence.duration += tFullTime;
@@ -62,12 +65,18 @@ namespace DG.Tweening
 
             t.isSequenced = t.creationLocked = true;
             t.sequenceParent = inSequence;
-            if (t.loops == -1) t.loops = 1;
+            if (t.loops == -1) {
+                t.loops = int.MaxValue;
+                Debugger.LogWarning("Infinite loops aren't allowed inside a Sequence (only on the Sequence itself) and will be changed to int.MaxValue", t);
+            }
             float tFullTime = t.duration * t.loops;
             t.autoKill = false;
             t.delay = t.elapsedDelay = 0;
             t.delayComplete = true;
-            t.isSpeedBased = false;
+            if (t.isSpeedBased) {
+                t.isSpeedBased = false;
+                Debugger.LogWarning("SpeedBased tweens are not allowed inside a Sequence: interpreting speed as duration", t);
+            }
             t.sequencedPosition = atPosition;
             t.sequencedEndPosition = atPosition + tFullTime;
 
