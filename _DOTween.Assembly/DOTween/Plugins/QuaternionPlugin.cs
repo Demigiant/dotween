@@ -61,14 +61,17 @@ namespace DG.Tweening.Plugins
 
         public override void SetChangeValue(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
         {
+            Vector3 endVal = GetEndValForCalculations(t);
+            Vector3 startVal = t.startValue;
+
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
                 // Rotation will be adapted to 360° and will take the shortest route
                 // - Adapt to 360°
-                Vector3 ev = t.endValue;
-                if (ev.x > 360) ev.x = ev.x % 360;
-                if (ev.y > 360) ev.y = ev.y % 360;
-                if (ev.z > 360) ev.z = ev.z % 360;
-                Vector3 changeVal = ev - t.startValue;
+                // Vector3 ev = t.endValue;
+                if (endVal.x > 360) endVal.x = endVal.x % 360;
+                if (endVal.y > 360) endVal.y = endVal.y % 360;
+                if (endVal.z > 360) endVal.z = endVal.z % 360;
+                Vector3 changeVal = endVal - startVal;
                 // - Find shortest rotation
                 float abs = (changeVal.x > 0 ? changeVal.x : -changeVal.x);
                 if (abs > 180) changeVal.x = changeVal.x > 0 ? -(360 - abs) : 360 - abs;
@@ -79,10 +82,12 @@ namespace DG.Tweening.Plugins
                 // - Assign
                 t.changeValue = changeVal;
             } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360 || t.isRelative) {
-                t.changeValue = t.endValue - t.startValue;
+                t.changeValue = endVal - startVal;
             } else {
-                t.changeValue = t.endValue;
+                t.changeValue = endVal;
             }
+            // Debug.Log(t.startValue + "/" + startVal + " - " + t.endValue + "/" + endVal + " ► " + t.changeValue);
+            // Debug.Log("   ► " + Quaternion.Euler(t.startValue).eulerAngles + " - " + Quaternion.Euler(t.endValue).eulerAngles + " ► " + Quaternion.Euler(t.changeValue).eulerAngles);
         }
 
         public override float GetSpeedBasedDuration(QuaternionOptions options, float unitsXSecond, Vector3 changeValue)
@@ -129,6 +134,24 @@ namespace DG.Tweening.Plugins
                 setter(Quaternion.Euler(endValue));
                 break;
             }
+        }
+
+        // This fixes wobbling when rotating on a single axis in some cases,
+        // but for now only fixes it for Fast rotateMode and direct tween (no From, no relative)
+        Vector3 GetEndValForCalculations(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+        {
+            if (t.isFrom) return t.endValue;
+            if (t.isRelative) return t.endValue;
+            if (t.plugOptions.rotateMode != RotateMode.Fast) return t.endValue;
+            if (Mathf.Approximately(t.startValue.x, 180) || Mathf.Approximately(t.startValue.y, 180) || Mathf.Approximately(t.startValue.z, 180)) {
+                // If one of the startValue axes is 180, convert the endValue
+                // (only the one used to calculate changeValue)
+                // into the space used by startValue, which is supposedly flipped
+                // (for example 85,180,180 instead of 95,0,0
+                // Debug.Log("CONVERT");
+                return Quaternion.Euler(t.endValue).eulerAngles;
+            }
+            return t.endValue;
         }
     }
 }

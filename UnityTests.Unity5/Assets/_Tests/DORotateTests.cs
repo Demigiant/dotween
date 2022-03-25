@@ -17,9 +17,12 @@ public class DORotateTests : BrainBase
     [Header("Main")]
     public TweenType tweenType = TweenType.Normal;
     float tweenDuration = 2;
-    public bool relative = false;
+    public bool isRelative = false;
+    public bool isFrom = false;
     public Vector2 offsetBetweenDices = new Vector2(7, 4);
     public int maxDicesPerRow = 4;
+    [Range(-1, 10)]
+    public int focusOnlyOnDice = -1;
     [Header("Fast")]
     public Vector3[] fastStartValues = new[] {
         new Vector3(0, 0, 0),
@@ -92,6 +95,10 @@ public class DORotateTests : BrainBase
         int xIndex = -1;
         _dices = new GameObject[totDices];
         for (int i = 0; i < totDices; ++i) {
+            if (focusOnlyOnDice > -1 && i != focusOnlyOnDice) {
+                _dices[i] = null;
+                continue;
+            }
             if (i % maxDicesPerRow == 0) {
                 xIndex = -1;
                 startP.y -= offsetBetweenDices.y;
@@ -104,7 +111,7 @@ public class DORotateTests : BrainBase
             Transform dice = GetDiceFromGroup(_dices[i]);
             dice.localEulerAngles = startVals[i];
             TextMesh label = _dices[i].GetComponentInChildren<TextMesh>();
-            label.text = startVals[i] + "\n" + endVal;
+            label.text = startVals[i] + "\n" + Quaternion.Euler(startVals[i]).eulerAngles + "\n" + endVal;
         }
     }
 
@@ -115,6 +122,7 @@ public class DORotateTests : BrainBase
             return;
         }
 
+        DOTween.KillAll();
         Vector3[] startVals;
         Vector3 endVal;
         switch (_currRotateMode) {
@@ -128,11 +136,12 @@ public class DORotateTests : BrainBase
             break;
         }
         for (int i = 0; i < _dices.Length; ++i) {
+            if (_dices[i] == null) continue;
             Transform dice = GetDiceFromGroup(_dices[i]);
             TextMesh label = _dices[i].GetComponentInChildren<TextMesh>();
             Vector3 startVal = startVals[i];
             Vector3 actualEndVal = endVal;
-            Tween t;
+            TweenerCore<Quaternion, Vector3, QuaternionOptions> t;
             switch (tweenType) {
             case TweenType.FromCurrent:
                 actualEndVal = startVal;
@@ -146,6 +155,8 @@ public class DORotateTests : BrainBase
                 t = dice.DOLocalRotate(endVal, tweenDuration, _currRotateMode);
                 break;
             }
+            if (isFrom) t.From(true);
+            else if (isRelative) t.SetRelative();
             t.OnUpdate(() => {
                 label.text = dice.eulerAngles + "\n" + actualEndVal;
             });
