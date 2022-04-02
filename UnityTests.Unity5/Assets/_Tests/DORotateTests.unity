@@ -407,7 +407,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 499550747}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1964077126}
@@ -420,10 +420,12 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 499550747}
-  m_Text: 180,180,180
+  m_Text: '180,180,180
+
+    90,90,90'
   m_OffsetZ: 0
   m_CharacterSize: 0.2
-  m_LineSpacing: 1
+  m_LineSpacing: 0.8
   m_Anchor: 1
   m_Alignment: 1
   m_TabSize: 4

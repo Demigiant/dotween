@@ -111,7 +111,7 @@ public class DORotateTests : BrainBase
             Transform dice = GetDiceFromGroup(_dices[i]);
             dice.localEulerAngles = startVals[i];
             TextMesh label = _dices[i].GetComponentInChildren<TextMesh>();
-            label.text = startVals[i] + "\n" + Quaternion.Euler(startVals[i]).eulerAngles + "\n" + endVal;
+            label.text = startVals[i] + "\n" + Quaternion.Euler(startVals[i]).eulerAngles + "\n" + endVal + "\n" + FlipEulerAngles(endVal);
         }
     }
 
@@ -153,10 +153,10 @@ public class DORotateTests : BrainBase
                 break;
             default:
                 t = dice.DOLocalRotate(endVal, tweenDuration, _currRotateMode);
+                if (isFrom) t.From(isRelative);
+                else if (isRelative) t.SetRelative();
                 break;
             }
-            if (isFrom) t.From(true);
-            else if (isRelative) t.SetRelative();
             t.OnUpdate(() => {
                 label.text = dice.eulerAngles + "\n" + actualEndVal;
             });
@@ -174,6 +174,12 @@ public class DORotateTests : BrainBase
             if (ts[i].name == "Dice") return ts[i];
         }
         return null;
+    }
+    
+    // Flips the euler angles from one representation to the other
+    Vector3 FlipEulerAngles(Vector3 euler)
+    {
+        return new Vector3(180 - euler.x, euler.y + 180, euler.z + 180);
     }
 
     #endregion

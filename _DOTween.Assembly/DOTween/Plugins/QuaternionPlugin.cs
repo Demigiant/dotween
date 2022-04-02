@@ -24,9 +24,10 @@ namespace DG.Tweening.Plugins
             Vector3 prevEndVal = t.endValue;
             t.endValue = t.getter().eulerAngles;
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
-                t.startValue = prevEndVal;
+                t.startValue = GetEulerValForCalculations(t, prevEndVal, t.endValue);
             } else if (t.plugOptions.rotateMode == RotateMode.FastBeyond360) {
-                t.startValue = t.endValue + prevEndVal;
+                // t.startValue = t.endValue + prevEndVal;
+                t.startValue = GetEulerValForCalculations(t, t.endValue + prevEndVal, t.endValue);
             } else {
                 Quaternion rot = t.getter();
                 if (t.plugOptions.rotateMode == RotateMode.WorldAxisAdd) {
@@ -45,7 +46,8 @@ namespace DG.Tweening.Plugins
                 t.endValue += currVal;
                 fromValue += currVal;
             }
-            t.startValue = fromValue;
+            // t.startValue = fromValue;
+            t.startValue = GetEulerValForCalculations(t, fromValue, t.endValue);
             if (setImmediately) t.setter(Quaternion.Euler(fromValue));
         }
 
@@ -61,7 +63,9 @@ namespace DG.Tweening.Plugins
 
         public override void SetChangeValue(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
         {
-            Vector3 endVal = GetEndValForCalculations(t);
+            // Vector3 endVal = GetEndValForCalculations(t);
+            // If FROM don't use conversions method becuse it's already been used when assigning From values
+            Vector3 endVal = t.isFrom ? t.endValue : GetEulerValForCalculations(t, t.endValue, t.startValue);
             Vector3 startVal = t.startValue;
 
             if (t.plugOptions.rotateMode == RotateMode.Fast && !t.isRelative) {
@@ -86,6 +90,7 @@ namespace DG.Tweening.Plugins
             } else {
                 t.changeValue = endVal;
             }
+            // Debug.Log("►►► " + t.startValue + " ► " + t.endValue);
             // Debug.Log(t.startValue + "/" + startVal + " - " + t.endValue + "/" + endVal + " ► " + t.changeValue);
             // Debug.Log("   ► " + Quaternion.Euler(t.startValue).eulerAngles + " - " + Quaternion.Euler(t.endValue).eulerAngles + " ► " + Quaternion.Euler(t.changeValue).eulerAngles);
         }
@@ -136,22 +141,47 @@ namespace DG.Tweening.Plugins
             }
         }
 
-        // This fixes wobbling when rotating on a single axis in some cases,
-        // but for now only fixes it for Fast rotateMode and direct tween (no From, no relative)
-        Vector3 GetEndValForCalculations(TweenerCore<Quaternion, Vector3, QuaternionOptions> t)
+        // This fixes wobbling when rotating on a single axis in some cases
+        Vector3 GetEulerValForCalculations(TweenerCore<Quaternion, Vector3, QuaternionOptions> t, Vector3 val, Vector3 counterVal)
         {
-            if (t.isFrom) return t.endValue;
-            if (t.isRelative) return t.endValue;
-            if (t.plugOptions.rotateMode != RotateMode.Fast) return t.endValue;
-            if (Mathf.Approximately(t.startValue.x, 180) || Mathf.Approximately(t.startValue.y, 180) || Mathf.Approximately(t.startValue.z, 180)) {
-                // If one of the startValue axes is 180, convert the endValue
-                // (only the one used to calculate changeValue)
-                // into the space used by startValue, which is supposedly flipped
-                // (for example 85,180,180 instead of 95,0,0
-                // Debug.Log("CONVERT");
-                return Quaternion.Euler(t.endValue).eulerAngles;
+            // return val;
+            if (t.isRelative) return val;
+            // if (t.isFrom) return val; // Caller decides if this should be ignored or not
+            // if (t.plugOptions.rotateMode != RotateMode.Fast) return val;
+
+            Vector3 valFlipped = FlipEulerAngles(val);
+            bool xAreTheSame = Mathf.Approximately(counterVal.x, val.x) || Mathf.Approximately(counterVal.x, valFlipped.x);
+            bool yAreTheSame = Mathf.Approximately(counterVal.y, val.y) || Mathf.Approximately(counterVal.y, valFlipped.y);
+            bool zAreTheSame = Mathf.Approximately(counterVal.z, val.z) || Mathf.Approximately(counterVal.z, valFlipped.z);
+            bool isSingleAxisRotation = xAreTheSame && (yAreTheSame || zAreTheSame)
+                                        || yAreTheSame && zAreTheSame;
+            // Debug.Log(counterVal + " - " + val + " / " + valFlipped + " ► isSingleAxis: " + isSingleAxisRotation);
+            if (!isSingleAxisRotation) return val;
+
+            int axisToRotate = xAreTheSame
+                ? yAreTheSame ? 2 : 1
+                : 0;
+            bool flip = false;
+            switch (axisToRotate) {
+            case 0: // X
+                flip = !Mathf.Approximately(counterVal.y, val.y) || !Mathf.Approximately(counterVal.z, val.z);
+                break;
+            case 1: // Y
+                flip = !Mathf.Approximately(counterVal.x, val.x) || !Mathf.Approximately(counterVal.z, val.z);
+                break;
+            case 2: // Z
+                flip = !Mathf.Approximately(counterVal.x, val.x) || !Mathf.Approximately(counterVal.y, val.y);
+                break;
             }
-            return t.endValue;
+            // Debug.Log("   axis: " + axisToRotate + " - flip: " + flip);
+            // if (flip) Debug.Log("    FLIPPED " + val + " to " + valFlipped);
+            return flip ? valFlipped : val;
+        }
+
+        // Flips the euler angles from one representation to the other
+        Vector3 FlipEulerAngles(Vector3 euler)
+        {
+            return new Vector3(180 - euler.x, euler.y + 180, euler.z + 180);
         }
     }
 }
