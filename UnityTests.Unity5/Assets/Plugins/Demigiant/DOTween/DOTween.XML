@@ -943,6 +943,12 @@
             A tween is considered as playing even if its delay is actually playing
             </summary>
         </member>
+        <member name="M:DG.Tweening.DOTween.TotalTweensById(System.Object,System.Boolean)">
+            <summary>
+            Returns a the total number of active tweens with the given id.
+            </summary>
+            <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
+        </member>
         <member name="M:DG.Tweening.DOTween.PlayingTweens(System.Collections.Generic.List{DG.Tweening.Tween})">
             <summary>
             Returns a list of all active tweens in a playing state.

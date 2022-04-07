@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.680"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.685"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -1044,6 +1044,17 @@ namespace DG.Tweening
         public static int TotalPlayingTweens()
         {
             return TweenManager.TotalPlayingTweens();
+        }
+
+        /// <summary>
+        /// Returns a the total number of active tweens with the given id.
+        /// </summary>
+        /// <param name="playingOnly">If TRUE returns only the tweens with the given ID that are currently playing</param>
+        public static int TotalTweensById(object id, bool playingOnly = false)
+        {
+            if (id == null) return 0;
+
+            return TweenManager.TotalTweensById(id, playingOnly);
         }
 
         /// <summary>

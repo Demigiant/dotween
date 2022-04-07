@@ -928,6 +928,14 @@ namespace DG.Tweening.Core
             return tot;
         }
 
+        // Returns the total active tweens with the given id
+        internal static int TotalTweensById(object id, bool playingOnly)
+        {
+            if (_requiresActiveReorganization) ReorganizeActiveTweens();
+            if (totActiveTweens <= 0) return 0;
+            return DoGetTweensById(id, playingOnly, false, null);
+        }
+
         // If playing is FALSE returns active paused tweens, otherwise active playing tweens
         internal static List<Tween> GetActiveTweens(bool playing, List<Tween> fillableList = null)
         {
@@ -948,10 +956,16 @@ namespace DG.Tweening.Core
         internal static List<Tween> GetTweensById(object id, bool playingOnly, List<Tween> fillableList = null)
         {
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
-
             if (totActiveTweens <= 0) return null;
-            int len = totActiveTweens;
-            if (fillableList == null) fillableList = new List<Tween>(len);
+            if (fillableList == null) fillableList = new List<Tween>(totActiveTweens);
+            DoGetTweensById(id, playingOnly, true, fillableList);
+            return fillableList.Count > 0 ? fillableList : null;
+        }
+
+        // Returns the total number of active tweens with the given id, and eventually fills a list with them
+        static int DoGetTweensById(object id, bool playingOnly, bool addToList, List<Tween> fillableList)
+        {
+            int result = 0;
             // Determine ID to use
             bool useStringId = false;
             string stringId = null;
@@ -965,6 +979,7 @@ namespace DG.Tweening.Core
                 intId = (int)id;
             }
             //
+            int len = totActiveTweens;
             for (int i = 0; i < len; ++i) {
                 Tween t = _activeTweens[i];
                 if (t == null) continue;
@@ -973,10 +988,12 @@ namespace DG.Tweening.Core
                 } else if (useIntId) {
                     if (t.intId != intId) continue;
                 } else if (t.id == null || !Equals(id, t.id)) continue;
-                if (!playingOnly || t.isPlaying) fillableList.Add(t);
+                if (!playingOnly || t.isPlaying) {
+                    result++;
+                    if (addToList) fillableList.Add(t);
+                }
             }
-            if (fillableList.Count > 0) return fillableList;
-            return null;
+            return result;
         }
 
         // Returns all active tweens with the given target
