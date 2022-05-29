@@ -16,6 +16,7 @@ namespace DG.Tweening.Core
         public bool useSafeMode = true;
         public SafeModeOptions safeModeOptions = new SafeModeOptions();
         public float timeScale = 1;
+        public float unscaledTimeScale = 1;
         public bool useSmoothDeltaTime;
         public float maxSmoothUnscaledTime = 0.15f; // Used if useSmoothDeltaTime is TRUE
         public RewindCallbackMode rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;

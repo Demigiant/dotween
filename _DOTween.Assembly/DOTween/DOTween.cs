@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.685"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.690"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -54,9 +54,16 @@ namespace DG.Tweening
         /// Beware, this will slightly slow down your tweens while inside Unity Editor.
         /// <para>Default: FALSE</para></summary>
         public static bool showUnityEditorReport = false;
-        /// <summary>Global DOTween timeScale.
-        /// <para>Default: 1</para></summary>
+        /// <summary>Global DOTween global timeScale (default: 1).<para/>
+        /// The final timeScale of a non-timeScaleIndependent tween is:<para/>
+        /// <code>Unity's Time.timeScale * DOTween.timeScale * tween.timeScale</code><para/>
+        /// while the final timeScale of a timeScaleIndependent tween is:<para/>
+        /// <code>DOTween.unscaledTimeScale * DOTween.timeScale * tween.timeScale</code></summary>
         public static float timeScale = 1;
+        /// <summary>DOTween timeScale applied only to timeScaleIndependent tweens (default: 1).<para/>
+        /// The final timeScale of a timeScaleIndependent tween is:<para/>
+        /// <code>DOTween.unscaledTimeScale * DOTween.timeScale * tween.timeScale</code></summary>
+        public static float unscaledTimeScale = 1;
         /// <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens
         /// (unless they're set as timeScaleIndependent, in which case a value between the last timestep
         /// and <see cref="maxSmoothUnscaledTime"/> will be used instead).
@@ -211,6 +218,7 @@ namespace DG.Tweening
                 DOTween.safeModeLogBehaviour = settings.safeModeOptions.logBehaviour;
                 DOTween.nestedTweenFailureBehaviour = settings.safeModeOptions.nestedTweenFailureBehaviour;
                 DOTween.timeScale = settings.timeScale;
+                DOTween.unscaledTimeScale = settings.unscaledTimeScale;
                 DOTween.useSmoothDeltaTime = settings.useSmoothDeltaTime;
                 DOTween.maxSmoothUnscaledTime = settings.maxSmoothUnscaledTime;
                 DOTween.rewindCallbackMode = settings.rewindCallbackMode;
@@ -276,6 +284,7 @@ namespace DG.Tweening
             showUnityEditorReport = false;
             drawGizmos = true;
             timeScale = 1;
+            unscaledTimeScale = 1;
             useSmoothDeltaTime = false;
             maxSmoothUnscaledTime = 0.15f;
             rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
@@ -325,7 +334,7 @@ namespace DG.Tweening
             InitCheck();
 //            instance.ManualUpdate(deltaTime, unscaledDeltaTime);
             if (TweenManager.hasActiveManualTweens) {
-                TweenManager.Update(UpdateType.Manual, deltaTime * DOTween.timeScale, unscaledDeltaTime * DOTween.timeScale);
+                TweenManager.Update(UpdateType.Manual, deltaTime * DOTween.timeScale, unscaledDeltaTime * DOTween.unscaledTimeScale * DOTween.timeScale);
             }
         }
 

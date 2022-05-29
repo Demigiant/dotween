@@ -308,6 +308,7 @@ namespace DG.DOTweenEditor.UI
                 _src.safeModeOptions.nestedTweenFailureBehaviour = NestedTweenFailureBehaviour.TryToPreserveSequence;
                 _src.showUnityEditorReport = false;
                 _src.timeScale = 1;
+                _src.unscaledTimeScale = 1;
                 _src.useSmoothDeltaTime = false;
                 _src.maxSmoothUnscaledTime = 0.15f;
                 _src.rewindCallbackMode = RewindCallbackMode.FireIfPositionChanged;
@@ -339,6 +340,7 @@ namespace DG.DOTweenEditor.UI
                 );
             }
             _src.timeScale = EditorGUILayout.FloatField("DOTween's TimeScale", _src.timeScale);
+            _src.unscaledTimeScale = EditorGUILayout.FloatField("└ Unscaled TimeScale", _src.unscaledTimeScale);
             _src.useSmoothDeltaTime = EditorGUILayout.Toggle("Smooth DeltaTime", _src.useSmoothDeltaTime);
             _src.maxSmoothUnscaledTime = EditorGUILayout.Slider("Max SmoothUnscaledTime", _src.maxSmoothUnscaledTime, 0.01f, 1f);
             _src.rewindCallbackMode = (RewindCallbackMode)EditorGUILayout.EnumPopup("OnRewind Callback Mode", _src.rewindCallbackMode);

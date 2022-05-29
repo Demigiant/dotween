@@ -407,8 +407,16 @@
             <para>Default: FALSE</para></summary>
         </member>
         <member name="F:DG.Tweening.DOTween.timeScale">
-            <summary>Global DOTween timeScale.
-            <para>Default: 1</para></summary>
+            <summary>Global DOTween global timeScale (default: 1).<para/>
+            The final timeScale of a non-timeScaleIndependent tween is:<para/>
+            <code>Unity's Time.timeScale * DOTween.timeScale * tween.timeScale</code><para/>
+            while the final timeScale of a timeScaleIndependent tween is:<para/>
+            <code>DOTween.unscaledTimeScale * DOTween.timeScale * tween.timeScale</code></summary>
+        </member>
+        <member name="F:DG.Tweening.DOTween.unscaledTimeScale">
+            <summary>DOTween timeScale applied only to timeScaleIndependent tweens (default: 1).<para/>
+            The final timeScale of a timeScaleIndependent tween is:<para/>
+            <code>DOTween.unscaledTimeScale * DOTween.timeScale * tween.timeScale</code></summary>
         </member>
         <member name="F:DG.Tweening.DOTween.useSmoothDeltaTime">
             <summary>If TRUE, DOTween will use Time.smoothDeltaTime instead of Time.deltaTime for UpdateType.Normal and UpdateType.Late tweens

@@ -141,7 +141,9 @@ namespace DG.DOTweenEditor.UI
             _strb.Append("\nSafe Mode: ").Append((_isRuntime ? DOTween.useSafeMode : _settings.useSafeMode) ? "ON" : "OFF");
             _strb.Append("\nLog Behaviour: ").Append(_isRuntime ? DOTween.logBehaviour : _settings.logBehaviour);
             _strb.Append("\nShow Unity Editor Report: ").Append(_isRuntime ? DOTween.showUnityEditorReport : _settings.showUnityEditorReport);
-            _strb.Append("\nTimeScale (Unity/DOTween): ").Append(Time.timeScale).Append("/").Append(_isRuntime ? DOTween.timeScale : _settings.timeScale);
+            _strb.Append("\nTimeScale (Unity/DOTween/DOTween-Unscaled): ").Append(Time.timeScale)
+                .Append("/").Append(_isRuntime ? DOTween.timeScale : _settings.timeScale)
+                .Append("/").Append(_isRuntime ? DOTween.unscaledTimeScale : _settings.unscaledTimeScale);
             GUILayout.Label(_strb.ToString(), EditorGUIUtils.wordWrapRichTextLabelStyle);
             GUILayout.Label(
                 "NOTE: DOTween's TimeScale is not the same as Unity's Time.timeScale: it is actually multiplied by it except for tweens that are set to update independently",
