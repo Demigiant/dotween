@@ -1,188 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DE17C145-3E8D-45D6-BBB6-D06BD7D80A55}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Company>Demigiant</Company>
+    <Copyright>Copyright © Daniele Giardini, 2014</Copyright>
+    <Product>DOTween</Product>
+    <Title>DOTween</Title>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <RootNamespace>DG.Tweening</RootNamespace>
     <AssemblyName>DOTween</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <OutputPath>../bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile>../bin/$(AssemblyName).xml</DocumentationFile>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
+	<DebugType>pdbonly</DebugType>
+	<DebugSymbols>True</DebugSymbols>
+    <NoWarn>CS1573,CS1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
-    <NoWarn>1573</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE;COMPATIBLE,RIGIDBODY</DefineConstants>
-    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>1573</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_IncludeRigidbody|AnyCPU'">
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\DOTween.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>1573</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\5.6.7f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <PackageReference Include="Unity3D" Version="2.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AutoPlay.cs" />
-    <Compile Include="AxisConstraint.cs" />
-    <Compile Include="Core\ABSSequentiable.cs" />
-    <Compile Include="Color2.cs" />
-    <Compile Include="Core\Delegates.cs" />
-    <Compile Include="Core\Debugger.cs" />
-    <Compile Include="Core\DOTweenComponent.cs" />
-    <Compile Include="Core\DOTweenSettings.cs" />
-    <Compile Include="Core\Easing\Bounce.cs" />
-    <Compile Include="Core\Easing\EaseManager.cs" />
-    <Compile Include="Core\Easing\EaseCurve.cs" />
-    <Compile Include="Core\Easing\Flash.cs" />
-    <Compile Include="Core\Enums\FilterType.cs" />
-    <Compile Include="Core\Enums\NestedTweenFailureBehaviour.cs" />
-    <Compile Include="Core\Enums\OperationType.cs" />
-    <Compile Include="Core\Enums\SafeModeLogBehaviour.cs" />
-    <Compile Include="Core\Enums\SpecialStartupMode.cs" />
-    <Compile Include="Core\Enums\UpdateNotice.cs" />
-    <Compile Include="Core\Enums\UpdateMode.cs" />
-    <Compile Include="Core\Extensions.cs" />
-    <Compile Include="Core\DOTweenExternalCommand.cs" />
-    <Compile Include="Core\SafeModeReport.cs" />
-    <Compile Include="Core\SequenceCallback.cs" />
-    <Compile Include="Core\Surrogates\ColorWrapper.cs" />
-    <Compile Include="Core\Surrogates\QuaternionWrapper.cs" />
-    <Compile Include="Core\Surrogates\Vector2Wrapper.cs" />
-    <Compile Include="Core\Surrogates\Vector3Wrapper.cs" />
-    <Compile Include="Core\Surrogates\Vector4Wrapper.cs" />
-    <Compile Include="Core\TweenLink.cs" />
-    <Compile Include="Core\TweenManager.cs" />
-    <Compile Include="Core\DOTweenUtils.cs" />
-    <Compile Include="CustomPlugins\PureQuaternionPlugin.cs" />
-    <Compile Include="DOCurve.cs" />
-    <Compile Include="DOTween.cs" />
-    <Compile Include="DOVirtual.cs" />
-    <Compile Include="Ease.cs" />
-    <Compile Include="EaseFactory.cs" />
-    <Compile Include="IDOTweenInit.cs" />
-    <Compile Include="LinkBehaviour.cs" />
-    <Compile Include="PathMode.cs" />
-    <Compile Include="PathType.cs" />
-    <Compile Include="Plugins\CirclePlugin.cs" />
-    <Compile Include="Plugins\Color2Plugin.cs" />
-    <Compile Include="Plugins\ColorWrapperPlugin.cs" />
-    <Compile Include="Plugins\Core\PathCore\CubicBezierDecoder.cs" />
-    <Compile Include="Plugins\Core\PathCore\ControlPoint.cs" />
-    <Compile Include="Plugins\DoublePlugin.cs" />
-    <Compile Include="Plugins\LongPlugin.cs" />
-    <Compile Include="Plugins\Options\IPlugOptions.cs" />
-    <Compile Include="Plugins\Options\PathOptions.cs" />
-    <Compile Include="Plugins\Options\QuaternionOptions.cs" />
-    <Compile Include="Plugins\Options\UintOptions.cs" />
-    <Compile Include="Plugins\Options\Vector3ArrayOptions.cs" />
-    <Compile Include="Plugins\QuaternionWrapperPlugin.cs" />
-    <Compile Include="Plugins\UlongPlugin.cs" />
-    <Compile Include="Plugins\Vector2WrapperPlugin.cs" />
-    <Compile Include="Plugins\Vector3ArrayPlugin.cs" />
-    <Compile Include="Plugins\Core\ITPlugin.cs" />
-    <Compile Include="Plugins\Core\SpecialPluginsUtils.cs" />
-    <Compile Include="Plugins\Core\PathCore\ABSPathDecoder.cs" />
-    <Compile Include="Plugins\Core\PathCore\CatmullRomDecoder.cs" />
-    <Compile Include="Plugins\Core\PathCore\LinearDecoder.cs" />
-    <Compile Include="Plugins\Core\PathCore\Path.cs" />
-    <Compile Include="Plugins\PathPlugin.cs" />
-    <Compile Include="Plugins\Vector3WrapperPlugin.cs" />
-    <Compile Include="Plugins\Vector4WrapperPlugin.cs" />
-    <Compile Include="Core\Enums\RewindCallbackMode.cs" />
-    <Compile Include="RotateMode.cs" />
-    <Compile Include="ScrambleMode.cs" />
-    <Compile Include="ShakeRandomnessMode.cs" />
-    <Compile Include="TweenExtensions.cs" />
-    <Compile Include="LoopType.cs" />
-    <Compile Include="Plugins\ColorPlugin.cs" />
-    <Compile Include="Plugins\Core\IPlugSetter.cs" />
-    <Compile Include="Plugins\Core\ITweenPlugin.cs" />
-    <Compile Include="Plugins\IntPlugin.cs" />
-    <Compile Include="Plugins\QuaternionPlugin.cs" />
-    <Compile Include="Plugins\Options\NoOptions.cs" />
-    <Compile Include="Plugins\RectOffsetPlugin.cs" />
-    <Compile Include="Plugins\RectPlugin.cs" />
-    <Compile Include="Plugins\UintPlugin.cs" />
-    <Compile Include="Plugins\Vector2Plugin.cs" />
-    <Compile Include="Plugins\Options\ColorOptions.cs" />
-    <Compile Include="Plugins\Options\FloatOptions.cs" />
-    <Compile Include="Plugins\Options\RectOptions.cs" />
-    <Compile Include="Plugins\Options\StringOptions.cs" />
-    <Compile Include="Plugins\Options\VectorOptions.cs" />
-    <Compile Include="Plugins\Vector4Plugin.cs" />
-    <Compile Include="Plugins\StringPlugin.cs" />
-    <Compile Include="Sequence.cs" />
-    <Compile Include="ShortcutExtensions.cs" />
-    <Compile Include="TweenParams.cs" />
-    <Compile Include="TweenSettingsExtensions.cs" />
-    <Compile Include="LogBehaviour.cs" />
-    <Compile Include="Plugins\Core\ABSTweenPlugin.cs" />
-    <Compile Include="Plugins\Core\PluginsManager.cs" />
-    <Compile Include="Plugins\FloatPlugin.cs" />
-    <Compile Include="Plugins\Vector3Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tween.cs" />
-    <Compile Include="Core\TweenerCore.cs" />
-    <Compile Include="Tweener.cs" />
-    <Compile Include="TweenType.cs" />
-    <Compile Include="UpdateType.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>call $(SolutionDir)PostBuild_DOTween.bat $(SolutionDir) $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween.bat $(ProjectDir)..\ $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin &quot;$(UnityVersionInstallPath)&quot;" />
+    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween_Package.bat $(ProjectDir)..\ bin" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
