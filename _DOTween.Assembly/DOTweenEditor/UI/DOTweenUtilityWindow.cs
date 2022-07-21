@@ -72,12 +72,20 @@ namespace DG.DOTweenEditor.UI
             if (_initialized) return true;
 
             if (_headerImg == null) {
-                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                if (EditorUtils.isPackage) {
+                    _headerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                } else {
+                    _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                }
                 if (_headerImg == null) return false; // DOTween imported for the first time and images not yet imported
                 EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                if (EditorUtils.isPackage) {
+                    _footerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                } else {
+                    _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                }
                 EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
@@ -190,8 +198,10 @@ namespace DG.DOTweenEditor.UI
                 if (GUILayout.Button("<b>Setup DOTween...</b>\n(add/remove Modules)", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
 //                DOTweenDefines.Setup();
 //                _setupRequired = EditorUtils.DOTweenSetupRequired();
-                    DOTweenUtilityWindowModules.ApplyModulesSettings();
-                    ASMDEFManager.ApplyASMDEFSettings();
+                    if (!EditorUtils.isPackage) { 
+                        DOTweenUtilityWindowModules.ApplyModulesSettings();
+                        ASMDEFManager.ApplyASMDEFSettings();
+                    }
                     _src.modules.showPanel = true;
                     EditorUtility.SetDirty(_src);
                     EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
@@ -243,7 +253,7 @@ namespace DG.DOTweenEditor.UI
                 using (new GUILayout.HorizontalScope()) {
                     GUILayout.FlexibleSpace();
                     GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
-                    if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+                    if (!EditorUtils.isPackage && GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
                         if (ASMDEFManager.hasModulesASMDEF) {
                             string msg = "This will remove:\n-DOTween/Modules/DOTween.Modules.asmdef";
                             if (EditorUtils.hasPro) {
@@ -265,20 +275,22 @@ namespace DG.DOTweenEditor.UI
                                 msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
                                        "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
                             }
-                            if (EditorUtility.DisplayDialog("Create ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.CreateAllASMDEF();
+                            if (!EditorUtils.isPackage &&EditorUtility.DisplayDialog("Create ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.CreateAllASMDEF();
                         }
                     }
                     GUI.color = Color.white;
                     GUILayout.FlexibleSpace();
                 }
-                GUILayout.Label(
-                    "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
-                    " from other ASMDEFs/Libraries instead of loose scripts," +
-                    " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>," +
-                    " <b>except for DOTween's Editor ASMDEFs</b> (DOTweenPro.EditorScripts) which <b>must never be referenced</b>" +
-                    " by your runtime code or runtime ASMDEFs.",
-                    EditorGUIUtils.wordWrapRichTextLabelStyle
-                );
+                if (!EditorUtils.isPackage) {
+                    GUILayout.Label(
+                        "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
+                        " from other ASMDEFs/Libraries instead of loose scripts," +
+                        " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>," +
+                        " <b>except for DOTween's Editor ASMDEFs</b> (DOTweenPro.EditorScripts) which <b>must never be referenced</b>" +
+                        " by your runtime code or runtime ASMDEFs.",
+                        EditorGUIUtils.wordWrapRichTextLabelStyle
+                    );
+                }
             }
             GUILayout.Space(3);
 

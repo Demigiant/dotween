@@ -22,8 +22,11 @@ namespace DG.DOTweenEditor
 
         #endregion
 
+        public const string packageId = "com.demigiant.dotween";
+
         public static string projectPath { get; private set; } // Without final slash
         public static string assetsPath { get; private set; } // Without final slash
+        public static bool isPackage { get { RetrieveDependenciesData(); return _isPackage; } }
         public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
         public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return _hasDOTweenTimeline; } }
         public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return _hasDOTweenTimelineUnityPackage; } }
@@ -32,6 +35,7 @@ namespace DG.DOTweenEditor
         public static string dotweenTimelineVersion { get { RetrieveDependenciesData(); return _dotweenTimelineVersion; } }
         // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
         public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
+        public static string editorPackageADBDir { get { RetrieveDependenciesData(); return _editorPackageADBDir; } }
         // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
         public static string demigiantDir { get { RetrieveDependenciesData(); return _demigiantDir; } }
         // With final slash (system based)
@@ -53,6 +57,7 @@ namespace DG.DOTweenEditor
 
         static readonly StringBuilder _Strb = new StringBuilder();
         static bool _retrievedDependenciesData;
+        static bool _isPackage;
         static bool _hasPro;
         static bool _hasDOTweenTimeline;
         static bool _hasDOTweenTimelineUnityPackage;
@@ -62,6 +67,7 @@ namespace DG.DOTweenEditor
         static bool _hasCheckedForPro;
         static bool _hasCheckedForDOTweenTimeline;
         static string _editorADBDir;
+        static string _editorPackageADBDir;
         static string _demigiantDir; // with final slash
         static string _dotweenDir; // with final slash
         static string _dotweenProDir; // with final slash
@@ -97,6 +103,12 @@ namespace DG.DOTweenEditor
             CheckForTimeline();
             StoreEditorADBDir();
             StoreDOTweenDirsAndFilePaths();
+
+            _editorPackageADBDir = packageId + "/DOTween/Editor/";
+
+            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(Assembly.GetExecutingAssembly());
+
+            _isPackage = packageInfo != null;
         }
 
         public static void DelayedCall(float delay, Action callback)

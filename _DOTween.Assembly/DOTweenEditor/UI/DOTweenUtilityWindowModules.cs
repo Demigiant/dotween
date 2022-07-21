@@ -76,18 +76,23 @@ namespace DG.DOTweenEditor.UI
             _src = src;
             if (!_refreshed) Refresh(_src);
 
-            GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
-
+            if (!EditorUtils.isPackage) {
+                GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
+            }
+            
             GUILayout.BeginVertical();
             EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
-            GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
-            GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
-            _audioModule.enabled = EditorGUILayout.Toggle("Audio", _audioModule.enabled);
-            _physicsModule.enabled = EditorGUILayout.Toggle("Physics", _physicsModule.enabled);
-            _physics2DModule.enabled = EditorGUILayout.Toggle("Physics2D", _physics2DModule.enabled);
-            _spriteModule.enabled = EditorGUILayout.Toggle("Sprites", _spriteModule.enabled);
-            _uiModule.enabled = EditorGUILayout.Toggle("UI", _uiModule.enabled);
-            GUILayout.EndVertical();
+
+            if (!EditorUtils.isPackage) {
+                GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
+                GUILayout.Label("Unity", EditorGUIUtils.boldLabelStyle);
+                _audioModule.enabled = EditorGUILayout.Toggle("Audio", _audioModule.enabled);
+                _physicsModule.enabled = EditorGUILayout.Toggle("Physics", _physicsModule.enabled);
+                _physics2DModule.enabled = EditorGUILayout.Toggle("Physics2D", _physics2DModule.enabled);
+                _spriteModule.enabled = EditorGUILayout.Toggle("Sprites", _spriteModule.enabled);
+                _uiModule.enabled = EditorGUILayout.Toggle("UI", _uiModule.enabled);
+                GUILayout.EndVertical();
+            }
             // External assets modules - free
             GUILayout.BeginVertical(UnityEngine.GUI.skin.box);
             GUILayout.Label("External Assets", EditorGUIUtils.boldLabelStyle);
