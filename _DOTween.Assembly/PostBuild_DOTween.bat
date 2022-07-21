@@ -4,7 +4,8 @@
 :: %4 = $(TargetName) ► DLL filename without extension
 :: %5 = Main export dir ► Main folder inside bin.Global/etc where to copy the files (ex: "DOTween", "DOTweenPro")
 :: %6 = Bin dir name ► (ex: "bin", "bin_pro")
-:: %7 = Eventual export subdir (can be NULL) ► Eventual subdirectory inside the main export dir (ex: "Editor")
+:: %7 = $(UnityVersionInstallPath) ► Unity editor path (ex: "C:\Program Files\Unity\Hub\Editor\2020.3.36f1")
+:: %8 = Eventual export subdir (can be NULL) ► Eventual subdirectory inside the main export dir (ex: "Editor")
 
 echo :
 echo :
@@ -17,23 +18,26 @@ echo :
 echo :
 echo :
 echo :
-echo :::::: TARGET: %5 %7
+echo :::::: TARGET: %5 %8
 
 echo :::::: Deleting TMPs...
-DEL %2*.tmp
+IF EXIST %2*.tmp DEL %2*.tmp
 
 echo :::::: Converting PDB to MDB and deleting PDB...
 CD %2
-"c:\Program Files\pdb2mdb\pdb2mdb.exe" %3
-echo ::: Deleting PDB files: %4.pdb
+"%~7\Editor\Data\MonoBleedingEdge\bin\mono.exe" "%~7\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe" %3
+echo ::: Deleting %4.pdb file: %4.pdb
 DEL %4.pdb
-echo ::: PDB files deleted, PAUSE for 0.5 second
+echo ::: %4.pdb file deleted, PAUSE for 0.5 second
 waitfor pdbFilesToBeDeletedIHope /t 0.5 2>NUL || type nul>nul
+
+echo ::: Deleting %4.deps.json files: %4.deps.json
+DEL %4.deps.json
 
 echo :::::: Starting export...
 
-set SubDir=%7
-if not "%SubDir%"=="" ( set SubDir=\%7 )
+set SubDir=%8
+if not "%SubDir%"=="" ( set SubDir=\%8 )
 set CopyFromDir=%1%6%SubDir%
 
 set CopyToDir=%1..\..\bin.Global\%5%SubDir%
