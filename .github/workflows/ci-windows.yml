@@ -1,0 +1,101 @@
+name: CI-Windows
+
+on:
+  workflow_dispatch:
+
+env:
+  UNITY_EDITOR_BASE_PATH: C:\Program Files\Unity\Hub\Editor
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        unity:
+          [
+            { version: 2019.4.40f1, hash: ffc62b691db5 },
+            { version: 2020.3.36f1, hash: 71f96b79b9f0 },
+            { version: 2021.3.6f1, hash: 7da38d85baf6 },
+          ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Set Unity editor path variable
+        run: echo "UNITY_EDITOR_PATH=${{ env.UNITY_EDITOR_BASE_PATH }}\${{ matrix.unity.version }}" >> $Env:GITHUB_ENV
+        shell: pwsh
+
+      - name: Replace UnityVersion value in Directory.Build.Props files
+        run: |
+          $filePaths = @(
+              '_DOTween.Assembly/DOTween/Directory.Build.Props',
+              '_DOTween.Assembly/DOTweenEditor/Directory.Build.Props'
+          )
+
+          foreach ($filePath in $filePaths) {
+              $fileContent = Get-Content $filePath -Encoding UTF8 -Raw
+              $fileContent = $fileContent -replace '<UnityVersion>(.*)</UnityVersion>', '<UnityVersion>${{ matrix.unity.version }}</UnityVersion>'
+
+              Set-Content -Encoding UTF8 $filePath -Value $fileContent -NoNewline
+
+              Write-Output "$($filePath): '$fileContent'"
+          }
+        shell: pwsh
+
+      - name: Enable Unity Cache Support
+        id: cache-unity
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-unitycache-${{ matrix.unity.version }}
+          path: UnityCache
+
+      - name: Download Unity
+        if: steps.cache-unity.outputs.cache-hit != 'true'
+        run: bitsadmin /TRANSFER unity /DOWNLOAD /PRIORITY foreground "https://download.unity3d.com/download_unity/${{ matrix.unity.hash }}/Windows64EditorInstaller/UnitySetup64-${{ matrix.unity.version }}.exe" "%CD%\unitysetup.exe"
+        shell: cmd
+
+      - name: Install Unity
+        if: steps.cache-unity.outputs.cache-hit != 'true'
+        run: unitysetup.exe /UI=reduced /S /D=${{ env.UNITY_EDITOR_PATH }}
+        shell: cmd
+
+      - name: Prepare Managed Cache
+        if: steps.cache-unity.outputs.cache-hit != 'true'
+        run: Copy-Item -Path "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\Managed" -Destination "UnityCache\Managed" -Recurse
+        shell: pwsh
+
+      - name: Prepare MonoBleedingEdge Cache
+        if: steps.cache-unity.outputs.cache-hit != 'true'
+        run: Copy-Item -Path "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\MonoBleedingEdge" -Destination "UnityCache\MonoBleedingEdge" -Recurse
+        shell: pwsh
+
+      - name: Restore Managed Cache
+        if: steps.cache-unity.outputs.cache-hit == 'true'
+        run: Copy-Item -Path "UnityCache\Managed" -Destination "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\Managed" -Recurse
+        shell: pwsh
+
+      - name: Restore MonoBleedingEdge Cache
+        if: steps.cache-unity.outputs.cache-hit == 'true'
+        run: Copy-Item -Path "UnityCache\MonoBleedingEdge" -Destination "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\MonoBleedingEdge" -Recurse
+        shell: pwsh
+
+      - name: Build DOTween
+        run: dotnet build -c Release _DOTween.Assembly/DOTween/DOTween.csproj
+        shell: pwsh
+
+      - name: Build DOTweenEditor
+        run: dotnet build -c Release _DOTween.Assembly/DOTweenEditor/DOTweenEditor.csproj
+        shell: pwsh
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package-${{ matrix.unity.version }}
+          path: Package
+          retention-days: 1
