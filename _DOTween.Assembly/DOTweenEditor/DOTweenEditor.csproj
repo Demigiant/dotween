@@ -1,109 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{421ACC19-8922-4E98-8921-B52240CE172A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Company>Demigiant</Company>
+    <Copyright>Copyright © Daniele Giardini, 2014</Copyright>
+    <Product>DOTweenEditor</Product>
+    <Title>DOTweenEditor</Title>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <RootNamespace>DG.DOTweenEditor</RootNamespace>
     <AssemblyName>DOTweenEditor</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <OutputPath>../bin/Editor</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile>../bin/Editor/$(AssemblyName).xml</DocumentationFile>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
+	<DebugType>pdbonly</DebugType>
+	<DebugSymbols>True</DebugSymbols>
+	<NoWarn>CS1573,CS1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\Editor\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\Editor\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CompatibilityMode|AnyCPU' ">
-    <OutputPath>..\bin\Editor\</OutputPath>
-    <DefineConstants>TRACE;COMPATIBLE,RIGIDBODY</DefineConstants>
-    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>1591</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_IncludeRigidbody|AnyCPU'">
-    <OutputPath>..\bin\Editor\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\bin\Editor\DOTweenEditor.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>1591</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\5.6.7f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\5.6.7f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="$(UnityEditorPath)" Private="false" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="DelayedCall.cs" />
-    <Compile Include="ASMDEFManager.cs" />
-    <Compile Include="DOTweenEditorPreview.cs" />
-    <Compile Include="EditorVersion.cs" />
-    <Compile Include="MenuItems.cs" />
-    <Compile Include="UI\EditorGUIUtils.cs" />
-    <Compile Include="EditorUtils.cs" />
-    <Compile Include="UI\DOTweenComponentInspector.cs" />
-    <Compile Include="UI\DOTweenUtilityWindowModules.cs" />
-    <Compile Include="DOTweenProcessors.cs" />
-    <Compile Include="UI\DOTweenSettingsInspector.cs" />
-    <Compile Include="DOTweenDefines.cs" />
-    <Compile Include="UI\DOTweenUtilityWindow.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Unity3D" Version="2.0.1" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DOTween\DOTween.csproj">
-      <Project>{DE17C145-3E8D-45D6-BBB6-D06BD7D80A55}</Project>
       <Name>DOTween</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>call $(SolutionDir)PostBuild_DOTween.bat $(SolutionDir) $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin Editor</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween.bat $(ProjectDir)..\ $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin &quot;$(UnityVersionInstallPath)&quot; Editor" />
+    <Exec Command="call $(ProjectDir)..\PostBuild_DOTweenEditor_Package.bat $(ProjectDir)..\ bin\Editor" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
