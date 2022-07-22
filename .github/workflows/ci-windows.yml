@@ -1,7 +1,8 @@
 name: CI-Windows
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ develop ]
 
 env:
   UNITY_EDITOR_BASE_PATH: C:\Program Files\Unity\Hub\Editor
