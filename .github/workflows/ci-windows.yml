@@ -125,7 +125,9 @@ jobs:
           }
         shell: pwsh
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ !startsWith(matrix.unity.version, '5.6') && !startsWith(matrix.unity.version, '2017') && !startsWith(matrix.unity.version, '2018') }}
         with:
           name: Package-${{ matrix.unity.version }}
           path: Package
