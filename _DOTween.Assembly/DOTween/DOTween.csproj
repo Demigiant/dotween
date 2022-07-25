@@ -58,5 +58,5 @@
 
   <Import Project="../DOTweenShared.targets" />
   <Import Project="../DOTween.targets" />
-  <Import Project="../DOTweenPackage.targets" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
+  <Import Project="../DOTweenPackage.targets" Condition=" '$(DOTweenPackageGenerationEnabled)' == 'true' And '$(TargetFramework)' == 'netstandard2.0' " />
 </Project>

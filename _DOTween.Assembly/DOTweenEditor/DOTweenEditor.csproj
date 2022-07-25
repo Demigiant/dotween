@@ -49,10 +49,6 @@
     <PackageReference Include="Unity3D" Version="2.0.1" />
   </ItemGroup>
 
-  <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017.4')) And !$(UnityVersion.StartsWith('2018.4'))">
-    <DefineConstants>UNITY_2019_OR_NEWER;$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="../DOTween/DOTween.csproj">
       <Name>DOTween</Name>
@@ -69,5 +65,5 @@
 
   <Import Project="../DOTweenShared.targets" />
   <Import Project="../DOTween.targets" />
-  <Import Project="../DOTweenEditorPackage.targets" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
+  <Import Project="../DOTweenEditorPackage.targets" Condition=" '$(DOTweenPackageGenerationEnabled)' == 'true' And '$(TargetFramework)' == 'netstandard2.0' " />
 </Project>
