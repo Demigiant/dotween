@@ -51,6 +51,7 @@
                  Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../UnityTests.Unity2019/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
                  Targets="DOTweenCopyFolder" />
 
+        <!--
         <Message Text=":::::: Copying to UnityTests.Unity4" Importance="High" />
 
         <MSBuild Projects="$(MSBuildProjectFullPath)"
@@ -68,6 +69,7 @@
         <MSBuild Projects="$(MSBuildProjectFullPath)"
                  Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../ExternalPluginsTestsAndExamples.Unity5/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
                  Targets="DOTweenCopyFolder" />
+        -->
 
         <Message Text=" " Importance="High" />
         <Message Text=" " Importance="High" />
