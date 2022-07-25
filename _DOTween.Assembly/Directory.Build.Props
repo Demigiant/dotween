@@ -2,4 +2,10 @@
     <PropertyGroup>
         <UnityVersion>5.6.7f1</UnityVersion>
     </PropertyGroup>
+    <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017')) And !$(UnityVersion.StartsWith('2018'))">
+        <DOTweenPackageGenerationEnabled>true</DOTweenPackageGenerationEnabled>
+    </PropertyGroup>
+    <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017.4')) And !$(UnityVersion.StartsWith('2018.4'))">
+        <DefineConstants>$(DefineConstants);UNITY_2019_OR_NEWER</DefineConstants>
+    </PropertyGroup>
 </Project>
