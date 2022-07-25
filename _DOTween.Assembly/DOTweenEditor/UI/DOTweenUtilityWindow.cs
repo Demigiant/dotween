@@ -73,7 +73,7 @@ namespace DG.DOTweenEditor.UI
 
             if (_headerImg == null) {
                 if (EditorUtils.isPackage) {
-                    _headerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                    _headerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 } else {
                     _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 }
@@ -82,7 +82,7 @@ namespace DG.DOTweenEditor.UI
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
                 if (EditorUtils.isPackage) {
-                    _footerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                    _footerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 } else {
                     _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 }

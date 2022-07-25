@@ -39,7 +39,7 @@ namespace DG.DOTweenEditor.UI
             {
                 if (_logo == null) {
                     if (EditorUtils.isPackage) {
-                        _logo = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                        _logo = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
                     } else {
                         _logo = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
                     }
@@ -55,7 +55,7 @@ namespace DG.DOTweenEditor.UI
             {
                 if (_miniIcon == null) {
                     if (EditorUtils.isPackage) {
-                        _miniIcon = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
+                        _miniIcon = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
                     } else {
                         _miniIcon = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
                     }

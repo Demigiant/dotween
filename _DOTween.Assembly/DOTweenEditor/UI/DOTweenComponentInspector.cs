@@ -172,7 +172,7 @@ namespace DG.DOTweenEditor.UI
         void ConnectToSource(bool forceReconnection = false)
         {
             if (EditorUtils.isPackage) {
-                _headerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorPackageADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                _headerImg = AssetDatabase.LoadAssetAtPath("Packages/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
             } else {
                 _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
             }
