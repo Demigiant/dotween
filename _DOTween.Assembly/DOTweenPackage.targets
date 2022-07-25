@@ -1,0 +1,49 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="DOTweenPackagePostBuild" AfterTargets="PostBuildEvent">
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::: EXECUTING BATCH FILE (DOTween package) :::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/DOTween.dll" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/DOTween.dll" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/DOTween.dll.mdb" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/DOTween.dll.mdb" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/DOTween.xml" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/DOTween.xml" />
+
+        <Message Text="Copying $(ProjectDir)../package_bin/DOTween.dll to $(ProjectDir)../../Package/DOTween" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/DOTween.dll" DestinationFolder="$(ProjectDir)../../Package/DOTween" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/DOTween.dll.mdb to $(ProjectDir)../../Package/DOTween" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/DOTween.dll.mdb" DestinationFolder="$(ProjectDir)../../Package/DOTween" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/DOTween.xml to $(ProjectDir)../../Package/DOTween" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/DOTween.xml" DestinationFolder="$(ProjectDir)../../Package/DOTween" Retries="3" RetryDelayMilliseconds="500" />
+
+        <ItemGroup>
+            <PreviousDOTweenModules Include="$(ProjectDir)../../Package/DOTween/Modules/*.cs" />
+        </ItemGroup>
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Modules/*.cs" Importance="High" />
+        <Delete Files="@(PreviousDOTweenModules)" />
+
+        <ItemGroup>
+            <DOTweenModules Include="$(ProjectDir)../bin/Modules/*.cs" />
+        </ItemGroup>
+        <Message Text="Copying $(ProjectDir)../bin/Modules/*.cs to $(ProjectDir)../../Package/DOTween/Modules" Importance="High" />
+        <Copy SourceFiles="@(DOTweenModules)" DestinationFolder="$(ProjectDir)../../Package/DOTween/Modules" Retries="3" RetryDelayMilliseconds="500" />
+
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text="::::::::::::::::::::: BATCH FILE END ::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+    </Target>
+</Project>

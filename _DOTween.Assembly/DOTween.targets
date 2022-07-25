@@ -1,0 +1,106 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="ConvertPdbToMdb">
+        <Message Text=":::::: Converting PDB to MDB and deleting PDB..." Importance="High" />
+
+        <Exec Condition="$([MSBuild]::IsOsPlatform(Windows))" WorkingDirectory="$(TargetDir)" Command="&quot;$(UnityVersionInstallPath)/Editor/Data/MonoBleedingEdge/bin/mono.exe&quot; &quot;$(UnityVersionInstallPath)/Editor/Data/MonoBleedingEdge/lib/mono/4.5/pdb2mdb.exe&quot; $(TargetFileName)" />
+
+        <Exec Condition="$([MSBuild]::IsOsPlatform(OSX))" WorkingDirectory="$(TargetDir)" Command="&quot;$(UnityVersionInstallPath)/Unity.app/Contents/MonoBleedingEdge/bin/mono&quot; &quot;$(UnityVersionInstallPath)/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.5/pdb2mdb.exe&quot; $(TargetFileName)" />
+
+        <Message Text="::: Deleting $(TargetName).pdb file" Importance="High" />
+        <Delete Files="$(TargetDir)$(TargetName).pdb" />
+    </Target>
+
+    <Target Name="DOTweenNetFrameworkPostBuild" AfterTargets="PostBuildEvent" Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::: EXECUTING BATCH FILE ($(ProjectName) - $(TargetFramework)) :::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        
+        <Message Text=":::::: TARGET: $(DOTweenMainExportDir) $(DOTweenEventualExportSubdir)" Importance="High" />
+
+        <Message Text=":::::: Deleting TMPs..." Importance="High" />
+        <Delete Files="$(TargetDir)*.tmp" />
+
+        <CallTarget Targets="ConvertPdbToMdb" />
+
+        <Message Text="::: Deleting $(TargetName).deps.json files: $(TargetName).deps.json" Importance="High" />
+        <Delete Files="$(TargetDir)$(TargetName).deps.json" />
+
+        <Message Text=":::::: Starting export..." Importance="High" />
+
+        <Message Text=":::::: Copying to ModulesTest.Unity2018" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../ModulesTest.Unity2018/Assets/Plugins/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=":::::: Copying to UnityTests.Unity5" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../UnityTests.Unity5/Assets/Plugins/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=":::::: Copying to UnityTests.Unity2019" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../UnityTests.Unity2019/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=":::::: Copying to UnityTests.Unity4" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../UnityTests.Unity4/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=":::::: Copying to UnityCompatibilityTests.Unity35" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../UnityCompatibilityTests.Unity35/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=":::::: Copying to ExternalPluginsTestsAndExamples.Unity5" Importance="High" />
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Properties="DOTweenCopyFolderFrom=$(DOTweenCopyFrom)$(DOTweenEventualExportSubdir);DOTweenCopyFolderTo=$(DOTweenSolutionDir)../ExternalPluginsTestsAndExamples.Unity5/Assets/Demigiant/$(DOTweenMainExportDir)$(DOTweenEventualExportSubdir)"
+                 Targets="DOTweenCopyFolder" />
+
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text="::::::::::::::::::::: BATCH FILE END ::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+    </Target>
+
+    <Target Name="DOTweenNetStandardPostBuild" AfterTargets="PostBuildEvent" Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::: EXECUTING BATCH FILE ($(ProjectName) - $(TargetFramework)) :::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+
+        <CallTarget Targets="ConvertPdbToMdb" />
+
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text="::::::::::::::::::::: BATCH FILE END ::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+    </Target>
+</Project>

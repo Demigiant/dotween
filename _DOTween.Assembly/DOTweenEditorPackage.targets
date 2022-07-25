@@ -1,0 +1,49 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="DOTweenEditorPackagePostBuild" AfterTargets="DOTweenEditorPostBuild">
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::: EXECUTING BATCH FILE :::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.dll" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.dll" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.dll.mdb" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.dll.mdb" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.xml" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenEditor.xml" />
+
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenEditor.dll to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenEditor.dll" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenEditor.dll.mdb to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenEditor.dll.mdb" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenEditor.xml to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenEditor.xml" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+
+        <ItemGroup>
+            <PreviousDOTweenEditorImgs Include="$(ProjectDir)../../Package/DOTween/Editor/Imgs/*.jpg;$(ProjectDir)../../Package/DOTween/Editor/Imgs/*.png" />
+        </ItemGroup>
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/Imgs/*.jpg;$(ProjectDir)../../Package/DOTween/Editor/Imgs/*.png" Importance="High" />
+        <Delete Files="@(PreviousDOTweenEditorImgs)" />
+
+        <ItemGroup>
+            <DOTweenEditorImgs Include="$(ProjectDir)../bin/Editor/Imgs/*.jpg;$(ProjectDir)../bin/Editor/Imgs/*.png" />
+        </ItemGroup>
+        <Message Text="Copying $(ProjectDir)../bin/Editor/Imgs/*.jpg;$(ProjectDir)../bin/Editor/Imgs/*.png to $(ProjectDir)../../Package/DOTween/Editor/Imgs" Importance="High" />
+        <Copy SourceFiles="@(DOTweenEditorImgs)" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor/Imgs" Retries="3" RetryDelayMilliseconds="500" />
+
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text="::::::::::::::::::::: BATCH FILE END ::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+    </Target>
+</Project>
