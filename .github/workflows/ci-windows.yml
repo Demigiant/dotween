@@ -113,6 +113,18 @@ jobs:
         run: dotnet build -c Release _DOTween.Assembly/DOTween_LooseScripts/DOTween_LooseScripts.csproj
         shell: pwsh
 
+      - name: Replace if true to false in the modules to use the version defines in package
+        run: |
+          foreach ($filePath in [System.IO.Directory]::GetFiles("Package/DOTween/Modules", "*.cs", [System.IO.SearchOption]::TopDirectoryOnly)) {
+              $fileContent = Get-Content $filePath -Encoding UTF8 -Raw
+              $fileContent = $fileContent -replace '#if (\(?)true', '#if $1false'
+
+              Set-Content -Encoding UTF8 $filePath -Value $fileContent -NoNewline
+
+              Write-Output "$($filePath): '$fileContent'"
+          }
+        shell: pwsh
+
       - uses: actions/upload-artifact@v3
         with:
           name: Package-${{ matrix.unity.version }}
