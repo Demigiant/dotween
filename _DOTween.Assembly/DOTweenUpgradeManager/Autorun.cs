@@ -21,6 +21,20 @@ namespace DG.DOTweenUpgradeManager
     {
         static Autorun()
         {
+            bool _isPackage;
+
+#if UNITY_2019_OR_NEWER
+            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(Assembly.GetExecutingAssembly());
+
+            _isPackage = packageInfo != null;
+#else
+            _isPackage = false;
+#endif
+
+            if (_isPackage) {
+                return;
+            }
+
             EditorApplication.update += OnUpdate;
         }
 
