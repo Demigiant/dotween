@@ -15,8 +15,11 @@ jobs:
       matrix:
         unity:
           [
+            { version: 5.6.7f1, hash: e80cc3114ac1 },
+            { version: 2017.4.40f1, hash: 6e14067f8a9a },
+            { version: 2018.4.36f1, hash: 6cd387d23174 },
             { version: 2019.4.40f1, hash: ffc62b691db5 },
-            { version: 2020.3.36f1, hash: 71f96b79b9f0 },
+            { version: 2020.3.37f1, hash: 8c66806a0c04 },
             { version: 2021.3.6f1, hash: 7da38d85baf6 },
           ]
 
@@ -36,8 +39,7 @@ jobs:
       - name: Replace UnityVersion value in Directory.Build.Props files
         run: |
           $filePaths = @(
-              '_DOTween.Assembly/DOTween/Directory.Build.Props',
-              '_DOTween.Assembly/DOTweenEditor/Directory.Build.Props'
+              '_DOTween.Assembly/Directory.Build.Props'
           )
 
           foreach ($filePath in $filePaths) {
@@ -77,6 +79,11 @@ jobs:
         run: Copy-Item -Path "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\MonoBleedingEdge" -Destination "UnityCache\MonoBleedingEdge" -Recurse
         shell: pwsh
 
+      - name: Prepare GUISystem Cache
+        if: ${{ (startsWith(matrix.unity.version, '5.6') || startsWith(matrix.unity.version, '2017') || startsWith(matrix.unity.version, '2018') || startsWith(matrix.unity.version, '2019.1') || startsWith(matrix.unity.version, '2019.2')) && steps.cache-unity.outputs.cache-hit != 'true' }}
+        run: Copy-Item -Path "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\UnityExtensions\Unity\GUISystem" -Destination "UnityCache\GUISystem" -Recurse
+        shell: pwsh
+
       - name: Restore Managed Cache
         if: steps.cache-unity.outputs.cache-hit == 'true'
         run: Copy-Item -Path "UnityCache\Managed" -Destination "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\Managed" -Recurse
@@ -87,12 +94,23 @@ jobs:
         run: Copy-Item -Path "UnityCache\MonoBleedingEdge" -Destination "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\MonoBleedingEdge" -Recurse
         shell: pwsh
 
+      - name: Restore GUISystem Cache
+        if: ${{ (startsWith(matrix.unity.version, '5.6') || startsWith(matrix.unity.version, '2017') || startsWith(matrix.unity.version, '2018') || startsWith(matrix.unity.version, '2019.1') || startsWith(matrix.unity.version, '2019.2')) && steps.cache-unity.outputs.cache-hit == 'true' }}
+        run: Copy-Item -Path "UnityCache\GUISystem" -Destination "${{ env.UNITY_EDITOR_PATH }}\Editor\Data\UnityExtensions\Unity\GUISystem" -Recurse
+        shell: pwsh
+
       - name: Build DOTween
         run: dotnet build -c Release _DOTween.Assembly/DOTween/DOTween.csproj
         shell: pwsh
 
       - name: Build DOTweenEditor
         run: dotnet build -c Release _DOTween.Assembly/DOTweenEditor/DOTweenEditor.csproj
+        shell: pwsh
+
+      # UnityEngine.UI.dll can only be referenced up to Unity 2019.2, after that version it does not come installed with the editor.
+      - name: Build DOTween_LooseScripts
+        if: ${{ startsWith(matrix.unity.version, '5.6') || startsWith(matrix.unity.version, '2017') || startsWith(matrix.unity.version, '2018') || startsWith(matrix.unity.version, '2019.1') || startsWith(matrix.unity.version, '2019.2') }}
+        run: dotnet build -c Release _DOTween.Assembly/DOTween_LooseScripts/DOTween_LooseScripts.csproj
         shell: pwsh
 
       - uses: actions/upload-artifact@v3
