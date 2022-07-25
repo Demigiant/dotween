@@ -106,9 +106,13 @@ namespace DG.DOTweenEditor
 
             _editorPackageADBDir = packageId + "/DOTween/Editor/";
 
+#if UNITY_2019_OR_NEWER
             var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(Assembly.GetExecutingAssembly());
 
             _isPackage = packageInfo != null;
+#else
+            _isPackage = false;
+#endif
         }
 
         public static void DelayedCall(float delay, Action callback)

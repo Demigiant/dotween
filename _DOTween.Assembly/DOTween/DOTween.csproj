@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <Company>Demigiant</Company>
     <Copyright>Copyright © Daniele Giardini, 2014</Copyright>
     <Product>DOTween</Product>
@@ -8,20 +7,56 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <RootNamespace>DG.Tweening</RootNamespace>
     <AssemblyName>DOTween</AssemblyName>
-    <OutputPath>../bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <DocumentationFile>../bin/$(AssemblyName).xml</DocumentationFile>
     <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
-	<DebugType>pdbonly</DebugType>
-	<DebugSymbols>True</DebugSymbols>
     <NoWarn>CS1573,CS1591</NoWarn>
+    <BuildInParallel>false</BuildInParallel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(UnityVersion.StartsWith('5.6')) Or $(UnityVersion.StartsWith('2017')) Or $(UnityVersion.StartsWith('2018')) Or $(UnityVersion.StartsWith('2019'))">
+    <TargetFrameworks>net35;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017')) And !$(UnityVersion.StartsWith('2018')) And !$(UnityVersion.StartsWith('2019'))">
+    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017')) And !$(UnityVersion.StartsWith('2018'))">
+    <DefineConstants>UNITY_2019_OR_NEWER;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
+    <OutputPath>../bin</OutputPath>
+    <DocumentationFile>../bin/$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <OutputPath>../package_bin</OutputPath>
+    <DocumentationFile>../package_bin/$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Unity3D" Version="2.0.1" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween.bat $(ProjectDir)..\ $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin &quot;$(UnityVersionInstallPath)&quot;" />
-    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween_Package.bat $(ProjectDir)..\ bin" />
-  </Target>
+
+  <PropertyGroup>
+    <DOTweenSolutionDir>$(ProjectDir)../</DOTweenSolutionDir>
+    <DOTweenMainExportDir>DOTween/</DOTweenMainExportDir>
+    <DOTweenEventualExportSubdir></DOTweenEventualExportSubdir>
+    <DOTweenCopyFrom>$(DOTweenSolutionDir)bin/</DOTweenCopyFrom>
+  </PropertyGroup>
+
+  <Import Project="../DOTweenShared.targets" />
+  <Import Project="../DOTween.targets" />
+  <Import Project="../DOTweenPackage.targets" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
 </Project>

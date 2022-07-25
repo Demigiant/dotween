@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <Company>Demigiant</Company>
     <Copyright>Copyright © Daniele Giardini, 2014</Copyright>
     <Product>DOTweenEditor</Product>
@@ -8,13 +7,38 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <RootNamespace>DG.DOTweenEditor</RootNamespace>
     <AssemblyName>DOTweenEditor</AssemblyName>
-    <OutputPath>../bin/Editor</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <DocumentationFile>../bin/Editor/$(AssemblyName).xml</DocumentationFile>
     <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
-	<DebugType>pdbonly</DebugType>
-	<DebugSymbols>True</DebugSymbols>
-	<NoWarn>CS1573,CS1591</NoWarn>
+    <NoWarn>CS1573,CS1591</NoWarn>
+    <BuildInParallel>false</BuildInParallel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(UnityVersion.StartsWith('5.6')) Or $(UnityVersion.StartsWith('2017')) Or $(UnityVersion.StartsWith('2018')) Or $(UnityVersion.StartsWith('2019'))">
+    <TargetFrameworks>net35;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017')) And !$(UnityVersion.StartsWith('2018')) And !$(UnityVersion.StartsWith('2019'))">
+    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
+    <OutputPath>../bin/Editor</OutputPath>
+    <DocumentationFile>../bin/Editor/$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <OutputPath>../package_bin/Editor</OutputPath>
+    <DocumentationFile>../package_bin//Editor/$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,14 +49,25 @@
     <PackageReference Include="Unity3D" Version="2.0.1" />
   </ItemGroup>
 
+  <PropertyGroup Condition="!$(UnityVersion.StartsWith('5.6')) And !$(UnityVersion.StartsWith('2017.4')) And !$(UnityVersion.StartsWith('2018.4'))">
+    <DefineConstants>UNITY_2019_OR_NEWER;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\DOTween\DOTween.csproj">
+    <ProjectReference Include="../DOTween/DOTween.csproj">
       <Name>DOTween</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call $(ProjectDir)..\PostBuild_DOTween.bat $(ProjectDir)..\ $(TargetDir) $(TargetFileName) $(TargetName) DOTween bin &quot;$(UnityVersionInstallPath)&quot; Editor" />
-    <Exec Command="call $(ProjectDir)..\PostBuild_DOTweenEditor_Package.bat $(ProjectDir)..\ bin\Editor" />
-  </Target>
+
+  <PropertyGroup>
+    <DOTweenSolutionDir>$(ProjectDir)../</DOTweenSolutionDir>
+    <DOTweenMainExportDir>DOTween/</DOTweenMainExportDir>
+    <DOTweenEventualExportSubdir>Editor/</DOTweenEventualExportSubdir>
+    <DOTweenCopyFrom>$(DOTweenSolutionDir)bin/</DOTweenCopyFrom>
+  </PropertyGroup>
+
+  <Import Project="../DOTweenShared.targets" />
+  <Import Project="../DOTween.targets" />
+  <Import Project="../DOTweenEditorPackage.targets" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
 </Project>
