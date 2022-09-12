@@ -12,7 +12,7 @@ public class BrainBase : MonoBehaviour
 
 	public static HOFpsGadget fpsGadget;
 
-	virtual protected void Awake()
+	protected virtual void Awake()
 	{
 		if (fpsGadget == null) {
 			GameObject fpsGadgetGo = new GameObject("FPS");
@@ -31,6 +31,7 @@ public class BrainBase : MonoBehaviour
     protected virtual void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5)) {
+            Debug.Log("Reloading scene");
             Application.LoadLevel(Application.loadedLevelName);
         }
     }

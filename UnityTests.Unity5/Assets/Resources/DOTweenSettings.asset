@@ -16,6 +16,7 @@ MonoBehaviour:
     logBehaviour: 3
     nestedTweenFailureBehaviour: 0
   timeScale: 1
+  unscaledTimeScale: 1
   useSmoothDeltaTime: 0
   maxSmoothUnscaledTime: 0.15
   rewindCallbackMode: 0
