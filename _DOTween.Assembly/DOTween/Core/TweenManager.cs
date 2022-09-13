@@ -729,8 +729,8 @@ namespace DG.Tweening.Core
             if (!t.isComplete) {
                 Tween.DoGoto(t, t.duration, t.loops, updateMode);
                 t.isPlaying = false;
-                // Despawn if needed
-                if (t.autoKill) {
+                // Despawn if needed (might have already been killed by the complete callback/operation)
+                if (t.active && t.autoKill) {
                     if (isUpdateLoop) t.active = false; // Just mark it for killing, so the update loop will take care of it
                     else Despawn(t, modifyActiveLists);
                 }
