@@ -126,10 +126,8 @@ namespace DG.Tweening
         public static void Kill(this Tween t, bool complete = false)
         {
             if (!DOTween.initialized) return;
-            if (t == null) {
-                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
-            } else if (!t.active) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+            if (t == null || !t.active) {
+                return;
             } else if (t.isSequenced) {
                 if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }

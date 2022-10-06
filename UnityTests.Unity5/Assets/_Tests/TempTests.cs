@@ -3,13 +3,23 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public class TempTests : MonoBehaviour
+public class TempTests : BrainBase
 {
     public Transform target;
+    public Vector3 rot;
+    public RotateMode rotMode;
     
-    void Start()
+    Tween t;
+    
+    override protected void Update()
     {
-        DOTween.Sequence()
-            .Append(target.DOMoveX(2, 1).SetSpeedBased().SetLoops(-1));
+        base.Update();    
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            if (t != null && t.IsPlaying()) t.Complete();
+            t = target.DORotate(rot, 1.3f, rotMode);
+        } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            if (t != null && t.IsPlaying()) t.Complete();
+            t = target.DORotate(-rot, 1.3f, rotMode);
+        }
     }
 }
