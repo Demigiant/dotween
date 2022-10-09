@@ -72,9 +72,9 @@ namespace DG.Tweening.Plugins
                 // Rotation will be adapted to 360° and will take the shortest route
                 // - Adapt to 360°
                 // Vector3 ev = t.endValue;
-                if (endVal.x > 360) endVal.x = endVal.x % 360;
-                if (endVal.y > 360) endVal.y = endVal.y % 360;
-                if (endVal.z > 360) endVal.z = endVal.z % 360;
+                if (endVal.x > 360 || endVal.x < 360) endVal.x = endVal.x % 360;
+                if (endVal.y > 360 || endVal.y < 360) endVal.y = endVal.y % 360;
+                if (endVal.z > 360 || endVal.z < 360) endVal.z = endVal.z % 360;
                 Vector3 changeVal = endVal - startVal;
                 // - Find shortest rotation
                 float abs = (changeVal.x > 0 ? changeVal.x : -changeVal.x);
@@ -150,17 +150,36 @@ namespace DG.Tweening.Plugins
             // if (t.plugOptions.rotateMode != RotateMode.Fast) return val;
 
             Vector3 valFlipped = FlipEulerAngles(val);
-            bool xAreTheSame = Mathf.Approximately(counterVal.x, val.x) || Mathf.Approximately(counterVal.x, valFlipped.x);
-            bool yAreTheSame = Mathf.Approximately(counterVal.y, val.y) || Mathf.Approximately(counterVal.y, valFlipped.y);
-            bool zAreTheSame = Mathf.Approximately(counterVal.z, val.z) || Mathf.Approximately(counterVal.z, valFlipped.z);
-            bool isSingleAxisRotation = xAreTheSame && (yAreTheSame || zAreTheSame)
-                                        || yAreTheSame && zAreTheSame;
-            // Debug.Log(counterVal + " - " + val + " / " + valFlipped + " ► isSingleAxis: " + isSingleAxisRotation);
-            if (!isSingleAxisRotation) return val;
+            
+            bool xVsNormalSame = Mathf.Approximately(counterVal.x, val.x);
+            bool xVsFlippedSame = Mathf.Approximately(counterVal.x, valFlipped.x);
+            bool yVsNormalSame = Mathf.Approximately(counterVal.y, val.y);
+            bool yVsFlippedSame = Mathf.Approximately(counterVal.y, valFlipped.y);
+            bool zVsNormalSame = Mathf.Approximately(counterVal.z, val.z);
+            bool zVsFlippedSame = Mathf.Approximately(counterVal.z, valFlipped.z);
 
-            int axisToRotate = xAreTheSame
-                ? yAreTheSame ? 2 : 1
-                : 0;
+            bool isSingleAxisRotationNormal = xVsNormalSame && (yVsNormalSame || zVsNormalSame)
+                                              || yVsNormalSame && zVsNormalSame;
+            bool isSingleAxisRotationFlipped = !isSingleAxisRotationNormal
+                                               && xVsFlippedSame && (yVsFlippedSame || zVsFlippedSame)
+                                               || yVsFlippedSame && zVsFlippedSame;
+
+            // Debug.Log(counterVal + " - " + val + " / " + valFlipped + " ► isSingleAxisNormal: " + isSingleAxisRotationNormal + " / isSingleAxisFlipped: " + isSingleAxisRotationFlipped);
+            if (!isSingleAxisRotationNormal && !isSingleAxisRotationFlipped) return val;
+
+            // Debug.Log("► Single Axis Rotation");
+            int axisToRotate = 0;
+            if (isSingleAxisRotationNormal) {
+                axisToRotate = xVsNormalSame
+                    ? yVsNormalSame 
+                        ? 2 : 1
+                    : 0;
+            } else {
+                axisToRotate = xVsFlippedSame
+                    ? yVsFlippedSame 
+                        ? 2 : 1
+                    : 0;
+            }
             bool flip = false;
             switch (axisToRotate) {
             case 0: // X
@@ -173,8 +192,9 @@ namespace DG.Tweening.Plugins
                 flip = !Mathf.Approximately(counterVal.x, val.x) || !Mathf.Approximately(counterVal.y, val.y);
                 break;
             }
-            // Debug.Log("   axis: " + axisToRotate + " - flip: " + flip);
-            // if (flip) Debug.Log("    FLIPPED " + val + " to " + valFlipped);
+            // Debug.Log("   val: " + val + " / counterVal: " + counterVal + " / valFlipped: " + valFlipped);
+            // Debug.Log("   axisToRotate: " + axisToRotate + " / yVsNormalSame: " + yVsNormalSame + "/ yVsFlippedSame: " + yVsFlippedSame + " / flip: " + flip);
+            // if (flip) Debug.Log("    ►►► FLIPPED " + val + " to " + valFlipped);
             return flip ? valFlipped : val;
         }
 

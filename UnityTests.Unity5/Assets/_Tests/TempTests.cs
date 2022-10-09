@@ -8,6 +8,8 @@ public class TempTests : BrainBase
     public Transform target;
     public Vector3 rot;
     public RotateMode rotMode;
+    public float duration = 1;
+    public bool relative = false;
     
     Tween t;
     
@@ -15,11 +17,20 @@ public class TempTests : BrainBase
     {
         base.Update();    
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            if (t != null && t.IsPlaying()) t.Complete();
-            t = target.DORotate(rot, 1.3f, rotMode);
+            CompleteTween();
+            t = target.DORotate(rot, duration, rotMode);
+            if (relative) t.SetRelative();
         } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            if (t != null && t.IsPlaying()) t.Complete();
-            t = target.DORotate(-rot, 1.3f, rotMode);
+            CompleteTween();
+            t = target.DORotate(-rot, duration, rotMode);
+            if (relative) t.SetRelative();
+        }
+    }
+    
+    void CompleteTween()
+    {
+        if (t != null && t.IsActive() && t.IsPlaying()) {
+            t.Kill(true);
         }
     }
 }
