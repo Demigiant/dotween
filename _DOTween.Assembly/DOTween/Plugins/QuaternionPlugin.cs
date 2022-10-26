@@ -146,6 +146,11 @@ namespace DG.Tweening.Plugins
         {
             // return val;
             if (t.isRelative) return val;
+            switch (t.plugOptions.rotateMode) {
+            case RotateMode.WorldAxisAdd:
+            case RotateMode.LocalAxisAdd:
+                return val;
+            }
             // if (t.isFrom) return val; // Caller decides if this should be ignored or not
             // if (t.plugOptions.rotateMode != RotateMode.Fast) return val;
 

@@ -49,6 +49,32 @@ public class DORotateTests : BrainBase
         new Vector3(180, 0, 0),
     };
     public Vector3 beyond360EndValue = new Vector3(100, 0, 0);
+    [Header("WorldAxisAdd")]
+    public Vector3[] worldAxisAddStartValues = new[] {
+        new Vector3(0, 0, 0),
+        new Vector3(85, 0, 0),
+        new Vector3(95, 0, 0),
+        new Vector3(180, 0, 0),
+        new Vector3(0, 85, 0),
+        new Vector3(0, 95, 0),
+        new Vector3(0, 0, 85),
+        new Vector3(0, 0, 95),
+        new Vector3(180, 0, 0),
+    };
+    public Vector3 worldAxisAddEndValue = new Vector3(100, 0, 0);
+    [Header("LocalAxisAdd")]
+    public Vector3[] localAxisAddStartValues = new[] {
+        new Vector3(0, 0, 0),
+        new Vector3(85, 0, 0),
+        new Vector3(95, 0, 0),
+        new Vector3(180, 0, 0),
+        new Vector3(0, 85, 0),
+        new Vector3(0, 95, 0),
+        new Vector3(0, 0, 85),
+        new Vector3(0, 0, 95),
+        new Vector3(180, 0, 0),
+    };
+    public Vector3 localAxisAddEndValue = new Vector3(100, 0, 0);
 
     GameObject[] _dices;
     GameObject _diceGroupPrefab;
@@ -79,6 +105,14 @@ public class DORotateTests : BrainBase
         case RotateMode.FastBeyond360:
             startVals = beyond360StartValues;
             endVal = beyond360EndValue;
+            break;
+        case RotateMode.WorldAxisAdd:
+            startVals = worldAxisAddStartValues;
+            endVal = worldAxisAddEndValue;
+            break;
+        case RotateMode.LocalAxisAdd:
+            startVals = localAxisAddStartValues;
+            endVal = localAxisAddEndValue;
             break;
         default:
             startVals = fastStartValues;
@@ -129,6 +163,14 @@ public class DORotateTests : BrainBase
         case RotateMode.FastBeyond360:
             startVals = beyond360StartValues;
             endVal = beyond360EndValue;
+            break;
+        case RotateMode.WorldAxisAdd:
+            startVals = worldAxisAddStartValues;
+            endVal = worldAxisAddEndValue;
+            break;
+        case RotateMode.LocalAxisAdd:
+            startVals = localAxisAddStartValues;
+            endVal = localAxisAddEndValue;
             break;
         default:
             startVals = fastStartValues;
@@ -194,6 +236,16 @@ public class DORotateTests : BrainBase
     public void SetupForBeyond360()
     {
         SetupFor(RotateMode.FastBeyond360);
+    }
+    
+    public void SetupForWorldAxisAdd()
+    {
+        SetupFor(RotateMode.WorldAxisAdd);
+    }
+    
+    public void SetupForLocalAxisAdd()
+    {
+        SetupFor(RotateMode.LocalAxisAdd);
     }
 
     public void Tween()
