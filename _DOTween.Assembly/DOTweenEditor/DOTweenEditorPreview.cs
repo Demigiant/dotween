@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +20,17 @@ namespace DG.DOTweenEditor
 
         static double _previewTime;
         static Action _onPreviewUpdated;
+        static Object[] _uiGraphics;
+        static readonly Type _TGraphic;
         static readonly List<Tween> _Tweens = new List<Tween>();
+
+        static DOTweenEditorPreview()
+        {
+            Assembly uiAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "UnityEngine.UI");
+            if (uiAssembly != null) {
+                _TGraphic = uiAssembly.GetType("UnityEngine.UI.Graphic");
+            }
+        }
 
         #region Public Methods
 
@@ -33,6 +45,8 @@ namespace DG.DOTweenEditor
             isPreviewing = true;
             _onPreviewUpdated = onPreviewUpdated;
             _previewTime = EditorApplication.timeSinceStartup;
+            if (_TGraphic != null) _uiGraphics = Object.FindObjectsOfType(_TGraphic);
+            else _uiGraphics = null;
             EditorApplication.update += PreviewUpdate;
         }
 
@@ -46,6 +60,7 @@ namespace DG.DOTweenEditor
         public static void Stop(bool resetTweenTargets = false, bool clearTweens = true)
         {
             isPreviewing = false;
+            _uiGraphics = null;
             EditorApplication.update -= PreviewUpdate;
             _onPreviewUpdated = null;
             if (resetTweenTargets) {
@@ -92,7 +107,12 @@ namespace DG.DOTweenEditor
             _previewTime = EditorApplication.timeSinceStartup;
             float elapsed = (float)(_previewTime - currTime);
             DOTween.ManualUpdate(elapsed, elapsed);
-            
+            // Force visual refresh of UI objects
+            // (a simple SceneView.RepaintAll won't work with UI elements)
+            if (_uiGraphics != null) {
+                foreach (Object obj in _uiGraphics) EditorUtility.SetDirty(obj);
+            }
+
             if (_onPreviewUpdated != null) _onPreviewUpdated();
         }
 

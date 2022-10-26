@@ -1143,25 +1143,25 @@ MonoBehaviour:
   worldAxisAddStartValues:
   - {x: 0, y: 0, z: 0}
   - {x: 85, y: 0, z: 0}
-  - {x: 95, y: 0, z: 0}
+  - {x: 0, y: 180, z: 0}
   - {x: 180, y: 0, z: 0}
   - {x: 0, y: 85, z: 0}
   - {x: 0, y: 95, z: 0}
   - {x: 0, y: 0, z: 85}
   - {x: 0, y: 0, z: 95}
   - {x: 180, y: 0, z: 0}
-  worldAxisAddEndValue: {x: 0, y: 180, z: 0}
+  worldAxisAddEndValue: {x: 60, y: 0, z: 0}
   localAxisAddStartValues:
   - {x: 0, y: 0, z: 0}
   - {x: 85, y: 0, z: 0}
-  - {x: 95, y: 0, z: 0}
+  - {x: 0, y: 180, z: 0}
   - {x: 180, y: 0, z: 0}
   - {x: 0, y: 85, z: 0}
   - {x: 0, y: 95, z: 0}
   - {x: 0, y: 0, z: 85}
   - {x: 0, y: 0, z: 95}
   - {x: 180, y: 0, z: 0}
-  localAxisAddEndValue: {x: 0, y: 180, z: 0}
+  localAxisAddEndValue: {x: 60, y: 0, z: 0}
 --- !u!1 &1571633346
 GameObject:
   m_ObjectHideFlags: 0
