@@ -547,6 +547,25 @@ namespace DG.Tweening
             return t.isBackwards;
         }
 
+        /// <summary>Returns TRUE if this tween is going backwards for any of these reasons:<para/>
+        /// - The tween was reversed and is going backwards on a straight loop<para/>
+        /// - The tween was reversed and is going backwards on an odd Yoyo loop<para/>
+        /// - The tween is going forward but on an even Yoyo loop<para/>
+        /// To check if a tween was simply set to go backwards see <see cref="IsBackwards"/></summary>
+        public static bool IsLoopingOrExecutingBackwards(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return false;
+            }
+
+            if (t.isBackwards) {
+                return t.completedLoops < 1 || t.loopType != LoopType.Yoyo || t.completedLoops % 2 == 0;
+            } else {
+                return t.completedLoops >= 1 && t.loopType == LoopType.Yoyo && t.completedLoops % 2 != 0;
+            }
+        }
+
         /// <summary>Returns TRUE if the tween is complete
         /// (silently fails and returns FALSE if the tween has been killed)</summary>
         public static bool IsComplete(this Tween t)
