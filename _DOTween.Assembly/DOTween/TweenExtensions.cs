@@ -547,11 +547,14 @@ namespace DG.Tweening
             return t.isBackwards;
         }
 
-        /// <summary>Returns TRUE if this tween is going backwards for any of these reasons:<para/>
+        /// <summary>NOTE: To check if a tween was simply set to go backwards see <see cref="IsBackwards"/>.<para/>
+        /// Returns TRUE if this tween is going backwards for any of these reasons:<para/>
         /// - The tween was reversed and is going backwards on a straight loop<para/>
         /// - The tween was reversed and is going backwards on an odd Yoyo loop<para/>
         /// - The tween is going forward but on an even Yoyo loop<para/>
-        /// To check if a tween was simply set to go backwards see <see cref="IsBackwards"/></summary>
+        /// IMPORTANT: if used inside a tween's callback, this will return a result concerning the exact frame when it's asked,
+        /// so for example in a callback at the end of a Yoyo loop step this method will never return FALSE
+        /// because the frame will never end exactly there and the tween will already be going backwards when the callback is fired</summary>
         public static bool IsLoopingOrExecutingBackwards(this Tween t)
         {
             if (!t.active) {
