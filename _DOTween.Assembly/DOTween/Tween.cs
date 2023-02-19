@@ -39,7 +39,7 @@ namespace DG.Tweening
         // Update type and eventual independence (changed via TweenManager.SetUpdateType)
         internal UpdateType updateType;
         internal bool isIndependentUpdate;
-//        public TweenCallback onStart; // (in ABSSequentiable) When the tween is set in a PLAY state the first time, AFTER any eventual delay
+        public TweenCallback onStart; // (in ABSSequentiable) When the tween is set in a PLAY state the first time, AFTER any eventual delay
         /// <summary>Called when the tween is set in a playing state, after any eventual delay.
         /// Also called each time the tween resumes playing from a paused state</summary>
         public TweenCallback onPlay;
