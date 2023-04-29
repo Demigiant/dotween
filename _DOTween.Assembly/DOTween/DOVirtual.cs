@@ -17,7 +17,7 @@ namespace DG.Tweening
         /// <summary>
         /// Tweens a virtual float.
         /// You can add regular settings to the generated tween,
-        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// but do not use <code>OnUpdate</code> or you will overwrite the onVirtualUpdate parameter
         /// </summary>
         /// <param name="from">The value to start from</param>
         /// <param name="to">The value to tween to</param>
@@ -31,7 +31,7 @@ namespace DG.Tweening
         /// <summary>
         /// Tweens a virtual int.
         /// You can add regular settings to the generated tween,
-        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// but do not use <code>OnUpdate</code> or you will overwrite the onVirtualUpdate parameter
         /// </summary>
         /// <param name="from">The value to start from</param>
         /// <param name="to">The value to tween to</param>
@@ -43,9 +43,23 @@ namespace DG.Tweening
             return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
         }
         /// <summary>
+        /// Tweens a virtual Vector2.
+        /// You can add regular settings to the generated tween,
+        /// but do not use <code>OnUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// </summary>
+        /// <param name="from">The value to start from</param>
+        /// <param name="to">The value to tween to</param>
+        /// <param name="duration">The duration of the tween</param>
+        /// <param name="onVirtualUpdate">A callback which must accept a parameter of type Vector3, called at each update</param>
+        public static Tweener Vector2(Vector2 from, Vector2 to, float duration, TweenCallback<Vector2> onVirtualUpdate)
+        {
+            Vector2 val = from;
+            return DOTween.To(() => val, x => val = x, to, duration).OnUpdate(() => onVirtualUpdate(val));
+        }
+        /// <summary>
         /// Tweens a virtual Vector3.
         /// You can add regular settings to the generated tween,
-        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// but do not use <code>OnUpdate</code> or you will overwrite the onVirtualUpdate parameter
         /// </summary>
         /// <param name="from">The value to start from</param>
         /// <param name="to">The value to tween to</param>
@@ -59,7 +73,7 @@ namespace DG.Tweening
         /// <summary>
         /// Tweens a virtual Color.
         /// You can add regular settings to the generated tween,
-        /// but do not use <code>SetUpdate</code> or you will overwrite the onVirtualUpdate parameter
+        /// but do not use <code>OnUpdate</code> or you will overwrite the onVirtualUpdate parameter
         /// </summary>
         /// <param name="from">The value to start from</param>
         /// <param name="to">The value to tween to</param>
