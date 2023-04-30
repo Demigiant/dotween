@@ -64,7 +64,7 @@ namespace DG.DOTweenEditor
                 importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
             );
             bool dotweenImported = dotweenFile != null;
-            if (dotweenImported) {
+            if (dotweenImported && !EditorUtils.isPackage) {
                 // DOTween or Pro or Timeline imported
                 // Reapply modules and ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {

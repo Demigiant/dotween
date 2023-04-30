@@ -1,0 +1,35 @@
+{
+    "name": "DOTween.Modules",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.audio",
+            "expression": "",
+            "define": "AUDIO_DOTWEEN"
+        },
+        {
+            "name": "com.unity.modules.physics",
+            "expression": "",
+            "define": "PHYSICS_DOTWEEN"
+        },
+        {
+            "name": "com.unity.modules.physics2d",
+            "expression": "",
+            "define": "PHYSICS2D_DOTWEEN"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "UGUI_DOTWEEN"
+        }
+    ],
+    "noEngineReferences": false
+}

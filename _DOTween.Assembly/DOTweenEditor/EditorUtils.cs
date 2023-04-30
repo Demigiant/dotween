@@ -22,8 +22,11 @@ namespace DG.DOTweenEditor
 
         #endregion
 
+        public const string packageId = "com.demigiant.dotween";
+
         public static string projectPath { get; private set; } // Without final slash
         public static string assetsPath { get; private set; } // Without final slash
+        public static bool isPackage { get { RetrieveDependenciesData(); return _isPackage; } }
         public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
         public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return _hasDOTweenTimeline; } }
         public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return _hasDOTweenTimelineUnityPackage; } }
@@ -53,6 +56,7 @@ namespace DG.DOTweenEditor
 
         static readonly StringBuilder _Strb = new StringBuilder();
         static bool _retrievedDependenciesData;
+        static bool _isPackage;
         static bool _hasPro;
         static bool _hasDOTweenTimeline;
         static bool _hasDOTweenTimelineUnityPackage;
@@ -91,6 +95,14 @@ namespace DG.DOTweenEditor
 
         public static void RetrieveDependenciesData(bool force = false)
         {
+#if UNITY_2019_OR_NEWER
+            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(Assembly.GetExecutingAssembly());
+
+            _isPackage = packageInfo != null;
+#else
+            _isPackage = false;
+#endif
+
             if (!force && _retrievedDependenciesData) return;
             _retrievedDependenciesData = true;
             CheckForPro();
@@ -400,17 +412,26 @@ namespace DG.DOTweenEditor
         // AssetDatabase formatted path to DOTween's Editor folder
         static void StoreEditorADBDir()
         {
-//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-//            UriBuilder uri = new UriBuilder(codeBase);
-//            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-            string fullPath = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
-            string adbPath = fullPath.Substring(Application.dataPath.Length + 1);
-            _editorADBDir = adbPath.Replace("\\", "/") + "/";
+            //            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            //            UriBuilder uri = new UriBuilder(codeBase);
+            //            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            if (!isPackage) {
+                string fullPath = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
+                string adbPath = fullPath.Substring(Application.dataPath.Length + 1);
+                _editorADBDir = adbPath.Replace("\\", "/") + "/";
+            } else {
+                _editorADBDir = packageId + "/DOTween/Editor/";
+            }
         }
 
         static void StoreDOTweenDirsAndFilePaths()
         {
-            _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
+            if (!isPackage) { 
+                _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
+            } else {
+                _dotweenDir = Path.Combine(Application.dataPath, "Plugins/Demigiant/DOTween/");
+            }
+
             string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
             _dotweenDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator) + 1);
             string dotweenParentDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
@@ -461,6 +482,23 @@ namespace DG.DOTweenEditor
 
 //            Debug.Log((isValid ? "<color=#00ff00>" : "<color=#ff0000>") + group + " > " + targetString + " / " + platformName + " > "  + isValid + "/" + miIsPlatformSupportLoaded.Invoke(null, new object[] {group.ToString()}) + "</color>");
             return isValid;
+        }
+
+        static void DebugPaths() {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(string.Format("editorADBDir: {0}", editorADBDir));
+            stringBuilder.AppendLine(string.Format("editorADBDir: {0}", demigiantDir));
+            stringBuilder.AppendLine(string.Format("editorADBDir: {0}", dotweenDir));
+            stringBuilder.AppendLine(string.Format("editorADBDir: {0}", dotweenProDir));
+            stringBuilder.AppendLine(string.Format("dotweenProEditorDir: {0}", dotweenProEditorDir));
+            stringBuilder.AppendLine(string.Format("dotweenModulesDir: {0}", dotweenModulesDir));
+            stringBuilder.AppendLine(string.Format("dotweenTimelineDir: {0}", dotweenTimelineDir));
+            stringBuilder.AppendLine(string.Format("dotweenTimelineScriptsDir: {0}", dotweenTimelineScriptsDir));
+            stringBuilder.AppendLine(string.Format("dotweenTimelineScriptsDir: {0}", dotweenTimelineScriptsDir));
+            stringBuilder.AppendLine(string.Format("dotweenTimelineEditorScriptsDir: {0}", dotweenTimelineEditorScriptsDir));
+            stringBuilder.AppendLine(string.Format("dotweenTimelineUnityPackageFilePath: {0}", dotweenTimelineUnityPackageFilePath));
+
+            Debug.Log(stringBuilder.ToString());
         }
     }
 }

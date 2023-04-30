@@ -1,0 +1,37 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="DOTweenUpgradeManagerPackagePostBuild" AfterTargets="PostBuildEvent">
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::: EXECUTING BATCH FILE (DOTweenUpgradeManager package) :::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.dll" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.dll" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.dll.mdb" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.dll.mdb" />
+        <Message Text="Deleting $(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.xml" Importance="High" />
+        <Delete Files="$(ProjectDir)../../Package/DOTween/Editor/DOTweenUpgradeManager.xml" />
+
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.dll to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.dll" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.dll.mdb to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.dll.mdb" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+        <Message Text="Copying $(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.xml to $(ProjectDir)../../Package/DOTween/Editor" Importance="High" />
+        <Copy SourceFiles="$(ProjectDir)../package_bin/Editor/DOTweenUpgradeManager.xml" DestinationFolder="$(ProjectDir)../../Package/DOTween/Editor" Retries="3" RetryDelayMilliseconds="500" />
+
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text="::::::::::::::::::::: BATCH FILE END ::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+        <Message Text=" " Importance="High" />
+    </Target>
+</Project>

@@ -1,0 +1,12 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="DOTweenCopyFolder">
+        <Message Text="::: Exporting from $(DOTweenCopyFolderFrom) to $(DOTweenCopyFolderTo)" Importance="High" />
+
+        <ItemGroup>
+            <DOTweenCopyFolderFiles Include="$(DOTweenCopyFolderFrom)**/*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(DOTweenCopyFolderFiles)" 
+              DestinationFiles="$(DOTweenCopyFolderTo)%(RecursiveDir)%(Filename)%(Extension)"
+              Retries="3" RetryDelayMilliseconds="500" />
+    </Target>
+</Project>
