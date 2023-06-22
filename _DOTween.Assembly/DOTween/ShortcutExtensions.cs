@@ -233,7 +233,7 @@ namespace DG.Tweening
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         public static Tweener DOColor(this LineRenderer target, Color2 startValue, Color2 endValue, float duration)
         {
-            return DOTween.To(() => startValue, x => target.SetColors(x.ca, x.cb), endValue, duration).SetTarget(target);
+            return DOTween.To(() => startValue, x => { target.startColor = x.ca; target.endColor = x.cb; }, endValue, duration).SetTarget(target);
         }
 
         #endregion

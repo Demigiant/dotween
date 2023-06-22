@@ -119,7 +119,7 @@ namespace DG.DOTweenEditor
             tImporter.filterMode = filterMode;
             tImporter.wrapMode = TextureWrapMode.Clamp;
             tImporter.maxTextureSize = maxTextureSize;
-            tImporter.textureFormat = TextureImporterFormat.AutomaticTruecolor;
+            tImporter.textureCompression = TextureImporterCompression.Uncompressed;
             AssetDatabase.ImportAsset(path);
         }
 
