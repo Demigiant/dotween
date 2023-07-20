@@ -10,6 +10,9 @@ using UnityEngine;
 
 namespace DG.Tweening.Core
 {
+    /// <summary>
+    /// Various utils
+    /// </summary>
     public static class DOTweenUtils
     {
         static Assembly[] _loadedAssemblies;
