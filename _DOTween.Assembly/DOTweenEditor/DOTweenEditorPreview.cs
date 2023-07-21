@@ -45,7 +45,8 @@ namespace DG.DOTweenEditor
             isPreviewing = true;
             _onPreviewUpdated = onPreviewUpdated;
             _previewTime = EditorApplication.timeSinceStartup;
-            if (_TGraphic != null) _uiGraphics = Object.FindObjectsOfType(_TGraphic);
+            // if (_TGraphic != null) _uiGraphics = Object.FindObjectsOfType(_TGraphic); // OBSOLETE 2023
+            if (_TGraphic != null) _uiGraphics = EditorCompatibilityUtils.FindObjectsOfType(_TGraphic);
             else _uiGraphics = null;
             EditorApplication.update += PreviewUpdate;
         }
