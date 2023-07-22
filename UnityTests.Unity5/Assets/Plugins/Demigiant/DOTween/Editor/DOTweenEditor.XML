@@ -4,6 +4,11 @@
         <name>DOTweenEditor</name>
     </assembly>
     <members>
+        <member name="T:DG.DOTweenEditor.EditorCompatibilityUtils">
+            <summary>
+            Contains compatibility methods taken from DemiEditor (for when DOTween is without it)
+            </summary>
+        </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Start(System.Action)">
             <summary>
             Starts the update loop of tween in the editor. Has no effect during playMode.
@@ -105,6 +110,15 @@
             <summary>
             Not used as menu item anymore, but as a utiity function
             </summary>
+        </member>
+        <member name="F:DG.DOTweenEditor.UnityEditorVersion.Version">
+            <summary>Full major version + first minor version (ex: 2018.1f)</summary>
+        </member>
+        <member name="F:DG.DOTweenEditor.UnityEditorVersion.MajorVersion">
+            <summary>Major version</summary>
+        </member>
+        <member name="F:DG.DOTweenEditor.UnityEditorVersion.MinorVersion">
+            <summary>First minor version (ex: in 2018.1 it would be 1)</summary>
         </member>
     </members>
 </doc>

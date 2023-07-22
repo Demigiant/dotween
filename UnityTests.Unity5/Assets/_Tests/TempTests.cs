@@ -5,32 +5,19 @@ using UnityEngine;
 
 public class TempTests : BrainBase
 {
-    public Transform target;
-    public Vector3 rot;
-    public RotateMode rotMode;
-    public float duration = 1;
-    public bool relative = false;
+	public Rigidbody2D rigibody2d;
     
-    Tween t;
-    
-    override protected void Update()
-    {
-        base.Update();    
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            CompleteTween();
-            t = target.DORotate(rot, duration, rotMode);
-            if (relative) t.SetRelative();
-        } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            CompleteTween();
-            t = target.DORotate(-rot, duration, rotMode);
-            if (relative) t.SetRelative();
-        }
-    }
-    
-    void CompleteTween()
-    {
-        if (t != null && t.IsActive() && t.IsPlaying()) {
-            t.Kill(true);
-        }
-    }
+	void Start()
+	{
+		Tweener t = rigibody2d.DOMove(new Vector2(2, 0), 2);
+		bool valueChanged = false;
+		t.OnUpdate(() =>
+		{
+			if (!valueChanged && rigibody2d.position.x > 1) {
+				Debug.Log("Changing value");
+				valueChanged = true;
+				t.ChangeEndValue(new Vector2(-2, 0), 2, true);
+			}
+		});
+	}
 }
