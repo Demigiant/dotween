@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditorCompatibilityUtils.cs" />
     <Compile Include="DelayedCall.cs" />
     <Compile Include="ASMDEFManager.cs" />
     <Compile Include="DOTweenEditorPreview.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="DOTweenDefines.cs" />
     <Compile Include="UI\DOTweenUtilityWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityEditorVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DOTween\DOTween.csproj">

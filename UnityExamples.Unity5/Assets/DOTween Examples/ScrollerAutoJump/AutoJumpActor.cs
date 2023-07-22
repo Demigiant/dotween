@@ -17,7 +17,6 @@ public class AutoJumpActor : MonoBehaviour
     [SerializeField] float _jumpPower = 0.5f;
     [SerializeField] bool _distortAnimation = true;
 
-    bool _isOnGround;
     Transform _parent;
     Tween _jumpTween;
     Sequence _distortTween;
@@ -57,7 +56,7 @@ public class AutoJumpActor : MonoBehaviour
         bool isJumpToPlatform = other.transform.position.x < platform.transform.position.x;
         // Jump
         if (isJumpToPlatform) JumpTo(platform.transform.position.y);
-        else if (!_isOnGround) JumpTo(0);
+        else JumpTo(0);
     }
 
     void OnDestroy()

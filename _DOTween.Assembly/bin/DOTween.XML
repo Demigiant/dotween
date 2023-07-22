@@ -227,6 +227,11 @@
             Used to dispatch commands that need to be captured externally, usually by Modules
             </summary>
         </member>
+        <member name="T:DG.Tweening.Core.DOTweenUtils">
+            <summary>
+            Various utils
+            </summary>
+        </member>
         <member name="M:DG.Tweening.Core.DOTweenUtils.Vector3FromAngle(System.Single,System.Single)">
             <summary>
             Returns a Vector3 with z = 0

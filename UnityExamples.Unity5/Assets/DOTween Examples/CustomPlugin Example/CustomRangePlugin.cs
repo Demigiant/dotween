@@ -58,8 +58,11 @@ public class CustomRangePlugin : ABSTweenPlugin<CustomRange, CustomRange, NoOpti
     }
 
     // Calculates the value based on the given time and ease
-    public override void EvaluateAndApply(NoOptions options, Tween t, bool isRelative, DOGetter<CustomRange> getter, DOSetter<CustomRange> setter, float elapsed, CustomRange startValue, CustomRange changeValue, float duration, bool usingInversePosition, UpdateNotice updateNotice)
-    {
+    public override void EvaluateAndApply(
+        NoOptions options, Tween t, bool isRelative, DOGetter<CustomRange> getter, DOSetter<CustomRange> setter,
+        float elapsed, CustomRange startValue, CustomRange changeValue, float duration, bool usingInversePosition,
+        int newCompletedSteps, UpdateNotice updateNotice
+    ){
         float easeVal = EaseManager.Evaluate(t, elapsed, duration, t.easeOvershootOrAmplitude, t.easePeriod);
 
         // Here I use startValue directly because CustomRange a struct, so it won't reference the original.
