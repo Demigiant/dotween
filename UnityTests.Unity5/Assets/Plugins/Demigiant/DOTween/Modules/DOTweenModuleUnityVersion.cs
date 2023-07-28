@@ -18,9 +18,6 @@ namespace DG.Tweening
     /// </summary>
 	public static class DOTweenModuleUnityVersion
     {
-#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1_OR_NEWER
-        #region Unity 4.3 or Newer
-
         #region Material
 
         /// <summary>Tweens a Material's color using the given gradient
@@ -73,12 +70,6 @@ namespace DG.Tweening
         }
 
         #endregion
-
-        #endregion
-#endif
-
-#if UNITY_5_3_OR_NEWER || UNITY_2017_1_OR_NEWER
-        #region Unity 5.3 or Newer
 
         #region CustomYieldInstructions
 
@@ -171,9 +162,6 @@ namespace DG.Tweening
         }
 
         #endregion
-
-        #endregion
-#endif
 
 #if UNITY_2018_1_OR_NEWER
         #region Unity 2018.1 or Newer
@@ -320,7 +308,6 @@ namespace DG.Tweening
     // ███ CLASSES █████████████████████████████████████████████████████████████████████████████████████████████████████████
     // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-#if UNITY_5_3_OR_NEWER || UNITY_2017_1_OR_NEWER
     public static class DOTweenCYInstruction
     {
         public class WaitForCompletion : CustomYieldInstruction
@@ -399,5 +386,4 @@ namespace DG.Tweening
             }
         }
     }
-#endif
 }
