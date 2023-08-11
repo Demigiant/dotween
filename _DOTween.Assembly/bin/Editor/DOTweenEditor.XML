@@ -9,6 +9,26 @@
             Contains compatibility methods taken from DemiEditor (for when DOTween is without it)
             </summary>
         </member>
+        <member name="M:DG.DOTweenEditor.EditorCompatibilityUtils.FindObjectOfType``1(System.Boolean)">
+            <summary>
+            Warning: some versions of this method don't have the includeInactive parameter so it won't be taken into account
+            </summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.EditorCompatibilityUtils.FindObjectOfType(System.Type,System.Boolean)">
+            <summary>
+            Warning: some versions of this method don't have the includeInactive parameter so it won't be taken into account
+            </summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.EditorCompatibilityUtils.FindObjectsOfType``1(System.Boolean)">
+            <summary>
+            Warning: some versions of this method don't have the includeInactive parameter so it won't be taken into account
+            </summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.EditorCompatibilityUtils.FindObjectsOfType(System.Type,System.Boolean)">
+            <summary>
+            Warning: some versions of this method don't have the includeInactive parameter so it won't be taken into account
+            </summary>
+        </member>
         <member name="M:DG.DOTweenEditor.DOTweenEditorPreview.Start(System.Action)">
             <summary>
             Starts the update loop of tween in the editor. Has no effect during playMode.
