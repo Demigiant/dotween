@@ -66,18 +66,18 @@ namespace DG.Tweening
             // TweenManager.Complete(t, true, updateMode);
         }
         
-        /// <summary>Optional: indicates that the tween creation has ended.<br/>
+        /// <summary>Optional: indicates that the tween creation has ended, to be used (optionally) as the last element of tween chaining creation.<br/>
         /// This method won't do anything except in case of 0-duration tweens,
         /// where it will complete them immediately instead of waiting for the next internal update routine
         /// (unless they're nested in a Sequence, in which case the Sequence will still be the one in control and this method will be ignored)</summary>
-        public static void End(this Tween t)
+        public static void Done(this Tween t)
         {
             if (t == null) {
                 if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
             } else if (!t.active) {
                 if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
             } else if (t.isSequenced) {
-                return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
             }
             
             if (t.duration <= 0) TweenManager.Complete(t);
