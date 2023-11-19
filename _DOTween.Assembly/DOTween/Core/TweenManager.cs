@@ -1087,6 +1087,8 @@ namespace DG.Tweening.Core
         // Adds the given tween to the active tweens list (updateType is always Normal, but can be changed by SetUpdateType)
         static void AddActiveTween(Tween t)
         {
+            t.stackTrace = Environment.StackTrace;
+
             if (_requiresActiveReorganization) ReorganizeActiveTweens();
 
             // Safety check (IndexOutOfRangeException)

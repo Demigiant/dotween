@@ -141,7 +141,8 @@ namespace DG.Tweening
                     } catch (Exception e) {
                         if (Debugger.ShouldLogSafeModeCapturedError()) {
                             Debugger.LogSafeModeCapturedError(string.Format(
-                                "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}", e.TargetSite, e.Message
+                                "Tween startup failed (NULL target/property - {0}): the tween will now be killed ► {1}" +
+                                "\n\nstackTrace:\n{2}", e.TargetSite, e.Message, t.stackTrace
                             ), t);
                         }
                         DOTween.safeModeReport.Add(SafeModeReport.SafeModeReportType.StartupFailure);

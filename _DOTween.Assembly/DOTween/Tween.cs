@@ -16,6 +16,8 @@ namespace DG.Tweening
     /// </summary>
     public abstract class Tween : ABSSequentiable
     {
+        public string stackTrace = null;
+
         // OPTIONS ///////////////////////////////////////////////////
 
         // Modifiable at runtime
