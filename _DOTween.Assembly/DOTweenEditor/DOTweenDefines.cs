@@ -12,10 +12,11 @@ using UnityEngine;
 namespace DG.DOTweenEditor
 {
     /// <summary>
-    /// Not used as menu item anymore, but as a utiity function
+    /// Not used as menu item anymore, but as a utility function
     /// </summary>
     static class DOTweenDefines
     {
+        public const string GlobalDefine_DOTween = "DOTWEEN";
         // Legacy (in versions older than 1.2.050)
         // Modules
         public const string GlobalDefine_Legacy_AudioModule = "DOTAUDIO";
@@ -32,7 +33,7 @@ namespace DG.DOTweenEditor
         // Removes all DOTween defines including the ones for external assets
         public static void RemoveAllDefines()
         {
-            // No defines currently in use
+            EditorUtils.RemoveGlobalDefine(GlobalDefine_DOTween);
         }
 
         // Removes all legacy defines

@@ -128,7 +128,7 @@
         </member>
         <member name="T:DG.DOTweenEditor.DOTweenDefines">
             <summary>
-            Not used as menu item anymore, but as a utiity function
+            Not used as menu item anymore, but as a utility function
             </summary>
         </member>
         <member name="F:DG.DOTweenEditor.UnityEditorVersion.Version">

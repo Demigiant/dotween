@@ -593,28 +593,28 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: 
+    1: DOTWEEN
     2: ALT
-    4: ALT
+    4: ALT;DOTWEEN
     5: ALT
     6: ALT
-    7: ALT
+    7: ALT;DOTWEEN
     9: ALT
-    13: ALT
-    14: ALT
+    13: ALT;DOTWEEN
+    14: ALT;DOTWEEN
     15: ALT
     16: ALT
-    17: ALT
-    18: ALT
-    19: ALT
-    20: ALT
-    21: ALT
-    22: ALT
-    23: 
-    24: 
-    25: 
-    26: 
-    27: 
+    17: ALT;DOTWEEN
+    18: ALT;DOTWEEN
+    19: ALT;DOTWEEN
+    20: ALT;DOTWEEN
+    21: ALT;DOTWEEN
+    22: ALT;DOTWEEN
+    23: DOTWEEN
+    24: DOTWEEN
+    25: DOTWEEN
+    26: DOTWEEN
+    27: DOTWEEN
   platformArchitecture:
     iOS: 0
     tvOS: 1

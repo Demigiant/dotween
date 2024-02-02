@@ -30,15 +30,13 @@ namespace DG.DOTweenEditor
                 break;
             }
             if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
-            Debug.Log("::: DOTween deleted");
             // DOTween is being deleted: deal with it
             // Remove EditorPrefs
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
-
-//            // The following is not necessary anymore since the Modules update
-//            // Remove scripting define symbols
-//            DOTweenDefines.RemoveAllDefines();
+            // Remove scripting define symbols
+            DOTweenDefines.RemoveAllDefines();
+            Debug.Log("::: DOTween deleted and DOTWEEN defines removed");
 //            //
 //            EditorUtility.DisplayDialog("DOTween Deleted",
 //                "DOTween was deleted and all of its scripting define symbols removed." +
@@ -66,6 +64,7 @@ namespace DG.DOTweenEditor
             bool dotweenImported = dotweenFile != null;
             if (dotweenImported) {
                 // DOTween or Pro or Timeline imported
+                if (!EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_DOTween)) EditorUtils.AddGlobalDefine(DOTweenDefines.GlobalDefine_DOTween);
                 // Reapply modules and ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {
                     // Debug.Log("Apply Modules Settings after DOTween reimport (" + dotweenFile + ")");
