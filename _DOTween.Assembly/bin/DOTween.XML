@@ -1384,7 +1384,7 @@
             <param name="withCallbacks">For Sequences only: if TRUE also internal Sequence callbacks will be fired,
             otherwise they will be ignored</param>
         </member>
-        <member name="M:DG.Tweening.TweenExtensions.Done(DG.Tweening.Tween)">
+        <member name="M:DG.Tweening.TweenExtensions.Done``1(``0)">
             <summary>Optional: indicates that the tween creation has ended, to be used (optionally) as the last element of tween chaining creation.<br/>
             This method won't do anything except in case of 0-duration tweens,
             where it will complete them immediately instead of waiting for the next internal update routine

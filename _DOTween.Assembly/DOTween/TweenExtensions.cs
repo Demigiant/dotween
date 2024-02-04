@@ -70,17 +70,18 @@ namespace DG.Tweening
         /// This method won't do anything except in case of 0-duration tweens,
         /// where it will complete them immediately instead of waiting for the next internal update routine
         /// (unless they're nested in a Sequence, in which case the Sequence will still be the one in control and this method will be ignored)</summary>
-        public static void Done(this Tween t)
+        public static T Done<T>(this T t) where T : Tween
         {
             if (t == null) {
-                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNullTween(t); return t;
             } else if (!t.active) {
-                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogInvalidTween(t); return t;
             } else if (t.isSequenced) {
-                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return;
+                if (Debugger.logPriority > 1) Debugger.LogNestedTween(t); return t;
             }
             
             if (t.duration <= 0) TweenManager.Complete(t);
+            return t;
         }
 
         /// <summary>Flips the direction of this tween (backwards if it was going forward or viceversa)</summary>
