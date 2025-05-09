@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.770"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.775"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -143,7 +143,7 @@ namespace DG.Tweening
             get {
                 if (!_foo_isQuitting) return false;
                 // if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) { // Doesn't work with domain reload if checking with a > 0 frameCount
-                if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount) {
+                if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount && (DateTime.Now - lastQuittingTime).TotalSeconds > 2) {
                     _foo_isQuitting = false;
                     return false;
                 }
@@ -152,6 +152,7 @@ namespace DG.Tweening
             set { _foo_isQuitting = value; if (value)_isQuittingFrame = Time.frameCount; }
         }
         static bool _foo_isQuitting;
+        internal static DateTime lastQuittingTime; // Stores last quitting time so it can be used to determine if application is closing or restarting with domain reload off
         internal static int maxActiveTweenersReached, maxActiveSequencesReached; // Controlled by DOTweenInspector if showUnityEditorReport is active
         internal static SafeModeReport safeModeReport; // Used to store how many safe mode errors are captured in the editor
         internal static readonly List<TweenCallback> GizmosDelegates = new List<TweenCallback>(); // Can be used by other classes to call internal gizmo draw methods

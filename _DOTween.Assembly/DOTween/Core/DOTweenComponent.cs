@@ -180,6 +180,7 @@ namespace DG.Tweening.Core
         {
             _isQuitting = true;
             DOTween.isQuitting = true;
+            DOTween.lastQuittingTime = DateTime.Now;
         }
 
         #endregion
