@@ -13,9 +13,11 @@ public class Temp : BrainBase
 		DOSequence();
 	}
 
-	void Update()
+	protected override void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space)) DOSequence();
+		
+		base.Update();
 	}
 	
 	void DOSequence(){

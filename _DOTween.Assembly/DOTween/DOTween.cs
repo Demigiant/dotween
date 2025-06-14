@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.775"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.780"; // Last version before modules: 1.1.755
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -92,6 +92,18 @@ namespace DG.Tweening
         /// <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
         /// Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         public static bool drawGizmos = true;
+        /// <summary>Gets/sets the max Tweeners capacity (automatically increased by DOTween when necessary).
+        /// You can also set both Tweeners and Sequences capacity via the <see cref="SetTweensCapacity"/> static method</summary>
+        public static int tweenersCapacity {
+            get { return TweenManager.maxTweeners; }
+            set { TweenManager.SetCapacities(value, TweenManager.maxSequences); }
+        }
+        /// <summary>Gets/sets the max Sequences capacity (automatically increased by DOTween when necessary).
+        /// You can also set both Tweeners and Sequences capacity via the <see cref="SetTweensCapacity"/> static method</summary>
+        public static int sequencesCapacity {
+            get { return TweenManager.maxSequences; }
+            set { TweenManager.SetCapacities(TweenManager.maxTweeners, value); }
+        }
         // DEBUG OPTIONS
         /// <summary>If TRUE activates various debug options</summary>
         public static bool debugMode = false;

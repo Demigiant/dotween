@@ -363,9 +363,36 @@ namespace DG.Tweening.Core
 
         internal static void SetCapacities(int tweenersCapacity, int sequencesCapacity)
         {
-            if (tweenersCapacity < sequencesCapacity) tweenersCapacity = sequencesCapacity;
+            if (tweenersCapacity < 1) {
+                int prevT = tweenersCapacity;
+                tweenersCapacity = 1;
+                if (Debugger.logPriority >= 1) {
+                    Debugger.LogWarning(string.Format("SetTweensCapacity({0},{1}): can't set Tweeners capacity to less than 1 ► changed to ({2},{1})", prevT, sequencesCapacity, tweenersCapacity));
+                }
+            }
+            if (sequencesCapacity < 1) {
+                int prevS = sequencesCapacity;
+                sequencesCapacity = 1;
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(string.Format("SetTweensCapacity({0},{1}): can't set Sequences capacity to less than 1 ► changed to ({0},{2})", tweenersCapacity, prevS, sequencesCapacity));
+            }
+            if (tweenersCapacity < totActiveTweeners) {
+                int prevT = tweenersCapacity;
+                tweenersCapacity = totActiveTweeners;
+                if (Debugger.logPriority >= 1) {
+                    Debugger.LogWarning(string.Format("SetTweensCapacity({0},{1}): can't set Tweeners capacity to less than current existing Tweeners ► changed to ({2},{1})", prevT, sequencesCapacity, tweenersCapacity));
+                }
+            }
+            if (sequencesCapacity < totActiveSequences) {
+                int prevS = sequencesCapacity;
+                sequencesCapacity = totActiveSequences;
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(string.Format("SetTweensCapacity({0},{1}): can't set Sequences capacity to less than current existing Sequences ► changed to ({0},{2})", tweenersCapacity, prevS, sequencesCapacity));
+            }
+            if (tweenersCapacity < sequencesCapacity) {
+                int prevT = tweenersCapacity;
+                tweenersCapacity = sequencesCapacity;
+                if (Debugger.logPriority >= 1) Debugger.LogWarning(string.Format("SetTweensCapacity({0},{1}): Sequences capacity must be less or equal than Tweeners capacity ► changed to ({2},{1})", prevT, sequencesCapacity, tweenersCapacity));
+            }
 
-//            maxActive = tweenersCapacity;
             maxActive = tweenersCapacity + sequencesCapacity;
             maxTweeners = tweenersCapacity;
             maxSequences = sequencesCapacity;
@@ -1249,8 +1276,6 @@ namespace DG.Tweening.Core
         static void IncreaseCapacities(CapacityIncreaseMode increaseMode)
         {
             int killAdd = 0;
-//            int increaseTweenersBy = _DefaultMaxTweeners;
-//            int increaseSequencesBy = _DefaultMaxSequences;
             int increaseTweenersBy = Mathf.Max((int)(maxTweeners * 1.5f), _DefaultMaxTweeners);
             int increaseSequencesBy = Mathf.Max((int)(maxSequences * 1.5f), _DefaultMaxSequences);
             switch (increaseMode) {
@@ -1262,15 +1287,24 @@ namespace DG.Tweening.Core
             case CapacityIncreaseMode.SequencesOnly:
                 killAdd += increaseSequencesBy;
                 maxSequences += increaseSequencesBy;
+                while (maxSequences > maxTweeners) {
+                    killAdd += increaseTweenersBy;
+                    maxTweeners += increaseTweenersBy;
+                    Array.Resize(ref _pooledTweeners, maxTweeners);
+                }
                 break;
-            default:
+            default: // Both
                 killAdd += increaseTweenersBy + increaseSequencesBy;
                 maxTweeners += increaseTweenersBy;
                 maxSequences += increaseSequencesBy;
                 Array.Resize(ref _pooledTweeners, maxTweeners);
+                while (maxSequences > maxTweeners) {
+                    killAdd += increaseTweenersBy;
+                    maxTweeners += increaseTweenersBy;
+                    Array.Resize(ref _pooledTweeners, maxTweeners);
+                }
                 break;
             }
-//            maxActive = Mathf.Max(maxTweeners, maxSequences);
             maxActive = maxTweeners + maxSequences;
             Array.Resize(ref _activeTweens, maxActive);
             if (killAdd > 0) _KillList.Capacity += killAdd;

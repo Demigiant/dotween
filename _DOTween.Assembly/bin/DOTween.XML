@@ -457,6 +457,14 @@
             <summary>If TRUE draws path gizmos in Unity Editor (if the gizmos button is active).
             Deactivate this if you want to avoid gizmos overhead while in Unity Editor</summary>
         </member>
+        <member name="P:DG.Tweening.DOTween.tweenersCapacity">
+            <summary>Gets/sets the max Tweeners capacity (automatically increased by DOTween when necessary).
+            You can also set both Tweeners and Sequences capacity via the <see cref="M:DG.Tweening.DOTween.SetTweensCapacity(System.Int32,System.Int32)"/> static method</summary>
+        </member>
+        <member name="P:DG.Tweening.DOTween.sequencesCapacity">
+            <summary>Gets/sets the max Sequences capacity (automatically increased by DOTween when necessary).
+            You can also set both Tweeners and Sequences capacity via the <see cref="M:DG.Tweening.DOTween.SetTweensCapacity(System.Int32,System.Int32)"/> static method</summary>
+        </member>
         <member name="F:DG.Tweening.DOTween.debugMode">
             <summary>If TRUE activates various debug options</summary>
         </member>
