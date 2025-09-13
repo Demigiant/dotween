@@ -599,6 +599,17 @@ namespace DG.Tweening
             return t.isComplete;
         }
 
+        /// <summary>Returns TRUE if this tween was set to be timeScale independent via the <code>tween.SetUpdate</code> method</summary>
+        public static bool IsTimeScaleIndependent(this Tween t)
+        {
+            if (!t.active) {
+                if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
+                return false;
+            }
+
+            return t.isIndependentUpdate;
+        }
+
         /// <summary>Returns TRUE if this tween has been initialized</summary>
         public static bool IsInitialized(this Tween t)
         {

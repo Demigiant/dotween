@@ -2,22 +2,30 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public Rigidbody2D rigibody2d;
-    
+	public Button bt;
+	
+	AudioSource _aaa;
+ 
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
-		Tweener t = rigibody2d.DOMove(new Vector2(2, 0), 2);
-		bool valueChanged = false;
-		t.OnUpdate(() =>
+		Debug.Log("aaa null in Start? " + (_aaa == null));
+		
+		bt.onClick.AddListener(OnClick);
+	}
+ 
+	void OnClick()
+	{
+		Tween t = transform.DORotate(new Vector3(0, 0, 50f), 2f);
+		t.onComplete = delegate () 
 		{
-			if (!valueChanged && rigibody2d.position.x > 1) {
-				Debug.Log("Changing value");
-				valueChanged = true;
-				t.ChangeEndValue(new Vector2(-2, 0), 2, true);
-			}
-		});
+			Debug.Log("aaa null on complete? " + (_aaa == null));
+			_aaa.Play();
+			Debug.Log("Won't reach here.");
+		};
 	}
 }

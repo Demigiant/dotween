@@ -1576,6 +1576,9 @@
             <summary>Returns TRUE if the tween is complete
             (silently fails and returns FALSE if the tween has been killed)</summary>
         </member>
+        <member name="M:DG.Tweening.TweenExtensions.IsTimeScaleIndependent(DG.Tweening.Tween)">
+            <summary>Returns TRUE if this tween was set to be timeScale independent via the <code>tween.SetUpdate</code> method</summary>
+        </member>
         <member name="M:DG.Tweening.TweenExtensions.IsInitialized(DG.Tweening.Tween)">
             <summary>Returns TRUE if this tween has been initialized</summary>
         </member>
