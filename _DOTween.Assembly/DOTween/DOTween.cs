@@ -35,7 +35,10 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.785"; // Last version before modules: 1.1.755
+        public static readonly string Version = "1.2.790"; // Last version before modules: 1.1.755
+#if DEBUG
+        internal const string DebugPrefix = "<color=#ff0000><b>//</b></color> "; // Used by logs that are only thrown in debug version of DOTween
+#endif
 
         ///////////////////////////////////////////////
         // Options ////////////////////////////////////
@@ -150,26 +153,49 @@ namespace DG.Tweening
         public static DOTweenComponent instance;
 
         // Set by DOTweenComponent when the application is quitting.
-        // Resets isQuitting if the frame count when it was set to TRUE changed (in order to work with no-domain-reload quick enter playmode)
+        // Previously used a complicated system to determine if we were truly quitting,
+        // now relies on DOTween.RuntimeOnLoad to reset isQuitting to FALSE 
         internal static bool isQuitting {
             get {
-                if (!_foo_isQuitting) return false;
-                // if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) { // Doesn't work with domain reload if checking with a > 0 frameCount
-                if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount && (DateTime.Now - lastQuittingTime).TotalSeconds > 2) {
-                    _foo_isQuitting = false;
-                    return false;
-                }
-                return true;
+                return _foo_isQuitting;
+                
+                // ↓ Doesn't work because it skips the first frame at startup
+                // if (Time.frameCount > 0 && _isQuittingFrame != Time.frameCount) {
+                // ↓ Doesn't work because Unity reset Time.frameCount to 0 during the quitting frame
+                // if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount) {
+                // ↓ Doesn't work if someone stops and restarts playMode too quickly, but a lower value might happen in the quitting frame  
+                // if (Time.frameCount >= 0 && _isQuittingFrame != Time.frameCount && (DateTime.Now - lastQuittingTime).TotalSeconds > 2) {
+                //     _foo_isQuitting = false;
+                //     _isQuittingFrame = 0;
+                //     return false;
+                // }
+                // return true;
             }
-            set { _foo_isQuitting = value; if (value)_isQuittingFrame = Time.frameCount; }
+            set {
+                _foo_isQuitting = value;
+                // if (value) _isQuittingFrame = Time.frameCount;
+            }
         }
         static bool _foo_isQuitting;
-        internal static DateTime lastQuittingTime; // Stores last quitting time so it can be used to determine if application is closing or restarting with domain reload off
         internal static int maxActiveTweenersReached, maxActiveSequencesReached; // Controlled by DOTweenInspector if showUnityEditorReport is active
         internal static SafeModeReport safeModeReport; // Used to store how many safe mode errors are captured in the editor
         internal static readonly List<TweenCallback> GizmosDelegates = new List<TweenCallback>(); // Can be used by other classes to call internal gizmo draw methods
         internal static bool initialized; // Can be set to false by DOTweenComponent OnDestroy
-        static int _isQuittingFrame = -1; // Frame when isQuitting was set. Sets isQuitting to false after this frame (so no-domain-reload playmode can work)
+        // internal static DateTime lastQuittingTime; // Stores last quitting time so it can be used to determine if application is closing or restarting with domain reload off
+        // static int _isQuittingFrame = -1; // Frame when isQuitting was set. Sets isQuitting to false after this frame (so no-domain-reload playmode can work)
+
+        #region RuntimeInitiMethods
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void RuntimeOnLoad()
+        {
+#if DEBUG
+            Debug.Log(DebugPrefix + "DOTween.RuntimeInitializeOnLoadMethod ► Setting 'isQuitting' to FALSE");
+#endif
+            isQuitting = false;
+        }
+
+        #endregion
 
         #region Public Methods
 
@@ -216,6 +242,9 @@ namespace DG.Tweening
         // Full init
         static IDOTweenInit Init(DOTweenSettings settings, bool? recycleAllByDefault, bool? useSafeMode, LogBehaviour? logBehaviour)
         {
+#if DEBUG
+            Debug.Log(DebugPrefix + "DOTween.Init");
+#endif
             initialized = true;
             // Options
             if (recycleAllByDefault != null) DOTween.defaultRecyclable = (bool)recycleAllByDefault;
@@ -1138,7 +1167,14 @@ namespace DG.Tweening
 
         static void InitCheck()
         {
-            if (initialized || !Application.isPlaying || isQuitting) return;
+            bool skip = initialized || !Application.isPlaying || isQuitting;
+#if DEBUG
+            Debug.Log(DebugPrefix + string.Format(
+                "DOTween.InitCheck ► {0} (initialized: {1}, Application.isPlaying: {2}, isQuitting: {3})",
+                skip ? "Skip initialization" : "Initialize", initialized, Application.isPlaying, isQuitting
+            ));
+#endif
+            if (skip) return;
 
             AutoInit();
         }

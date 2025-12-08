@@ -180,7 +180,7 @@ namespace DG.Tweening.Core
         {
             _isQuitting = true;
             DOTween.isQuitting = true;
-            DOTween.lastQuittingTime = DateTime.Now;
+            // DOTween.lastQuittingTime = DateTime.Now;
         }
 
         #endregion
@@ -256,6 +256,12 @@ namespace DG.Tweening.Core
 
         internal static void Create()
         {
+#if DEBUG
+            Debug.Log(DOTween.DebugPrefix + string.Format(
+                "DOTweenComponent.Create ► Will create: {0}, Time.realtimeSinceStartup: {1}",
+                DOTween.instance == null, Time.realtimeSinceStartup
+            ));
+#endif
             if (DOTween.instance != null) return;
 
             GameObject go = new GameObject("[DOTween]");
@@ -265,6 +271,12 @@ namespace DG.Tweening.Core
 
         internal static void DestroyInstance()
         {
+#if DEBUG
+            Debug.Log(DOTween.DebugPrefix + string.Format(
+                "DOTweenComponent.DestroyInstance ► Will destroy: {0}, Time.realtimeSinceStartup: {1}",
+                DOTween.instance != null, Time.realtimeSinceStartup
+            ));
+#endif
             if (DOTween.instance != null) Destroy(DOTween.instance.gameObject);
             DOTween.instance = null;
         }
