@@ -897,7 +897,7 @@ namespace DG.Tweening.Core
                 bool needsKilling = Tween.DoGoto(t, 0, 0, UpdateMode.Goto);
                 if (!needsKilling && wasPlaying && t.onPause != null) Tween.OnTweenCallback(t.onPause, t);
             } else {
-                // Alread rewinded
+                // Already rewinded
                 ManageOnRewindCallbackWhenAlreadyRewinded(t, false);
             }
             return rewinded;
