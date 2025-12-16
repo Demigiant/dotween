@@ -6,53 +6,76 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	void Start()
+	public Transform target;
+	public Vector3 someScale = new Vector3(2, 2, 2);
+	public Vector3 finalScale = new Vector3(4, 4, 4);
+	
+	Sequence _mainSeq;
+	Tween _tween;
+
+	protected override void Awake()
 	{
-		Sequence TestSeq = DOTween.Sequence();
-
-		TestSeq.Pause();
-
-		TestSeq.Append(Tween1());
-		TestSeq.AppendCallback(Log1);
-		TestSeq.Append(Tween2());
-		TestSeq.AppendCallback(Log2);
-		TestSeq.Append(Tween3());
-		TestSeq.AppendCallback(Log3);
-
-		TestSeq.Play();
+		base.Awake();
+		
+		CreateAnimation();
 	}
 
-
-	private Tween Tween1()
+	protected override void Update()
 	{
-		Debug.Log("TWEEN 1");
-		return transform.DOMove(new Vector3(10f, 0f, 0f), 0.5f).Pause();
+		base.Update();
+		
+		if (Input.GetKeyDown(KeyCode.LeftArrow)) PrepareAnimationForNewRun();
+		else if (Input.GetKeyDown(KeyCode.Space)) _mainSeq.Play();
 	}
 
-	private Tween Tween2()
+	// This is triggered before every animation.
+	// On the first run it shouldn't do anything, since it's already rewinded.
+	void PrepareAnimationForNewRun()
 	{
-		Debug.Log("TWEEN 2");
-		return transform.DOMove(new Vector3(0f, 10f, 0f), 0.5f).Pause();
+		Debug.Log("Rewinding... (Sequence is at: " + _mainSeq.fullPosition + ")");
+		
+		_mainSeq.Rewind();
+		
+		Debug.Log("Rewinded");
 	}
 
-	private Tween Tween3()
+	// This is a repeatable sequence that can be rewinded many times.
+	void CreateAnimation()
 	{
-		Debug.Log("TWEEN 3");
-		return transform.DOMove(new Vector3(0f, 0f, 10f), 0.5f).Pause();
-	}
+		Debug.Log("Create Animation...");
+		
+		_mainSeq = DOTween.Sequence().SetAutoKill(false).Pause().SetId("SEQUENCE").OnRewind(() => {
+			Debug.Log("> OnRewind (should not be printed on the first run)");
+		});
 
-	private void Log1()
-	{
-		Debug.Log("tween 1 completed");
-	}
+		_mainSeq.AppendCallback(() => Debug.Log("CALLBACK at 0"));
+		
+		_mainSeq.Append(target.DOMoveX(2, 1).SetId("Tween A")
+			.OnUpdate(() => Debug.Log("UPDATE A"))
+			.OnRewind(() => Debug.Log("REWIND A"))
+		);
+		
+		_mainSeq.Append(target.DOMoveX(-2, 1).SetId("Tween B")
+			.OnUpdate(() => Debug.Log("UPDATE B"))
+			.OnRewind(() => Debug.Log("REWIND B"))
+		);
 
-	private void Log2()
-	{
-		Debug.Log("tween 2 completed");
-	}
-
-	private void Log3()
-	{
-		Debug.Log("tween 3 completed");
+		// // Note: Duration must be higher than 0f or it doesn't work.
+		// // _mainSeq.Append(DOVirtual.Vector3(Vector3.zero, someScale, 0.01f, v => {
+		// // 	Debug.Log("> Callback 1"); // <-- BUG IS HERE: This should not be logged on first Rewind()?
+		// // 	target.localScale = v;
+		// // }));
+		// _mainSeq.AppendCallback(() => Debug.Log("> Callback 1"));
+		//
+		// _mainSeq.Append(DOVirtual.Vector3(someScale, finalScale, 0.5f, v => {
+		// 	Debug.Log("> Callback 2"); // <-- Interestingly this is not triggered, so it's inconsistent.
+		// 	target.localScale = v;
+		// }));
+  //       
+		// // // I also created a third scale tween in the same way (not included here for brevity).
+		// // // The 3rd log message is also not triggered (like the second).
+		// // _mainSeq.Append(thirdTween);
+		
+		Debug.Log("Animation Created");
 	}
 }

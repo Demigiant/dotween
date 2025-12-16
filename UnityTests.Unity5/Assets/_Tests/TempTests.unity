@@ -230,7 +230,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceFrameRate: 0
   forcedFrameRate: 10
-  rigibody2d: {fileID: 1945086587}
+  target: {fileID: 1945086589}
+  someScale: {x: 2, y: 2, z: 2}
+  finalScale: {x: 4, y: 4, z: 4}
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0
@@ -385,7 +387,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1945086589}
   - component: {fileID: 1945086588}
-  - component: {fileID: 1945086587}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -393,26 +394,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1945086587
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1945086586}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!212 &1945086588
 SpriteRenderer:
   m_ObjectHideFlags: 0
