@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/_Tests/Tween Engines Comparison - INTERNAL/TweenEnginesComparisonInternal.unity
+    guid: e5fb5611ff399c14892c4a3cc52fa439
+  - enabled: 0
+    path: Assets/_Tests/StartupSpeed.unity
+    guid: a9835b81837406b49b5190f2a1d583c3
+  - enabled: 0
+    path: Assets/EnginesComparison.unity
+    guid: 411badc256d3c2c4ea41a29a75696d47
+  - enabled: 0
+    path: Assets/_Tests/Basics.unity
+    guid: fcbe7ea1e13cc024c822bc5ed6e7e751
+  - enabled: 0
+    path: Assets/_Tests PRO/Paths.unity
+    guid: c5bfd946971ae7e48b678c8b96e7ff3d
+  - enabled: 0
+    path: Assets/_Tests PRO/_4video_DOTweenPath.unity
+    guid: a4da94159cf411e4f9d57797268dee0f
+  - enabled: 0
+    path: Assets/_DOTween Examples/FollowCamTopDown.unity
+    guid: 57daabe2d253e7c409afa534c4c73dca
+  - enabled: 1
+    path: Assets/_Tests PRO/ProPlugins.unity
+    guid: e226ab43ef4e5de4aa732bdef9bea4f3
