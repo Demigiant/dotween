@@ -88,6 +88,7 @@
     <Compile Include="DOTweenDefines.cs" />
     <Compile Include="UI\DOTweenUtilityWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Legacy_DOTweenUtilityWindowModules.cs" />
     <Compile Include="UnityEditorVersion.cs" />
   </ItemGroup>
   <ItemGroup>

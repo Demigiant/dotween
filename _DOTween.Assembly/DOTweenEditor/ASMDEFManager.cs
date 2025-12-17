@@ -71,6 +71,7 @@ namespace DG.DOTweenEditor
 
         public static void Refresh()
         {
+            DOTweenDefines.RefreshAll();
             hasModulesASMDEF = File.Exists(EditorUtils.dotweenModulesDir + _ModulesASMDEFFile);
             hasProASMDEF = File.Exists(EditorUtils.dotweenProDir + _ProASMDEFFile);
             hasProEditorASMDEF = File.Exists(EditorUtils.dotweenProEditorDir + _ProEditorASMDEFFile);
@@ -151,7 +152,8 @@ namespace DG.DOTweenEditor
                     break;
                 }
             }
-            bool recreate = hasTextMeshProRef != src.modules.textMeshProEnabled;
+            // bool recreate = hasTextMeshProRef != src.modules.textMeshProEnabled;
+            bool recreate = hasTextMeshProRef != DOTweenDefines.TextMeshPro.enabled;
             if (recreate) CreateASMDEF(asmdefType, true);
         }
         static void ValidateDOTweenTimelineASMDEFReferences(DOTweenSettings src, ASMDEFType asmdefType, string asmdefFilepath)
@@ -165,7 +167,8 @@ namespace DG.DOTweenEditor
                     break;
                 }
             }
-            bool recreate = hasTextMeshProRef != src.modules.textMeshProEnabled;
+            // bool recreate = hasTextMeshProRef != src.modules.textMeshProEnabled;
+            bool recreate = hasTextMeshProRef != DOTweenDefines.TextMeshPro.enabled;
             if (recreate) CreateASMDEF(asmdefType, true);
         }
 
@@ -263,7 +266,8 @@ namespace DG.DOTweenEditor
                     sw.WriteLine("\t\"references\": [");
                     src = DOTweenUtilityWindow.GetDOTweenSettings();
                     if (src != null) {
-                        if (src.modules.textMeshProEnabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
+                        // if (src.modules.textMeshProEnabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
+                        if (DOTweenDefines.TextMeshPro.enabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
                     }
                     if (type == ASMDEFType.DOTweenProEditor) {
                         sw.WriteLine("\t\t\"{0}\",", _ModulesId);
@@ -284,7 +288,8 @@ namespace DG.DOTweenEditor
                     sw.WriteLine("\t\"references\": [");
                     src = DOTweenUtilityWindow.GetDOTweenSettings();
                     if (src != null) {
-                        if (src.modules.textMeshProEnabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
+                        // if (src.modules.textMeshProEnabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
+                        if (DOTweenDefines.TextMeshPro.enabled) sw.WriteLine("\t\t\"{0}\",", _RefTextMeshPro);
                     }
                     if (type == ASMDEFType.DOTweenTimelineEditor) {
                         if (EditorUtils.hasPro) sw.WriteLine("\t\t\"{0}\",", _ProId);
