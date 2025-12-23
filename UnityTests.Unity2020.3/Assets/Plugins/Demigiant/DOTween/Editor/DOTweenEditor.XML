@@ -131,6 +131,27 @@
             Not used as menu item anymore, but as a utility function
             </summary>
         </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.RefreshDOTweenSettings(DG.Tweening.Core.DOTweenSettings)">
+            <summary>Sets the modules bool values to the current defines state</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.RefreshAll">
+            <summary>Refreshes the enabled state of all defines</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.ApplyGUIEnabledToAll">
+            <summary>Applies the guiEnabled value state to each define, adding or removing them based on that</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.RemoveAll">
+            <summary>Removes all DOTween defines including the ones for external assets</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.RemoveAllLegacy">
+            <summary>Removes all legacy defines</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.Def.Remove">
+            <summary>Removes the define if present</summary>
+        </member>
+        <member name="M:DG.DOTweenEditor.DOTweenDefines.Def.Add">
+            <summary>Adds the define if it's not already present</summary>
+        </member>
         <member name="F:DG.DOTweenEditor.UnityEditorVersion.Version">
             <summary>Full major version + first minor version (ex: 2018.1f)</summary>
         </member>

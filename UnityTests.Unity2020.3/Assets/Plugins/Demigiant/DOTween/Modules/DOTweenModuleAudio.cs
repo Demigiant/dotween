@@ -1,7 +1,7 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2018/07/13
 
-#if true // MODULE_MARKER
+#if !DOTWEEN_NOAUDIO // MODULE_MARKER
 using System;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
