@@ -88,7 +88,7 @@ namespace DG.DOTweenEditor
         public static void ApplyGUIEnabledToAll()
         {
             foreach (Def def in _AllValidDefines) {
-                Debug.Log(def.id + " >> " + def.guiEnabled + "/" + def.enabled);
+                if (def == DOTween) continue;
                 if (def.guiEnabled) def.Add();
                 else def.Remove();
                 def.Refresh();

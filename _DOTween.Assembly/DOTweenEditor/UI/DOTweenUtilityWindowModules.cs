@@ -3,9 +3,9 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
-using System.Collections.Generic;
 using DG.Tweening.Core;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace DG.DOTweenEditor.UI
@@ -88,7 +88,9 @@ namespace DG.DOTweenEditor.UI
             }
             GUILayout.EndVertical();
 
-            if (EditorApplication.isCompiling) WaitForCompilation();
+            if (EditorApplication.isCompiling) {
+                EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
+            }
 
             return false;
         }
@@ -100,25 +102,10 @@ namespace DG.DOTweenEditor.UI
                 : EditorGUILayout.Toggle(label, define.guiEnabled);
         }
 
-        static void WaitForCompilation()
+        [DidReloadScripts]
+        static void OnScriptsReloaded()
         {
-            if (!_isWaitingForCompilation) {
-                _isWaitingForCompilation = true;
-                EditorApplication.update += WaitForCompilation_Update;
-                WaitForCompilation_Update();
-            }
-            EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
-        }
-
-        static void WaitForCompilation_Update()
-        {
-            if (!EditorApplication.isCompiling) {
-                EditorApplication.update -= WaitForCompilation_Update;
-                _isWaitingForCompilation = false;
-                DOTweenDefines.RefreshAll();
-                // ApplyModulesSettingsFromDOTweenSettings();
-            }
-            _editor.Repaint();
+            DOTweenDefines.RefreshAll();
         }
 
         #endregion

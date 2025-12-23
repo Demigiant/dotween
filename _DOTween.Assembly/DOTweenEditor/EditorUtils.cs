@@ -362,9 +362,9 @@ namespace DG.DOTweenEditor
                 if (!IsValidBuildTargetGroup(btg)) continue;
                 string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
                 string[] singleDefs = defs.Split(';');
-                if (Array.IndexOf(singleDefs, id) != -1) return true;
+                if (Array.IndexOf(singleDefs, id) == -1) return false;
             }
-            return false;
+            return true;
         }
 
         // ===================================================================================
