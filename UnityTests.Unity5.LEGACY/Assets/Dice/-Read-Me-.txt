@@ -1,0 +1,48 @@
+INSTALLATION FROM UNITY ASSET STORE
+
+After you download and import this package from the Unity Asset Store, this product, containing the fully scripted and  functional dice, will be automaticly installed.
+
+INSTALLATION AFTER DOWNLOAD FROM WWW.WYRMTALE.COM WEBSITE
+
+After you have downloaded the component archive file (Dices-Light.rar) you will find a Dices-Light.unitypackage when you extract the files from the archive.
+
+To install this package :
+
+- create an empty Unity Project.
+- select [Menu] Assets->Import Package
+- select the extracted Dices-Light.unitypackage and import all assets.
+
+After importing is complete, you will be ready to go.
+
+----------------
+
+!!IMPORTANT!! - Set you project gravity to [-60] for the best rolling physics simulation behaviour
+[Menu] Edit->Project Settings->Physics
+
+
+USAGE
+
+Under [Project] Dice->Resources->Prefabs , you will find the full scripted and textured dice prefabs that you
+can use in your project. The prefabs already have collider and rigid body components.
+
+If you would want to change physics behaviour you could alter the physics material that all dice use. This physics material can be found at [Project] Dice->Materials->general = 'dice-material'
+
+Each prefab has a Class Die (subclassed) script that contains a 'value' attribute that displays the 'side-up' value at all times.
+
+Under [Project] Dice->Plugins, you find a Dice.cs script file that holds some static 'helper' methods that you can use to roll dice and calculate or display the values.
+
+Under [Project] Dice->Scenes->Demo you will find the demo scene that makes use of the static helper functions.
+
+All c# code in this project has 'inline' code documentation.
+
+----------------
+
+If you have any questions regarding this product send us an email at
+support@wyrmtale.com
+
+
+
+Thanks for you interest in our components
+
+	The WyrmTale Team.
+

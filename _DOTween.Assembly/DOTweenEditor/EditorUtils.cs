@@ -317,7 +317,7 @@ namespace DG.DOTweenEditor
                 defs += defs.Length > 0 ? ";" + id : id;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, defs);
             }
-            if (added) Debug.Log(string.Format("DOTween : added global define \"{0}\" to {1} BuildTargetGroups", id, totGroupsModified));
+            if (added) Debug.Log(string.Format("DOTween : <color=#00ff00>added</color> global define \"{0}\" to {1} BuildTargetGroups", id, totGroupsModified));
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace DG.DOTweenEditor
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(btg, _Strb.ToString());
             }
             _Strb.Length = 0;
-            if (removed) Debug.Log(string.Format("DOTween : removed global define \"{0}\" from {1} BuildTargetGroups", id, totGroupsModified));
+            if (removed) Debug.Log(string.Format("DOTween : <color=#ff0000>removed</color> global define \"{0}\" from {1} BuildTargetGroups", id, totGroupsModified));
         }
 
         /// <summary>
@@ -362,9 +362,9 @@ namespace DG.DOTweenEditor
                 if (!IsValidBuildTargetGroup(btg)) continue;
                 string defs = PlayerSettings.GetScriptingDefineSymbolsForGroup(btg);
                 string[] singleDefs = defs.Split(';');
-                if (Array.IndexOf(singleDefs, id) != -1) return true;
+                if (Array.IndexOf(singleDefs, id) == -1) return false;
             }
-            return false;
+            return true;
         }
 
         // ===================================================================================

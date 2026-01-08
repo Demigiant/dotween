@@ -10,6 +10,7 @@ _DOTween.Assembly/.git
 ExternalPluginsTestsAndExamples*
 *.Unity*/_ReSharper*
 *.Unity*/Library
+*.Unity*/Logs
 *.Unity*/obj
 *.Unity*/Temp
 *.Unity*/*.csproj
@@ -30,12 +31,14 @@ ExternalPluginsTestsAndExamples*
 .idea
 *DOTweenPro
 *DOTweenPro.*
+*DOTweenPro Examples*
 *DemiLib
 *DemiLib.*
 *DOTweenTimeline
 *DOTweenTimeline.*
 *HOPoolOperator*
 *HOTools*
+zz DELETE ME*
 extra
 zz builds
 zz UnityTests*

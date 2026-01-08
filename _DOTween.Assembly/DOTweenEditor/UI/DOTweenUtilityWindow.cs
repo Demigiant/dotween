@@ -71,6 +71,8 @@ namespace DG.DOTweenEditor.UI
         {
             if (_initialized) return true;
 
+            DOTweenDefines.RefreshAll();
+            
             if (_headerImg == null) {
                 _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 if (_headerImg == null) return false; // DOTween imported for the first time and images not yet imported
@@ -82,6 +84,7 @@ namespace DG.DOTweenEditor.UI
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);
             }
+            
             _initialized = true;
             return true;
         }
@@ -195,7 +198,7 @@ namespace DG.DOTweenEditor.UI
                     _src.modules.showPanel = true;
                     EditorUtility.SetDirty(_src);
                     EditorUtils.DeleteLegacyNoModulesDOTweenFiles();
-                    DOTweenDefines.RemoveAllLegacyDefines();
+                    DOTweenDefines.RemoveAllLegacy();
                     EditorUtils.DeleteDOTweenUpgradeManagerFiles();
                     // ► Timeline is now a separate thing
                     // if (EditorUtils.hasDOTweenTimelineUnityPackage && EditorUtils.isValidDOTweenTimelineUnityVersion) {

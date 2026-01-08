@@ -35,7 +35,7 @@ namespace DG.DOTweenEditor
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
             EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
             // Remove scripting define symbols
-            DOTweenDefines.RemoveAllDefines();
+            DOTweenDefines.RemoveAll();
             Debug.Log("::: DOTween deleted and DOTWEEN defines removed");
 //            //
 //            EditorUtility.DisplayDialog("DOTween Deleted",
@@ -53,7 +53,7 @@ namespace DG.DOTweenEditor
     public class UtilityWindowPostProcessor : AssetPostprocessor
     {
         static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
-
+        
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             if (_setupDialogRequested) return;
@@ -64,7 +64,8 @@ namespace DG.DOTweenEditor
             bool dotweenImported = dotweenFile != null;
             if (dotweenImported) {
                 // DOTween or Pro or Timeline imported
-                if (!EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_DOTween)) EditorUtils.AddGlobalDefine(DOTweenDefines.GlobalDefine_DOTween);
+                DOTweenDefines.DOTween.Add();
+                // if (!EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_DOTween)) EditorUtils.AddGlobalDefine(DOTweenDefines.GlobalDefine_DOTween);
                 // Reapply modules and ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {
                     // Debug.Log("Apply Modules Settings after DOTween reimport (" + dotweenFile + ")");
