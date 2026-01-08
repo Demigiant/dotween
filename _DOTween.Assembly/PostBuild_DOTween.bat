@@ -61,11 +61,9 @@ echo f | xcopy %CopyFromDir% %CopyToDirNoMeta% /Y /I /E
 :: UnityTests.Unity2020
 echo ::: Exporting from %CopyFromDir% to %CopyToDirUnity2020Tests%
 echo f | xcopy %CopyFromDir% %CopyToDirUnity2020Tests% /Y /I /E
-exit /B
 :: UnityTests.Unity6000
 echo ::: Exporting from %CopyFromDir% to %CopyToDirUnity6000Tests%
 echo f | xcopy %CopyFromDir% %CopyToDirUnity6000Tests% /Y /I /E
-exit /B
 :: UnityTests.Unity4
 :: echo ::: Exporting from %CopyFromDir% to %CopyToDirUnityTests%
 :: echo f | xcopy %CopyFromDir% %CopyToDirUnityTests% /Y /I /E
@@ -87,3 +85,5 @@ echo :
 echo :
 echo :
 echo :
+
+exit /B
