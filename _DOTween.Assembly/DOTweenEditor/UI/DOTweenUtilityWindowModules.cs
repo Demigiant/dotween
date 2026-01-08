@@ -120,7 +120,7 @@ namespace DG.DOTweenEditor.UI
 
             DOTweenDefines.NoAudio.Enable(!src.modules.audioEnabled);
             DOTweenDefines.NoPhysics.Enable(!src.modules.physicsEnabled);
-            DOTweenDefines.NoPhysics2D.Enable(!src.modules.physicsEnabled);
+            DOTweenDefines.NoPhysics2D.Enable(!src.modules.physics2DEnabled);
             DOTweenDefines.NoSprites.Enable(!src.modules.spriteEnabled);
             DOTweenDefines.NoUI.Enable(!src.modules.uiEnabled);
             
