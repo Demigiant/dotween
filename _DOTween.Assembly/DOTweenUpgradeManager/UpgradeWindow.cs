@@ -19,7 +19,7 @@ namespace DG.DOTweenUpgradeManager
         const string _DescrContent0 = "Select <color=#ffc47a><b>\"Setup DOTween...\"</b></color> in <b>DOTween's Utility Panel</b> to set it up and add/remove Modules.";
         const string _DescrTitle1 = "IMPORTANT IN CASE OF UPGRADE";
         const string _DescrContent1 = "If you're upgrading from a DOTween version older than <b>1.2.800</b> or <b>Pro older than 1.0.390</b>" +
-                                      " (<color=#ffc47a><i>before the introduction of DOTween Modules</i></color>)" +
+                                      " (<color=#ffc47a><i>aka older than January 2026, before the introduction of defines for DOTween Modules</i></color>)" +
                                       " you will see lots of errors. <b>Follow these instructions</b> to fix them:";
         const string _DescrContent2 = "\n<color=#94de59><b>1)</b></color> <color=#ffc47a><b>Close and reopen the project</b></color>" +
                                       " (if you haven't already done so)" +
