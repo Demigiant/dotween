@@ -25,6 +25,7 @@ namespace DG.DOTweenEditor
         public static readonly Def NoSprites = new Def("DOTWEEN_NOSPRITES", true);
         public static readonly Def NoUI = new Def("DOTWEEN_NOUI", true);
         // Normal defines (module is active if the define IS present)
+        public static readonly Def UIToolkit = new Def("DOTWEEN_UITOOLKIT");
         // - Demigiant assets
         public static readonly Def DeAudio = new Def("DOTWEEN_DEAUDIO");
         public static readonly Def DeUnityExtended = new Def("DOTWEEN_DEUNITYEXTENDED");
@@ -46,6 +47,7 @@ namespace DG.DOTweenEditor
         static readonly Def[] _AllValidDefines = new Def[] {
             DOTween,
             NoAudio, NoPhysics, NoPhysics2D, NoSprites, NoUI,
+            UIToolkit,
             DeAudio, DeUnityExtended,
             TK2D, TextMeshPro, EasyPerformantOutline
         };
@@ -67,7 +69,9 @@ namespace DG.DOTweenEditor
             src.modules.physics2DEnabled = !NoPhysics2D.enabled;
             src.modules.spriteEnabled = !NoSprites.enabled;
             src.modules.uiEnabled = !NoUI.enabled;
-
+            
+            src.modules.uiToolkitEnabled = UIToolkit.enabled;
+            
             src.modules.epoOutlineEnabled = EasyPerformantOutline.enabled;
             
             src.modules.deAudioEnabled = DeAudio.enabled;

@@ -27,8 +27,10 @@ namespace DG.DOTweenEditor.UI
 
             GUILayout.Label("Add/Remove Modules", EditorGUIUtils.titleStyle);
 
+            float prevLabelWidth = EditorGUIUtility.labelWidth;
             GUILayout.BeginVertical();
             {
+                EditorGUIUtility.labelWidth = 186;
                 EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
                 {
                     // Core Unity modules
@@ -40,6 +42,7 @@ namespace DG.DOTweenEditor.UI
                         DefineToggle("Physics2D", DOTweenDefines.NoPhysics2D);
                         DefineToggle("Sprites", DOTweenDefines.NoSprites);
                         DefineToggle("UI", DOTweenDefines.NoUI);
+                        DefineToggle("UI Toolkit (Unity 2021.3 or later)", DOTweenDefines.UIToolkit);
                     }
                     GUILayout.EndVertical();
                     // External assets modules
@@ -87,6 +90,7 @@ namespace DG.DOTweenEditor.UI
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndVertical();
+            EditorGUIUtility.labelWidth = prevLabelWidth;
 
             if (EditorApplication.isCompiling) {
                 EditorGUILayout.HelpBox("Waiting for Unity to finish the compilation process...", MessageType.Info);
@@ -123,6 +127,8 @@ namespace DG.DOTweenEditor.UI
             DOTweenDefines.NoPhysics2D.Enable(!src.modules.physics2DEnabled);
             DOTweenDefines.NoSprites.Enable(!src.modules.spriteEnabled);
             DOTweenDefines.NoUI.Enable(!src.modules.uiEnabled);
+            
+            DOTweenDefines.UIToolkit.Enable(src.modules.uiToolkitEnabled);
             
             DOTweenDefines.EasyPerformantOutline.Enable(src.modules.epoOutlineEnabled);
             

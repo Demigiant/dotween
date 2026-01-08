@@ -86,6 +86,9 @@
     <Compile Include="..\bin_pro\Editor\DOTweenPreviewManager.cs">
       <Link>bin_pro\Editor\DOTweenPreviewManager</Link>
     </Compile>
+    <Compile Update="..\bin\Modules\DOTweenModuleUIToolkit.cs">
+      <Link>bin\Modules\DOTweenModuleUIToolkit.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DOTweenEditor\DOTweenEditor.csproj">

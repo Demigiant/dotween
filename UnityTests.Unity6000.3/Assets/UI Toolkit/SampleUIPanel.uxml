@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Sample Label" style="color: rgb(255, 255, 255);"/>
+    <ui:Image source="project://database/Assets/dotween_hotweenv2.png?fileID=2800000&amp;guid=3d3db7798b61f454cb36c9f158b1b48a&amp;type=3#dotween_hotweenv2" name="img" style="height: 158px; width: 171px; position: absolute; top: 115px; left: 86px;"/>
+</ui:UXML>

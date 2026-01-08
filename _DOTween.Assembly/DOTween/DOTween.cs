@@ -35,7 +35,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.2.805"; // Last version before modules: 1.1.755, last version before defines: 1.2.790
+        public static readonly string Version = "1.2.810"; // Last version before modules: 1.1.755, last version before defines: 1.2.790
 #if DEBUG
         internal const string DebugPrefix = "<color=#ff0000><b>//</b></color> "; // Used by logs that are only thrown in debug version of DOTween
 #endif
