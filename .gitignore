@@ -13,6 +13,7 @@ ExternalPluginsTestsAndExamples*
 *.Unity*/Logs
 *.Unity*/obj
 *.Unity*/Temp
+*.Unity*/UserSettings
 *.Unity*/*.csproj
 *.Unity*/*.sln
 *.Unity*/*.user
