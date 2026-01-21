@@ -204,7 +204,7 @@ namespace DG.Tweening
 
         #region .NET 4.6 or Newer
 
-#if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0)
+#if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0) && !UNITY_WEBGL
 
         #region Async Instructions
 
