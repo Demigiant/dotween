@@ -14,8 +14,10 @@ public class IndexOutOfRangeReproduced : BrainBase
 		// DOTween.SetTweensCapacity(200, 50);
 	}
 
-    void Update()
+	protected override void Update()
     {
+	    base.Update();
+	    
         if (Input.GetKeyDown(KeyCode.Space)) {
             for (int j = 0; j < 20; j++) {
             	totDelayedCalls++;

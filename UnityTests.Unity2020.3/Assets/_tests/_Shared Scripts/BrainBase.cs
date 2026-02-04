@@ -1,6 +1,7 @@
 ﻿using Demigiant.DemiTools.Debugging;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BrainBase : MonoBehaviour 
 {
@@ -10,7 +11,7 @@ public class BrainBase : MonoBehaviour
 	// public bool safeMode = false;
 	// public LogBehaviour logBehaviour = LogBehaviour.Default;
 
-	public static DeFPSCounter fpsGadget;
+	public static DeFPSCounter fpsGadget { get; private set; }
 
 	protected virtual void Awake()
 	{
@@ -32,7 +33,7 @@ public class BrainBase : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F5)) {
             Debug.Log("Reloading scene");
-            Application.LoadLevel(Application.loadedLevelName);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

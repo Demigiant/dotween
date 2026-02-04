@@ -61,12 +61,4 @@ public class IndexOutOfRange04 : BrainBase
 
         return tweener;
     }
-
-    void Update()
-    {
-//        if (updateCounter >= 0) {
-//            Debug.Log(string.Format("Update {0}, time: {1}", updateCounter, Time.time));
-//            ++updateCounter;
-//        }
-    }
 }

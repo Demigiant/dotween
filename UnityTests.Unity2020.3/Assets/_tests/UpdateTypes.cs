@@ -21,8 +21,10 @@ public class UpdateTypes : BrainBase
 		targets[4].DOMoveX(5, 2).SetUpdate(UpdateType.Manual, independentUpdate).SetLoops(-1, LoopType.Yoyo);
 	}
 
-    void Update()
+	protected override void Update()
     {
+	    base.Update();
+	    
         if (Input.GetKeyDown(KeyCode.Space)) {
             runningManual = !runningManual;
             if (runningManual) this.StartCoroutine(CO_ManualUpdate());

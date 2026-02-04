@@ -50,9 +50,11 @@ public class RuntimeComponentInspector : BrainBase
             s.Join(subS);
         }
     }
-    
-    void Update()
+
+    protected override void Update()
     {
+        base.Update();
+        
         if (Input.GetKeyDown(KeyCode.Space)) DeleteTargets(10, 10);
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
             _isPlaying = !_isPlaying;

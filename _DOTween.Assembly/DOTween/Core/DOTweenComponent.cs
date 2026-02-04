@@ -156,6 +156,7 @@ namespace DG.Tweening.Core
                     Debugger.LogSafeModeReport(s);
                 }
             }
+            DOTween.safeModeReport = new SafeModeReport();
 
 //            DOTween.initialized = false;
 //            DOTween.instance = null;
