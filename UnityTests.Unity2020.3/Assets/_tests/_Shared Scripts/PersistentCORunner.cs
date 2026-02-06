@@ -8,6 +8,12 @@ public class PersistentCORunner : MonoBehaviour
 {
     static MonoBehaviour I;
 
+    void OnDestroy()
+    {
+        I = null;
+        this.StopAllCoroutines();
+    }
+
     static void Init()
     {
         if (I != null) return;

@@ -6,20 +6,33 @@ using UnityEngine.UI;
 
 public class TempTests : BrainBase
 {
-	public Transform target;
-	float SpecialPulserStage;
+	public RectTransform cardRoot;
+	public Button bt;
+
+	Tween startTween;
 
 	void Start()
 	{
-		var seq = DOTween.Sequence();
-		seq.Append(DOTween.To(() => SpecialPulserStage, i => SpecialPulserStage = i, 0.8f, 0.8f));
-		seq.Append(DOTween.To(() => SpecialPulserStage, i => SpecialPulserStage = i, 0, 0.8f));
-		seq.SetLoops(-1);
-		seq.OnUpdate(SpecialPulserUpdated);
-	}
+		Time.timeScale = 0;
+		
+		bt.onClick.AddListener(() => {
+			string id = "card_00";
+			DOTween.Kill(id, complete: false);
+			cardRoot.anchoredPosition = Vector2.zero;
+			cardRoot.localScale = Vector3.one;
 
-	void SpecialPulserUpdated()
-	{
-		Debug.Log("CALLED");
+			startTween = DOTween.Sequence()
+				.SetId(id)
+				.SetTarget(cardRoot)
+				.SetUpdate(true)
+				.Append(cardRoot.DOPunchScale(Vector3.one * 2f, 0.24f, vibrato: 1, elasticity: 0.2f)
+					.SetUpdate(true) // Unnecessary
+					.SetEase(Ease.OutQuad)
+				)
+				.OnKill(() => {
+					cardRoot.anchoredPosition = Vector2.zero;
+					cardRoot.localScale = Vector3.one;
+				});
+		});
 	}
 }

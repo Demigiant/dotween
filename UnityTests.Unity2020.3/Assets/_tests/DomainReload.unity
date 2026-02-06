@@ -300,7 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceFrameRate: 0
   forcedFrameRate: 10
-  _delayedCallDelay: 5
+  _delayedCallDelay: 3
   _delayedCallTarget: {fileID: 1945086586}
   _delayedCallButton: {fileID: 2120439449}
 --- !u!4 &640244604
