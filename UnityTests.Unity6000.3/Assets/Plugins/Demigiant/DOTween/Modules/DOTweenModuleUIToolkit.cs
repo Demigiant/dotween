@@ -35,7 +35,7 @@ namespace DG.Tweening
         public static TweenerCore<Vector2, Vector2, VectorOptions> DOMove(this VisualElement target, Vector2 endValue, float duration, bool snapping = false)
         {
             TweenerCore<Vector2, Vector2, VectorOptions> t
-                = DOTween.To(() => (Vector2)target.resolvedStyle.translate, x => target.style.translate = x, endValue, duration);
+                = DOTween.To(() => (Vector2)target.resolvedStyle.translate, x => target.style.translate = new Translate(x.x, x.y, 0), endValue, duration);
             t.SetOptions(snapping).SetTarget(target);
             return t;
         }

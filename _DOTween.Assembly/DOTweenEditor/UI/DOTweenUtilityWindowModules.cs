@@ -42,7 +42,10 @@ namespace DG.DOTweenEditor.UI
                         DefineToggle("Physics2D", DOTweenDefines.NoPhysics2D);
                         DefineToggle("Sprites", DOTweenDefines.NoSprites);
                         DefineToggle("UI", DOTweenDefines.NoUI);
-                        DefineToggle("UI Toolkit (Unity 2021.3 or later)", DOTweenDefines.UIToolkit);
+                        bool uiToolkitModulesDisabled = UnityEditorVersion.MajorVersion < 2021 || UnityEditorVersion.MajorVersion == 2021 && UnityEditorVersion.MinorVersion < 3;
+                        using (new EditorGUI.DisabledScope(uiToolkitModulesDisabled)) {
+                            DefineToggle("UI Toolkit (Unity 2021.3 or later)", DOTweenDefines.UIToolkit);
+                        }
                     }
                     GUILayout.EndVertical();
                     // External assets modules
