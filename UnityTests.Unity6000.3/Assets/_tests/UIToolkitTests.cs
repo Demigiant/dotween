@@ -59,6 +59,9 @@ public class UIToolkitTests : BrainBase
         VisualElement root = _uiDoc.rootVisualElement;
         
         VisualElement img = root.Q<VisualElement>("img");
+        VisualElement punchImg = root.Q<VisualElement>("punchImg01");
+        VisualElement shakeImg01 = root.Q<VisualElement>("shakeImg01");
+        VisualElement shakeImg02 = root.Q<VisualElement>("shakeImg02");
         if (_startupDelay > 0) yield return new WaitForSeconds(_startupDelay);
 
         Sequence s = DOTween.Sequence().SetLoops(_loops, _loopType);
@@ -104,5 +107,11 @@ public class UIToolkitTests : BrainBase
         {
             s.Insert(0, img.DORotate(_rotateTo, _duration).SetRelative(tweenType == TweenType.By).SetEase(_ease));
         }
+        
+        // Punch
+        s.Insert(0, punchImg.DOPunch(new Vector3(10, 10, 0), _duration));
+        // Shake
+        s.Insert(0, shakeImg01.DOShake(_duration, new Vector2(10, 10)));
+        s.Insert(0, shakeImg02.DOShake(_duration, 10));
     }
 }
