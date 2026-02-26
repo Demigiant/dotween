@@ -74,12 +74,12 @@ namespace DG.DOTweenEditor.UI
             DOTweenDefines.RefreshAll();
             
             if (_headerImg == null) {
-                _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
+                _headerImg = AssetDatabase.LoadAssetAtPath(EditorUtils.adbPrefix + EditorUtils.editorADBDir + "Imgs/Header.jpg", typeof(Texture2D)) as Texture2D;
                 if (_headerImg == null) return false; // DOTween imported for the first time and images not yet imported
                 EditorUtils.SetEditorTexture(_headerImg, FilterMode.Bilinear, 512);
                 _headerSize.x = _WinSize.x;
                 _headerSize.y = (int)((_WinSize.x * _headerImg.height) / _headerImg.width);
-                _footerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
+                _footerImg = AssetDatabase.LoadAssetAtPath(EditorUtils.adbPrefix + EditorUtils.editorADBDir + (EditorGUIUtility.isProSkin ? "Imgs/Footer.png" : "Imgs/Footer_dark.png"), typeof(Texture2D)) as Texture2D;
                 EditorUtils.SetEditorTexture(_footerImg, FilterMode.Bilinear, 256);
                 _footerSize.x = _WinSize.x;
                 _footerSize.y = (int)((_WinSize.x * _footerImg.height) / _footerImg.width);

@@ -62,6 +62,30 @@
         <member name="F:DG.DOTweenEditor.EditorVersion.MinorVersion">
             <summary>First minor version (ex: in 2018.1 it would be 1)</summary>
         </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.adbPrefix">
+            <summary>With final slash. "Packages/" if this is a package, "Assets/" otherwise</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.demigiantDir">
+            <summary>With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.dotweenDir">
+            <summary>With final slash (system based). If this is a package, represents the package's Runtime dir</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.editorDir">
+            <summary>With final slash (system based). If this is a package, represents the package's Editor dir</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.editorADBDir">
+            <summary>DOTween editor path from Assets (not included) with final slash, in AssetDatabase format (/)</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.dotweenProEditorDir">
+            <summary>With final slash (system based)</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.dotweenModulesDir">
+            <summary>With final slash (system based)</summary>
+        </member>
+        <member name="P:DG.DOTweenEditor.EditorUtils.dotweenTimelineDir">
+            <summary>With final slash (system based)</summary>
+        </member>
         <member name="M:DG.DOTweenEditor.EditorUtils.SetEditorTexture(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
             <summary>
             Checks that the given editor texture use the correct import settings,

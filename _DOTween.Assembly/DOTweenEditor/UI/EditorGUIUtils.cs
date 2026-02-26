@@ -38,7 +38,7 @@ namespace DG.DOTweenEditor.UI
             get
             {
                 if (_logo == null) {
-                    _logo = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+                    _logo = AssetDatabase.LoadAssetAtPath(EditorUtils.adbPrefix + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
                     EditorUtils.SetEditorTexture(_logo, FilterMode.Bilinear, 128);
                 }
                 return _logo;
@@ -50,7 +50,7 @@ namespace DG.DOTweenEditor.UI
             get
             {
                 if (_miniIcon == null) {
-                    _miniIcon = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
+                    _miniIcon = AssetDatabase.LoadAssetAtPath(EditorUtils.adbPrefix + EditorUtils.editorADBDir + "Imgs/DOTweenMiniIcon.png", typeof(Texture2D)) as Texture2D;
                     EditorUtils.SetEditorTexture(_miniIcon, FilterMode.Point, 16);
                 }
                 return _miniIcon;

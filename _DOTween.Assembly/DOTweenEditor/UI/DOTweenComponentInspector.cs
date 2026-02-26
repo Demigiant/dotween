@@ -171,7 +171,7 @@ namespace DG.DOTweenEditor.UI
 
         void ConnectToSource(bool forceReconnection = false)
         {
-            _headerImg = AssetDatabase.LoadAssetAtPath("Assets/" + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
+            _headerImg = AssetDatabase.LoadAssetAtPath(EditorUtils.adbPrefix + EditorUtils.editorADBDir + "Imgs/DOTweenIcon.png", typeof(Texture2D)) as Texture2D;
 
             if (_settings == null || forceReconnection) {
                 _settings = _isRuntime

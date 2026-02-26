@@ -22,32 +22,38 @@ namespace DG.DOTweenEditor
 
         #endregion
 
+        public const string PackageName = "com.demigiant.dotween";
         public static string projectPath { get; private set; } // Without final slash
         public static string assetsPath { get; private set; } // Without final slash
+        /// <summary>With final slash. "Packages/" if this is a package, "Assets/" otherwise</summary>
+        public static string adbPrefix { get; private set; }
         public static bool hasPro { get { RetrieveDependenciesData(); return _hasPro; } }
         public static bool hasDOTweenTimeline { get { RetrieveDependenciesData(); return _hasDOTweenTimeline; } }
         public static bool hasDOTweenTimelineUnityPackage { get { RetrieveDependenciesData(); return _hasDOTweenTimelineUnityPackage; } }
         public static bool isValidDOTweenTimelineUnityVersion { get { RetrieveDependenciesData(); return _isValidDOTweenTimelineUnityVersion; } }
         public static string proVersion { get { RetrieveDependenciesData(); return _proVersion; } }
         public static string dotweenTimelineVersion { get { RetrieveDependenciesData(); return _dotweenTimelineVersion; } }
-        // Editor path from Assets (not included) with final slash, in AssetDatabase format (/)
-        public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
-        // With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder
+        /// <summary>With final slash (system based) - might be NULL in case users are not using a parent Demigiant folder</summary>
         public static string demigiantDir { get { RetrieveDependenciesData(); return _demigiantDir; } }
-        // With final slash (system based)
+        /// <summary>With final slash (system based). If this is a package, represents the package's Runtime dir</summary>
         public static string dotweenDir { get { RetrieveDependenciesData(); return _dotweenDir; } }
+        /// <summary>With final slash (system based). If this is a package, represents the package's Editor dir</summary>
+        public static string editorDir { get { RetrieveDependenciesData(); return _editorDir; } }
+        /// <summary>DOTween editor path from Assets (not included) with final slash, in AssetDatabase format (/)</summary>
+        public static string editorADBDir { get { RetrieveDependenciesData(); return _editorADBDir; } }
         // With final slash (system based)
         public static string dotweenProDir { get { RetrieveDependenciesData(); return _dotweenProDir; } }
-        // With final slash (system based)
+        /// <summary>With final slash (system based)</summary>
         public static string dotweenProEditorDir { get { RetrieveDependenciesData(); return _dotweenProEditorDir; } }
-        // With final slash (system based)
+        /// <summary>With final slash (system based)</summary>
         public static string dotweenModulesDir { get { RetrieveDependenciesData(); return _dotweenModulesDir; } }
-        // With final slash (system based)
+        /// <summary>With final slash (system based)</summary>
         public static string dotweenTimelineDir { get { RetrieveDependenciesData(); return _dotweenTimelineDir; } }
         public static string dotweenTimelineScriptsDir { get { RetrieveDependenciesData(); return _dotweenTimelineScriptsDir; } }
         public static string dotweenTimelineEditorScriptsDir { get { RetrieveDependenciesData(); return _dotweenTimelineEditorScriptsDir; } }
         public static string dotweenTimelineUnityPackageFilePath { get { RetrieveDependenciesData(); return _dotweenTimelineUnityPackageFilePath; } }
         public static bool isOSXEditor { get; private set; }
+        public static bool isPackage { get; private set; } // If TRUE DOTween was installed as a UPM package instead of a normal asset in plugins
         public static string pathSlash { get; private set; } // for full paths
         public static string pathSlashToReplace { get; private set; } // for full paths
 
@@ -61,8 +67,9 @@ namespace DG.DOTweenEditor
         static string _dotweenTimelineVersion;
         static bool _hasCheckedForPro;
         static bool _hasCheckedForDOTweenTimeline;
-        static string _editorADBDir;
+        static string _editorADBDir; // DOTween's editor folder
         static string _demigiantDir; // with final slash
+        static string _editorDir; // with final slash
         static string _dotweenDir; // with final slash
         static string _dotweenProDir; // with final slash
         static string _dotweenProEditorDir; // with final slash
@@ -79,11 +86,15 @@ namespace DG.DOTweenEditor
             pathSlash = useWindowsSlashes ? "\\" : "/";
             pathSlashToReplace = useWindowsSlashes ? "/" : "\\";
 
-            projectPath = Application.dataPath;
-            projectPath = projectPath.Substring(0, projectPath.LastIndexOf("/"));
-            projectPath = projectPath.Replace(pathSlashToReplace, pathSlash);
+            RetrieveDependenciesData();
 
-            assetsPath = projectPath + pathSlash + "Assets";
+            // Debug.Log("-----------------------------------------");
+            // Debug.Log("editorDir: " + editorDir);
+            // Debug.Log("editorADBDir: " + editorADBDir);
+            // Debug.Log("demigiantDir: " + demigiantDir);
+            // Debug.Log("dotweenDir: " + dotweenDir);
+            // Debug.Log("dotweenModulesDir: " + dotweenModulesDir);
+            // Debug.Log("isPackage: " + isPackage);
         }
 
         // ===================================================================================
@@ -95,7 +106,6 @@ namespace DG.DOTweenEditor
             _retrievedDependenciesData = true;
             CheckForPro();
             CheckForTimeline();
-            StoreEditorADBDir();
             StoreDOTweenDirsAndFilePaths();
         }
 
@@ -129,7 +139,7 @@ namespace DG.DOTweenEditor
         public static bool DOTweenSetupRequired()
         {
             if (!Directory.Exists(dotweenDir)) return false;
-            return Directory.GetFiles(dotweenDir + "Editor", "DOTweenUpgradeManager.*").Length > 0;
+            return Directory.GetFiles(editorDir, "DOTweenUpgradeManager.*").Length > 0;
 
             // Legacy methods
 //            if (!Directory.Exists(dotweenDir)) return false; // Can happen if we were deleting DOTween
@@ -260,7 +270,7 @@ namespace DG.DOTweenEditor
             string adbPath = fullPath.Substring(projectPath.Length + 1);
             return adbPath.Replace("\\", "/");
         }
-
+        
         /// <summary>
         /// Connects to a <see cref="ScriptableObject"/> asset.
         /// If the asset already exists at the given path, loads it and returns it.
@@ -397,22 +407,31 @@ namespace DG.DOTweenEditor
             }
         }
 
-        // AssetDatabase formatted path to DOTween's Editor folder
-        static void StoreEditorADBDir()
-        {
-//            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-//            UriBuilder uri = new UriBuilder(codeBase);
-//            string fullPath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-            string fullPath = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
-            string adbPath = fullPath.Substring(Application.dataPath.Length + 1);
-            _editorADBDir = adbPath.Replace("\\", "/") + "/";
-        }
-
         static void StoreDOTweenDirsAndFilePaths()
         {
-            _dotweenDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
-            string pathSeparator = _dotweenDir.IndexOf("/") != -1 ? "/" : "\\";
-            _dotweenDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator) + 1);
+            projectPath = Application.dataPath;
+            projectPath = projectPath.Substring(0, projectPath.LastIndexOf("/"));
+            projectPath = projectPath.Replace(pathSlashToReplace, pathSlash);
+
+            assetsPath = projectPath + pathSlash + "Assets";
+            
+            _editorDir = Path.GetDirectoryName(GetAssemblyFilePath(Assembly.GetExecutingAssembly()));
+            string pathSeparator = _editorDir.IndexOf("/") != -1 ? "/" : "\\";
+            _dotweenDir = _editorDir.Substring(0, _editorDir.LastIndexOf(pathSeparator) + 1);
+            isPackage = !_dotweenDir.StartsWith(projectPath);
+            if (isPackage) {
+                adbPrefix = "Packages/";
+                _dotweenDir += "Runtime" + pathSlash;
+            } else {
+                adbPrefix = "Assets/";
+            }
+            if (!Directory.Exists(_dotweenDir)) Debug.LogError("Couldn't find DOTween's directory");
+            
+            string adbPath = isPackage
+                ? PackageName + pathSeparator + _editorDir.Substring(_editorDir.LastIndexOf(pathSeparator, StringComparison.Ordinal) + 1)
+                : _editorDir.Substring(Application.dataPath.Length + 1);
+            _editorADBDir = adbPath.Replace("\\", "/") + "/";
+            
             string dotweenParentDir = _dotweenDir.Substring(0, _dotweenDir.LastIndexOf(pathSeparator));
             dotweenParentDir = dotweenParentDir.Substring(0, dotweenParentDir.LastIndexOf(pathSeparator) + 1); // with final slash
             _dotweenProDir = dotweenParentDir + "DOTweenPro" + pathSeparator;
@@ -421,6 +440,7 @@ namespace DG.DOTweenEditor
 
             _dotweenDir = _dotweenDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenModulesDir = _dotweenDir + "Modules" + pathSlash;
+            if (!Directory.Exists(_dotweenModulesDir)) Debug.LogError("Couldn't find DOTween's Modules directory");
             _dotweenProDir = _dotweenProDir.Replace(pathSlashToReplace, pathSlash);
             _dotweenProEditorDir = _dotweenProDir + "Editor" + pathSlash;
             _dotweenTimelineDir = _dotweenTimelineDir.Replace(pathSlashToReplace, pathSlash);
