@@ -35,7 +35,7 @@ namespace DG.DOTweenEditor.UI
         static void ShowWindow() { Open(); }
 		
         const string _Title = "DOTween Utility Panel";
-        static readonly Vector2 _WinSize = new Vector2(370,650);
+        static readonly Vector2 _WinSize = new Vector2(370,670);
         public const string Id = "DOTweenVersion";
         public const string IdPro = "DOTweenProVersion";
         static readonly float _HalfBtSize = _WinSize.x * 0.5f - 6;
@@ -363,7 +363,12 @@ namespace DG.DOTweenEditor.UI
             _src.logBehaviour = (LogBehaviour)EditorGUILayout.EnumPopup("Log Behaviour", _src.logBehaviour);
             _src.drawGizmos = EditorGUILayout.Toggle("Draw Path Gizmos", _src.drawGizmos);
             DOTweenSettings.SettingsLocation prevSettingsLocation = _src.storeSettingsLocation;
-            _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
+            if (EditorUtils.isPackage) {
+                EditorGUILayout.HelpBox("Settings Location can only be set to the Resources folder when DOTween is installed as a package", MessageType.Info);
+            }
+            using (new EditorGUI.DisabledScope(EditorUtils.isPackage)) {
+                _src.storeSettingsLocation = (DOTweenSettings.SettingsLocation)EditorGUILayout.Popup("Settings Location", (int)_src.storeSettingsLocation, _settingsLocation);
+            }
             if (_src.storeSettingsLocation != prevSettingsLocation) {
                 if (_src.storeSettingsLocation == DOTweenSettings.SettingsLocation.DemigiantDirectory && EditorUtils.demigiantDir == null) {
                     EditorUtility.DisplayDialog("Change DOTween Settings Location", "Demigiant directory not present (must be the parent of DOTween's directory)", "Ok");
@@ -471,6 +476,7 @@ namespace DG.DOTweenEditor.UI
 
             if (fullSetup) {
                 // Move eventual settings from previous location and setup everything correctly
+                if (EditorUtils.isPackage) src.storeSettingsLocation = DOTweenSettings.SettingsLocation.AssetsDirectory; // Enforce Assets/Resources dir
                 DOTweenSettings.SettingsLocation settingsLoc = src.storeSettingsLocation;
                 switch (settingsLoc) {
                 case DOTweenSettings.SettingsLocation.AssetsDirectory:
