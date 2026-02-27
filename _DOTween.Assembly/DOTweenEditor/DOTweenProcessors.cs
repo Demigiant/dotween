@@ -3,15 +3,54 @@
 // License Copyright (c) Daniele Giardini
 // This work is subject to the terms at http://dotween.demigiant.com/license.php
 
+using System;
 using System.IO;
 using DG.DOTweenEditor.UI;
 using DG.Tweening;
 using DG.Tweening.Core;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace DG.DOTweenEditor
 {
+    internal static class Process
+    {
+        public static void ClearDOTweenInstallation()
+        {
+            // Remove EditorPrefs
+            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
+            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
+            // Remove scripting define symbols
+            DOTweenDefines.RemoveAll();
+            Debug.Log("::: DOTween deleted and DOTWEEN defines removed");
+        }
+    }
+    
+    // ███ DOTWEEN AS PACKAGE ██████████████████████████████████████████████████████████████████████████████████████████████
+    
+    [InitializeOnLoad]
+    public class PackageRemovalProcessor
+    {
+        static PackageRemovalProcessor()
+        {
+            Events.registeringPackages += OnRegisteringPackages;
+        }
+
+        static void OnRegisteringPackages(PackageRegistrationEventArgs args)
+        {
+            foreach (PackageInfo removedPackageInfo in args.removed) {
+                if (removedPackageInfo.name != EditorUtils.PackageName) continue;
+                // DOTween package is being removed: deal with it
+                Process.ClearDOTweenInstallation();
+                return;
+            }
+        }
+    }
+    
+    // ███ DOTWEEN AS ASSET ████████████████████████████████████████████████████████████████████████████████████████████████
+
     public class UtilityWindowModificationProcessor : UnityEditor.AssetModificationProcessor
     {
         // Checks if deleted folder contains DOTween Pro and in case removes scripting define symbols
@@ -31,16 +70,13 @@ namespace DG.DOTweenEditor
             }
             if (!containsDOTween) return AssetDeleteResult.DidNotDelete;
             // DOTween is being deleted: deal with it
-            // Remove EditorPrefs
-            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.Id);
-            EditorPrefs.DeleteKey(Application.dataPath + DOTweenUtilityWindow.IdPro);
-            // Remove scripting define symbols
-            DOTweenDefines.RemoveAll();
-            Debug.Log("::: DOTween deleted and DOTWEEN defines removed");
+            Process.ClearDOTweenInstallation();
             //
             return AssetDeleteResult.DidNotDelete;
         }
     }
+    
+    // ███ DOTWEEN AS ASSET OR PACKAGE █████████████████████████████████████████████████████████████████████████████████████
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
     {
@@ -52,7 +88,9 @@ namespace DG.DOTweenEditor
 
             // Check for DOTween import
             string dotweenFile = System.Array.Find(
-                importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
+                importedAssets, name => 
+                    (name.Contains("DOTween.dll") || name.Contains("DOTweenPro.dll") || name.Contains("DOTweenTimeline"))
+                    && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
             );
             bool dotweenImported = dotweenFile != null;
             if (dotweenImported) {
