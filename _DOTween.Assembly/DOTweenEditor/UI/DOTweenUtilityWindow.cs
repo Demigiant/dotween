@@ -242,48 +242,50 @@ namespace DG.DOTweenEditor.UI
             // }
 
             // ASMDEF
-            using (new GUILayout.VerticalScope(GUI.skin.box)) {
-                using (new GUILayout.HorizontalScope()) {
-                    GUILayout.FlexibleSpace();
-                    GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
-                    if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
-                        if (ASMDEFManager.hasModulesASMDEF) {
-                            string msg = "This will remove:\n-DOTween/Modules/DOTween.Modules.asmdef";
-                            if (EditorUtils.hasPro) {
-                                msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
-                                       "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
+            if (!EditorUtils.isPackage) {
+                using (new GUILayout.VerticalScope(GUI.skin.box)) {
+                    using (new GUILayout.HorizontalScope()) {
+                        GUILayout.FlexibleSpace();
+                        GUI.color = ASMDEFManager.hasModulesASMDEF ? Color.yellow : Color.cyan;
+                        if (GUILayout.Button(ASMDEFManager.hasModulesASMDEF ? "Remove ASMDEF..." : "Create ASMDEF...", EditorGUIUtils.btSetup, GUILayout.Width(200))) {
+                            if (ASMDEFManager.hasModulesASMDEF) {
+                                string msg = "This will remove:\n-DOTween/Modules/DOTween.Modules.asmdef";
+                                if (EditorUtils.hasPro) {
+                                    msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
+                                           "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
+                                }
+                                if (EditorUtils.hasDOTweenTimeline) {
+                                    msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
+                                           "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
+                                }
+                                if (EditorUtility.DisplayDialog("Remove ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.RemoveAllASMDEF();
+                            } else {
+                                string msg = "This will create:\n-DOTween/Modules/DOTween.Modules.asmdef";
+                                if (EditorUtils.hasPro) {
+                                    msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
+                                           "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
+                                }
+                                if (EditorUtils.hasDOTweenTimeline) {
+                                    msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
+                                           "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
+                                }
+                                if (EditorUtility.DisplayDialog("Create ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.CreateAllASMDEF();
                             }
-                            if (EditorUtils.hasDOTweenTimeline) {
-                                msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
-                                       "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
-                            }
-                            if (EditorUtility.DisplayDialog("Remove ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.RemoveAllASMDEF();
-                        } else {
-                            string msg = "This will create:\n-DOTween/Modules/DOTween.Modules.asmdef";
-                            if (EditorUtils.hasPro) {
-                                msg += "\n-DOTweenPro/DOTweenPro.Scripts.asmdef" +
-                                       "\n-DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef";
-                            }
-                            if (EditorUtils.hasDOTweenTimeline) {
-                                msg += "\n-DOTweenTimeline/Scripts/DOTweenTimeline.Scripts.asmdef" +
-                                       "\n-DOTweenTimeline/Scripts/Editor/DOTweenTimeline.EditorScripts.asmdef";
-                            }
-                            if (EditorUtility.DisplayDialog("Create ASMDEF", msg, "Ok", "Cancel")) ASMDEFManager.CreateAllASMDEF();
                         }
+                        GUI.color = Color.white;
+                        GUILayout.FlexibleSpace();
                     }
-                    GUI.color = Color.white;
-                    GUILayout.FlexibleSpace();
+                    GUILayout.Label(
+                        "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
+                        " from other ASMDEFs/Libraries instead of loose scripts," +
+                        " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>," +
+                        " <b>except for DOTween's Editor ASMDEFs</b> (DOTweenPro.EditorScripts) which <b>must never be referenced</b>" +
+                        " by your runtime code or runtime ASMDEFs.",
+                        EditorGUIUtils.wordWrapRichTextLabelStyle
+                    );
                 }
-                GUILayout.Label(
-                    "ASMDEFs are useful if you need to reference the extra DOTween modules API (like [<i>UIelement</i>].DOColor)" +
-                    " from other ASMDEFs/Libraries instead of loose scripts," +
-                    " but remember to have those <b>ASMDEFs/Libraries reference DOTween ones</b>," +
-                    " <b>except for DOTween's Editor ASMDEFs</b> (DOTweenPro.EditorScripts) which <b>must never be referenced</b>" +
-                    " by your runtime code or runtime ASMDEFs.",
-                    EditorGUIUtils.wordWrapRichTextLabelStyle
-                );
+                GUILayout.Space(3);
             }
-            GUILayout.Space(3);
 
             using (new GUILayout.HorizontalScope()) {
                 if (GUILayout.Button("Website", EditorGUIUtils.btBigStyle, GUILayout.Width(_HalfBtSize))) Application.OpenURL("http://dotween.demigiant.com/index.php");
