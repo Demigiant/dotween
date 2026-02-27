@@ -37,17 +37,9 @@ namespace DG.DOTweenEditor
             // Remove scripting define symbols
             DOTweenDefines.RemoveAll();
             Debug.Log("::: DOTween deleted and DOTWEEN defines removed");
-//            //
-//            EditorUtility.DisplayDialog("DOTween Deleted",
-//                "DOTween was deleted and all of its scripting define symbols removed." +
-//                "\n\nThis might show an error depending on your previous setup." +
-//                " If this happens, please close and reopen Unity or reimport DOTween.",
-//                "Ok"
-//            );
+            //
             return AssetDeleteResult.DidNotDelete;
         }
-
-
     }
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
@@ -58,6 +50,7 @@ namespace DG.DOTweenEditor
         {
             if (_setupDialogRequested) return;
 
+            // Check for DOTween import
             string dotweenFile = System.Array.Find(
                 importedAssets, name => name.Contains("DOTween") && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
             );
