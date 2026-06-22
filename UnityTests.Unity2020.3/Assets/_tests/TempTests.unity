@@ -452,8 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceFrameRate: 0
   forcedFrameRate: 10
-  cardRoot: {fileID: 844838416}
-  bt: {fileID: 471969053}
+  target: {fileID: 844838416}
 --- !u!4 &640244604
 Transform:
   m_ObjectHideFlags: 0

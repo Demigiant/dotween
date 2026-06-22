@@ -80,7 +80,7 @@ namespace DG.DOTweenEditor
 
     public class UtilityWindowPostProcessor : AssetPostprocessor
     {
-        static bool _setupDialogRequested; // Used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
+        static bool _setupDialogRequested; // Previously used to prevent OnPostProcessAllAssets firing twice (because of a Unity bug/feature)
         
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
@@ -94,6 +94,9 @@ namespace DG.DOTweenEditor
             );
             bool dotweenImported = dotweenFile != null;
             if (dotweenImported) {
+#if DEBUG
+                Debug.Log(DOTween.DebugPrefix + "DOTween Imported");
+#endif
                 // DOTween or Pro or Timeline imported
                 DOTweenDefines.DOTween.Add();
                 // if (!EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_DOTween)) EditorUtils.AddGlobalDefine(DOTweenDefines.GlobalDefine_DOTween);

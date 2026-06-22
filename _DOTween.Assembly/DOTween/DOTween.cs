@@ -22,7 +22,6 @@ using DOColor = UnityEngine.Color;
 using System.Collections.Generic;
 using DG.Tweening.Core;
 using DG.Tweening.Core.Enums;
-using DG.Tweening.Plugins;
 using DG.Tweening.Plugins.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
@@ -35,7 +34,7 @@ namespace DG.Tweening
     public class DOTween
     {
         /// <summary>DOTween's version</summary>
-        public static readonly string Version = "1.3.015"; // Last version before modules: 1.1.755, last version before switch to defines: 1.2.790
+        public static readonly string Version = "1.3.020"; // Last version before modules: 1.1.755, last version before switch to defines: 1.2.790
 #if DEBUG
         internal const string DebugPrefix = "<color=#ff0000><b>//</b></color> "; // Used by logs that are only thrown in debug version of DOTween
 #endif
