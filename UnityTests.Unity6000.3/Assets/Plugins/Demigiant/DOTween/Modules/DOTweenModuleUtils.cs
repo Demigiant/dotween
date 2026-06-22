@@ -25,13 +25,16 @@ namespace DG.Tweening
     /// </summary>
 	public static class DOTweenModuleUtils
     {
+#pragma warning disable UDR0001
         static bool _initialized;
+#pragma warning restore UDR0001
 
         #region Reflection
 
         /// <summary>
         /// Called via Reflection by DOTweenComponent on Awake
         /// </summary>
+#pragma warning disable UDR0001
 #if UNITY_2018_1_OR_NEWER
         [UnityEngine.Scripting.Preserve]
 #endif
@@ -40,16 +43,20 @@ namespace DG.Tweening
             if (_initialized) return;
 
             _initialized = true;
+            DOTweenExternalCommand.SetOrientationOnPath -= Physics.SetOrientationOnPath;
             DOTweenExternalCommand.SetOrientationOnPath += Physics.SetOrientationOnPath;
 
 #if UNITY_EDITOR
 #if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1
+            UnityEditor.EditorApplication.playmodeStateChanged -= PlaymodeStateChanged;
             UnityEditor.EditorApplication.playmodeStateChanged += PlaymodeStateChanged;
 #else
+            UnityEditor.EditorApplication.playModeStateChanged -= PlaymodeStateChanged;
             UnityEditor.EditorApplication.playModeStateChanged += PlaymodeStateChanged;
 #endif
 #endif
         }
+#pragma warning restore UDR0001
 
 #if UNITY_2018_1_OR_NEWER
 #pragma warning disable
