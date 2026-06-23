@@ -1,14 +1,16 @@
-DOTween and DOTween Pro are copyright (c) 2014-2018 Daniele Giardini - Demigiant
+DOTween and DOTween Pro are copyright (c) 2014-2026 Daniele Giardini - Demigiant
+
 
 // IMPORTANT!!! /////////////////////////////////////////////
-// Upgrading DOTween from versions older than 1.2.000 ///////
-// (or DOTween Pro older than 1.0.000) //////////////////////
+// Upgrading DOTween from versions older than 1.2.815 ///////
+// or DOTween Pro older than 1.0.405 ////////////////////////
+// (February 6 2026) ////////////////////////////////////////
 -------------------------------------------------------------
-If you're upgrading your project from a version of DOTween older than 1.2.000 (or DOTween Pro older than 1.0.000) please follow these instructions carefully.
-1) Import the new version in the same folder as the previous one, overwriting old files. A lot of errors will appear but don't worry
-2) Close and reopen Unity (and your project). This is fundamental: skipping this step will cause a bloodbath
+1) Import the new version in the same folder as the previous one (Plugins/Demigiant), overwriting old files. A lot of errors will appear but don't worry.
+2) Close and reopen Unity (and your project) without entering safe mode. This is fundamental: skipping this step will cause a bloodbath
 3) Open DOTween's Utility Panel (Tools > Demigiant > DOTween Utility Panel) if it doesn't open automatically, then press "Setup DOTween...": this will run the upgrade setup
 4) From the Add/Remove Modules panel that opens, activate/deactivate Modules for Unity systems and for external assets (Pro version only)
+
 
 // GET STARTED //////////////////////////////////////////////
 
@@ -21,8 +23,8 @@ If you're upgrading your project from a version of DOTween older than 1.2.000 (o
 
 DOTween website (documentation, examples, etc): http://dotween.demigiant.com
 DOTween license: http://dotween.demigiant.com/license.php
-DOTween repository (Google Code): https://code.google.com/p/dotween/
-Demigiant website (documentation, examples, etc): http://www.demigiant.com
+DOTween repository (GitHub): https://github.com/Demigiant/dotween
+Demigiant website: http://www.demigiant.com
 
 // NOTES //////////////////////////////////////////////////////
 
