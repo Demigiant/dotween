@@ -99,6 +99,12 @@ namespace DG.DOTweenEditor
 #endif
                 // DOTween or Pro or Timeline imported
                 DOTweenDefines.DOTween.Add();
+                bool proImported = System.Array.Find(
+                    importedAssets, name => 
+                        name.Contains("DOTweenPro.dll")
+                        && !name.EndsWith(".meta") && !name.EndsWith(".jpg") && !name.EndsWith(".png")
+                ) != null;
+                if (proImported) DOTweenDefines.DOTweenPro.Add();
                 // if (!EditorUtils.HasGlobalDefine(DOTweenDefines.GlobalDefine_DOTween)) EditorUtils.AddGlobalDefine(DOTweenDefines.GlobalDefine_DOTween);
                 // Reapply modules and ASMDEF
                 EditorUtils.DelayedCall(0.1f, ()=> {

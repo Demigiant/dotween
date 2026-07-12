@@ -18,6 +18,7 @@ namespace DG.DOTweenEditor
     static class DOTweenDefines
     {
         public static readonly Def DOTween = new Def("DOTWEEN");
+        public static readonly Def DOTweenPro = new Def("DOTWEENPRO");
         // Inverted defines (module is active if the define IS NOT present)
         public static readonly Def NoAudio = new Def("DOTWEEN_NOAUDIO", true);
         public static readonly Def NoPhysics = new Def("DOTWEEN_NOPHYSICS", true);
@@ -45,7 +46,7 @@ namespace DG.DOTweenEditor
 
         // All defines except legacy ones
         static readonly Def[] _AllValidDefines = new Def[] {
-            DOTween,
+            DOTween, DOTweenPro,
             NoAudio, NoPhysics, NoPhysics2D, NoSprites, NoUI,
             UIToolkit,
             DeAudio, DeUnityExtended,
@@ -92,7 +93,7 @@ namespace DG.DOTweenEditor
         public static void ApplyGUIEnabledToAll()
         {
             foreach (Def def in _AllValidDefines) {
-                if (def == DOTween) continue;
+                if (def == DOTween || def == DOTweenPro) continue;
                 if (def.guiEnabled) def.Add();
                 else def.Remove();
                 def.Refresh();
