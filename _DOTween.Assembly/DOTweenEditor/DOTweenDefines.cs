@@ -29,6 +29,7 @@ namespace DG.DOTweenEditor
         public static readonly Def UIToolkit = new Def("DOTWEEN_UITOOLKIT");
         // - Demigiant assets
         public static readonly Def DeAudio = new Def("DOTWEEN_DEAUDIO");
+        public static readonly Def DeAudioV2 = new Def("DOTWEEN_DEAUDIOV2");
         public static readonly Def DeUnityExtended = new Def("DOTWEEN_DEUNITYEXTENDED");
         // - External assets
         public static readonly Def TK2D = new Def("DOTWEEN_TK2D");
@@ -49,7 +50,7 @@ namespace DG.DOTweenEditor
             DOTween, DOTweenPro,
             NoAudio, NoPhysics, NoPhysics2D, NoSprites, NoUI,
             UIToolkit,
-            DeAudio, DeUnityExtended,
+            DeAudio, DeAudioV2, DeUnityExtended,
             TK2D, TextMeshPro, EasyPerformantOutline
         };
         // All legacy defines
@@ -76,6 +77,7 @@ namespace DG.DOTweenEditor
             src.modules.epoOutlineEnabled = EasyPerformantOutline.enabled;
             
             src.modules.deAudioEnabled = DeAudio.enabled;
+            src.modules.deAudioV2Enabled = DeAudioV2.enabled;
             src.modules.deUnityExtendedEnabled = DeUnityExtended.enabled;
             src.modules.textMeshProEnabled = TextMeshPro.enabled;
             src.modules.tk2DEnabled = TK2D.enabled;

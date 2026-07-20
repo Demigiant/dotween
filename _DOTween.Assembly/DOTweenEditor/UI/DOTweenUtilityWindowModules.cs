@@ -70,6 +70,7 @@ namespace DG.DOTweenEditor.UI
                             GUILayout.BeginVertical(GUI.skin.box);
                             GUILayout.Label("DOTween Pro / DOTween Timeline", EditorGUIUtils.boldLabelStyle);
                             DefineToggle("DeAudio", DOTweenDefines.DeAudio);
+                            DefineToggle("DeAudio v2", DOTweenDefines.DeAudioV2);
                             DefineToggle("DeUnityExtended", DOTweenDefines.DeUnityExtended);
                             DefineToggle("TextMesh Pro", DOTweenDefines.TextMeshPro);
                             DefineToggle("2D Toolkit (legacy)", DOTweenDefines.TK2D);
@@ -142,6 +143,7 @@ namespace DG.DOTweenEditor.UI
                 src.modules.uiToolkitEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
                 src.modules.epoOutlineEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
                 src.modules.deAudioEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
+                src.modules.deAudioV2Enabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
                 src.modules.deUnityExtendedEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
                 src.modules.textMeshProEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>",
                 src.modules.tk2DEnabled ? "<color=#00ff00>on</color>" : "<color=#ff0000>off</color>"
@@ -159,6 +161,7 @@ namespace DG.DOTweenEditor.UI
             DOTweenDefines.EasyPerformantOutline.Enable(src.modules.epoOutlineEnabled);
             
             DOTweenDefines.DeAudio.Enable(src.modules.deAudioEnabled);
+            DOTweenDefines.DeAudioV2.Enable(src.modules.deAudioV2Enabled);
             DOTweenDefines.DeUnityExtended.Enable(src.modules.deUnityExtendedEnabled);
             DOTweenDefines.TextMeshPro.Enable(src.modules.textMeshProEnabled);
             DOTweenDefines.TK2D.Enable(src.modules.tk2DEnabled);
