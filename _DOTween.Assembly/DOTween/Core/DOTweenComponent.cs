@@ -22,7 +22,6 @@ namespace DG.Tweening.Core
         /// <summary>Used internally inside Unity Editor, as a trick to update DOTween's inspector at every frame</summary>
         public int inspectorUpdater;
 
-        float _unscaledTime;
         float _unscaledDeltaTime;
 
         bool _paused; // Used to mark when app is paused and to avoid resume being called when application starts playing
@@ -45,7 +44,6 @@ namespace DG.Tweening.Core
             }
 
             inspectorUpdater = 0;
-            _unscaledTime = Time.realtimeSinceStartup;
 
             // Initialize DOTweenModuleUtils via Reflection
             Type modules = DOTweenUtils.GetLooseScriptType("DG.Tweening.DOTweenModuleUtils");
@@ -69,12 +67,11 @@ namespace DG.Tweening.Core
 
         void Update()
         {
-            _unscaledDeltaTime = Time.realtimeSinceStartup - _unscaledTime;
+            _unscaledDeltaTime = Time.unscaledDeltaTime;
             if (DOTween.useSmoothDeltaTime && _unscaledDeltaTime > DOTween.maxSmoothUnscaledTime) _unscaledDeltaTime = DOTween.maxSmoothUnscaledTime;
             if (TweenManager.hasActiveDefaultTweens) {
                 TweenManager.Update(UpdateType.Normal, (DOTween.useSmoothDeltaTime ? Time.smoothDeltaTime : Time.deltaTime) * DOTween.timeScale, _unscaledDeltaTime * DOTween.unscaledTimeScale * DOTween.timeScale);
             }
-            _unscaledTime = Time.realtimeSinceStartup;
 
             if (TweenManager.isUnityEditor) {
                 inspectorUpdater++;
@@ -170,10 +167,9 @@ namespace DG.Tweening.Core
         {
             if (pauseStatus) {
                 _paused = true;
-                _pausedTime = Time.realtimeSinceStartup;
+                _pausedTime = Time.unscaledTime;
             } else if (_paused) {
                 _paused = false;
-                _unscaledTime += Time.realtimeSinceStartup - _pausedTime;
             }
         }
 
@@ -259,8 +255,8 @@ namespace DG.Tweening.Core
         {
 #if DEBUG
             Debug.Log(DOTween.DebugPrefix + string.Format(
-                "DOTweenComponent.Create ► Will create: {0}, Time.realtimeSinceStartup: {1}",
-                DOTween.instance == null, Time.realtimeSinceStartup
+                "DOTweenComponent.Create ► Will create: {0}, Time.unscaledTime: {1}",
+                DOTween.instance == null, Time.unscaledTime
             ));
 #endif
             if (DOTween.instance != null) return;
@@ -274,8 +270,8 @@ namespace DG.Tweening.Core
         {
 #if DEBUG
             Debug.Log(DOTween.DebugPrefix + string.Format(
-                "DOTweenComponent.DestroyInstance ► Will destroy: {0}, Time.realtimeSinceStartup: {1}",
-                DOTween.instance != null, Time.realtimeSinceStartup
+                "DOTweenComponent.DestroyInstance ► Will destroy: {0}, Time.unscaledTime: {1}",
+                DOTween.instance != null, Time.unscaledTime
             ));
 #endif
             if (DOTween.instance != null) Destroy(DOTween.instance.gameObject);

@@ -17,13 +17,13 @@ namespace DG.DOTweenEditor
         {
             this.delay = delay;
             this.callback = callback;
-            _startupTime = Time.realtimeSinceStartup;
+            _startupTime = Time.unscaledTime;
             EditorApplication.update += Update;
         }
 
         void Update()
         {
-            if (Time.realtimeSinceStartup - _startupTime >= delay) {
+            if (Time.unscaledTime - _startupTime >= delay) {
                 if (EditorApplication.update != null) EditorApplication.update -= Update;
                 if (callback != null) callback();
             }
