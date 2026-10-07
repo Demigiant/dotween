@@ -300,7 +300,23 @@ namespace DG.DOTweenEditor
         /// </summary>
         public static string GetAssemblyFilePath(Assembly assembly)
         {
-
+            // Preserve legacy path handling outside the Unity 7 CoreCLR editor.
+            if (EditorVersion.MajorVersion >= 7000) {
+                // Reflection keeps this assembly buildable against Unity 2020.3,
+                // which does not expose FileUtil.GetPhysicalPath.
+                MethodInfo getPhysicalPath = typeof(FileUtil).GetMethod(
+                    "GetPhysicalPath", BindingFlags.Public | BindingFlags.Static,
+                    null, new[] { typeof(string) }, null
+                );
+                if (getPhysicalPath != null) {
+                    string fileName = assembly.GetName().Name + ".dll";
+                    foreach (PluginImporter importer in PluginImporter.GetAllImporters()) {
+                        if (Path.GetFileName(importer.assetPath) != fileName) continue;
+                        string physicalPath = (string)getPhysicalPath.Invoke(null, new object[] { importer.assetPath });
+                        if (!string.IsNullOrEmpty(physicalPath)) return Path.GetFullPath(physicalPath);
+                    }
+                }
+            }
             string codeBase = assembly.CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
@@ -463,7 +479,8 @@ namespace DG.DOTweenEditor
         static bool IsValidBuildTargetGroup(BuildTargetGroup group)
         {
             if (group == BuildTargetGroup.Unknown) return false;
-            Type moduleManager = Type.GetType("UnityEditor.Modules.ModuleManager, UnityEditor.dll");
+            Type moduleManager = Type.GetType("UnityEditor.Modules.ModuleManager, UnityEditor.dll")
+                ?? typeof(PlayerSettings).Assembly.GetType("UnityEditor.Modules.ModuleManager");
 //            MethodInfo miIsPlatformSupportLoaded = moduleManager.GetMethod("IsPlatformSupportLoaded", BindingFlags.Static | BindingFlags.NonPublic);
             MethodInfo miGetTargetStringFromBuildTargetGroup = moduleManager.GetMethod(
                 "GetTargetStringFromBuildTargetGroup", BindingFlags.Static | BindingFlags.NonPublic
